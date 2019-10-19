@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.android.widget.TitleBar
+        android:id="@+id/title_bar"
+        style="@style/TitleBarStyle"
+        app:showLeftIcon="false"
+        app:titleText="控件篇" />
+
+    <ScrollView style="@style/ScrollViewStyle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/popup_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="通用PopupWindow" />
+
+            <TextView
+                android:id="@+id/piechart_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="饼状图" />
+
+            <TextView
+                android:id="@+id/linechart_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="曲线图/折线图" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

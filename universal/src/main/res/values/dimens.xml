@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--分界线宽度-->
+    <dimen name="divider_length">0.5dp</dimen>
+    <!--应用内部上边距-->
+    <dimen name="interval_margin">15dp</dimen>
+    <!--左边距-->
+    <dimen name="default_margin">20dp</dimen>
+</resources>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--放在外层解决属性命名重复导致无法编译问题-->
+    <attr name="showDivider" format="boolean" />
+    <attr name="lineWidth" format="dimension" />
+    <attr name="labelTextMargin" format="dimension" />
+
+    <!--标题栏属性-->
+    <declare-styleable name="TitleBar">
+        <attr name="leftIcon" format="reference" />
+        <attr name="leftIconMargin" format="dimension" />
+        <attr name="showLeftIcon" format="boolean" />
+        <attr name="rightIcon" format="reference" />
+        <attr name="rightIconMargin" format="dimension" />
+        <attr name="showRightIcon" format="boolean" />
+        <attr name="leftText" format="string" />
+        <attr name="leftTextSize" format="dimension" />
+        <attr name="leftTextColor" format="color" />
+        <attr name="leftTextMargin" format="dimension" />
+        <attr name="titleText" format="string" />
+        <attr name="titleTextSize" format="dimension" />
+        <attr name="titleTextColor" format="color" />
+        <attr name="rightText" format="string" />
+        <attr name="rightTextSize" format="dimension" />
+        <attr name="rightTextColor" format="color" />
+        <attr name="rightTextMargin" format="dimension" />
+        <attr name="showDivider" />
+    </declare-styleable>
+
+    <!--饼状图-->
+    <declare-styleable name="PieChart">
+        <!--带延长线-->
+        <attr name="beginAngle" format="float" />
+        <attr name="showInside" format="boolean" />
+        <attr name="insideRatio" format="float" />
+        <attr name="insideColor" format="color" />
+        <attr name="showDivider" />
+        <attr name="dividerColor" format="color" />
+        <attr name="dividerWidth" format="dimension" />
+        <attr name="pointRadius" format="dimension" />
+        <attr name="pointDistance" format="dimension" />
+        <attr name="pointLength" format="dimension" />
+        <attr name="lineWidth" />
+        <attr name="valueTextSize" format="dimension" />
+        <attr name="valueTextColor" format="color" />
+        <attr name="valueTextMargin" format="dimension" />
+        <attr name="labelTextSize" format="dimension" />
+        <attr name="labelTextColor" format="color" />
+        <attr name="labelTextMargin" />
+        <attr name="emptyPieColor" format="color" />
+        <attr name="emptyText" format="string" />
+        <attr name="emptyTextSize" format="dimension" />
+        <attr name="emptyTextColor" format="color" />
+
+        <!--带下方标签-->
+        <!--<attr name="beginAngle" format="float" />-->
+        <!--<attr name="showInside" format="boolean" />-->
+        <!--<attr name="insideRatio" format="float" />-->
+        <!--<attr name="insideColor" format="color" />-->
+        <!--<attr name="showDivider" format="boolean" />-->
+        <!--<attr name="dividerColor" format="color" />-->
+        <!--<attr name="dividerWidth" format="dimension" />-->
+        <attr name="itemMarginTop" format="dimension" />
+        <attr name="itemMarginBottom" format="dimension" />
+        <attr name="itemSpacingExtra" format="dimension" />
+        <attr name="pointSize" format="dimension" />
+        <attr name="pointInsideColor" format="color" />
+        <attr name="pointMarginLeft" format="dimension" />
+        <attr name="pointMarginRight" format="dimension" />
+        <!--<attr name="labelTextSize" format="dimension" />-->
+        <!--<attr name="labelTextColor" format="color" />-->
+        <!--<attr name="valueTextSize" format="dimension" />-->
+        <!--<attr name="valueTextColor" format="color" />-->
+        <!--<attr name="emptyPieColor" format="color" />-->
+        <!--<attr name="emptyText" format="string" />-->
+        <!--<attr name="emptyTextSize" format="dimension" />-->
+        <!--<attr name="emptyTextColor" format="color" />-->
+    </declare-styleable>
+
+    <declare-styleable name="LineChart">
+        <!--曲线图-->
+        <attr name="maxYValue" format="integer" />
+        <attr name="valueUnit" format="string" />
+        <attr name="xLabelCount" format="integer" />
+        <attr name="yLabelCount" format="integer" />
+        <attr name="xLabelTextSize" format="dimension" />
+        <attr name="xLabelTextColor" format="color" />
+        <attr name="xLabelTextMargin" format="dimension" />
+        <attr name="yLabelTextSize" format="dimension" />
+        <attr name="yLabelTextColor" format="color" />
+        <attr name="yLabelTextMargin" format="dimension" />
+        <attr name="axisWidth" format="dimension" />
+        <attr name="axisColor" format="color" />
+        <attr name="showScale" format="boolean" />
+        <attr name="scaleLength" format="dimension" />
+        <attr name="showGrid" format="boolean" />
+        <attr name="gridWidth" format="dimension" />
+        <attr name="gridDashInterval" format="dimension" />
+        <attr name="gridDashLength" format="dimension" />
+        <attr name="gridColor" format="color" />
+        <attr name="lineWidth" />
+        <attr name="lineStartColor" format="color" />
+        <attr name="lineEndColor" format="color" />
+        <attr name="bottomStartColor" format="color" />
+        <attr name="bottomEndColor" format="color" />
+        <attr name="labelColor" format="color" />
+        <attr name="labelRadius" format="dimension" />
+        <attr name="showLabelDate" format="boolean" />
+        <attr name="labelTextSize" />
+        <attr name="labelTextColor" />
+        <attr name="labelTextMargin" />
+        <attr name="labelTextLineSpacingExtra" format="dimension" />
+        <attr name="labelArrowWidth" format="dimension" />
+        <attr name="labelArrowHeight" format="dimension" />
+        <attr name="labelArrowOffset" format="dimension" />
+        <attr name="labelArrowMargin" format="dimension" />
+        <attr name="clickAble" format="boolean" />
+        <attr name="leftMargin" format="dimension" />
+        <attr name="topMargin" format="dimension" />
+        <attr name="rightMargin" format="dimension" />
+        <attr name="bottomMargin" format="dimension" />
+    </declare-styleable>
+
+</resources>

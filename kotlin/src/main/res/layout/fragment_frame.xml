@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.android.widget.TitleBar
+        android:id="@+id/title_bar"
+        style="@style/TitleBarStyle"
+        app:showLeftIcon="false"
+        app:titleText="框架篇" />
+
+    <ScrollView style="@style/ScrollViewStyle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/leak_tv"
+                style="@style/ItemSingleTextStyle"
+                android:layout_marginTop="10dp"
+                android:text="测试内存泄漏" />
+
+            <TextView
+                style="@style/ItemTitleTextStyle"
+                android:text="动态权限申请" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/orignal_permission_tv"
+                    style="@style/ItemLeftTextStyle"
+                    android:text="原生API实现" />
+
+                <TextView
+                    android:id="@+id/easy_permission_tv"
+                    style="@style/ItemRightTextStyle"
+                    android:text="EasyPermission实现" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/retrofit_tv"
+                style="@style/ItemSingleTextStyle"
+                android:layout_marginTop="10dp"
+                android:text="测试Retrofit" />
+
+        </LinearLayout>
+    </ScrollView>
+
+</LinearLayout>

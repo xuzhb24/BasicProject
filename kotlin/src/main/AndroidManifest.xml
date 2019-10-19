@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.android.basicproject">
+
+    <!--网络-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- 获取运营商信息，用于支持提供运营商信息相关的接口-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <!-- 用于访问wifi网络信息，wifi信息会用于进行网络定位-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <!-- 这个权限用于获取wifi的获取权限，wifi信息会用来进行网络定位-->
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <!--拍照-->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <application
+        android:name="com.android.application.BaseApplication"
+        android:allowBackup="false"
+        android:icon="@mipmap/ic_logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme.NoActionBar"
+        tools:ignore="GoogleAppIndexingWarning">
+        <activity android:name="com.android.base.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--框架篇-->
+        <!--测试内存泄漏-->
+        <activity
+            android:name="com.android.frame.TestLeakActivity"
+            android:launchMode="singleTop" />  <!--加上singleTop属性可以防止快速点击启动两个相同的Activity-->
+        <!--权限动态申请-->
+        <activity android:name="com.android.frame.permission.PermissionRequestActivity" />
+        <activity android:name="com.android.frame.permission.PermissionFrameActivity" />
+        <activity android:name="com.android.frame.http.AATest.TestRetrofitActivity" />
+        <!--控件篇-->
+        <!--CommonPopupWindow使用例子-->
+        <activity android:name="com.android.widget.PopupWindow.AATest.TestPopupWindowActivity" />
+        <activity android:name="com.android.widget.PieChart.TestPieChartActivity" />
+        <activity android:name="com.android.widget.LineChart.TestLineChartActivity" />
+        <!--工具篇-->
+        <activity android:name="com.android.util.TestUtilActivity" />
+    </application>
+
+</manifest>

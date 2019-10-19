@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/common_ll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.android.widget.TitleBar
+        android:id="@+id/title_bar"
+        style="@style/TitleBarStyle" />
+
+    <EditText
+        android:id="@+id/et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="30dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn1"
+            style="@style/ButtonStyle"
+            android:text="按钮一" />
+
+
+        <Button
+            android:id="@+id/btn2"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="按钮二" />
+
+        <Button
+            android:id="@+id/btn3"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="按钮三" />
+
+        <Button
+            android:id="@+id/btn4"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="按钮四" />
+
+        <Button
+            android:id="@+id/btn5"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="按钮五" />
+
+        <Button
+            android:id="@+id/btn6"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="按钮六" />
+
+    </LinearLayout>
+
+</LinearLayout>

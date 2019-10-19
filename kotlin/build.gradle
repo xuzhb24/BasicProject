@@ -1,0 +1,78 @@
+apply plugin: 'com.android.application'
+
+apply plugin: 'kotlin-android'
+
+apply plugin: 'kotlin-android-extensions'
+
+android {
+    compileSdkVersion compile_sdk_version
+    buildToolsVersion build_tools_version
+    defaultConfig {
+        applicationId "com.android.basicproject.kotlin"
+        minSdkVersion min_sdk_version
+        targetSdkVersion target_sdk_version
+        versionCode 100001
+        versionName "1.0.0(001)"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    //修改APK名字和存储路径
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            def fileName    //apk文件名
+            def directory   //apk存储路径
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                if (variant.buildType.name.equals('release')) {  //release包
+//                    fileName = "BasicProject_release_v${defaultConfig.versionName}_${releaseTime()}.apk"
+//                    directory = new File(project.rootDir.absolutePath + "/outputs/release")
+//                } else if (variant.buildType.name.equals('debug')) {  //debug包
+//                    fileName = "BasicProject_debug_v${defaultConfig.versionName}_${releaseTime()}.apk"
+//                    directory = new File(project.rootDir.absolutePath + "/outputs/debug")
+//                }
+//                fileName = "BasicProject_v${defaultConfig.versionName}_${releaseTime()}.apk"
+                fileName = "BasicProject_v${defaultConfig.versionName}.apk"
+                outputFileName = fileName  //修改apk名字
+//                directory = new File(project.rootDir.absolutePath + "/outputs")
+//                variant.getPackageApplication().outputDirectory = directory  //修改apk存储路径
+            }
+        }
+    }
+}
+
+static def releaseTime() {
+    return new Date().format("MMddHHmm", TimeZone.getTimeZone("GMT+8"))
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation project(':universal')
+    testImplementation "junit:junit:$junit_version"
+    androidTestImplementation "com.android.support.test:runner:$test_runner_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-core:$test_espresso_version"
+    //leakcanary检测内存泄漏
+    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
+    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
+    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$leakcanary_version"
+
+    //Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
+    //Anko库，包含下方四个部分
+//    implementation "org.jetbrains.anko:anko:$anko_version"  //待验证
+//    //Anko Commons
+    implementation "org.jetbrains.anko:anko-common:$anko_version"
+//    //Anko Layouts
+//    implementation "org.jetbrains.anko:anko-sdk25:$anko_version" // sdk15, sdk19, sdk21, sdk23 are also available
+//    implementation "org.jetbrains.anko:anko-appcompat-v7:$anko_version"
+//    //Coroutine listeners for Anko Layouts
+//    implementation "org.jetbrains.anko:anko-sdk25-coroutines:$anko_version"
+//    implementation "org.jetbrains.anko:anko-appcompat-v7-coroutines:$anko_version"
+//    //Anko SQLite
+//    implementation "org.jetbrains.anko:anko-sqlite:$anko_version"
+
+}

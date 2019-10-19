@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="android:windowBackground">@color/window_background</item>
+    </style>
+
+    <!--水平分界线-->
+    <style name="DividerLineStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/divider_length</item>
+        <item name="android:background">@color/divider_line_color</item>
+    </style>
+
+    <!--竖直分界线-->
+    <style name="VerticalDividerLineStyle">
+        <item name="android:layout_width">@dimen/divider_length</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/divider_line_color</item>
+    </style>
+
+    <!--统一按钮风格-->
+    <style name="ButtonStyle" parent="Widget.AppCompat.Button.Borderless">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:background">@drawable/selector_btn_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_marginLeft">30dp</item>
+        <item name="android:layout_marginRight">30dp</item>
+    </style>
+
+    <!--标题栏风格-->
+    <style name="TitleBarStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <!--ScrollView风格-->
+    <style name="ScrollViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <!--不显示波纹效果-->
+        <item name="android:overScrollMode">never</item>
+        <!--隐藏滚动条-->
+        <item name="android:scrollbars">none</item>
+    </style>
+
+    <style name="ItemTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/selector_item_layout_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ItemTitleTextStyle" parent="ItemTextStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <style name="ItemSingleTextStyle" parent="ItemTextStyle">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <style name="ItemLeftTextStyle" parent="ItemTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+    </style>
+
+    <style name="ItemRightTextStyle" parent="ItemTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginLeft">1dp</item>
+    </style>
+
+    <!--通用的RecyclerView风格-->
+    <style name="RecyclerViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:scrollbars">none</item>
+        <item name="android:overScrollMode">never</item>
+        <!--默认线性布局-->
+        <item name="layoutManager">android.support.v7.widget.LinearLayoutManager</item>
+    </style>
+
+    <!--向下的平移动画-->
+    <style name="AnimTranslateDown">
+        <item name="android:windowEnterAnimation">@anim/translate_appear_top_to_bottom</item>
+        <item name="android:windowExitAnimation">@anim/translate_disappear_bottom_to_top</item>
+    </style>
+
+    <!--向下的缩放动画-->
+    <style name="AnimScaleDown">
+        <item name="android:windowEnterAnimation">@anim/scale_appear_top_to_bottom</item>
+        <item name="android:windowExitAnimation">@anim/scale_disappear_bottom_to_top</item>
+    </style>
+
+</resources>
