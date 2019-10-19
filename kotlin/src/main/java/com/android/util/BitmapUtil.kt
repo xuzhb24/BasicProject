@@ -17,7 +17,7 @@ import java.io.*
 object BitmapUtil {
 
     //保存图片到系统相册，返回true表示保存成功，false表示保存失败
-    private fun saveImageToGallery(
+    fun saveImageToGallery(
         context: Context,
         bitmap: Bitmap?,
         bitmapName: String = System.currentTimeMillis().toString()  //存储的图片名称
