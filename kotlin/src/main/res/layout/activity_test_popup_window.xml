@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.android.widget.TitleBar
+        android:id="@+id/title_bar"
+        style="@style/TitleBarStyle"
+        app:titleText="PopupWindow" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/down_btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="向下弹出" />
+
+        <Button
+            android:id="@+id/down_btn2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:text="向下弹出" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/right_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="150dp"
+        android:text="向右弹出" />
+
+    <Button
+        android:id="@+id/left_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:layout_marginTop="250dp"
+        android:text="向左弹出" />
+
+    <Button
+        android:id="@+id/full_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="全屏弹出" />
+
+    <Button
+        android:id="@+id/up_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:layout_marginBottom="20dp"
+        android:text="向上弹出" />
+
+    <ImageView
+        android:id="@+id/query_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="100dp"
+        android:src="@drawable/ic_query" />
+
+</FrameLayout>
