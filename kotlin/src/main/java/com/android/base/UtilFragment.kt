@@ -26,6 +26,10 @@ class UtilFragment : BaseFragment() {
         keyboard_tv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_KEYBOARD)
         }
+        //代码创建Drawable
+        drawable_tv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_DRAWABLE)
+        }
     }
 
     override fun initListener() {
