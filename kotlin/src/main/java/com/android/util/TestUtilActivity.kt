@@ -1,6 +1,5 @@
 package com.android.util
 
-import android.graphics.Color
 import android.os.Bundle
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity

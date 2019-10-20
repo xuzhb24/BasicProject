@@ -43,6 +43,7 @@
         <!--控件篇-->
         <activity android:name="com.android.widget.TestSingleWidgetActivity" />
         <!--工具篇-->
+        <activity android:name="com.android.util.TestUtilActivity" />
     </application>
 
 </manifest>
