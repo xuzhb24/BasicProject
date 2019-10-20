@@ -6,6 +6,7 @@ import com.android.frame.mvc.BaseFragment
 import com.android.widget.LineChart.TestLineChartActivity
 import com.android.widget.PieChart.TestPieChartActivity
 import com.android.widget.PopupWindow.AATest.TestPopupWindowActivity
+import com.android.widget.TestSingleWidgetActivity
 import kotlinx.android.synthetic.main.fragment_widget.*
 
 /**
@@ -30,6 +31,10 @@ class WidgetFragment : BaseFragment() {
         //曲线图/折线图
         linechart_tv.setOnClickListener {
             startActivity(TestLineChartActivity::class.java)
+        }
+        //单一控件
+        single_tv.setOnClickListener {
+            startActivity(TestSingleWidgetActivity::class.java)
         }
     }
 
