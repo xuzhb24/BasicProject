@@ -1,8 +1,15 @@
 package com.android.base;
 
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
 import com.android.frame.mvc.BaseFragment;
 import com.android.java.R;
+import com.android.widget.TestSingleWidgetActivity;
 
 /**
  * Created by xuzhb on 2019/10/19
@@ -27,5 +34,20 @@ public class WidgetFragment extends BaseFragment {
     @Override
     public int getLayoutId() {
         return R.layout.fragment_widget;
+    }
+
+    @OnClick({R.id.popup_tv, R.id.piechart_tv, R.id.linechart_tv, R.id.single_tv})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.popup_tv:
+                break;
+            case R.id.piechart_tv:
+                break;
+            case R.id.linechart_tv:
+                break;
+            case R.id.single_tv:
+                startActivity(TestSingleWidgetActivity.class);
+                break;
+        }
     }
 }

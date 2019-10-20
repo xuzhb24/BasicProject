@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.android.widget.TitleBar
+        android:id="@+id/title_bar"
+        style="@style/TitleBarStyle"
+        app:rightText="说明"
+        app:titleText="单一控件" />
+
+    <com.android.widget.VerifyCodeView
+        android:id="@+id/verify_code_view"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/interval_margin"
+        app:codeBackground="#e7e7e7"
+        app:codeLength="4"
+        app:codeTextSize="35sp"
+        app:isContainChar="true"
+        app:pointNum="15" />
+
+    <EditText
+        android:id="@+id/verify_code_et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginRight="@dimen/default_margin" />
+
+    <Button
+        android:id="@+id/verify_code_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:text="验证" />
+
+    <View
+        style="@style/DividerLineStyle"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
+
+</LinearLayout>

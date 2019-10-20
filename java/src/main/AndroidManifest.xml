@@ -38,6 +38,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <!--框架篇-->
+
+        <!--控件篇-->
+        <activity android:name="com.android.widget.TestSingleWidgetActivity" />
+        <!--工具篇-->
     </application>
 
 </manifest>

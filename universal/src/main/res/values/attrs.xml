@@ -122,6 +122,7 @@
         <attr name="bottomMargin" format="dimension" />
     </declare-styleable>
 
+    <!--搜索框-->
     <declare-styleable name="SearchLayout">
         <attr name="searchText" format="string" />
         <attr name="searchHint" format="string" />
@@ -134,6 +135,16 @@
             <enum name="number" value="2" />
             <enum name="numberDecimal" value="0x2002" />
         </attr>
+    </declare-styleable>
+
+    <!--验证码-->
+    <declare-styleable name="VerifyCodeView">
+        <attr name="codeTextSize" format="dimension" />
+        <attr name="codeBackground" format="color" />
+        <attr name="codeLength" format="integer" />
+        <attr name="isContainChar" format="boolean" />
+        <attr name="pointNum" format="integer" />
+        <attr name="lineNum" format="integer" />
     </declare-styleable>
 
 </resources>
