@@ -108,6 +108,12 @@
         <item name="layoutManager">android.support.v7.widget.LinearLayoutManager</item>
     </style>
 
+    <!--向上的动画-->
+    <style name="AnimUp">
+        <item name="android:windowEnterAnimation">@anim/alpha_translate_appear_bottom_to_top</item>
+        <item name="android:windowExitAnimation">@anim/alpha_translate_disappear_top_to_bottom</item>
+    </style>
+
     <!--向下的平移动画-->
     <style name="AnimTranslateDown">
         <item name="android:windowEnterAnimation">@anim/translate_appear_top_to_bottom</item>

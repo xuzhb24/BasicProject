@@ -1,8 +1,11 @@
 package com.android.widget.Dialog;
 
+import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -10,8 +13,11 @@ import butterknife.OnClick;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.util.CommonLayoutUtil;
+import com.android.util.DrawableUtil;
 import com.android.util.SizeUtil;
+import com.android.util.ToastUtil;
 import com.android.widget.Dialog.base.BaseDialog;
+import com.android.widget.Dialog.base.ViewHolder;
 import com.android.widget.TitleBar;
 
 /**
@@ -53,8 +59,10 @@ public class TestDialogActivity extends BaseActivity {
                 showMultiDialog();
                 break;
             case R.id.btn3:
+                showShareDialog();
                 break;
             case R.id.btn4:
+                showCommentDialog();
                 break;
         }
     }
@@ -99,6 +107,67 @@ public class TestDialogActivity extends BaseActivity {
                 .setOutsideCancelable(true)
                 .setHorizontalMargin((int) SizeUtil.dp2px(60))
                 .show(getSupportFragmentManager());
+    }
+
+    //分享Dialog
+    private void showShareDialog() {
+        CommonDialog.newInstance()
+                .setLayoutId(R.layout.layout_share_dialog)
+                .setOnConvertViewListener(new CommonDialog.OnConvertViewListener() {
+                    @Override
+                    public void convertView(ViewHolder holder, BaseDialog dialog) {
+                        holder.setOnClickListener(R.id.weixin_tv, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ToastUtil.showToast("微信");
+                                dialog.dismiss();
+                            }
+                        });
+                        holder.setOnClickListener(R.id.qq_tv, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ToastUtil.showToast("QQ");
+                                dialog.dismiss();
+                            }
+                        });
+                        holder.setOnClickListener(R.id.weibo_tv, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ToastUtil.showToast("微博");
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                })
+                .setDimAmount(0.3f)
+                .setAnimationStyle(R.style.AnimUp)
+                .showAtBottom(getSupportFragmentManager());
+    }
+
+    private void showCommentDialog() {
+        CommonDialog.newInstance()
+                .setLayoutId(R.layout.layout_comment_dialog)
+                .setOnConvertViewListener(new CommonDialog.OnConvertViewListener() {
+                    @Override
+                    public void convertView(ViewHolder holder, BaseDialog dialog) {
+                        EditText commentEt = holder.getView(R.id.comment_et);
+                        commentEt.setBackground(DrawableUtil.createSolidShape(
+                                SizeUtil.dp2px(10f), Color.parseColor("#e6e6e6")));
+                        holder.setOnClickListener(R.id.send_tv, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                String text = commentEt.getText().toString().trim();
+                                if (TextUtils.isEmpty(text)) {
+                                    ToastUtil.showToast("请输入文字！");
+                                } else {
+                                    ToastUtil.showToast(text);
+                                    dialog.dismiss();
+                                }
+                            }
+                        });
+                    }
+                })
+                .showAtBottom(getSupportFragmentManager());
     }
 
 }
