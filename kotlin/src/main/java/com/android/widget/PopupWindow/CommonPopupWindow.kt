@@ -66,11 +66,7 @@ class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
             return this
         }
 
-        /**
-         * 设置背景灰色程度
-         *
-         * @param level 0.0f-1.0f
-         */
+        //设置背景灰色程度
         fun setBackGroundAlpha(@FloatRange(from = 0.0, to = 1.0) alpha: Float): Builder {
             mAlpha = alpha
             return this

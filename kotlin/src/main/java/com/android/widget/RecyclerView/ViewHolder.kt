@@ -22,19 +22,8 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         mViewList = SparseArray()
     }
 
+    //查找View中的控件
     fun <T : View> getView(viewId: Int): T? {
-        //对已有的view做缓存
-        var view: View? = mViewList.get(viewId)
-        //使用缓存的方式减少findViewById的次数
-        if (view == null) {
-            view = itemView.findViewById(viewId)
-            mViewList.put(viewId, view)
-        }
-        return view as? T
-    }
-
-
-    fun <T : ViewGroup> getViewGroup(viewId: Int): T? {
         //对已有的view做缓存
         var view: View? = mViewList.get(viewId)
         //使用缓存的方式减少findViewById的次数
@@ -85,11 +74,26 @@ class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         return this
     }
 
+    //设置View宽度
+    fun setViewWidth(viewId: Int, width: Int): ViewHolder {
+        return setViewParams(viewId, width, -1)
+    }
+
     //设置View高度
     fun setViewHeight(viewId: Int, height: Int): ViewHolder {
+        return setViewParams(viewId, -1, height)
+    }
+
+    //设置View的宽度和高度
+    fun setViewParams(viewId: Int, width: Int, height: Int): ViewHolder {
         getView<View>(viewId)?.let {
             val params = it.layoutParams as ViewGroup.MarginLayoutParams
-            params.height = height
+            if (width >= 0) {
+                params.width = width
+            }
+            if (height >= 0) {
+                params.height = height
+            }
             it.layoutParams = params
         }
         return this
