@@ -12,9 +12,12 @@
 
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
+    <color name="black_333333">#333333</color>
     <color name="orange">#ee7942</color>
 
     <color name="lightBlue">#0875ff</color>
     <color name="darkBlue">#097de2</color>
+
+    <color name="silver">#e6e6e6</color>
 
 </resources>
