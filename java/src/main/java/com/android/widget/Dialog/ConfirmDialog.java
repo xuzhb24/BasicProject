@@ -4,8 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.View;
 import com.android.java.R;
-import com.android.widget.Dialog.base.BaseDialog;
-import com.android.widget.Dialog.base.ViewHolder;
+import com.android.widget.ViewHolder;
 
 /**
  * Created by xuzhb on 2019/10/21
@@ -15,7 +14,7 @@ public class ConfirmDialog extends BaseDialog {
 
     private static final String EXTRA_TITLE = "EXTRA_TITLE";
     private static final String EXTRA_CONTENT = "EXTRA_CONTENT";
-    private static final String EXTRA_CONFIRM_TEXT = "EXTRA__CONFIRM_TEXT";
+    private static final String EXTRA_CONFIRM_TEXT = "EXTRA_CONFIRM_TEXT";
     private static final String EXTRA_CANCEL_TEXT = "EXTRA_CANCEL_TEXT";
     private static final String EXTRA_CANCEL_VISIBLE = "EXTRA_CANCEL_VISIBLE";
 

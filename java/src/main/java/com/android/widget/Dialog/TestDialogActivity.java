@@ -8,7 +8,6 @@ import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.Toast;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
@@ -16,9 +15,8 @@ import com.android.util.CommonLayoutUtil;
 import com.android.util.DrawableUtil;
 import com.android.util.SizeUtil;
 import com.android.util.ToastUtil;
-import com.android.widget.Dialog.base.BaseDialog;
-import com.android.widget.Dialog.base.ViewHolder;
 import com.android.widget.TitleBar;
+import com.android.widget.ViewHolder;
 
 /**
  * Created by xuzhb on 2019/10/21
@@ -81,7 +79,7 @@ public class TestDialogActivity extends BaseActivity {
                     }
                 })
                 .setCancelVisible(false)
-                .setDimAmount(0.8f)
+                .setDimAmount(0.6f)
                 .setOutsideCancelable(false)
                 .setViewParams((int) SizeUtil.dp2px(240), WindowManager.LayoutParams.WRAP_CONTENT)
                 .show(getSupportFragmentManager());
@@ -113,7 +111,7 @@ public class TestDialogActivity extends BaseActivity {
     private void showShareDialog() {
         CommonDialog.newInstance()
                 .setLayoutId(R.layout.layout_share_dialog)
-                .setOnConvertViewListener(new CommonDialog.OnConvertViewListener() {
+                .setOnViewListener(new CommonDialog.OnViewListener() {
                     @Override
                     public void convertView(ViewHolder holder, BaseDialog dialog) {
                         holder.setOnClickListener(R.id.weixin_tv, new View.OnClickListener() {
@@ -147,7 +145,7 @@ public class TestDialogActivity extends BaseActivity {
     private void showCommentDialog() {
         CommonDialog.newInstance()
                 .setLayoutId(R.layout.layout_comment_dialog)
-                .setOnConvertViewListener(new CommonDialog.OnConvertViewListener() {
+                .setOnViewListener(new CommonDialog.OnViewListener() {
                     @Override
                     public void convertView(ViewHolder holder, BaseDialog dialog) {
                         EditText commentEt = holder.getView(R.id.comment_et);

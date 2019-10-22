@@ -1,8 +1,7 @@
 package com.android.widget.Dialog;
 
 import android.support.annotation.LayoutRes;
-import com.android.widget.Dialog.base.BaseDialog;
-import com.android.widget.Dialog.base.ViewHolder;
+import com.android.widget.ViewHolder;
 
 /**
  * Created by xuzhb on 2019/10/21
@@ -10,7 +9,7 @@ import com.android.widget.Dialog.base.ViewHolder;
  */
 public class CommonDialog extends BaseDialog {
 
-    private OnConvertViewListener mListener;
+    private OnViewListener mListener;
 
     public static CommonDialog newInstance() {
         return new CommonDialog();
@@ -23,7 +22,7 @@ public class CommonDialog extends BaseDialog {
     }
 
     //设置事件监听
-    public CommonDialog setOnConvertViewListener(OnConvertViewListener listener) {
+    public CommonDialog setOnViewListener(OnViewListener listener) {
         this.mListener = listener;
         return this;
     }
@@ -40,7 +39,7 @@ public class CommonDialog extends BaseDialog {
         }
     }
 
-    public interface OnConvertViewListener {
+    public interface OnViewListener {
         void convertView(ViewHolder holder, BaseDialog dialog);
     }
 

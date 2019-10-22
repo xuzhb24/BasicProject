@@ -1,4 +1,4 @@
-package com.android.widget.Dialog.base;
+package com.android.widget;
 
 import android.support.annotation.IdRes;
 import android.util.SparseArray;
@@ -13,19 +13,22 @@ import android.widget.TextView;
  */
 public class ViewHolder {
 
+    //缓存View
     private SparseArray<View> mViewList;
-    private View mConvertView;
+    private View mView;
 
     public ViewHolder(View view) {
-        mConvertView = view;
+        mView = view;
         mViewList = new SparseArray<>();
     }
 
     //查找View中的控件
     public <T extends View> T getView(@IdRes int viewId) {
+        //对已有的view做缓存
         View view = mViewList.get(viewId);
+        //使用缓存的方式减少findViewById的次数
         if (view == null) {
-            view = mConvertView.findViewById(viewId);
+            view = mView.findViewById(viewId);
             mViewList.put(viewId, view);
         }
         return (T) view;
@@ -98,13 +101,13 @@ public class ViewHolder {
     }
 
     //设置点击事件
-    public void setOnClickListener(int viewId, View.OnClickListener listener) {
+    public void setOnClickListener(@IdRes int viewId, View.OnClickListener listener) {
         View view = getView(viewId);
         view.setOnClickListener(listener);
     }
 
     //设置长按事件
-    public void setOnLongClickListener(int viewId, View.OnLongClickListener listener) {
+    public void setOnLongClickListener(@IdRes int viewId, View.OnLongClickListener listener) {
         View view = getView(viewId);
         view.setOnLongClickListener(listener);
     }

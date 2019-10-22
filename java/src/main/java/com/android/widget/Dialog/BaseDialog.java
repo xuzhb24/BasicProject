@@ -1,4 +1,4 @@
-package com.android.widget.Dialog.base;
+package com.android.widget.Dialog;
 
 import android.os.Bundle;
 import android.support.annotation.*;
@@ -6,6 +6,7 @@ import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.view.*;
 import com.android.java.R;
+import com.android.widget.ViewHolder;
 
 /**
  * Created by xuzhb on 2019/10/21
@@ -14,11 +15,11 @@ import com.android.java.R;
 public abstract class BaseDialog extends DialogFragment {
 
     @LayoutRes
-    protected int mLayoutId = -1;             //对话框的布局id
+    protected int mLayoutId = -1;           //对话框的布局id
     private int mWidth;                     //对话框的宽度
     private int mHeight;                    //对话框的高度
     private int mMargin;                    //对话框左右边距
-    private float mDimAmount = 0.5f;            //背景透明度
+    private float mDimAmount = 0.5f;        //背景透明度
     private int mAnimationStyle = -1;       //对话框出现消失的动画
     private boolean mCancelable = true;     //是否可点击取消
     private int mGravity = Gravity.CENTER;  //对话框显示的位置，默认正中间
