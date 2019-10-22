@@ -142,6 +142,7 @@ public class TestDialogActivity extends BaseActivity {
                 .showAtBottom(getSupportFragmentManager());
     }
 
+    //评论Dialog
     private void showCommentDialog() {
         CommonDialog.newInstance()
                 .setLayoutId(R.layout.layout_comment_dialog)

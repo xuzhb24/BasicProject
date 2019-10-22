@@ -4,15 +4,11 @@ import android.os.Bundle
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.PopupWindow
-import android.widget.TextView
-import com.android.frame.mvc.BaseActivity
 import com.android.basicproject.R
+import com.android.frame.mvc.BaseActivity
 import com.android.util.ToastUtil
 import com.android.widget.PopupWindow.CommonPopupWindow
 import kotlinx.android.synthetic.main.activity_test_popup_window.*
-import org.jetbrains.anko.toast
 
 /**
  * Created by xuzhb on 2019/9/1

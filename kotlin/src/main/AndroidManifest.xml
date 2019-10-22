@@ -52,6 +52,7 @@
         <activity android:name="com.android.widget.PieChart.TestPieChartActivity" />
         <activity android:name="com.android.widget.LineChart.TestLineChartActivity" />
         <activity android:name="com.android.widget.TestSingleWidgetActivity" />
+        <activity android:name="com.android.widget.dialog.TestDialogActivity" />
         <!--工具篇-->
         <activity android:name="com.android.util.TestUtilActivity" />
     </application>
