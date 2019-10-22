@@ -59,7 +59,7 @@ class TestDialogActivity : BaseActivity() {
 
     //双按钮Dialog
     private fun showMultiDialog() {
-        ConfirmDialog.newInstance(content = "提交成功！")
+        ConfirmDialog.newInstance("提示", "提交成功！")
             .setOnConfirmListener {
                 it.dismiss()
                 ToastUtil.toast("确定")
@@ -90,6 +90,7 @@ class TestDialogActivity : BaseActivity() {
                     ToastUtil.toast("微博")
                     dialog.dismiss()
                 })
+                holder.setOnClickListener(R.id.cancel_tv, { dialog.dismiss() })
             }
             .setDimAmount(0.3f)
             .setAnimationStyle(R.style.AnimUp)
