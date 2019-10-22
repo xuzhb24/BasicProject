@@ -70,7 +70,7 @@ public class TestDialogActivity extends BaseActivity {
         ConfirmDialog.newInstance()
                 .setTitle("警告")
                 .setContent("对不起审核不通过！")
-                .setConfirmText("确定")
+                .setConfirmText("我知道了")
                 .setOnConfirmListener(new ConfirmDialog.OnConfirmListener() {
                     @Override
                     public void onConfirm(BaseDialog dialog) {
@@ -132,6 +132,12 @@ public class TestDialogActivity extends BaseActivity {
                             @Override
                             public void onClick(View v) {
                                 ToastUtil.showToast("微博");
+                                dialog.dismiss();
+                            }
+                        });
+                        holder.setOnClickListener(R.id.cancel_tv, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
                                 dialog.dismiss();
                             }
                         });
