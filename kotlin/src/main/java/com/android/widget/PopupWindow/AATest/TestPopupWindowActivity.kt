@@ -18,7 +18,7 @@ import org.jetbrains.anko.toast
  * Created by xuzhb on 2019/9/1
  * Desc:CommonPopupWindow使用示例
  */
-class TestPopupWindowActivity : BaseActivity(), CommonPopupWindow.OnChildViewListener {
+class TestPopupWindowActivity : BaseActivity() {
 
     private var mPopupWindow: CommonPopupWindow? = null
 
@@ -66,14 +66,18 @@ class TestPopupWindowActivity : BaseActivity(), CommonPopupWindow.OnChildViewLis
             return
         mPopupWindow = CommonPopupWindow.Builder(this)
             .setContentView(R.layout.layout_popup_window_down1)
-            .setWidthAndHeight(
+            .setViewParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             .setOutsideTouchable(true)
 //            .setAnimationStyle(R.style.AnimScaleDown)
 //            .setBackGroundAlpha(0.6f)
-            .setOnViewListener(this)
+            .setOnViewListener { holder, popupWindow ->
+                holder.setOnClickListener(R.id.cancel_btn, { holder.setText(R.id.content_tv, "取消") })
+                holder.setOnClickListener(R.id.confirm_btn, { holder.setText(R.id.content_tv, "确定") })
+                holder.setOnClickListener(R.id.outside_view, { popupWindow.dismiss() })
+            }
             .build()
         mPopupWindow!!.showAsDropDown(view)
     }
@@ -83,36 +87,14 @@ class TestPopupWindowActivity : BaseActivity(), CommonPopupWindow.OnChildViewLis
             return
         mPopupWindow = CommonPopupWindow.Builder(this)
             .setContentView(R.layout.layout_popup_window_down2)
-            .setWidthAndHeight(
+            .setViewParams(
                 view.width,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             .setOutsideTouchable(true)
             .setAnimationStyle(R.style.AnimScaleDown)
             .setBackGroundAlpha(0.6f)
-            .setOnViewListener(this)
-            .build()
-        mPopupWindow!!.showAsDropDown(view)
-    }
-
-    override fun onChildView(popupWindow: PopupWindow, view: View, layoutId: Int) {
-        when (layoutId) {
-            R.layout.layout_popup_window_down1 -> {
-                val contentTv: TextView = view.findViewById(R.id.content_tv)
-                val cancelBtn: Button = view.findViewById(R.id.cancel_btn)
-                val confirmBtn: Button = view.findViewById(R.id.confirm_btn)
-                val outsideView: View = view.findViewById(R.id.outside_view)
-                cancelBtn.setOnClickListener {
-                    contentTv.text = "取消"
-                }
-                confirmBtn.setOnClickListener {
-                    contentTv.text = "确定"
-                }
-                outsideView.setOnClickListener {
-                    popupWindow.dismiss()
-                }
-            }
-            R.layout.layout_popup_window_down2 -> {
+            .setOnViewListener { holder, popupWindow ->
                 val list = ArrayList<String>()
                 with(list) {
                     add("周一")
@@ -124,14 +106,15 @@ class TestPopupWindowActivity : BaseActivity(), CommonPopupWindow.OnChildViewLis
                     add("周日")
                 }
                 val adapter = PopupWindowAdapter(this, list)
-                val popupRv: RecyclerView = view.findViewById(R.id.popup_rv)
+                val popupRv: RecyclerView = holder.getView(R.id.popup_rv)!!
                 popupRv.adapter = adapter
                 adapter.setOnItemClickListener { obj, position ->
-                    ToastUtil.toast("$position  $obj")
+                    ToastUtil.toast("${position + 1}  $obj")
 //                    popupWindow.dismiss()
                 }
             }
-        }
+            .build()
+        mPopupWindow!!.showAsDropDown(view)
     }
 
 }
