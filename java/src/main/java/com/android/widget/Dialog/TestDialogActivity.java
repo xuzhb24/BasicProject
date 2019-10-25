@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.android.frame.mvc.BaseActivity;
@@ -75,7 +74,7 @@ public class TestDialogActivity extends BaseActivity {
                     @Override
                     public void onConfirm(BaseDialog dialog) {
                         dialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "确定", Toast.LENGTH_SHORT).show();
+                        ToastUtil.toast("确定");
                     }
                 })
                 .setCancelVisible(false)
@@ -92,14 +91,14 @@ public class TestDialogActivity extends BaseActivity {
                     @Override
                     public void onConfirm(BaseDialog dialog) {
                         dialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "确定", Toast.LENGTH_SHORT).show();
+                        ToastUtil.toast("确定");
                     }
                 })
                 .setOnCancelListener(new ConfirmDialog.OnCancelListener() {
                     @Override
                     public void onCancel(BaseDialog dialog) {
                         dialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "取消", Toast.LENGTH_SHORT).show();
+                        ToastUtil.toast("取消");
                     }
                 })
                 .setOutsideCancelable(true)
@@ -117,21 +116,21 @@ public class TestDialogActivity extends BaseActivity {
                         holder.setOnClickListener(R.id.weixin_tv, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ToastUtil.showToast("微信");
+                                ToastUtil.toast("微信");
                                 dialog.dismiss();
                             }
                         });
                         holder.setOnClickListener(R.id.qq_tv, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ToastUtil.showToast("QQ");
+                                ToastUtil.toast("QQ");
                                 dialog.dismiss();
                             }
                         });
                         holder.setOnClickListener(R.id.weibo_tv, new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                ToastUtil.showToast("微博");
+                                ToastUtil.toast("微博");
                                 dialog.dismiss();
                             }
                         });
@@ -163,9 +162,9 @@ public class TestDialogActivity extends BaseActivity {
                             public void onClick(View v) {
                                 String text = commentEt.getText().toString().trim();
                                 if (TextUtils.isEmpty(text)) {
-                                    ToastUtil.showToast("请输入文字！");
+                                    ToastUtil.toast("请输入文字！");
                                 } else {
-                                    ToastUtil.showToast(text);
+                                    ToastUtil.toast(text);
                                     dialog.dismiss();
                                 }
                             }

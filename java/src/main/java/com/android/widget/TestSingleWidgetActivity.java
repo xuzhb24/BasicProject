@@ -5,11 +5,11 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.Toast;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.util.ToastUtil;
 
 /**
  * Created by xuzhb on 2019/10/20
@@ -61,12 +61,12 @@ public class TestSingleWidgetActivity extends BaseActivity {
                 String code = verifyCodeEt.getText().toString().trim();
                 if (!TextUtils.isEmpty(code)) {
                     if (verifyCodeView.isEquals(code)) {
-                        Toast.makeText(getApplicationContext(), "验证正确", Toast.LENGTH_SHORT).show();
+                        ToastUtil.toast("验证正确");
                     } else {
-                        Toast.makeText(getApplicationContext(), "验证错误", Toast.LENGTH_SHORT).show();
+                        ToastUtil.toast("验证错误");
                     }
                 } else {
-                    Toast.makeText(getApplicationContext(), "请输入验证码", Toast.LENGTH_SHORT).show();
+                    ToastUtil.toast("请输入验证码");
                 }
                 break;
         }
