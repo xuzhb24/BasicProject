@@ -6,6 +6,7 @@ import android.content.Intent
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
+import android.widget.TextView
 import com.android.basicproject.R
 import com.android.widget.TitleBar
 
@@ -13,9 +14,16 @@ import com.android.widget.TitleBar
  * Created by xuzhb on 2019/9/22
  * Desc:
  */
-fun initCommonLayout(activity: Activity, title: String, vararg text: String, showEditText: Boolean = false) {
+fun initCommonLayout(
+    activity: Activity,
+    title: String,
+    vararg text: String,
+    showEditText: Boolean = false,
+    showTextView: Boolean = false
+) {
     val titleBar: TitleBar = activity.findViewById(R.id.title_bar)
     val et: EditText = activity.findViewById(R.id.et)
+    val tv: TextView = activity.findViewById(R.id.tv)
     val btn1: Button = activity.findViewById(R.id.btn1)
     val btn2: Button = activity.findViewById(R.id.btn2)
     val btn3: Button = activity.findViewById(R.id.btn3)
@@ -29,6 +37,7 @@ fun initCommonLayout(activity: Activity, title: String, vararg text: String, sho
         }
     }
     et.visibility = View.GONE
+    tv.visibility = View.GONE
     btn1.visibility = View.GONE
     btn2.visibility = View.GONE
     btn3.visibility = View.GONE
@@ -37,6 +46,9 @@ fun initCommonLayout(activity: Activity, title: String, vararg text: String, sho
     btn6.visibility = View.GONE
     if (showEditText) {
         et.visibility = View.VISIBLE
+    }
+    if (showTextView) {
+        tv.visibility = View.VISIBLE
     }
     if (text.size >= 1) {
         btn1.visibility = View.VISIBLE

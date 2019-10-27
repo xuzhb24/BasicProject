@@ -20,15 +20,15 @@ class CookieJarManage : CookieJar {
         val holder = CookieJarManage()
     }
 
-    private val cookieStore = HashMap<HttpUrl, MutableList<Cookie>>()
+    private val cookieStore = HashMap<String, MutableList<Cookie>>()
 
     //网路访问后将服务器返回的cookies和对应的url存储在cookieStore中
     override fun saveFromResponse(url: HttpUrl, cookies: MutableList<Cookie>) {
-        cookieStore.put(url, cookies)
+        cookieStore.put(url.host(), cookies)
     }
 
     //网路访问开始的时候，根据访问的url去查找cookie，然后将cokies放到请求头里面
     override fun loadForRequest(url: HttpUrl): MutableList<Cookie> =
-        cookieStore.get(url) ?: mutableListOf<Cookie>() //cookieStore.get(url)为null时返回mutableListOf<Cookie>()
+        cookieStore.get(url.host()) ?: mutableListOf<Cookie>() //cookieStore.get(url)为null时返回mutableListOf<Cookie>()
 
 }

@@ -1,5 +1,7 @@
 package com.android.frame.http.model
 
+import java.io.Serializable
+
 /**
  * Created by xuzhb on 2019/8/8
  * Desc:bean基类，列表类型
@@ -7,8 +9,7 @@ package com.android.frame.http.model
 class BaseListResponse<T>(
     val code: Int,
     val msg: String,
-    val data: ArrayList<T>?,
-    val sign: String
-) {
+    val result: List<T>?
+) : Serializable {
     fun isSuccess(): Boolean = code == 200
 }

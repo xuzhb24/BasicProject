@@ -1,85 +1,51 @@
 package com.android.frame.http.AATest
 
-import com.android.frame.http.AATest.bean.AuthorInfoBean
-import com.android.frame.http.AATest.bean.CategoryBean
-import com.android.frame.http.AATest.bean.HomeBean
-import com.android.frame.http.AATest.bean.TabInfoBean
+import com.android.frame.http.AATest.bean.NewsListBean
+import com.android.frame.http.AATest.bean.WeatherBean
+import com.android.frame.http.model.BaseListResponse
+import com.android.frame.http.model.BaseResponse
 import io.reactivex.Observable
-import retrofit2.http.GET
-import retrofit2.http.Query
-import retrofit2.http.Url
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.http.*
 
 /**
  * Created by xuzhb on 2019/8/8
- * Desc:
+ * Desc:免费的公共接口 https://blog.csdn.net/rosener/article/details/81699698
  */
 interface ApiService {
 
-    /**
-     * 首页精选
-     */
-    @GET("v2/feed?")
-    fun getFirstHomeData(@Query("num") num: Int): Observable<HomeBean>
+    //简单的访问IP地址，Retrofit
+    @GET("/")
+    fun accessUrl(): Call<ResponseBody>
 
-    /**
-     * 根据 nextPageUrl 请求数据下一页数据
-     */
-    @GET
-    fun getMoreHomeData(@Url url: String): Observable<HomeBean>
+    //简单的访问IP地址，Retrofit + RxJava
+    @GET("/")
+    fun accessUrlRxJava(): Observable<ResponseBody>
 
-    /**
-     * 根据item id获取相关视频
-     */
-    @GET("v4/video/related?")
-    fun getRelatedData(@Query("id") id: Long): Observable<HomeBean.Issue>
+    //接口地址：https://www.apiopen.top/api.html#c14353b903984e699c31c08f639baaff
+    //获取天气信息，@Query，GET请求
+    @GET("weatherApi")
+    fun getWeatherByQuery(@Query("city") city: String): Observable<BaseResponse<WeatherBean>>
 
-    /**
-     * 获取分类
-     */
-    @GET("v4/categories")
-    fun getCategory(): Observable<ArrayList<CategoryBean>>
+    //获取天气信息，@QueryMap，GET请求
+    @GET("weatherApi")
+    fun getWeatherByQueryMap(@QueryMap map: HashMap<String, Any>): Observable<BaseResponse<WeatherBean>>
 
-    /**
-     * 获取分类详情List
-     */
-    @GET("v4/categories/videoList?")
-    fun getCategoryDetailList(@Query("id") id: Long): Observable<HomeBean.Issue>
+    //获取天气信息，@Field，POST请求
+    @FormUrlEncoded
+    @POST("weatherApi")
+    fun getWeatherByField(@Field("city") city: String): Observable<BaseResponse<WeatherBean>>
 
-    /**
-     * 获取更多的 Issue
-     */
-    @GET
-    fun getIssueData(@Url url: String): Observable<HomeBean.Issue>
+    //获取天气信息，@FieldMap，POST请求
+    @FormUrlEncoded
+    @POST("weatherApi")
+    fun getWeatherByFieldMap(@FieldMap map: HashMap<String, Any>): Observable<BaseResponse<WeatherBean>>
 
-    /**
-     * 获取全部排行榜的Info（包括，title 和 Url）
-     */
-    @GET("v4/rankList")
-    fun getRankList(): Observable<TabInfoBean>
-
-    /**
-     * 获取搜索信息
-     */
-    @GET("v1/search?&num=10&start=10")
-    fun getSearchData(@Query("query") query: String): Observable<HomeBean.Issue>
-
-    /**
-     * 热门搜索词
-     */
-    @GET("v3/queries/hot")
-    fun getHotWord(): Observable<ArrayList<String>>
-
-    /**
-     * 关注
-     */
-    @GET("v4/tabs/follow")
-    fun getFollowInfo(): Observable<HomeBean.Issue>
-
-    /**
-     * 作者信息
-     */
-    @GET("v4/pgcs/detail/tab?")
-    fun getAuthorInfo(@Query("id") id: Long): Observable<AuthorInfoBean>
-
+    //接口地址：https://www.apiopen.top/api.html#4c502eec73ce429fb1c4a7f519360d24
+    //获取网易新闻，@Body，POST请求
+    @POST("getWangYiNews")
+    fun getWangYiNewsByBody(@Body requestBody: RequestBody): Observable<BaseListResponse<NewsListBean>>
 
 }

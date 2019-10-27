@@ -56,7 +56,7 @@ class RetrofitFactory {
         val builder = OkHttpClient.Builder()
             .connectTimeout(timeout, TimeUnit.SECONDS)
             .readTimeout(timeout, TimeUnit.SECONDS)
-//            .retryOnConnectionFailure(true)//设置出现错误进行重新连接。
+//            .retryOnConnectionFailure(true)  //设置出现错误进行重新连接
             .cookieJar(CookieJarManage.instance)  //cookie持久化
             .sslSocketFactory(SSLSocketFactoryUtil.getPassAnySSLSocketFactory())  //不校验证书
             .hostnameVerifier(object : HostnameVerifier {

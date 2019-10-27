@@ -1,6 +1,8 @@
 package com.android.util
 
 import android.app.Activity
+import android.app.AlertDialog
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
@@ -37,4 +39,8 @@ fun createRandomKey(length: Int): String {
         sb.append(s)
     }
     return sb.toString()
+}
+
+fun alert(context: Context, msg: String) {
+    AlertDialog.Builder(context).setMessage(msg).show()
 }

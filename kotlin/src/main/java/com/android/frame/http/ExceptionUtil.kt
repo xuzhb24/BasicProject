@@ -12,13 +12,13 @@ import java.text.ParseException
  */
 object ExceptionUtil {
 
-    fun convertExceptopnMsg(e: Throwable): String =
-        when (e) {
+    fun convertExceptopn(t: Throwable): String =
+        when (t) {
             is UnknownHostException -> "网络不可用"
             is SocketTimeoutException -> "请求网络超时"
-            is HttpException -> convertStatusCode(e)
+            is HttpException -> convertStatusCode(t)
             is ParseException, is JSONException -> "数据解析错误"
-            else -> "未知错误，${e.message}"
+            else -> "未知错误，${t.message}"
         }
 
 
