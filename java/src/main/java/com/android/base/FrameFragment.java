@@ -9,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import com.android.frame.http.AATest.TestRetrofitActivity;
 import com.android.frame.mvc.BaseFragment;
 import com.android.java.R;
 import com.android.widget.TitleBar;
@@ -51,6 +52,7 @@ public class FrameFragment extends BaseFragment {
             case R.id.easy_permission_tv:
                 break;
             case R.id.retrofit_tv:
+                startActivity(TestRetrofitActivity.class);
                 break;
         }
     }

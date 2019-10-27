@@ -1,5 +1,8 @@
 package com.android.util;
 
+import android.app.AlertDialog;
+import android.content.Context;
+
 import java.util.Random;
 
 /**
@@ -36,6 +39,12 @@ public class ExtraUtil {
             sb.append(s);
         }
         return sb.toString();
+    }
+
+    public static void alert(Context context, String msg) {
+        new AlertDialog.Builder(context)
+                .setMessage(msg)
+                .show();
     }
 
 }

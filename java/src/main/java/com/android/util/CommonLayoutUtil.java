@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import com.android.java.R;
 import com.android.widget.TitleBar;
 
@@ -16,12 +17,13 @@ import com.android.widget.TitleBar;
 public class CommonLayoutUtil {
 
     public static void initCommonLayout(Activity activity, String title, String... text) {
-        initCommonLayout(activity, title, false, text);
+        initCommonLayout(activity, title, false, false, text);
     }
 
-    public static void initCommonLayout(Activity activity, String title, boolean showEditText, String... text) {
+    public static void initCommonLayout(Activity activity, String title, boolean showEditText, boolean showTextView, String... text) {
         TitleBar titleBar = (TitleBar) activity.findViewById(R.id.title_bar);
         EditText et = (EditText) activity.findViewById(R.id.et);
+        TextView tv = (TextView) activity.findViewById(R.id.tv);
         Button btn1 = (Button) activity.findViewById(R.id.btn1);
         Button btn2 = (Button) activity.findViewById(R.id.btn2);
         Button btn3 = (Button) activity.findViewById(R.id.btn3);
@@ -36,6 +38,7 @@ public class CommonLayoutUtil {
             }
         });
         et.setVisibility(View.GONE);
+        tv.setVisibility(View.GONE);
         btn1.setVisibility(View.GONE);
         btn2.setVisibility(View.GONE);
         btn3.setVisibility(View.GONE);
@@ -44,6 +47,9 @@ public class CommonLayoutUtil {
         btn6.setVisibility(View.GONE);
         if (showEditText) {
             et.setVisibility(View.VISIBLE);
+        }
+        if (showTextView) {
+            tv.setVisibility(View.VISIBLE);
         }
         if (text.length >= 1) {
             btn1.setVisibility(View.VISIBLE);
