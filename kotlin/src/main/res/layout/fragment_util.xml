@@ -33,6 +33,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="代码创建Drawable" />
 
+            <TextView
+                android:id="@+id/sputil_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="SharePreferences工具类" />
+
         </LinearLayout>
     </ScrollView>
 

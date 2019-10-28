@@ -15,6 +15,7 @@ class TestUtilActivity : BaseActivity() {
         const val TEST_DATE = "TEST_DATE"
         const val TEST_KEYBOARD = "TEST_KEYBOARD"
         const val TEST_DRAWABLE = "TEST_DRAWABLE"
+        const val TEST_SPUTIL = "TEST_SPUTIL"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -22,6 +23,7 @@ class TestUtilActivity : BaseActivity() {
             TEST_DATE -> testDateUtil()
             TEST_KEYBOARD -> testKeyBoardUtil()
             TEST_DRAWABLE -> testDrawableUtil()
+            TEST_SPUTIL -> testSPUtil()
         }
     }
 
@@ -90,6 +92,20 @@ class TestUtilActivity : BaseActivity() {
             )
             btn1.setBackground(drawable)
             btn1.setTextColor(resources.getColor(R.color.orange))
+        }
+    }
+
+    private fun testSPUtil() {
+        initCommonLayout(this, "SharePreferences工具类", "保存", "读取", showEditText = true, showTextView = true)
+        et.hint = "请输入名字"
+        var name by SPUtil(applicationContext, "default", "name", "")
+        btn1.setOnClickListener {
+            name = et.text.toString().trim()
+            et.setText("")
+            KeyboardUtil.hideSoftInput(this, it)
+        }
+        btn2.setOnClickListener {
+            tv.text = name
         }
     }
 

@@ -30,6 +30,10 @@ class UtilFragment : BaseFragment() {
         drawable_tv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_DRAWABLE)
         }
+        //SharePreferences工具类
+        sputil_tv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_SPUTIL)
+        }
     }
 
     override fun initListener() {
