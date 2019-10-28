@@ -34,6 +34,10 @@ class UtilFragment : BaseFragment() {
         sputil_tv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_SPUTIL)
         }
+        //字符串工具类
+        string_tv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_STRING)
+        }
     }
 
     override fun initListener() {

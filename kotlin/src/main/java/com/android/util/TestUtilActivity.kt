@@ -1,6 +1,10 @@
 package com.android.util
 
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Bundle
+import android.text.style.ClickableSpan
+import android.view.View
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
 import kotlinx.android.synthetic.main.activity_common_layout.*
@@ -16,6 +20,7 @@ class TestUtilActivity : BaseActivity() {
         const val TEST_KEYBOARD = "TEST_KEYBOARD"
         const val TEST_DRAWABLE = "TEST_DRAWABLE"
         const val TEST_SPUTIL = "TEST_SPUTIL"
+        const val TEST_STRING = "TEST_STRING"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -24,6 +29,7 @@ class TestUtilActivity : BaseActivity() {
             TEST_KEYBOARD -> testKeyBoardUtil()
             TEST_DRAWABLE -> testDrawableUtil()
             TEST_SPUTIL -> testSPUtil()
+            TEST_STRING -> testStringUtil()
         }
     }
 
@@ -106,6 +112,44 @@ class TestUtilActivity : BaseActivity() {
         }
         btn2.setOnClickListener {
             tv.text = name
+        }
+    }
+
+    private fun testStringUtil() {
+        initCommonLayout(this, "字符串工具类", "显示不同颜色", "带下划线", "带点击事件", showTextView = true)
+        val content = "欢迎拨打热线电话"
+        tv.setTextColor(Color.BLACK)
+        tv.setTextSize(15f)
+        btn1.setOnClickListener {
+            tv.text = StringUtil.createTextSpan(
+                content, 4, 8,
+                resources.getColor(R.color.orange),
+                SizeUtil.sp2px(18f).toInt(),
+                Typeface.ITALIC
+            )
+        }
+        btn2.setOnClickListener {
+            tv.text = StringUtil.createTextSpan(
+                content, 4, 8,
+                resources.getColor(R.color.orange),
+                SizeUtil.sp2px(18f).toInt(),
+                Typeface.ITALIC,
+                true
+            )
+        }
+        btn3.setOnClickListener {
+            tv.text = StringUtil.createTextSpan(
+                content, 4, 8,
+                resources.getColor(R.color.orange),
+                SizeUtil.sp2px(18f).toInt(),
+                Typeface.ITALIC,
+                true,
+                object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        ToastUtil.toast("4008200888")
+                    }
+                }
+            )
         }
     }
 
