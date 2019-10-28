@@ -3,6 +3,7 @@ package com.android.util
 import android.graphics.Typeface
 import android.text.SpannableString
 import android.text.Spanned
+import android.text.TextPaint
 import android.text.style.*
 import android.view.View
 
@@ -21,7 +22,7 @@ object StringUtil {
         textSize: Int,
         textStyle: Int = Typeface.NORMAL,
         showUnderLine: Boolean = false,         //是否设置下划线
-        clickableSpan: ClickableSpan? = null    //点击事件
+        listener: ((v: View) -> Unit)? = null  //设置点击事件
     ): SpannableString {
         var endIndex = endIndex
         if (endIndex > content.length) {
@@ -33,6 +34,7 @@ object StringUtil {
             //Spanned.SPAN_INCLUSIVE_INCLUSIVE：从起始下标到终止下标，同时包括起始下标和终止下标
             //Spanned.SPAN_EXCLUSIVE_EXCLUSIVE：从起始下标到终止下标，但都不包括起始下标和终止下标
             //Spanned.SPAN_EXCLUSIVE_INCLUSIVE：从起始下标到终止下标，不包括起始下标，包括终止下标
+
             //设置不同字体颜色
             setSpan(ForegroundColorSpan(textColor), startIndex, endIndex, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
             //设置不同字体大小
@@ -44,8 +46,18 @@ object StringUtil {
                 setSpan(UnderlineSpan(), startIndex, endIndex, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
             }
             //设置点击事件
-            clickableSpan?.let {
-                setSpan(it, startIndex, endIndex, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
+            listener?.let {
+                setSpan(object : ClickableSpan() {
+                    override fun onClick(widget: View) {
+                        it.invoke(widget)
+                    }
+
+                    override fun updateDrawState(ds: TextPaint) {
+                        ds.color = textColor  //设置字体颜色
+                        ds.isUnderlineText = showUnderLine  //是否显示下划线
+                    }
+
+                }, startIndex, endIndex, Spanned.SPAN_INCLUSIVE_EXCLUSIVE)
             }
         }
         return spannableString

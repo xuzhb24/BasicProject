@@ -3,8 +3,7 @@ package com.android.util
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.text.style.ClickableSpan
-import android.view.View
+import android.text.method.LinkMovementMethod
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
 import kotlinx.android.synthetic.main.activity_common_layout.*
@@ -133,23 +132,19 @@ class TestUtilActivity : BaseActivity() {
                 content, 4, 8,
                 resources.getColor(R.color.orange),
                 SizeUtil.sp2px(18f).toInt(),
-                Typeface.ITALIC,
+                Typeface.NORMAL,
                 true
             )
         }
         btn3.setOnClickListener {
+            tv.movementMethod = LinkMovementMethod.getInstance()  //必须设置这个点击事件才能生效
             tv.text = StringUtil.createTextSpan(
                 content, 4, 8,
                 resources.getColor(R.color.orange),
                 SizeUtil.sp2px(18f).toInt(),
-                Typeface.ITALIC,
-                true,
-                object : ClickableSpan() {
-                    override fun onClick(widget: View) {
-                        ToastUtil.toast("4008200888")
-                    }
-                }
-            )
+                Typeface.BOLD_ITALIC,
+                true
+            ) { ToastUtil.toast("热线电话：10086") }
         }
     }
 
