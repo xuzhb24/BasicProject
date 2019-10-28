@@ -147,4 +147,9 @@
         <attr name="lineNum" format="integer" />
     </declare-styleable>
 
+    <!--支持maxHeight的RecyclerView-->
+    <declare-styleable name="MaxHeightRecyclerView">
+        <attr name="maxHeight" format="dimension" />
+    </declare-styleable>
+
 </resources>
