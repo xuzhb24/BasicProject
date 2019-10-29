@@ -45,7 +45,9 @@
         <!--权限动态申请-->
         <activity android:name="com.android.frame.permission.PermissionRequestActivity" />
         <activity android:name="com.android.frame.permission.PermissionFrameActivity" />
+        <activity android:name="com.android.frame.WebView.CommonWebviewActivity" />
         <activity android:name="com.android.frame.http.AATest.TestRetrofitActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestLoadMoreActivity" />
         <!--控件篇-->
         <!--CommonPopupWindow使用例子-->
         <activity android:name="com.android.widget.PopupWindow.AATest.TestPopupWindowActivity" />
