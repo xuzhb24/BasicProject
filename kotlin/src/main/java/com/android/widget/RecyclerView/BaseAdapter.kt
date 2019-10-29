@@ -4,6 +4,7 @@ import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import com.android.basicproject.R
 
 /**
  * Created by xuzhb on 2019/8/16
@@ -26,8 +27,7 @@ abstract class BaseAdapter<T>(
     //是否需要设置空布局
     private var mEmptyViewEnable: Boolean = true
     //空布局的ID
-    private var mEmptyViewId: Int = -1
-//    private var mEmptyViewId: Int = R.layout.layout_empty_view
+    private var mEmptyViewId: Int = R.layout.layout_empty_view
 
     //实现多种Item布局，如添加头部Item和底部Item
     constructor(context: Context, data: MutableList<T>, viewType: MultiViewType<T>)

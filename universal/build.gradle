@@ -54,4 +54,6 @@ dependencies {
     api 'com.squareup.okhttp3:logging-interceptor:3.10.0'
     //运行时权限
     api 'pub.devrel:easypermissions:1.2.0'
+    //Glide框架
+    api 'com.github.bumptech.glide:glide:4.9.0'
 }
