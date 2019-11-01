@@ -138,7 +138,6 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     .inflate(R.layout.layout_empty_view, parent, false);
             ImageView emptyIv = view.findViewById(R.id.empty_iv);
             ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) emptyIv.getLayoutParams();
-            params.topMargin = (int) SizeUtil.INSTANCE.sp2px(146f);
             emptyIv.requestLayout();
             return new ViewHolder(view);
         } else if (viewType == TYPE_FOOTER_VIEW) {

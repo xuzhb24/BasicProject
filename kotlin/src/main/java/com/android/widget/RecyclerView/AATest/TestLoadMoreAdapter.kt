@@ -4,6 +4,7 @@ import android.content.Context
 import android.widget.ImageView
 import com.android.application.BaseApplication
 import com.android.basicproject.R
+import com.android.frame.WebView.CommonWebviewActivity
 import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.widget.RecyclerView.BaseAdapter
 import com.android.widget.RecyclerView.ViewHolder
@@ -19,8 +20,5 @@ class TestLoadMoreAdapter(context: Context, list: MutableList<NewsListBean>) :
         val imageIv: ImageView = holder.getView(R.id.image_iv)!!
         Glide.with(BaseApplication.instance).load(data.image).into(imageIv)
         holder.setText(R.id.title_tv, data.title).setText(R.id.time_tv, data.passtime)
-            .setOnItemClickListener {
-
-            }
     }
 }

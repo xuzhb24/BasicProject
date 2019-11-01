@@ -3,7 +3,8 @@
     android:id="@+id/root_fl"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:minHeight="0.1dp">
+    android:minHeight="0.1dp"
+    android:paddingTop="15dp">
     <!--下拉加载更多-->
     <LinearLayout
         android:id="@+id/loading_ll"

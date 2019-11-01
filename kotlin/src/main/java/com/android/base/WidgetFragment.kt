@@ -6,6 +6,7 @@ import com.android.frame.mvc.BaseFragment
 import com.android.widget.LineChart.TestLineChartActivity
 import com.android.widget.PieChart.TestPieChartActivity
 import com.android.widget.PopupWindow.AATest.TestPopupWindowActivity
+import com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity
 import com.android.widget.TestSingleWidgetActivity
 import com.android.widget.dialog.TestDialogActivity
 import kotlinx.android.synthetic.main.fragment_widget.*
@@ -36,6 +37,10 @@ class WidgetFragment : BaseFragment() {
         //对话框
         dialog_tv.setOnClickListener {
             startActivity(TestDialogActivity::class.java)
+        }
+        //RecyclerView组件
+        recyclerview_tv.setOnClickListener {
+            startActivity(TestRecyclerViewActivity::class.java)
         }
         //单一控件
         single_tv.setOnClickListener {

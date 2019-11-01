@@ -181,7 +181,7 @@ class TestRetrofitActivity : BaseActivity() {
         val map = HashMap<String, Any>()
         map.put("page", page)
         map.put("count", count)
-        val body = RequestBody.create(MediaType.parse("application/json"), Gson().toJson(map));
+        val body = RequestBody.create(MediaType.parse("application/json"), Gson().toJson(map))
         RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.NEWS_URL)
             .getWangYiNewsByBody(body)
             .compose(SchedulerUtil.ioToMain())

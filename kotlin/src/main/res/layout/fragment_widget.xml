@@ -39,6 +39,11 @@
                 android:text="对话框Dialog" />
 
             <TextView
+                android:id="@+id/recyclerview_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="RecyclerView" />
+
+            <TextView
                 android:id="@+id/single_tv"
                 style="@style/ItemSingleTextStyle"
                 android:text="单一控件" />

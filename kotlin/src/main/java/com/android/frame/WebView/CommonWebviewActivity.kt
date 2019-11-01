@@ -52,7 +52,7 @@ class CommonWebviewActivity : BaseActivity() {
 
     override fun initBar() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)  //保证WebView的输入框不被软键盘遮挡
-        StatusBarUtil.darkMode(this, Color.WHITE, 1f)
+        StatusBarUtil.darkMode(this, resources.getColor(R.color.colorPrimaryDark), 1f)
     }
 
     override fun handleView(savedInstanceState: Bundle?) {

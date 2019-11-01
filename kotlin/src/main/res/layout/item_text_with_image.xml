@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@drawable/selector_gray_item_layout_bg">
+    <!--通用的列表item布局，包含一个TextView和一个ImageView-->
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingLeft="@dimen/default_margin"
+        android:paddingRight="@dimen/default_margin">
+
+        <TextView
+            android:id="@+id/value_tv"
+            style="@style/CostItemLeftTextStyle"
+            android:layout_width="match_parent"
+            android:layout_toLeftOf="@+id/selected_iv"
+            android:lineSpacingExtra="3dp" />
+
+        <ImageView
+            android:id="@+id/selected_iv"
+            style="@style/CostItemRightIconStyle"
+            android:layout_width="25dp"
+            android:layout_height="25dp"
+            android:layout_marginLeft="5dp"
+            android:src="@drawable/ic_check"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/divider_line"
+        style="@style/DividerLineStyle"
+        android:layout_alignParentBottom="true" />
+
+</RelativeLayout>
