@@ -19,7 +19,7 @@ import kotlinx.android.synthetic.main.activity_common_layout.*
  */
 class TestDialogActivity : BaseActivity() {
     override fun handleView(savedInstanceState: Bundle?) {
-        initCommonLayout(this, "通用的Dialog", "单按钮", "双按钮", "分享", "评论")
+        initCommonLayout(this, "通用的Dialog", "单按钮", "双按钮", "分享", "评论", "领券")
     }
 
     override fun initListener() {
@@ -37,6 +37,9 @@ class TestDialogActivity : BaseActivity() {
         }
         btn4.setOnClickListener {
             showCommentDialog()
+        }
+        btn5.setOnClickListener {
+            showCouponDialog()
         }
     }
 
@@ -78,18 +81,18 @@ class TestDialogActivity : BaseActivity() {
         CommonDialog.newInstance()
             .setLayoutId(R.layout.layout_share_dialog)
             .setOnViewListener { holder, dialog ->
-                holder.setOnClickListener(R.id.weixin_tv, {
+                holder.setOnClickListener(R.id.weixin_tv) {
                     ToastUtil.toast("微信")
                     dialog.dismiss()
-                })
-                holder.setOnClickListener(R.id.qq_tv, {
+                }
+                holder.setOnClickListener(R.id.qq_tv) {
                     ToastUtil.toast("QQ")
                     dialog.dismiss()
-                })
-                holder.setOnClickListener(R.id.weibo_tv, {
+                }
+                holder.setOnClickListener(R.id.weibo_tv) {
                     ToastUtil.toast("微博")
                     dialog.dismiss()
-                })
+                }
                 holder.setOnClickListener(R.id.cancel_tv, { dialog.dismiss() })
             }
             .setDimAmount(0.3f)
@@ -105,7 +108,7 @@ class TestDialogActivity : BaseActivity() {
                 val commentEt: EditText = holder.getView(R.id.comment_et)!!
                 val drawable = DrawableUtil.createSolidShape(SizeUtil.dp2px(10f), Color.parseColor("#e6e6e6"))
                 commentEt.setBackground(drawable)
-                holder.setOnClickListener(R.id.send_tv, {
+                holder.setOnClickListener(R.id.send_tv) {
                     val text = commentEt.text.toString().trim()
                     if (TextUtils.isEmpty(text)) {
                         ToastUtil.toast("请输入文字")
@@ -113,9 +116,21 @@ class TestDialogActivity : BaseActivity() {
                         ToastUtil.toast(text)
                         dialog.dismiss()
                     }
-                })
+                }
             }
             .showAtBottom(supportFragmentManager)
+    }
+
+    //领券Dialog
+    private fun showCouponDialog() {
+        CommonDialog.newInstance()
+            .setLayoutId(R.layout.layout_coupon_dialog)
+            .setOnViewListener { holder, dialog ->
+                holder.setOnClickListener(R.id.return_tv) {
+                    dialog.dismiss()
+                }
+            }
+            .show(supportFragmentManager)
     }
 
     override fun getLayoutId(): Int = R.layout.activity_common_layout
