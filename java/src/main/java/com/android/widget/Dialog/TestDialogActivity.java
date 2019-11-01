@@ -28,7 +28,7 @@ public class TestDialogActivity extends BaseActivity {
 
     @Override
     public void handleView(Bundle savedInstanceState) {
-        CommonLayoutUtil.initCommonLayout(this, "通用的Dialog", "单按钮", "双按钮", "分享", "评论");
+        CommonLayoutUtil.initCommonLayout(this, "通用的Dialog", "单按钮", "双按钮", "分享", "评论", "领券");
     }
 
     @Override
@@ -46,7 +46,7 @@ public class TestDialogActivity extends BaseActivity {
         return R.layout.activity_common_layout;
     }
 
-    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4})
+    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn1:
@@ -60,6 +60,9 @@ public class TestDialogActivity extends BaseActivity {
                 break;
             case R.id.btn4:
                 showCommentDialog();
+                break;
+            case R.id.btn5:
+                showCouponDialog();
                 break;
         }
     }
@@ -172,6 +175,25 @@ public class TestDialogActivity extends BaseActivity {
                     }
                 })
                 .showAtBottom(getSupportFragmentManager());
+    }
+
+    //领券Dialog
+    private void showCouponDialog() {
+        CommonDialog.newInstance()
+                .setLayoutId(R.layout.layout_coupon_dialog)
+                .setOnViewListener(new CommonDialog.OnViewListener() {
+                    @Override
+                    public void convertView(ViewHolder holder, BaseDialog dialog) {
+                        holder.setOnClickListener(R.id.return_tv, new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }
+                })
+                .setDimAmount(0.5f)
+                .show(getSupportFragmentManager());
     }
 
 }
