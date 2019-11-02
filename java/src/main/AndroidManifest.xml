@@ -39,6 +39,7 @@
             </intent-filter>
         </activity>
         <!--框架篇-->
+        <activity android:name="com.android.frame.TestLeakActivity" />
         <activity android:name="com.android.frame.http.AATest.TestRetrofitActivity" />
         <!--控件篇-->
         <activity android:name="com.android.widget.TestSingleWidgetActivity" />

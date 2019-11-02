@@ -9,6 +9,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import com.android.frame.TestLeakActivity;
 import com.android.frame.http.AATest.TestRetrofitActivity;
 import com.android.frame.mvc.BaseFragment;
 import com.android.java.R;
@@ -46,6 +47,7 @@ public class FrameFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.leak_tv:
+                startActivity(TestLeakActivity.class);
                 break;
             case R.id.orignal_permission_tv:
                 break;
