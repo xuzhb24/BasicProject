@@ -3,6 +3,8 @@ package com.android.base
 import android.os.Bundle
 import com.android.basicproject.R
 import com.android.frame.TestLeakActivity
+import com.android.frame.camera.zxing.AATest.TestZXingActivity
+import com.android.frame.camera.zxing.ui.CaptureActivity
 import com.android.frame.http.AATest.TestRetrofitActivity
 import com.android.frame.mvc.BaseFragment
 import com.android.frame.permission.PermissionFrameActivity
@@ -40,6 +42,10 @@ class FrameFragment : BaseFragment() {
         //测试Retrofit
         retrofit_tv.setOnClickListener {
             startActivity(TestRetrofitActivity::class.java)
+        }
+        //zxing扫码
+        zxing_tv.setOnClickListener {
+            startActivity(TestZXingActivity::class.java)
         }
     }
 

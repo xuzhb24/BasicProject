@@ -152,4 +152,30 @@
         <attr name="maxHeight" format="dimension" />
     </declare-styleable>
 
+    <!--扫码框属性-->
+    <declare-styleable name="ViewfinderView">
+        <attr name="corner_color" format="color" />
+        <attr name="corner_size" format="dimension" />
+        <attr name="corner_stroke_width" format="dimension" />
+        <attr name="corner_position" format="enum">
+            <enum name="inside" value="1" />
+            <enum name="outside" value="2" />
+        </attr>
+        <attr name="line_color" format="color" />
+        <attr name="line_height" format="dimension" />
+        <attr name="line_move_distance" format="dimension" />
+        <attr name="frame_width" format="dimension" />
+        <attr name="frame_height" format="dimension" />
+        <attr name="frame_centerX" format="dimension" />
+        <attr name="frame_centerY" format="dimension" />
+        <attr name="frame_color" format="color" />
+        <attr name="frame_stroke_width" format="dimension" />
+        <attr name="mask_color" format="color" />
+        <attr name="result_point_color" format="color" />
+        <attr name="label_text" format="string" />
+        <attr name="label_text_color" format="color" />
+        <attr name="label_text_size" format="dimension" />
+        <attr name="label_text_margin" format="dimension" />
+    </declare-styleable>
+
 </resources>

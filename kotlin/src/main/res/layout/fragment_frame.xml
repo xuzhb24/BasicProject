@@ -50,6 +50,27 @@
                 android:layout_marginTop="10dp"
                 android:text="测试Retrofit" />
 
+            <TextView
+                style="@style/ItemTitleTextStyle"
+                android:text="扫码" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/zxing_tv"
+                    style="@style/ItemLeftTextStyle"
+                    android:text="zxing" />
+
+                <TextView
+                    android:id="@+id/zbar_tv"
+                    style="@style/ItemRightTextStyle"
+                    android:text="zbar" />
+
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 

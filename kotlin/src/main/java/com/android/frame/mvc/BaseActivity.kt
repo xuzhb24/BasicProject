@@ -1,5 +1,6 @@
 package com.android.frame.mvc
 
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
@@ -7,6 +8,7 @@ import android.view.ViewGroup
 import com.android.application.BaseApplication
 import com.android.basicproject.R
 import com.android.util.StatusBarUtil
+import com.android.util.ToastUtil
 import com.android.widget.TitleBar
 
 /**
@@ -53,6 +55,18 @@ abstract class BaseActivity : AppCompatActivity() {
         val intent = Intent()
         intent.setClass(this, clazz)
         startActivity(intent)
+    }
+
+    //弹出Toast
+    fun showToast(
+        text: CharSequence,
+        isCenter: Boolean = false,
+        longToast: Boolean = false,
+        context: Context = BaseApplication.instance
+    ) {
+        runOnUiThread {
+            ToastUtil.showToast(text, context, longToast, isCenter)
+        }
     }
 
 }

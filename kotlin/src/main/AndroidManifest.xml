@@ -17,6 +17,7 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <!--拍照-->
     <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
@@ -47,6 +48,10 @@
         <activity android:name="com.android.frame.permission.PermissionFrameActivity" />
         <activity android:name="com.android.frame.WebView.CommonWebviewActivity" />
         <activity android:name="com.android.frame.http.AATest.TestRetrofitActivity" />
+        <!--zxing扫码-->
+        <activity android:name="com.android.frame.camera.zxing.ui.CaptureActivity" />
+        <activity android:name="com.android.frame.camera.zxing.AATest.ScanActivity" />
+        <activity android:name="com.android.frame.camera.zxing.AATest.TestZXingActivity" />
         <!--控件篇-->
         <!--CommonPopupWindow使用例子-->
         <activity android:name="com.android.widget.PopupWindow.AATest.TestPopupWindowActivity" />
