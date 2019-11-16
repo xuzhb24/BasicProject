@@ -18,7 +18,6 @@ import com.android.util.ToastUtil
 import com.android.util.initCommonLayout
 import com.android.util.jumpToAppSetting
 import kotlinx.android.synthetic.main.activity_common_layout.*
-import pub.devrel.easypermissions.AfterPermissionGranted
 import kotlin.concurrent.thread
 
 /**
@@ -37,19 +36,19 @@ class PermissionRequestActivity : Activity() {
         //要申请的权限组，要先在AndroidManifests.xml配置权限
         private val REQUEST_PERMISSION = arrayOf(
             Manifest.permission.READ_PHONE_STATE,
-            Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.WRITE_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
         )
         //请求状态码
         private const val REQUEST_PERMISSION_CODE = 1
-        private val DEFAULT_SETTINGS_REQ_CODE = 16061
+        private const val DEFAULT_SETTINGS_REQ_CODE = 16061
 
-        private val PERMISSION_GRANTED = 0  //权限申请成功
-        private val PERMISSION_DENIED = -1  //权限申请被拒绝，但未选择不再提示
-        private val PERMISSION_DENIED_NOT_REQUEST_FOREVER = -2  //权限申请被拒绝，而且选择不再提示
+        private const val PERMISSION_GRANTED = 0  //权限申请成功
+        private const val PERMISSION_DENIED = -1  //权限申请被拒绝，但未选择不再提示
+        private const val PERMISSION_DENIED_NOT_REQUEST_FOREVER = -2  //权限申请被拒绝，而且选择不再提示
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,7 +63,6 @@ class PermissionRequestActivity : Activity() {
         }
     }
 
-    @AfterPermissionGranted(REQUEST_PERMISSION_CODE) //加上该标签，权限全部申请成功后回调
     private fun executeNextLogic() {
         ToastUtil.toast("权限申请成功，执行接下来的逻辑！")
     }
@@ -111,10 +109,10 @@ class PermissionRequestActivity : Activity() {
 //        }
 
         when (getRequestPermissionsResult(requestCode, permissions, grantResults, this)) {
-            PERMISSION_GRANTED -> {
+            PERMISSION_GRANTED -> {  //权限申请成功
                 executeNextLogic()
             }
-            PERMISSION_DENIED -> {
+            PERMISSION_DENIED -> {  //权限申请被拒绝，但未选择不再提示
                 AlertDialog.Builder(this)
                     .setTitle("权限申请")
                     .setMessage("请授予应用相应的权限，否则app可能无法正常工作")
@@ -136,7 +134,7 @@ class PermissionRequestActivity : Activity() {
                     })
                     .show()
             }
-            PERMISSION_DENIED_NOT_REQUEST_FOREVER -> {
+            PERMISSION_DENIED_NOT_REQUEST_FOREVER -> {  //权限申请被拒绝，而且选择不再提示
                 AlertDialog.Builder(this)
                     .setTitle("权限申请")
                     .setMessage("请到应用设置页面-权限中开启相应权限，保证app的正常使用")
@@ -206,7 +204,7 @@ class PermissionRequestActivity : Activity() {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == DEFAULT_SETTINGS_REQ_CODE) {
             //当从软件设置界面，返回当前程序时候回调，点击应用设置对话框的取消按钮也会回调
-            if (hasPermissions(*REQUEST_PERMISSION)) {
+            if (hasPermissions(*REQUEST_PERMISSION)) {  //已经授予了全部的权限
                 executeNextLogic()
             } else {
                 ToastUtil.toast("权限开启失败！")
@@ -234,7 +232,6 @@ class PermissionRequestActivity : Activity() {
 //    }
 
     //测试方法：保存图片到系统相册，需要写入SD卡的权限，否则无法保存成功
-    @AfterPermissionGranted(REQUEST_PERMISSION_CODE)
     private fun testSaveToFile() {
         //IO操作放子线程
         thread(start = true) {
