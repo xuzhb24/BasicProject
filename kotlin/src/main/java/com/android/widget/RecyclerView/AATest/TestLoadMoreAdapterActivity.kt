@@ -12,17 +12,12 @@ import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.http.model.BaseListResponse
 import com.android.frame.mvc.BaseActivity
-import com.android.util.JsonUtil
 import com.android.util.ToastUtil
-import com.android.util.alert
 import com.android.widget.RecyclerView.LoadMoreListener
 import com.android.widget.RecyclerView.LoadMoreWrapper
-import com.google.gson.Gson
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.layout_recycler_view.*
-import okhttp3.MediaType
-import okhttp3.RequestBody
 
 /**
  * Created by xuzhb on 2019/10/30
@@ -43,6 +38,7 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
 //        srl.isEnabled = false  //禁用下拉刷新功能
         srl.setOnRefreshListener(this)  //下拉监听
         srl.setColorSchemeColors(resources.getColor(R.color.colorPrimaryDark))  //设置颜色
+//        rv.layoutManager = GridLayoutManager(this, 2)
         rv.adapter = mMoreAdapter
         mMoreAdapter.isEmptyViewLoadMoreEnable = true
         ToastUtil.toast("下拉或上拉加载数据")
@@ -75,12 +71,8 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
 
     //加载数据
     private fun queryData(page: Int) {
-        val map = HashMap<String, Any>()
-        map.put("page", page)
-        map.put("count", 10)
-        val body = RequestBody.create(MediaType.parse("application/json"), Gson().toJson(map))
         RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.NEWS_URL)
-            .getWangYiNewsByBody(body)
+            .getWangYiNewsByBody(page, ONCE_LOAD_SIEE)
             .compose(SchedulerUtil.ioToMain())
             .subscribe(object : Observer<BaseListResponse<NewsListBean>> {
 
@@ -101,6 +93,7 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
 
                 override fun onError(e: Throwable) {
                     loadFail()
+                    endRefresh()
                     ToastUtil.toast(ExceptionUtil.convertExceptopn(e))
                     e.printStackTrace()
                 }

@@ -1,6 +1,7 @@
 package com.android.widget.RecyclerView
 
 import android.content.Context
+import android.support.annotation.LayoutRes
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -24,10 +25,11 @@ abstract class BaseAdapter<T>(
 
     private var mViewType: MultiViewType<T>? = null
 
-    //是否需要设置空布局
-    private var mEmptyViewEnable: Boolean = true
-    //空布局的ID
-    private var mEmptyViewId: Int = R.layout.layout_empty_view
+    //通过ID设置空布局
+    @LayoutRes
+    var emptyViewId: Int = R.layout.layout_empty_view
+    //是否需要设置空布局，增加对setEmptyView的支持
+    var isEmptyViewEnable: Boolean = true
 
     //实现多种Item布局，如添加头部Item和底部Item
     constructor(context: Context, data: MutableList<T>, viewType: MultiViewType<T>)
@@ -35,12 +37,26 @@ abstract class BaseAdapter<T>(
         this.mViewType = viewType
     }
 
+    override fun getItemCount(): Int {
+        if (isEmptyViewEnable && mDataList.size == 0) {  //如果item的数量为0，返回1个布局，表示EmptyView
+            return 1
+        }
+        return mDataList.size
+    }
+
+    //获取布局的类型
+    override fun getItemViewType(position: Int): Int {
+        if (isEmptyViewEnable && mDataList.size == 0) {  //如果item的数量为0，就显示EmptyView
+            return TYPE_EMPTY_VIEW
+        }
+        return mViewType?.getLayoutId(mDataList[position], position, mDataList.size)
+            ?: position  //如果没有使用多布局要返回position防止数据错乱
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        if (mEmptyViewEnable) {
-            if (viewType == TYPE_EMPTY_VIEW) {
-                val view = LayoutInflater.from(mContext).inflate(mEmptyViewId, parent, false)
-                return ViewHolder(view)
-            }
+        if (viewType == TYPE_EMPTY_VIEW) {
+            val view = LayoutInflater.from(mContext).inflate(emptyViewId, parent, false)
+            return ViewHolder(view)
         }
         //实现多种Item布局
         if (mViewType != null) {
@@ -48,28 +64,6 @@ abstract class BaseAdapter<T>(
         }
         val view = LayoutInflater.from(mContext).inflate(mLayoutId, parent, false)
         return ViewHolder(view)
-    }
-
-    //获取布局的类型
-    override fun getItemViewType(position: Int): Int {
-        if (mEmptyViewEnable) {
-            //如果item的数量为0，就显示EmptyView
-            if (mDataList.size == 0) {
-                return TYPE_EMPTY_VIEW
-            }
-        }
-        return mViewType?.getLayoutId(mDataList[position], position, mDataList.size)
-            ?: position  //如果没有使用多布局要返回position防止数据错乱
-    }
-
-    override fun getItemCount(): Int {
-        if (mEmptyViewEnable) {
-            //如果item的数量为0，返回1个布局，表示EmptyView
-            if (mDataList.size == 0) {
-                return 1
-            }
-        }
-        return mDataList.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -110,16 +104,6 @@ abstract class BaseAdapter<T>(
         } else {
             notifyItemRangeInserted(mDataList.size - newDataList.size, newDataList.size)
         }
-    }
-
-    //增加对setEmptyView的支持
-    fun setEmptyViewEnable(enable: Boolean) {
-        mEmptyViewEnable = enable
-    }
-
-    //通过ID设置空布局
-    fun setEmptyViewId(viewId: Int) {
-        mEmptyViewId = viewId
     }
 
     //item点击事件

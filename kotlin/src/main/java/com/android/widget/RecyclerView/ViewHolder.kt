@@ -13,7 +13,7 @@ import android.widget.TextView
  * Desc:通用的ViewHolder(RecyelerView)
  */
 @Suppress("UNCHECKED_CAST")
-class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     //缓存View
     private var mViewList: SparseArray<View>

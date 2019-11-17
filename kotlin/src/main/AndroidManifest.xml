@@ -62,6 +62,8 @@
         <activity android:name="com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestSingleAdapterActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestMultiAdapterActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestHeaderAdapterActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestFooterAdapterActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestLoadMoreAdapterActivity" />
         <!--工具篇-->
         <activity android:name="com.android.util.TestUtilActivity" />

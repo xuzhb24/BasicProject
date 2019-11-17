@@ -13,7 +13,10 @@ import kotlinx.android.synthetic.main.activity_common_layout.*
 class TestRecyclerViewActivity : BaseActivity() {
 
     override fun handleView(savedInstanceState: Bundle?) {
-        initCommonLayout(this, "RecyclerView", "单一布局", "多布局", "下拉刷新和上拉加载更多")
+        initCommonLayout(
+            this, "RecyclerView",
+            "单一布局", "多布局", "头部Header", "尾部Footer", "下拉刷新和上拉加载更多"
+        )
     }
 
     override fun initListener() {
@@ -27,6 +30,12 @@ class TestRecyclerViewActivity : BaseActivity() {
             startActivity(TestMultiAdapterActivity::class.java)
         }
         btn3.setOnClickListener {
+            startActivity(TestHeaderAdapterActivity::class.java)
+        }
+        btn4.setOnClickListener {
+            startActivity(TestFooterAdapterActivity::class.java)
+        }
+        btn5.setOnClickListener {
             startActivity(TestLoadMoreAdapterActivity::class.java)
         }
     }

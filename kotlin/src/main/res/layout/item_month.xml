@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <FrameLayout
+        style="@style/CostItemLayoutStyle"
+        android:layout_height="45dp"
+        android:background="@color/window_background">
+
+        <TextView
+            android:id="@+id/month_tv"
+            style="@style/CostItemLeftTextStyle" />
+
+        <TextView
+            android:id="@+id/count_tv"
+            style="@style/CostItemRightTextStyle" />
+    </FrameLayout>
+
+    <View
+        style="@style/DividerLineStyle"
+        android:layout_gravity="bottom" />
+
+</FrameLayout>

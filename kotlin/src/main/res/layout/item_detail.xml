@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/detail_tv"
+        style="@style/CostItemLeftTextStyle"
+        android:layout_gravity="top"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:paddingTop="10dp" />
+
+    <TextView
+        android:id="@+id/time_tv"
+        style="@style/CostItemLeftTextStyle"
+        android:layout_gravity="top"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="40dp"
+        android:paddingBottom="10dp"
+        android:textColor="@color/gray"
+        android:textSize="12sp" />
+
+    <View
+        style="@style/DividerLineStyle"
+        android:layout_gravity="bottom" />
+
+</FrameLayout>

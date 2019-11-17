@@ -3,7 +3,9 @@ package com.android.widget.RecyclerView.AATest
 import android.os.Bundle
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
-import com.android.util.alert
+import com.android.widget.RecyclerView.AATest.entity.DetailBean
+import com.android.widget.RecyclerView.AATest.entity.MonthBean
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.layout_recycler_view.*
 
 /**
@@ -12,49 +14,39 @@ import kotlinx.android.synthetic.main.layout_recycler_view.*
  */
 class TestMultiAdapterActivity : BaseActivity() {
 
-    private var mSelectedList: MutableList<String> = mutableListOf()
     private var mList: MutableList<String> = mutableListOf()
-    private val mAdapter by lazy { TestMultiAdapter(this, mList, mSelectedList) }
+    private val mAdapter by lazy { TestMultiAdapter(this, mList) }
 
     override fun handleView(savedInstanceState: Bundle?) {
         mList = createData()
-        mList.add(0, mList.size.toString())
-        title_bar.rightText = "已添加列表"
         srl.isEnabled = false
         rv.adapter = mAdapter
     }
 
-    private fun createData(): MutableList<String> = mutableListOf(
-        "1111111111", "2222222222", "3333333333", "4444444444", "5555555555",
-        "6666666666", "7777777777", "8888888888", "9999999999", "0000000000",
-        "1111166666", "2222277777", "3333388888", "4444499999", "5555500000",
-        "6666611111", "7777722222", "8888833333", "9999944444", "0000055555"
-    )
+    private fun createData(): MutableList<String> {
+        val gson = Gson()
+        val list: MutableList<String> = mutableListOf()
+        with(list) {
+            add(gson.toJson(MonthBean("2019年11月", "3")))
+            add(gson.toJson(DetailBean("十一月文本一", "2019-11-15")))
+            add(gson.toJson(DetailBean("十一月文本二", "2019-11-5")))
+            add(gson.toJson(DetailBean("十一月文本三", "2019-11-1")))
+            add(gson.toJson(MonthBean("2019年10月", "2")))
+            add(gson.toJson(DetailBean("十月文本一", "2019-10-25")))
+            add(gson.toJson(DetailBean("十月文本二", "2019-10-8")))
+            add(gson.toJson(MonthBean("2019年8月", "5")))
+            add(gson.toJson(DetailBean("八月文本一", "2019-8-25")))
+            add(gson.toJson(DetailBean("八月文本二", "2019-8-21")))
+            add(gson.toJson(DetailBean("八月文本三", "2019-8-14")))
+            add(gson.toJson(DetailBean("八月文本四", "2019-8-12")))
+            add(gson.toJson(DetailBean("八月文本五", "2019-8-1")))
+        }
+        return list
+    }
 
     override fun initListener() {
         title_bar.setOnClickListener {
             finish()
-        }
-        title_bar.setOnRightClickListener {
-            val sb = StringBuilder()
-            if (mSelectedList.size == 0) {
-                sb.append("列表为空")
-            } else {
-                mSelectedList.forEach {
-                    sb.append("$it\n")
-                }
-            }
-            alert(this, sb.toString())
-        }
-        mAdapter.setOnCheckedChangeListener { cb, isChecked, data, position ->
-            if (isChecked) {
-                mSelectedList.remove(data)
-            } else {
-                mSelectedList.add(data)
-            }
-            //通过setData刷新数据，不要直接通过更新子View刷新数据，如cb.isChecked = false，
-            //这样会导致其他不可见区域的子View也发生变化
-            mAdapter.setData(mList, mSelectedList)
         }
     }
 

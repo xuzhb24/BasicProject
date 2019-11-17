@@ -8,7 +8,7 @@ import com.android.widget.RecyclerView.ViewHolder
 
 /**
  * Created by xuzhb on 2019/10/2
- * Desc:
+ * Desc:单一布局
  */
 class TestSingleAdapter(context: Context, list: MutableList<String>, private var mSelectedItem: String = "") :
     BaseAdapter<String>(context, list, R.layout.item_text_with_image) {

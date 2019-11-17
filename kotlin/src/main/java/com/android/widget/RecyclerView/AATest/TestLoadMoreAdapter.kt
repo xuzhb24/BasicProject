@@ -4,7 +4,6 @@ import android.content.Context
 import android.widget.ImageView
 import com.android.application.BaseApplication
 import com.android.basicproject.R
-import com.android.frame.WebView.CommonWebviewActivity
 import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.widget.RecyclerView.BaseAdapter
 import com.android.widget.RecyclerView.ViewHolder
@@ -12,7 +11,7 @@ import com.bumptech.glide.Glide
 
 /**
  * Created by xuzhb on 2019/10/29
- * Desc:
+ * Desc:上拉加载更多
  */
 class TestLoadMoreAdapter(context: Context, list: MutableList<NewsListBean>) :
     BaseAdapter<NewsListBean>(context, list, R.layout.item_test_load_more) {

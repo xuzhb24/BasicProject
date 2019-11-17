@@ -48,4 +48,7 @@ interface ApiService {
     @POST("getWangYiNews")
     fun getWangYiNewsByBody(@Body requestBody: RequestBody): Observable<BaseListResponse<NewsListBean>>
 
+    @GET("getWangYiNews")
+    fun getWangYiNewsByBody(@Query("page") page: Int, @Query("count") count: Int): Observable<BaseListResponse<NewsListBean>>
+
 }

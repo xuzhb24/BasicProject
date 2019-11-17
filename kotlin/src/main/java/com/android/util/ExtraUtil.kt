@@ -6,6 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import com.google.gson.Gson
 import java.util.*
 
 /**
@@ -43,4 +44,13 @@ fun createRandomKey(length: Int): String {
 
 fun alert(context: Context, msg: String) {
     AlertDialog.Builder(context).setMessage(msg).show()
+}
+
+fun isEntity(text: String, obj: Any): Boolean {
+    try {
+        Gson().fromJson(text, obj::class.java)
+        return true
+    } catch (e: Exception) {
+        return false
+    }
 }
