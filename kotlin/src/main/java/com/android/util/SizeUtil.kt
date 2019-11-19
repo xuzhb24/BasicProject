@@ -1,6 +1,6 @@
 package com.android.util
 
-import com.android.application.BaseApplication
+import com.android.base.BaseApplication
 
 /**
  * Created by xuzhb on 2019/8/1

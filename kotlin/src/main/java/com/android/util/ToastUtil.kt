@@ -5,10 +5,9 @@ import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.widget.LinearLayout
 import android.widget.TextView
 import android.widget.Toast
-import com.android.application.BaseApplication
+import com.android.base.BaseApplication
 import com.android.basicproject.R
 
 /**

@@ -55,4 +55,7 @@ dependencies {
     //butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    //极光推送
+    implementation 'cn.jiguang.sdk:jpush:3.4.0'  // 此处以JPush 3.4.0 版本为例
+    implementation 'cn.jiguang.sdk:jcore:2.2.2'  // 此处以JCore 2.2.2 版本为例
 }

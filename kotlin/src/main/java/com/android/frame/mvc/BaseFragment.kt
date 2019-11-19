@@ -9,7 +9,7 @@ import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.android.application.BaseApplication
+import com.android.base.BaseApplication
 import com.android.basicproject.R
 import com.android.util.StatusBarUtil
 import com.android.widget.TitleBar

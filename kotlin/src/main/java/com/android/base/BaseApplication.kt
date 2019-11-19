@@ -1,4 +1,4 @@
-package com.android.application
+package com.android.base
 
 import android.app.Application
 import com.squareup.leakcanary.LeakCanary
