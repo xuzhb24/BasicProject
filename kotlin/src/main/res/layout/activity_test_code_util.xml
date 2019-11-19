@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.android.widget.TitleBar
+        android:id="@+id/title_bar"
+        style="@style/TitleBarStyle"
+        app:titleText="二维码和条形码工具类" />
+
+    <EditText
+        android:id="@+id/et"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/interval_margin"
+        android:layout_marginRight="@dimen/default_margin" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/interval_margin">
+
+        <ImageView
+            android:id="@+id/iv"
+            android:layout_width="250dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"
+            android:background="@color/white" />
+
+    </FrameLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:id="@+id/btn1"
+            style="@style/ButtonStyle"
+            android:text="生成二维码" />
+
+        <Button
+            android:id="@+id/btn2"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="生成二维码(带logo)" />
+
+        <Button
+            android:id="@+id/btn3"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="生成条形码" />
+
+        <Button
+            android:id="@+id/btn4"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="保存到相册" />
+
+        <Button
+            android:id="@+id/btn5"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="清空输入框" />
+
+        <!--<Button-->
+        <!--android:id="@+id/btn6"-->
+        <!--style="@style/ButtonStyle"-->
+        <!--android:layout_marginTop="30dp"-->
+        <!--android:text="按钮六" />-->
+
+    </LinearLayout>
+
+</LinearLayout>

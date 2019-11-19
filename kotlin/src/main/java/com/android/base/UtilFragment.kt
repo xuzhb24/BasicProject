@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseFragment
 import com.android.util.TestUtilActivity
+import com.android.util.code.TestCodeUtilActivity
 import com.android.util.jumpToTestUtilActivity
 import kotlinx.android.synthetic.main.fragment_util.*
 
@@ -37,6 +38,10 @@ class UtilFragment : BaseFragment() {
         //字符串工具类
         string_tv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_STRING)
+        }
+        //二维码/条形码工具
+        code_tv.setOnClickListener {
+            startActivity(TestCodeUtilActivity::class.java)
         }
     }
 

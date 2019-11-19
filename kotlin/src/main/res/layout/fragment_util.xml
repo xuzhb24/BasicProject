@@ -43,6 +43,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="字符串工具类" />
 
+            <TextView
+                android:id="@+id/code_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="二维码/条形码工具" />
+
         </LinearLayout>
     </ScrollView>
 
