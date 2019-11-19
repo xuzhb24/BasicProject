@@ -6,6 +6,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
 import com.android.application.BaseApplication;
+import com.android.util.ToastUtil;
 
 /**
  * Created by xuzhb on 2019/10/19
@@ -48,6 +49,24 @@ public abstract class BaseActivity extends AppCompatActivity {
         Intent intent = new Intent();
         intent.setClass(this, clazz);
         startActivity(intent);
+    }
+
+    public void showToast(String text) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtil.showToast(text);
+            }
+        });
+    }
+
+    public void showToast(String text, boolean longToast, boolean isCenter) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ToastUtil.showToast(text, BaseApplication.instance, longToast, isCenter);
+            }
+        });
     }
 
 }

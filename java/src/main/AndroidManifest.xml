@@ -46,6 +46,7 @@
         <activity android:name="com.android.widget.Dialog.TestDialogActivity" />
         <!--工具篇-->
         <activity android:name="com.android.util.TestUtilActivity" />
+        <activity android:name="com.android.util.code.TestCodeUtilActivity" />
     </application>
 
 </manifest>

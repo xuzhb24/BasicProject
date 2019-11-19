@@ -33,6 +33,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="代码创建Drawable" />
 
+            <TextView
+                android:id="@+id/code_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="二维码/条形码工具" />
+
         </LinearLayout>
     </ScrollView>
 
