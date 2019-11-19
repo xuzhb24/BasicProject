@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import butterknife.ButterKnife;
-import com.android.application.BaseApplication;
+import com.android.base.BaseApplication;
 import com.android.util.ToastUtil;
 
 /**
@@ -42,7 +42,7 @@ public abstract class BaseActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         //监控内存泄漏
-        BaseApplication.Companion.getRefWatcher().watch(this);
+        BaseApplication.getRefWatcher().watch(this);
     }
 
     public void startActivity(Class clazz) {
@@ -64,7 +64,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ToastUtil.showToast(text, BaseApplication.instance, longToast, isCenter);
+                ToastUtil.showToast(text, BaseApplication.getInstance(), longToast, isCenter);
             }
         });
     }

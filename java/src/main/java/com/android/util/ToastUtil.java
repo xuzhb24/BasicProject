@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.android.application.BaseApplication;
+import com.android.base.BaseApplication;
 import com.android.java.R;
 
 /**
@@ -17,7 +17,7 @@ import com.android.java.R;
 public class ToastUtil {
 
     public static void showToast(String text) {
-        showToast(text, BaseApplication.instance.getApplicationContext(), false, false);
+        showToast(text, BaseApplication.getInstance().getApplicationContext(), false, false);
     }
 
     public static void showToast(String text, Context context, boolean longToast, boolean isCenter) {
@@ -38,11 +38,11 @@ public class ToastUtil {
     }
 
     public static void toast(String text) {
-        Toast.makeText(BaseApplication.instance.getApplicationContext(), text, Toast.LENGTH_SHORT).show();
+        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
     public static void longToast(String text) {
-        Toast.makeText(BaseApplication.instance.getApplicationContext(), text, Toast.LENGTH_LONG).show();
+        Toast.makeText(BaseApplication.getInstance().getApplicationContext(), text, Toast.LENGTH_LONG).show();
     }
 
 }

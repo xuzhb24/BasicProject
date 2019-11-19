@@ -12,6 +12,7 @@ import android.widget.TextView;
 //import butterknife.BindView;
 import butterknife.BindView;
 import com.android.frame.mvc.BaseActivity;
+import com.android.frame.push.jpush.JPushManager;
 import com.android.java.R;
 import com.android.widget.CustomViewPager;
 
@@ -46,6 +47,10 @@ public class MainActivity extends BaseActivity {
         mTitleList.add("控件");
         mTitleList.add("工具");
         initBottomNavigationBar();
+
+        /* 极光start */
+        JPushManager.getInstance().registerToken(this);
+        /* 极光end */
     }
 
     //初始化底部导航栏

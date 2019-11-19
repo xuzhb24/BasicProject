@@ -12,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.android.application.BaseApplication;
+import com.android.base.BaseApplication;
 
 /**
  * Created by xuzhb on 2019/10/19
@@ -69,7 +69,7 @@ public abstract class BaseFragment extends Fragment {
     public void onDestroy() {
         mUnbinder.unbind();  //解绑ButterKnife
         //监控内存泄漏
-        BaseApplication.Companion.getRefWatcher().watch(mActivity);
+        BaseApplication.getRefWatcher().watch(mActivity);
         super.onDestroy();
     }
 

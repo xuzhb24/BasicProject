@@ -23,7 +23,7 @@ public class LogUtil {
     //输出日志级别，如Verbose代表输出Verbose及以上级别的日志信息，Warn代表输出Warn及以上级别的日志信息
     private static int mLogType = Debug;
     //日志写入文件开关
-    private static Boolean mLogToFile = true;
+    private static Boolean mLogToFile = false;
     //日志文件存放路径
     private static String mLogPath = "/sdcard/log";
     //日志文件名称

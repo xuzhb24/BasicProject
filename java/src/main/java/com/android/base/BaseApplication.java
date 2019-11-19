@@ -1,6 +1,7 @@
 package com.android.base;
 
 import android.app.Application;
+import com.android.frame.push.jpush.JPushManager;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -19,6 +20,10 @@ public class BaseApplication extends Application {
         mInstance = this;
 
         mRefWatcher = initRefWatcher();
+
+        /* 极光start */
+        JPushManager.getInstance().init(this);
+        /* 极光end */
     }
 
     //获取Application单例
