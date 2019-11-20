@@ -23,12 +23,12 @@ class TitleBar @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     companion object {
-        val DEFAULT_MARGIN = SizeUtil.dp2px(20f)
-        val DEFAULT_TEXT_MARGIN = SizeUtil.dp2px(20f)
-        val DEFAULT_SIDE_TEXT_SIZE = SizeUtil.sp2px(15f)
-        val DEFAULT_SIDE_TEXT_COLOR = Color.WHITE
-        val DEFAULT_TEXT_SIZE = SizeUtil.sp2px(18f)
-        val DEFAULT_TEXT_COLOR = Color.WHITE
+        val DEFAULT_MARGIN = SizeUtil.dp2px(20f)          //默认左侧图标的左边距或右侧图标的右边距
+        val DEFAULT_TEXT_MARGIN = SizeUtil.dp2px(20f)     //默认左侧文本的左边距或右侧文本的右边距
+        val DEFAULT_SIDE_TEXT_SIZE = SizeUtil.sp2px(15f)  //默认左侧文本或右侧文本的字体大小
+        val DEFAULT_SIDE_TEXT_COLOR = Color.WHITE                  //默认左侧文本或右侧文本的字体颜色
+        val DEFAULT_TEXT_SIZE = SizeUtil.sp2px(18f)       //默认中间标题文本的字体大小
+        val DEFAULT_TEXT_COLOR = Color.WHITE                       //默认中间标题文本的字体颜色
     }
 
     var leftIcon: Drawable? = null  //左侧图标
@@ -45,7 +45,7 @@ class TitleBar @JvmOverloads constructor(
                 requestLayout()
             }
         }
-    var showLeftIcon: Boolean = true  //是否显示左侧图标，默认相似
+    var showLeftIcon: Boolean = true  //是否显示左侧图标，默认显示
         set(value) {
             field = value
             with(mLeftFl) {
@@ -156,9 +156,11 @@ class TitleBar @JvmOverloads constructor(
             }
         }
 
-    //设置背景色
-    override fun setBackgroundColor(color: Int) {
-        mTitleFl.setBackgroundColor(color)
+    //设置标题栏高度
+    fun setHeight(height: Int) {
+        val params = mTitleFl.layoutParams as MarginLayoutParams
+        params.height = height
+        mTitleFl.layoutParams = params
     }
 
     //以下非空属性，需要在init中初始化
