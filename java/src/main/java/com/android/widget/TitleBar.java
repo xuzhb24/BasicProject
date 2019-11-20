@@ -21,31 +21,31 @@ import com.android.util.SizeUtil;
  */
 public class TitleBar extends FrameLayout {
 
-    private static final float DEFAULT_MARGIN = SizeUtil.dp2px(20f);
-    private static final float DEFAULT_TEXT_MARGIN = SizeUtil.dp2px(20f);
-    private static final float DEFAULT_SIDE_TEXT_SIZE = SizeUtil.sp2px(15f);
-    private static final int DEFAULT_SIDE_TEXT_COLOR = Color.WHITE;
-    private static final float DEFAULT_TEXT_SIZE = SizeUtil.sp2px(18f);
-    private static final int DEFAULT_TEXT_COLOR = Color.WHITE;
+    private static final float DEFAULT_MARGIN = SizeUtil.dp2px(20f);          //默认左侧图标的左边距或右侧图标的右边距
+    private static final float DEFAULT_TEXT_MARGIN = SizeUtil.dp2px(20f);     //默认左侧文本的左边距或右侧文本的右边距
+    private static final float DEFAULT_SIDE_TEXT_SIZE = SizeUtil.sp2px(15f);  //默认左侧文本或右侧文本的字体大小
+    private static final int DEFAULT_SIDE_TEXT_COLOR = Color.WHITE;                    //默认左侧文本或右侧文本的字体颜色
+    private static final float DEFAULT_TEXT_SIZE = SizeUtil.sp2px(18f);       //默认中间标题文本的字体大小
+    private static final int DEFAULT_TEXT_COLOR = Color.WHITE;                         //默认中间标题文本的字体颜色
 
-    private Drawable leftIcon;
-    private float leftIconMargin;
-    private boolean showLeftIcon;
-    private Drawable rightIcon;
-    private float rightIconMargin;
-    private boolean showRightIcon;
-    private String leftText;
-    private float leftTextSize;
-    private int leftTextColor;
-    private float leftTextMargin;
-    private String titleText;
-    private float titleTextSize;
-    private int titleTextColor;
-    private String rightText;
-    private float rightTextSize;
-    private int rightTextColor;
-    private float rightTextMargin;
-    private boolean showDivider;
+    private Drawable leftIcon;        //左侧图标
+    private float leftIconMargin;    //左侧图标的左边距
+    private boolean showLeftIcon;    //是否显示左侧图标，默认显示
+    private Drawable rightIcon;       //右侧图标
+    private float rightIconMargin;   //右侧图标的右边距
+    private boolean showRightIcon;   //是否显示右侧图标，默认不显示
+    private String leftText;          //左侧文本
+    private float leftTextSize;      //左侧文本的字体大小
+    private int leftTextColor;       //左侧文本的字体颜色
+    private float leftTextMargin;    //左侧文本的左边距
+    private String titleText;        //标题文本
+    private float titleTextSize;    //标题文本的字体大小
+    private int titleTextColor;     //标题文本的字体颜色
+    private String rightText;        //右侧文本
+    private float rightTextSize;    //右侧文本的字体大小
+    private int rightTextColor;     //右侧文本的字体颜色
+    private float rightTextMargin;  //右侧文本的右边距
+    private boolean showDivider;    //是否显示底部分割线
 
     public void setLeftIcon(Drawable leftIcon) {
         this.leftIcon = leftIcon;
@@ -149,10 +149,11 @@ public class TitleBar extends FrameLayout {
         }
     }
 
-    //设置背景色
-    @Override
-    public void setBackgroundColor(int color) {
-        mTitleFl.setBackgroundColor(color);
+    //设置标题栏高度
+    public void setHeight(int height) {
+        ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mTitleFl.getLayoutParams();
+        params.height = height;
+        mTitleFl.setLayoutParams(params);
     }
 
     private FrameLayout mTitleFl;
@@ -267,6 +268,7 @@ public class TitleBar extends FrameLayout {
     private OnLeftClickListener mOnLeftClickListener;
     private OnRightClickListener mOnRightClickListener;
 
+    //点击左侧图标/文本回调
     public void setOnLeftClickListener(OnLeftClickListener listener) {
         this.mOnLeftClickListener = listener;
         mLeftFl.setOnClickListener(new OnClickListener() {
@@ -277,6 +279,7 @@ public class TitleBar extends FrameLayout {
         });
     }
 
+    //点击右侧图标/文本回调
     public void setOnRightClickListener(OnRightClickListener listener) {
         this.mOnRightClickListener = listener;
         mRightTv.setOnClickListener(new OnClickListener() {
