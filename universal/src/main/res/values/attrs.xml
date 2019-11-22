@@ -178,4 +178,21 @@
         <attr name="label_text_margin" format="dimension" />
     </declare-styleable>
 
+    <!--带删除按钮的输入框属性-->
+    <declare-styleable name="InputLayout">
+        <attr name="inputText" format="string" />
+        <attr name="inputTextType" format="enum">
+            <enum name="text" value="1" />
+            <enum name="password" value="0x81" />
+            <enum name="number" value="2" />
+            <enum name="numberDecimal" value="0x2002" />
+        </attr>
+        <attr name="inputTextHint" format="string" />
+        <attr name="inputTextSize" format="dimension" />
+        <attr name="inputTextColor" format="color" />
+        <attr name="inputTextColorHint" format="color" />
+        <attr name="clearMarginRight" format="dimension" />
+        <attr name="showBottomLine" format="boolean" />
+    </declare-styleable>
+
 </resources>

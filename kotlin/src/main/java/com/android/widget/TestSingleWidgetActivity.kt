@@ -29,6 +29,13 @@ class TestSingleWidgetActivity : BaseActivity() {
         search_layout.setOnTextChangedListener { s, start, before, count ->
             searchlayout_tv.text = s
         }
+        //输入框
+        input_layout.setOnTextChangedListener { s, start, before, count ->
+            inputlayout_tv.text = s
+        }
+        input_layout.setOnTextClearListener {
+            showToast("文本被清空了")
+        }
     }
 
     override fun getLayoutId(): Int = R.layout.activity_test_single_widget
