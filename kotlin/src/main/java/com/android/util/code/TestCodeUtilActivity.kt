@@ -41,7 +41,7 @@ class TestCodeUtilActivity : BaseActivity() {
                 showToast("输入内容不能为空！")
                 return@setOnClickListener
             }
-            val logo = BitmapFactory.decodeResource(resources, R.mipmap.ic_logo)
+            val logo = BitmapFactory.decodeResource(resources, R.mipmap.ic_launcher)
             val bitmap = QRCodeUtil.createQRCode(content, width, height, logo)
             iv.setImageBitmap(bitmap)
         }
