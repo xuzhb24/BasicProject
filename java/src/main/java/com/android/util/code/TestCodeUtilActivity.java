@@ -65,7 +65,7 @@ public class TestCodeUtilActivity extends BaseActivity {
                 }
                 break;
             case R.id.btn2:
-                Bitmap logo = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_logo);
+                Bitmap logo = BitmapFactory.decodeResource(getResources(), R.mipmap.ic_launcher);
                 Bitmap bitmap2 = QRCodeUtil.createQRCode(content, width, height, logo);
                 if (bitmap2 != null) {
                     iv.setImageBitmap(bitmap2);
