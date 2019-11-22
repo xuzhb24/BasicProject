@@ -43,4 +43,26 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp" />
 
+    <com.android.widget.InputLayout
+        android:id="@+id/input_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="@dimen/interval_margin"
+        android:layout_marginRight="@dimen/default_margin"
+        app:inputTextHint="请输入文本" />
+
+    <TextView
+        android:id="@+id/inputlayout_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="5dp"
+        android:layout_marginRight="@dimen/default_margin" />
+
+    <View
+        style="@style/DividerLineStyle"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
+
 </LinearLayout>

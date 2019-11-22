@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
 import com.android.frame.mvc.BaseActivity;
@@ -23,6 +24,10 @@ public class TestSingleWidgetActivity extends BaseActivity {
     VerifyCodeView verifyCodeView;
     @BindView(R.id.verify_code_et)
     EditText verifyCodeEt;
+    @BindView(R.id.input_layout)
+    InputLayout inputLayout;
+    @BindView(R.id.inputlayout_tv)
+    TextView inputlayoutTv;
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -44,6 +49,18 @@ public class TestSingleWidgetActivity extends BaseActivity {
                 new AlertDialog.Builder(TestSingleWidgetActivity.this)
                         .setMessage("本页面主要是查看编写的一些单一控件的样式")
                         .show();
+            }
+        });
+        inputLayout.setOnTextChangedListener(new InputLayout.OnTextChangedListener() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                inputlayoutTv.setText(s);
+            }
+        });
+        inputLayout.setOnTextClearListener(new InputLayout.OnTextClearListener() {
+            @Override
+            public void onTextClear() {
+                showToast("文本被清空了");
             }
         });
     }
@@ -71,4 +88,5 @@ public class TestSingleWidgetActivity extends BaseActivity {
                 break;
         }
     }
+
 }
