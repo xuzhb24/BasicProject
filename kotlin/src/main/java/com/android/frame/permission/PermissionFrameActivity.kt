@@ -46,7 +46,7 @@ class PermissionFrameActivity : Activity(), EasyPermissions.PermissionCallbacks 
 
     @AfterPermissionGranted(REQUEST_PERMISSION_CODE) //加上该标签，权限全部申请成功后回调
     private fun executeNextLogic() {
-        ToastUtil.toast("权限申请成功，执行接下来的逻辑！")
+        ToastUtil.showToast("权限申请成功，执行接下来的逻辑！")
     }
 
     //申请权限
@@ -98,7 +98,7 @@ class PermissionFrameActivity : Activity(), EasyPermissions.PermissionCallbacks 
                 .build()
                 .show()
         } else {
-            ToastUtil.toast("申请权限失败！")
+            ToastUtil.showToast("申请权限失败！")
 //            EasyPermissions.requestPermissions(
 //                this,
 //                "请求必要的权限，拒绝权限可能会无法使用app",
@@ -124,7 +124,7 @@ class PermissionFrameActivity : Activity(), EasyPermissions.PermissionCallbacks 
             if (EasyPermissions.hasPermissions(this, *REQUEST_PERMISSION)) {
                 executeNextLogic()
             } else {
-                ToastUtil.toast("权限开启失败！")
+                ToastUtil.showToast("权限开启失败！")
             }
         }
     }

@@ -10,7 +10,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
-import com.android.util.ToastUtil;
 
 /**
  * Created by xuzhb on 2019/10/20
@@ -78,12 +77,12 @@ public class TestSingleWidgetActivity extends BaseActivity {
                 String code = verifyCodeEt.getText().toString().trim();
                 if (!TextUtils.isEmpty(code)) {
                     if (verifyCodeView.isEquals(code)) {
-                        ToastUtil.toast("验证正确");
+                        showToast("验证正确");
                     } else {
-                        ToastUtil.toast("验证错误");
+                        showToast("验证错误");
                     }
                 } else {
-                    ToastUtil.toast("请输入验证码");
+                    showToast("请输入验证码");
                 }
                 break;
         }

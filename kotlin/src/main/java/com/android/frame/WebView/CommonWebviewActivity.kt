@@ -2,7 +2,6 @@ package com.android.frame.WebView
 
 import android.content.Context
 import android.content.Intent
-import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
@@ -73,7 +72,7 @@ class CommonWebviewActivity : BaseActivity() {
             title_bar.setOnLongClickListener {
                 val url = mWebView?.url.toString()
                 KeyboardUtil.copyToClipboard(applicationContext, url)
-                ToastUtil.showToast("${url}\n已复制到剪切板！")
+                showToast("${url}\n已复制到剪切板！")
                 true
             }
         }

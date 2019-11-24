@@ -144,7 +144,7 @@ class TestUtilActivity : BaseActivity() {
                 SizeUtil.sp2px(18f).toInt(),
                 Typeface.BOLD_ITALIC,
                 true
-            ) { ToastUtil.toast("热线电话：10086") }
+            ) { showToast("热线电话：10086") }
         }
     }
 

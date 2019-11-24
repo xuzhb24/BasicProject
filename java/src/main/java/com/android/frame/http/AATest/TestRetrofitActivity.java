@@ -18,7 +18,6 @@ import com.android.java.R;
 import com.android.util.CommonLayoutUtil;
 import com.android.util.ExtraUtil;
 import com.android.util.JsonUtil;
-import com.android.util.ToastUtil;
 import com.android.widget.TitleBar;
 import com.google.gson.Gson;
 import io.reactivex.Observer;
@@ -104,13 +103,13 @@ public class TestRetrofitActivity extends BaseActivity {
                 .enqueue(new Callback<ResponseBody>() {  //异步请求
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        ToastUtil.toast("访问成功！");
+                        showToast("访问成功！");
                         ExtraUtil.alert(TestRetrofitActivity.this, response.toString());
                     }
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        ToastUtil.toast(ExceptionUtil.convertExceptopn(t));
+                        showToast(ExceptionUtil.convertExceptopn(t));
                         t.printStackTrace();
                     }
                 });
@@ -131,7 +130,7 @@ public class TestRetrofitActivity extends BaseActivity {
 
                     @Override
                     public void onNext(ResponseBody responseBody) {
-                        ToastUtil.toast("访问成功！");
+                        showToast("访问成功！");
                         try {
                             ExtraUtil.alert(TestRetrofitActivity.this, responseBody.string());
                         } catch (IOException e) {
@@ -141,7 +140,7 @@ public class TestRetrofitActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtil.toast("访问失败，" + ExceptionUtil.convertExceptopn(e));
+                        showToast("访问失败，" + ExceptionUtil.convertExceptopn(e));
                     }
 
                     @Override
@@ -200,13 +199,13 @@ public class TestRetrofitActivity extends BaseActivity {
                     String result = JsonUtil.formatJson(new Gson().toJson(response.getData()));
                     ExtraUtil.alert(TestRetrofitActivity.this, result);
                 } else {
-                    ToastUtil.toast(response.getMsg());
+                    showToast(response.getMsg());
                 }
             }
 
             @Override
             public void onError(Throwable e) {
-                ToastUtil.toast(ExceptionUtil.convertExceptopn(e));
+                showToast(ExceptionUtil.convertExceptopn(e));
                 e.printStackTrace();
             }
 
@@ -238,13 +237,13 @@ public class TestRetrofitActivity extends BaseActivity {
                             String result = JsonUtil.formatJson(new Gson().toJson(response.getResult()));
                             ExtraUtil.alert(TestRetrofitActivity.this, result);
                         } else {
-                            ToastUtil.toast(response.getMsg());
+                            showToast(response.getMsg());
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-                        ToastUtil.toast(ExceptionUtil.convertExceptopn(e));
+                        showToast(ExceptionUtil.convertExceptopn(e));
                         e.printStackTrace();
                     }
 

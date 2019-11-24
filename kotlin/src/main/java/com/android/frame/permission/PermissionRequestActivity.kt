@@ -64,7 +64,7 @@ class PermissionRequestActivity : Activity() {
     }
 
     private fun executeNextLogic() {
-        ToastUtil.toast("权限申请成功，执行接下来的逻辑！")
+        ToastUtil.showToast("权限申请成功，执行接下来的逻辑！")
     }
 
     private fun initPermission() {
@@ -129,7 +129,7 @@ class PermissionRequestActivity : Activity() {
                     })
                     .setNegativeButton("取消", object : DialogInterface.OnClickListener {
                         override fun onClick(dialog: DialogInterface?, which: Int) {
-                            ToastUtil.toast("权限申请失败！")
+                            ToastUtil.showToast("权限申请失败！")
                         }
                     })
                     .show()
@@ -149,7 +149,7 @@ class PermissionRequestActivity : Activity() {
                     })
                     .setNegativeButton("取消", object : DialogInterface.OnClickListener {
                         override fun onClick(dialog: DialogInterface?, which: Int) {
-                            ToastUtil.toast("权限申请失败！")
+                            ToastUtil.showToast("权限申请失败！")
                         }
                     })
                     .show()
@@ -207,7 +207,7 @@ class PermissionRequestActivity : Activity() {
             if (hasPermissions(*REQUEST_PERMISSION)) {  //已经授予了全部的权限
                 executeNextLogic()
             } else {
-                ToastUtil.toast("权限开启失败！")
+                ToastUtil.showToast("权限开启失败！")
             }
         }
     }
@@ -225,7 +225,7 @@ class PermissionRequestActivity : Activity() {
 //            })
 //            .setNegativeButton("取消", object : DialogInterface.OnClickListener {
 //                override fun onClick(dialog: DialogInterface?, which: Int) {
-//                    ToastUtil.toast("权限申请失败！")
+//                    ToastUtil.showToast("权限申请失败！")
 //                }
 //            })
 //            .show()
@@ -240,7 +240,7 @@ class PermissionRequestActivity : Activity() {
                 BitmapFactory.decodeResource(resources, R.mipmap.ic_logo)
             )
             runOnUiThread {
-                ToastUtil.toast(if (flag) "保存成功！" else "保存失败！")
+                ToastUtil.showToast(if (flag) "保存成功！" else "保存失败！")
             }
         }
     }

@@ -12,7 +12,6 @@ import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.http.model.BaseListResponse
 import com.android.frame.mvc.BaseActivity
-import com.android.util.ToastUtil
 import com.android.widget.RecyclerView.LoadMoreListener
 import com.android.widget.RecyclerView.LoadMoreWrapper
 import io.reactivex.Observer
@@ -41,7 +40,7 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
 //        rv.layoutManager = GridLayoutManager(this, 2)
         rv.adapter = mMoreAdapter
         mMoreAdapter.isEmptyViewLoadMoreEnable = true
-        ToastUtil.toast("下拉或上拉加载数据")
+        showToast("下拉或上拉加载数据")
 //        queryData(mCurrentPage)
     }
 
@@ -87,14 +86,14 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
                     if (response.isSuccess()) {
                         showData(response.result ?: mutableListOf())
                     } else {
-                        ToastUtil.toast(response.msg)
+                        showToast(response.msg)
                     }
                 }
 
                 override fun onError(e: Throwable) {
                     loadFail()
                     endRefresh()
-                    ToastUtil.toast(ExceptionUtil.convertExceptopn(e))
+                    showToast(ExceptionUtil.convertExceptopn(e))
                     e.printStackTrace()
                 }
 

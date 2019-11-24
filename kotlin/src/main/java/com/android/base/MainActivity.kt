@@ -10,7 +10,6 @@ import android.widget.ImageView
 import android.widget.TextView
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
-import com.android.util.ToastUtil
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : BaseActivity() {
@@ -106,7 +105,7 @@ class MainActivity : BaseActivity() {
     override fun onBackPressed() {
         val currentTimeMillis = System.currentTimeMillis()
         if (currentTimeMillis - mLastPressTime > 2 * 1000) {
-            ToastUtil.showToast("再按一次退出程序")
+            showToast("再按一次退出程序")
         } else {
             super.onBackPressed()
         }

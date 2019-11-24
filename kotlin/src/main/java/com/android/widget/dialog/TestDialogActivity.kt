@@ -9,7 +9,6 @@ import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
 import com.android.util.DrawableUtil
 import com.android.util.SizeUtil
-import com.android.util.ToastUtil
 import com.android.util.initCommonLayout
 import kotlinx.android.synthetic.main.activity_common_layout.*
 
@@ -51,7 +50,7 @@ class TestDialogActivity : BaseActivity() {
             .setConfirmText("我知道了")
             .setOnConfirmListener {
                 it.dismiss()
-                ToastUtil.toast("我知道了")
+                showToast("我知道了")
             }
             .setCancelVisible(false)
             .setDimAmount(0.6f)
@@ -65,11 +64,11 @@ class TestDialogActivity : BaseActivity() {
         ConfirmDialog.newInstance("提示", "提交成功！")
             .setOnConfirmListener {
                 it.dismiss()
-                ToastUtil.toast("确定")
+                showToast("确定")
             }
             .setOnCancelListener {
                 it.dismiss()
-                ToastUtil.toast("取消")
+                showToast("取消")
             }
             .setOutsideCancelable(true)
             .setHorizontalMargin(SizeUtil.dp2px(60f).toInt())
@@ -82,15 +81,15 @@ class TestDialogActivity : BaseActivity() {
             .setLayoutId(R.layout.layout_share_dialog)
             .setOnViewListener { holder, dialog ->
                 holder.setOnClickListener(R.id.weixin_tv) {
-                    ToastUtil.toast("微信")
+                    showToast("微信")
                     dialog.dismiss()
                 }
                 holder.setOnClickListener(R.id.qq_tv) {
-                    ToastUtil.toast("QQ")
+                    showToast("QQ")
                     dialog.dismiss()
                 }
                 holder.setOnClickListener(R.id.weibo_tv) {
-                    ToastUtil.toast("微博")
+                    showToast("微博")
                     dialog.dismiss()
                 }
                 holder.setOnClickListener(R.id.cancel_tv, { dialog.dismiss() })
@@ -111,9 +110,9 @@ class TestDialogActivity : BaseActivity() {
                 holder.setOnClickListener(R.id.send_tv) {
                     val text = commentEt.text.toString().trim()
                     if (TextUtils.isEmpty(text)) {
-                        ToastUtil.toast("请输入文字")
+                        showToast("请输入文字")
                     } else {
-                        ToastUtil.toast(text)
+                        showToast(text)
                         dialog.dismiss()
                     }
                 }

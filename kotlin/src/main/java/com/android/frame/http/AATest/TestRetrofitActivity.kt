@@ -11,7 +11,6 @@ import com.android.frame.http.model.BaseListResponse
 import com.android.frame.http.model.BaseResponse
 import com.android.frame.mvc.BaseActivity
 import com.android.util.JsonUtil
-import com.android.util.ToastUtil
 import com.android.util.alert
 import com.android.util.initCommonLayout
 import com.google.gson.Gson
@@ -76,12 +75,12 @@ class TestRetrofitActivity : BaseActivity() {
             .accessUrl()
             .enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    ToastUtil.toast(ExceptionUtil.convertExceptopn(t))
+                    showToast(ExceptionUtil.convertExceptopn(t))
                     t.printStackTrace()
                 }
 
                 override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    ToastUtil.toast("访问成功！")
+                    showToast("访问成功！")
                     alert(this@TestRetrofitActivity, response.toString())
                 }
 
@@ -103,12 +102,12 @@ class TestRetrofitActivity : BaseActivity() {
                 }
 
                 override fun onNext(response: ResponseBody) {
-                    ToastUtil.toast("访问成功！")
+                    showToast("访问成功！")
                     alert(this@TestRetrofitActivity, response.string())
                 }
 
                 override fun onError(e: Throwable) {
-                    ToastUtil.toast(ExceptionUtil.convertExceptopn(e))
+                    showToast(ExceptionUtil.convertExceptopn(e))
                     e.printStackTrace()
                 }
 
@@ -164,12 +163,12 @@ class TestRetrofitActivity : BaseActivity() {
                     val result = JsonUtil.formatJson(Gson().toJson(response.data))
                     alert(this@TestRetrofitActivity, result)
                 } else {
-                    ToastUtil.toast(response.msg)
+                    showToast(response.msg)
                 }
             }
 
             override fun onError(e: Throwable) {
-                ToastUtil.toast(ExceptionUtil.convertExceptopn(e))
+                showToast(ExceptionUtil.convertExceptopn(e))
                 e.printStackTrace()
             }
 
@@ -197,12 +196,12 @@ class TestRetrofitActivity : BaseActivity() {
                         val result = JsonUtil.formatJson(Gson().toJson(response.result))
                         alert(this@TestRetrofitActivity, result)
                     } else {
-                        ToastUtil.toast(response.msg)
+                        showToast(response.msg)
                     }
                 }
 
                 override fun onError(e: Throwable) {
-                    ToastUtil.toast(ExceptionUtil.convertExceptopn(e))
+                    showToast(ExceptionUtil.convertExceptopn(e))
                     e.printStackTrace()
                 }
 

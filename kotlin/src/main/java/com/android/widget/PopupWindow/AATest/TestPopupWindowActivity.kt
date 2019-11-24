@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
-import com.android.util.ToastUtil
 import com.android.widget.PopupWindow.CommonPopupWindow
 import kotlinx.android.synthetic.main.activity_test_popup_window.*
 
@@ -105,7 +104,7 @@ class TestPopupWindowActivity : BaseActivity() {
                 val popupRv: RecyclerView = holder.getView(R.id.popup_rv)!!
                 popupRv.adapter = adapter
                 adapter.setOnItemClickListener { obj, position ->
-                    ToastUtil.toast("${position + 1}  $obj")
+                    showToast("${position + 1}  $obj")
 //                    popupWindow.dismiss()
                 }
             }
