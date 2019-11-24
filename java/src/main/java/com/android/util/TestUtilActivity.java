@@ -16,6 +16,7 @@ import com.android.java.R;
 public class TestUtilActivity extends BaseActivity {
 
     public static final String TEST_DRAWABLE = "TEST_DRAWABLE";
+    public static final String TEST_KEYBOARD = "TEST_KEYBOARD";
 
     @BindView(R.id.et)
     EditText et;
@@ -35,6 +36,9 @@ public class TestUtilActivity extends BaseActivity {
     @Override
     public void handleView(Bundle savedInstanceState) {
         switch (getIntent().getStringExtra(CommonLayoutUtil.MODULE_NAME)) {
+            case TEST_KEYBOARD:
+                testKeyBoardUtil();
+                break;
             case TEST_DRAWABLE:
                 testDrawableUtil();
                 break;
@@ -49,6 +53,28 @@ public class TestUtilActivity extends BaseActivity {
     @Override
     public int getLayoutId() {
         return R.layout.activity_common_layout;
+    }
+
+    private void testKeyBoardUtil() {
+        CommonLayoutUtil.initCommonLayout(this, "测试键盘工具", "弹出软键盘", "收起软键盘", "复制到剪切板");
+        btn1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KeyboardUtil.showSoftInput(getApplicationContext(), v);
+            }
+        });
+        btn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KeyboardUtil.hideSoftInput(getApplicationContext(), v);
+            }
+        });
+        btn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                KeyboardUtil.copyToClipboard(getApplicationContext(), "https://www.baidu.com");
+            }
+        });
     }
 
     private void testDrawableUtil() {

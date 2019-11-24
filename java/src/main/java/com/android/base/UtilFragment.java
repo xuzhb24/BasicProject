@@ -40,6 +40,7 @@ public class UtilFragment extends BaseFragment {
             case R.id.time_tv:
                 break;
             case R.id.keyboard_tv:
+                CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_KEYBOARD);
                 break;
             case R.id.drawable_tv:
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_DRAWABLE);
