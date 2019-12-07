@@ -43,6 +43,10 @@ class UtilFragment : BaseFragment() {
         code_tv.setOnClickListener {
             startActivity(TestCodeUtilActivity::class.java)
         }
+        //通知管理
+        notification_tv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_NOTIFICATION)
+        }
     }
 
     override fun initListener() {

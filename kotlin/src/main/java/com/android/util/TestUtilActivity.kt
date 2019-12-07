@@ -1,12 +1,29 @@
 package com.android.util
 
+import android.content.Intent
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.TextUtils
 import android.text.method.LinkMovementMethod
+import android.widget.EditText
+import android.widget.LinearLayout
 import com.android.basicproject.R
+import com.android.frame.WebView.CommonWebviewActivity
+import com.android.frame.http.AATest.ApiService
+import com.android.frame.http.AATest.UrlConstant
+import com.android.frame.http.AATest.bean.NewsListBean
+import com.android.frame.http.ExceptionUtil
+import com.android.frame.http.RetrofitFactory
+import com.android.frame.http.SchedulerUtil
+import com.android.frame.http.model.BaseListResponse
 import com.android.frame.mvc.BaseActivity
+import com.bumptech.glide.Glide
+import io.reactivex.Observer
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_common_layout.*
+import kotlin.concurrent.thread
+import kotlin.random.Random
 
 /**
  * Created by xuzhb on 2019/9/22
@@ -20,6 +37,7 @@ class TestUtilActivity : BaseActivity() {
         const val TEST_DRAWABLE = "TEST_DRAWABLE"
         const val TEST_SPUTIL = "TEST_SPUTIL"
         const val TEST_STRING = "TEST_STRING"
+        const val TEST_NOTIFICATION = "TEST_NOTIFICATION"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -29,6 +47,7 @@ class TestUtilActivity : BaseActivity() {
             TEST_DRAWABLE -> testDrawableUtil()
             TEST_SPUTIL -> testSPUtil()
             TEST_STRING -> testStringUtil()
+            TEST_NOTIFICATION -> testNotification()
         }
     }
 
@@ -146,6 +165,129 @@ class TestUtilActivity : BaseActivity() {
                 true
             ) { showToast("热线电话：10086") }
         }
+    }
+
+    private fun testNotification() {
+        tv.text = intent.getStringExtra("content")
+        val titleEt = EditText(this)
+        titleEt.layoutParams =
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
+        titleEt.hint = "请输入标题"
+        ll.addView(titleEt, 0)
+        et.hint = "请输入内容"
+        initCommonLayout(
+            this, "通知管理", "自定义通知", "自定义通知(带跳转)", "自定义通知(最全使用示例)",
+            "新闻通知", "通知是否打开", "跳转通知设置界面", showEditText = true, showTextView = true
+        )
+        btn1.setOnClickListener {
+            var title = titleEt.text.toString().trim()
+            if (TextUtils.isEmpty(title)) {
+                title = "这是标题"
+            }
+            var content = et.text.toString().trim()
+            if (TextUtils.isEmpty(content)) {
+                content = "这是内容"
+            }
+            NotificationUtil.showNotification(applicationContext, title, content)
+        }
+        btn2.setOnClickListener {
+            var title = titleEt.text.toString().trim()
+            if (TextUtils.isEmpty(title)) {
+                title = "这是标题"
+            }
+            var content = et.text.toString().trim()
+            if (TextUtils.isEmpty(content)) {
+                content = "跳转到通知管理页面"
+            }
+            val intent = Intent()
+            intent.setClass(this, TestUtilActivity::class.java)
+            intent.putExtra(MODULE_NAME, TEST_NOTIFICATION)
+            intent.putExtra("content", content)
+            NotificationUtil.showNotification(
+                applicationContext,
+                title,
+                content,
+                intent = intent
+            )
+            finish()
+        }
+        btn3.setOnClickListener {
+            var title = titleEt.text.toString().trim()
+            if (TextUtils.isEmpty(title)) {
+                title = "这是标题"
+            }
+            var content = et.text.toString().trim()
+            if (TextUtils.isEmpty(content)) {
+                content = "这是内容"
+            }
+            NotificationUtil.showNotificationFullUse(this, title, content)
+        }
+        btn4.setOnClickListener {
+            requestNews()
+        }
+        btn5.setOnClickListener {
+            tv.text = if (NotificationUtil.isNotificationEnabled(applicationContext)) "通知权限已打开" else "通知权限被关闭"
+        }
+        btn6.setOnClickListener {
+            NotificationUtil.gotoNotificationSetting(this)
+        }
+    }
+
+    private fun requestNews() {
+        val count = 100
+        RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.NEWS_URL)
+            .getWangYiNewsByBody(1, count)
+            .compose(SchedulerUtil.ioToMain())
+            .subscribe(object : Observer<BaseListResponse<NewsListBean>> {
+
+                override fun onComplete() {
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                }
+
+                override fun onNext(response: BaseListResponse<NewsListBean>) {
+                    if (response.isSuccess()) {
+                        if (response.result != null && response.result.size > 0) {
+                            val bean = response.result.get(Random.nextInt(count))
+                            val title = "网易新闻"
+                            val content = bean.title
+                            val target = Glide.with(this@TestUtilActivity).asBitmap().load(bean.image).submit()
+                            try {
+                                thread(start = true) {
+                                    val bitmap = target.get()
+                                    val intent = Intent(this@TestUtilActivity, CommonWebviewActivity::class.java)
+                                    with(intent) {
+                                        putExtra("EXTRA_TITLE", title)
+                                        putExtra("EXTRA_URL", bean.path)
+                                    }
+                                    NotificationUtil.showNotification(
+                                        this@TestUtilActivity,
+                                        title,
+                                        content,
+                                        largeIconBitmap = bitmap,
+                                        showBigText = true,
+                                        intent = intent
+                                    )
+                                }
+                            } catch (e: Exception) {
+                                e.printStackTrace()
+                                showToast("获取图片失败，${e.message}")
+                            }
+                        } else {
+                            showToast("获取新闻失败！")
+                        }
+                    } else {
+                        showToast(response.msg)
+                    }
+                }
+
+                override fun onError(e: Throwable) {
+                    showToast(ExceptionUtil.convertExceptopn(e))
+                    e.printStackTrace()
+                }
+
+            })
     }
 
 }
