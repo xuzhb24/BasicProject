@@ -15,24 +15,12 @@ import java.util.Locale;
 public class DateUtil {
 
     public static final String Y_M_D = "yyyy-MM-dd";
-    public static final String Y_M = "yyyy-MM";
-    public static final String M_D = "MM-dd";
     public static final String YMD = "yyyyMMdd";
-    public static final String YM = "yyyyMM";
-    public static final String MD = "MMdd";
     public static final String YMD_CH = "yyyy年MM月dd日";
-    public static final String YM_CH = "yyyy年MM月";
-    public static final String MD_CH = "MM月dd日";
     public static final String H_M_S = "HH:mm:ss";
-    public static final String H_M = "HH:mm";
-    public static final String M_S = "mm:ss";
     public static final String H_M_S_S = "HH:mm:ss.SSS";
     public static final String HMS = "HHmmss";
-    public static final String HM = "HHmm";
-    public static final String MS = "mmss";
     public static final String HMS_CH = "HH时mm分ss秒";
-    public static final String HM_CH = "HH时mm分";
-    public static final String MS_CH = "mm分ss秒";
     public static final String Y_M_D_H_M_S = "yyyy-MM-dd HH:mm:ss";
     public static final String Y_M_D_H_M_S_S = "yyyy-MM-dd HH:mm:ss.SSS";
     public static final String YMDHMS = "yyyyMMddHHmmss";
@@ -391,110 +379,6 @@ public class DateUtil {
         } else {
             return "星期" + week;
         }
-    }
-
-    //获取当天的零点时间
-    public static long getStartTimeOfToday() {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        return c.getTimeInMillis();
-    }
-
-    //获取当天的最后时间，即"23:59:59"
-    public static long getEndTimeOfToday() {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 23);
-        c.set(Calendar.SECOND, 59);
-        c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.MILLISECOND, 999);
-        return c.getTimeInMillis();
-    }
-
-    //获取某一天的零点时间，即"00:00:00.000"
-    public static long getStartTimeOfDay(String dateTime, String formatStr) {
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Calendar c = Calendar.getInstance();
-        try {
-            c.setTime(df.parse(dateTime));
-            c.set(Calendar.HOUR_OF_DAY, 0);
-            c.set(Calendar.SECOND, 0);
-            c.set(Calendar.MINUTE, 0);
-            c.set(Calendar.MILLISECOND, 0);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return c.getTimeInMillis();
-    }
-
-    //获取某一天的最后时间，即"23:59:59.999"
-    public static long getEndTimeOfDay(String dateTime, String formatStr) {
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Calendar c = Calendar.getInstance();
-        try {
-            c.setTime(df.parse(dateTime));
-            c.set(Calendar.HOUR_OF_DAY, 23);
-            c.set(Calendar.SECOND, 59);
-            c.set(Calendar.MINUTE, 59);
-            c.set(Calendar.MILLISECOND, 999);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return c.getTimeInMillis();
-    }
-
-    //获得本月第一天的零点时间
-    public static long getStartTimeOfCurrentMonth() {
-        Calendar c = Calendar.getInstance();
-        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONDAY), c.get(Calendar.DAY_OF_MONTH),
-                0, 0, 0);
-        c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
-        return c.getTimeInMillis();
-    }
-
-    //获得本月最后一天的最后时间
-    public static long getEndTimeOfCurrentMonth() {
-        Calendar c = Calendar.getInstance();
-        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONDAY), c.get(Calendar.DAY_OF_MONTH),
-                23, 59, 59);
-        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-        return c.getTimeInMillis();
-    }
-
-    //获取某月第一天的零点时间
-    public static long getStartTimeOfMonth(String dateTime, String formatStr) {
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Calendar c = Calendar.getInstance();
-        try {
-            c.setTime(df.parse(dateTime));
-            c.set(Calendar.HOUR_OF_DAY, 0);
-            c.set(Calendar.SECOND, 0);
-            c.set(Calendar.MINUTE, 0);
-            c.set(Calendar.MILLISECOND, 0);
-            c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return c.getTimeInMillis();
-    }
-
-    //获取某月第一天的最后时间
-    public static long getEndTimeOfMonth(String dateTime, String formatStr) {
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Calendar c = Calendar.getInstance();
-        try {
-            c.setTime(df.parse(dateTime));
-            c.set(Calendar.HOUR_OF_DAY, 23);
-            c.set(Calendar.SECOND, 59);
-            c.set(Calendar.MINUTE, 59);
-            c.set(Calendar.MILLISECOND, 999);
-            c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return c.getTimeInMillis();
     }
 
 }
