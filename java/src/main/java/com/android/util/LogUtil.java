@@ -142,7 +142,7 @@ public class LogUtil {
     }
 
     //分段打印超长日志
-    public void logLongTag(String tag, String msg) {
+    public static void logLongTag(String tag, String msg) {
         int max_str_length = 2001 - tag.length();
         //大于4000时
         while (msg.length() > max_str_length) {

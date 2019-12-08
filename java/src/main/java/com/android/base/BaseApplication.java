@@ -1,7 +1,7 @@
 package com.android.base;
 
 import android.app.Application;
-import com.android.frame.push.jpush.JPushManager;
+import com.android.util.traffic.NetworkStatsHelper;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
 
@@ -22,8 +22,10 @@ public class BaseApplication extends Application {
         mRefWatcher = initRefWatcher();
 
         /* 极光start */
-        JPushManager.getInstance().init(this);
+//        JPushManager.getInstance().init(this);
         /* 极光end */
+
+        NetworkStatsHelper.init(this);  //流量统计
     }
 
     //获取Application单例

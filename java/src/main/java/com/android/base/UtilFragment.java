@@ -34,10 +34,12 @@ public class UtilFragment extends BaseFragment {
         return R.layout.fragment_util;
     }
 
-    @OnClick({R.id.time_tv, R.id.keyboard_tv, R.id.drawable_tv, R.id.code_tv, R.id.notification_tv})
+    @OnClick({R.id.time_tv, R.id.keyboard_tv, R.id.drawable_tv, R.id.code_tv, R.id.notification_tv,
+            R.id.traffic_tv, R.id.network_stats_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.time_tv:
+                CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_DATE);
                 break;
             case R.id.keyboard_tv:
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_KEYBOARD);
@@ -50,6 +52,12 @@ public class UtilFragment extends BaseFragment {
                 break;
             case R.id.notification_tv:
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_NOTIFICATION);
+                break;
+            case R.id.traffic_tv:
+                CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_TRAFFICSTATS);
+                break;
+            case R.id.network_stats_tv:
+                CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_NETWORK_STATS);
                 break;
         }
     }

@@ -43,6 +43,26 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="通知管理" />
 
+            <TextView
+                style="@style/ItemTitleTextStyle"
+                android:text="流量统计" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/traffic_tv"
+                    style="@style/ItemLeftTextStyle"
+                    android:text="TrafficStats" />
+
+                <TextView
+                    android:id="@+id/network_stats_tv"
+                    style="@style/ItemRightTextStyle"
+                    android:text="NetworkStatsManager" />
+            </LinearLayout>
+
         </LinearLayout>
     </ScrollView>
 
