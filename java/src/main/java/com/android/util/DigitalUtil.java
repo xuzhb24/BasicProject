@@ -2,6 +2,7 @@ package com.android.util;
 
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 /**
  * Created by xuzhb on 2019/12/10
@@ -53,6 +54,10 @@ public class DigitalUtil {
         return numberStr;
     }
 
+    //去除小数点尾部的0
+    public static String trimEndZero(double number) {
+        return NumberFormat.getInstance().format(number);
+    }
 
     public static void main(String[] args) {
         test("四舍五入(String.format)：", 1, 1.23499, 1.23999, 0, 1.1);
@@ -61,7 +66,8 @@ public class DigitalUtil {
         test("五舍六入(BigDecimal)：", 4, 1.235, 1.23500001, 1.236);
         test("非零进位(BigDecimal)：", 5, 1.231, 1.23000, 0.0, 1.000001);
         test("直接截取(BigDecimal)：", 6, 0.0, 0.1, 1.0912344, 1.23999999999);
-        test("去除尾部的零：", 7, 1, 2.1, 1.00, 1.2345);
+        test("去除尾部的零(正则表达式)：", 7, 1, 2.1, 1.00, 1.2345);
+        test("去除尾部的零(NumberFormat)：", 8, 1.0, 2.1, 1.00, 1.2345, 0.0);
     }
 
     private static void test(String tag, int type, double... numbers) {
@@ -88,6 +94,9 @@ public class DigitalUtil {
                     break;
                 case 7:
                     System.out.print(trimEndZero(formatNumberByRounding1(numbers[i])) + "\t");
+                    break;
+                case 8:
+                    System.out.print(trimEndZero(numbers[i]) + "\t");
                     break;
 
             }
