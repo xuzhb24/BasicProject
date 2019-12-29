@@ -2,6 +2,7 @@ package com.android.util
 
 import java.math.BigDecimal
 import java.text.DecimalFormat
+import java.text.NumberFormat
 
 /**
  * Created by xuzhb on 2019/10/16
@@ -13,11 +14,11 @@ object DigitalUtil {
     fun formatNumberByRounding1(number: Double, length: Int = 2): String = String.format("%.${length}f", number)
 
     //保留2位小数，四舍五入
-    fun formatNumberByRounding2(number: Double, length: Int = 2): String =
-        BigDecimal(number.toString()).setScale(length, BigDecimal.ROUND_HALF_UP).toString()
+    fun formatNumberByRounding2(number: Double): String = DecimalFormat("#0.00").format(number)
 
     //保留2位小数，四舍五入
-    fun formatNumberByRounding3(number: Double): String = DecimalFormat("#0.00").format(number)
+    fun formatNumberByRounding3(number: Double, length: Int = 2): String =
+        BigDecimal(number.toString()).setScale(length, BigDecimal.ROUND_HALF_UP).toString()
 
     //保留2位小数，五舍六入，舍弃的部分如果大于5才进位，小于或等于5直接舍弃
     fun formatNumberByRounding4(number: Double, length: Int = 2): String =
@@ -31,49 +32,36 @@ object DigitalUtil {
     fun formatNumberNoRounding(number: Double, length: Int = 2): String =
         BigDecimal(number.toString()).setScale(length, BigDecimal.ROUND_DOWN).toString()
 
+    //去除小数点尾部的0
+    fun trimEndZero(number: Double): String {
+        return NumberFormat.getInstance().format(number)
+    }
 
     @JvmStatic
     fun main(args: Array<String>) {
-        println(
-            "四舍五入(String.format):\t"
-                    + formatNumberByRounding1(1.23499) + "  "
-                    + formatNumberByRounding1(1.23999) + "  "
-                    + formatNumberByRounding1(0.0) + "  "
-                    + formatNumberByRounding1(1.1)
-        )
-        println(
-            "四舍五入(BigDecimal):\t"
-                    + formatNumberByRounding2(1.23499) + "  "
-                    + formatNumberByRounding2(1.23999) + "  "
-                    + formatNumberByRounding2(0.0) + "  "
-                    + formatNumberByRounding2(1.1)
-        )
-        println(
-            "四舍五入(DecimalFormat):\t"
-                    + formatNumberByRounding3(1.23499) + "  "
-                    + formatNumberByRounding3(1.23999) + "  "
-                    + formatNumberByRounding3(0.0) + "  "
-                    + formatNumberByRounding3(1.1)
-        )
-        println(
-            "五舍六入(BigDecimal):\t"
-                    + formatNumberByRounding4(1.235) + "  "
-                    + formatNumberByRounding4(1.235001)
-        )
-        println(
-            "非零进位(BigDecimal):\t"
-                    + formatNumberByRounding5(1.231) + "  "
-                    + formatNumberByRounding5(1.23000) + "  "
-                    + formatNumberByRounding5(0.0) + "  "
-                    + formatNumberByRounding5(1.00001)
-        )
-        println(
-            "直接截取(BigDecimal):\t"
-                    + formatNumberNoRounding(0.0) + "  "
-                    + formatNumberNoRounding(0.1) + "  "
-                    + formatNumberNoRounding(1.0912344) + "  "
-                    + formatNumberNoRounding(1.23999999999)
-        )
+        test("四舍五入(String.format)：", 1, 1.23499, 1.23999, 0.0, 1.1)
+        test("四舍五入(DecimalFormat)：", 2, 1.23499, 1.23999, 0.0, 1.1)
+        test("四舍五入(BigDecimal)：", 3, 1.23499, 1.23999, 0.0, 1.1)
+        test("五舍六入(BigDecimal)：", 4, 1.235, 1.23500001, 1.236)
+        test("非零进位(BigDecimal)：", 5, 1.231, 1.23000, 0.0, 1.000001)
+        test("直接截取(BigDecimal)：", 6, 0.0, 0.1, 1.0912344, 1.23999999999)
+        test("去除尾部的零：", 7, 1.0, 2.1, 1.00, 1.2345)
+    }
+
+    private fun test(tag: String, type: Int, vararg numbers: Double) {
+        print(tag + "\t")
+        for (num in numbers) {
+            when (type) {
+                1 -> print(formatNumberByRounding1(num) + "\t")
+                2 -> print(formatNumberByRounding2(num) + "\t")
+                3 -> print(formatNumberByRounding3(num) + "\t")
+                4 -> print(formatNumberByRounding4(num) + "\t")
+                5 -> print(formatNumberByRounding5(num) + "\t")
+                6 -> print(formatNumberNoRounding(num) + "\t")
+                7 -> print(trimEndZero(num) + "\t")
+            }
+        }
+        println()
     }
 
 }
