@@ -16,7 +16,6 @@ import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
-import com.android.frame.http.model.BaseListResponse
 import com.android.frame.mvc.BaseActivity
 import com.bumptech.glide.Glide
 import io.reactivex.Observer
@@ -238,7 +237,7 @@ class TestUtilActivity : BaseActivity() {
         RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.NEWS_URL)
             .getWangYiNewsByBody(1, count)
             .compose(SchedulerUtil.ioToMain())
-            .subscribe(object : Observer<BaseListResponse<NewsListBean>> {
+            .subscribe(object : Observer<NewsListBean> {
 
                 override fun onComplete() {
                 }
@@ -246,20 +245,20 @@ class TestUtilActivity : BaseActivity() {
                 override fun onSubscribe(d: Disposable) {
                 }
 
-                override fun onNext(response: BaseListResponse<NewsListBean>) {
-                    if (response.isSuccess()) {
-                        if (response.result != null && response.result.size > 0) {
-                            val bean = response.result.get(Random.nextInt(count))
+                override fun onNext(bean: NewsListBean) {
+                    if (bean.isSuccess()) {
+                        if (bean.result != null && bean.result.size > 0) {
+                            val result = bean.result.get(Random.nextInt(count))
                             val title = "网易新闻"
-                            val content = bean.title
-                            val target = Glide.with(this@TestUtilActivity).asBitmap().load(bean.image).submit()
+                            val content = result.title
+                            val target = Glide.with(this@TestUtilActivity).asBitmap().load(result.image).submit()
                             try {
                                 thread(start = true) {
                                     val bitmap = target.get()
                                     val intent = Intent(this@TestUtilActivity, CommonWebviewActivity::class.java)
                                     with(intent) {
                                         putExtra("EXTRA_TITLE", title)
-                                        putExtra("EXTRA_URL", bean.path)
+                                        putExtra("EXTRA_URL", result.path)
                                     }
                                     NotificationUtil.showNotification(
                                         this@TestUtilActivity,
@@ -278,7 +277,7 @@ class TestUtilActivity : BaseActivity() {
                             showToast("获取新闻失败！")
                         }
                     } else {
-                        showToast(response.msg)
+                        showToast(bean.message)
                     }
                 }
 

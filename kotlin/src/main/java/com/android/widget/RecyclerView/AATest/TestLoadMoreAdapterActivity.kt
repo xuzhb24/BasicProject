@@ -10,7 +10,6 @@ import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
-import com.android.frame.http.model.BaseListResponse
 import com.android.frame.mvc.BaseActivity
 import com.android.widget.RecyclerView.LoadMoreListener
 import com.android.widget.RecyclerView.LoadMoreWrapper
@@ -28,7 +27,7 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
         private const val ONCE_LOAD_SIEE = 10
     }
 
-    private var mList: MutableList<NewsListBean> = mutableListOf()
+    private var mList: MutableList<NewsListBean.ResultBean> = mutableListOf()
     private val mAdapter by lazy { TestLoadMoreAdapter(this, mList) }
     private val mMoreAdapter by lazy { LoadMoreWrapper(mAdapter) }  //实现上拉加载更多
     private var mCurrentPage: Int = 1  //记录当前页面
@@ -64,7 +63,7 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
         }
         //设置点击事件
         (mMoreAdapter.itemAdapter as TestLoadMoreAdapter).setOnItemClickListener { obj, position ->
-            CommonWebviewActivity.start(this, "", (obj as NewsListBean).path)
+            CommonWebviewActivity.start(this, "", (obj as NewsListBean.ResultBean).path)
         }
     }
 
@@ -73,8 +72,7 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
         RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.NEWS_URL)
             .getWangYiNewsByBody(page, ONCE_LOAD_SIEE)
             .compose(SchedulerUtil.ioToMain())
-            .subscribe(object : Observer<BaseListResponse<NewsListBean>> {
-
+            .subscribe(object : Observer<NewsListBean> {
                 override fun onComplete() {
                     endRefresh()
                 }
@@ -82,11 +80,11 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
                 override fun onSubscribe(d: Disposable) {
                 }
 
-                override fun onNext(response: BaseListResponse<NewsListBean>) {
-                    if (response.isSuccess()) {
-                        showData(response.result ?: mutableListOf())
+                override fun onNext(bean: NewsListBean) {
+                    if (bean.isSuccess()) {
+                        showData(bean.result ?: mutableListOf())
                     } else {
-                        showToast(response.msg)
+                        showToast(bean.message)
                     }
                 }
 
@@ -96,12 +94,11 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
                     showToast(ExceptionUtil.convertExceptopn(e))
                     e.printStackTrace()
                 }
-
             })
     }
 
     //展示数据
-    private fun showData(list: MutableList<NewsListBean>) {
+    private fun showData(list: MutableList<NewsListBean.ResultBean>) {
         mCurrentPage++
         mList.addAll(list)
         if (list.size < ONCE_LOAD_SIEE) {

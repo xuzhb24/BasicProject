@@ -7,8 +7,6 @@ import com.android.frame.http.AATest.bean.WeatherBean
 import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
-import com.android.frame.http.model.BaseListResponse
-import com.android.frame.http.model.BaseResponse
 import com.android.frame.mvc.BaseActivity
 import com.android.util.JsonUtil
 import com.android.util.alert
@@ -32,8 +30,8 @@ class TestRetrofitActivity : BaseActivity() {
     override fun handleView(savedInstanceState: Bundle?) {
         initCommonLayout(
             this, "测试Retrofit",
-            "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取天气信息(@Field POST)",
-            "获取天气信息(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)",
+            "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取网易新闻(@Field POST)",
+            "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)",
             showEditText = true
         )
         val city = "北京"
@@ -52,14 +50,13 @@ class TestRetrofitActivity : BaseActivity() {
             getWeatherByQueryMap(et.text.toString().trim())
         }
         btn3.setOnClickListener {
-            getWeatherByField(et.text.toString().trim())
-
+            getWangYiNewsByField("1", "1")
         }
         btn4.setOnClickListener {
-            getWeatherByFieldMap(et.text.toString().trim())
+            getWangYiNewsByFieldMap("1", "2")
         }
         btn5.setOnClickListener {
-            getWangYiNewsByBody("1", "10")
+            getWangYiNewsByBody("1", "3")
         }
         btn6.setOnClickListener {
             //            accessUrl(UrlConstant.BAIDU_URL)
@@ -132,38 +129,20 @@ class TestRetrofitActivity : BaseActivity() {
             .subscribe(WeatherObserver())
     }
 
-    //获取天气信息，@Field，POST请求
-    private fun getWeatherByField(city: String) {
-        RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.WEATHER_URL)
-            .getWeatherByField(city)
-            .compose(SchedulerUtil.ioToMain())
-            .subscribe(WeatherObserver())
-    }
-
-    //获取天气信息，@FieldMap，POST请求
-    private fun getWeatherByFieldMap(city: String) {
-        val map = HashMap<String, Any>()
-        map.put("city", city)
-        RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.WEATHER_URL)
-            .getWeatherByFieldMap(map)
-            .compose(SchedulerUtil.ioToMain())
-            .subscribe(WeatherObserver())
-    }
-
-    private fun WeatherObserver(): Observer<BaseResponse<WeatherBean>> {
-        return object : Observer<BaseResponse<WeatherBean>> {
+    private fun WeatherObserver(): Observer<WeatherBean> {
+        return object : Observer<WeatherBean> {
             override fun onComplete() {
             }
 
             override fun onSubscribe(d: Disposable) {
             }
 
-            override fun onNext(response: BaseResponse<WeatherBean>) {
-                if (response.isSuccess()) {
-                    val result = JsonUtil.formatJson(Gson().toJson(response.data))
+            override fun onNext(bean: WeatherBean) {
+                if (bean.isSuccess()) {
+                    val result = JsonUtil.formatJson(Gson().toJson(bean))
                     alert(this@TestRetrofitActivity, result)
                 } else {
-                    showToast(response.msg)
+                    showToast(bean.desc)
                 }
             }
 
@@ -175,37 +154,66 @@ class TestRetrofitActivity : BaseActivity() {
         }
     }
 
+    //获取网易新闻，@Field，POST请求
+    private fun getWangYiNewsByField(page: String, count: String) {
+        RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.NEWS_URL)
+            .getWangYiNewsByField(page, count)
+            .compose(SchedulerUtil.ioToMain())
+            .subscribe(NewsObserver())
+    }
+
+    //获取网易新闻，@FieldMap，POST请求
+    private fun getWangYiNewsByFieldMap(page: String, count: String) {
+        val map = HashMap<String, Any>()
+        map.put("page", page)
+        map.put("count", count)
+        RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.NEWS_URL)
+            .getWangYiNewsByFieldMap(map)
+            .compose(SchedulerUtil.ioToMain())
+            .subscribe(NewsObserver())
+    }
+
     //获取网易新闻，@Body，POST请求
     private fun getWangYiNewsByBody(page: String, count: String) {
         val map = HashMap<String, Any>()
         map.put("page", page)
         map.put("count", count)
-        val body = RequestBody.create(MediaType.parse("application/json"), Gson().toJson(map))
+        val sb = StringBuilder()
+        map.forEach {
+            sb.append("${it.key}=${it.value}&")
+        }
+        val data = sb.toString().substring(0, sb.toString().length - 1)
+//        val data = "page=$page&count=$count"
+        val body = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), data)
         RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.NEWS_URL)
             .getWangYiNewsByBody(body)
             .compose(SchedulerUtil.ioToMain())
-            .subscribe(object : Observer<BaseListResponse<NewsListBean>> {
-                override fun onComplete() {
-                }
+            .subscribe(NewsObserver())
+    }
 
-                override fun onSubscribe(d: Disposable) {
-                }
+    private fun NewsObserver(): Observer<NewsListBean> {
+        return object : Observer<NewsListBean> {
+            override fun onComplete() {
+            }
 
-                override fun onNext(response: BaseListResponse<NewsListBean>) {
-                    if (response.isSuccess()) {
-                        val result = JsonUtil.formatJson(Gson().toJson(response.result))
-                        alert(this@TestRetrofitActivity, result)
-                    } else {
-                        showToast(response.msg)
-                    }
-                }
+            override fun onSubscribe(d: Disposable) {
+            }
 
-                override fun onError(e: Throwable) {
-                    showToast(ExceptionUtil.convertExceptopn(e))
-                    e.printStackTrace()
+            override fun onNext(bean: NewsListBean) {
+                if (bean.isSuccess()) {
+                    val result = JsonUtil.formatJson(Gson().toJson(bean))
+                    alert(this@TestRetrofitActivity, result)
+                } else {
+                    showToast(bean.message)
                 }
+            }
 
-            })
+            override fun onError(e: Throwable) {
+                showToast(ExceptionUtil.convertExceptopn(e))
+                e.printStackTrace()
+            }
+
+        }
     }
 
 }

@@ -9,7 +9,7 @@ import java.io.Serializable
 class BaseListResponse<T>(
     val code: Int,
     val msg: String,
-    val result: MutableList<T>?
+    val data: MutableList<T>?
 ) : Serializable {
     fun isSuccess(): Boolean = code == 200
 }

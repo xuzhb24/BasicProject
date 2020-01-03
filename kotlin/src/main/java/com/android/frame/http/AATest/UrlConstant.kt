@@ -8,7 +8,7 @@ object UrlConstant {
 
     const val BAIDU_URL = "https://www.baidu.com/"
 
-    const val WEATHER_URL = "https://www.apiopen.top/"
+    const val WEATHER_URL = "http://wthrcdn.etouch.cn/"
 
     const val NEWS_URL = "https://api.apiopen.top/"
 

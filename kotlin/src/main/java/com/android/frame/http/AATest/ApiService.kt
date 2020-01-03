@@ -2,8 +2,6 @@ package com.android.frame.http.AATest
 
 import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.frame.http.AATest.bean.WeatherBean
-import com.android.frame.http.model.BaseListResponse
-import com.android.frame.http.model.BaseResponse
 import io.reactivex.Observable
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -26,29 +24,29 @@ interface ApiService {
 
     //接口地址：https://www.apiopen.top/api.html#c14353b903984e699c31c08f639baaff
     //获取天气信息，@Query，GET请求
-    @GET("weatherApi")
-    fun getWeatherByQuery(@Query("city") city: String): Observable<BaseResponse<WeatherBean>>
+    @GET("weather_mini")
+    fun getWeatherByQuery(@Query("city") city: String): Observable<WeatherBean>
 
     //获取天气信息，@QueryMap，GET请求
-    @GET("weatherApi")
-    fun getWeatherByQueryMap(@QueryMap map: HashMap<String, Any>): Observable<BaseResponse<WeatherBean>>
-
-    //获取天气信息，@Field，POST请求
-    @FormUrlEncoded
-    @POST("weatherApi")
-    fun getWeatherByField(@Field("city") city: String): Observable<BaseResponse<WeatherBean>>
-
-    //获取天气信息，@FieldMap，POST请求
-    @FormUrlEncoded
-    @POST("weatherApi")
-    fun getWeatherByFieldMap(@FieldMap map: HashMap<String, Any>): Observable<BaseResponse<WeatherBean>>
+    @GET("weather_mini")
+    fun getWeatherByQueryMap(@QueryMap map: HashMap<String, Any>): Observable<WeatherBean>
 
     //接口地址：https://www.apiopen.top/api.html#4c502eec73ce429fb1c4a7f519360d24
+    //获取网易新闻，@Field，POST请求
+    @FormUrlEncoded
+    @POST("getWangYiNews")
+    fun getWangYiNewsByField(@Field("page") page: String, @Field("count") count: String): Observable<NewsListBean>
+
+    //获取网易新闻，@FieldMap，POST请求
+    @FormUrlEncoded
+    @POST("getWangYiNews")
+    fun getWangYiNewsByFieldMap(@FieldMap map: HashMap<String, Any>): Observable<NewsListBean>
+
     //获取网易新闻，@Body，POST请求
     @POST("getWangYiNews")
-    fun getWangYiNewsByBody(@Body requestBody: RequestBody): Observable<BaseListResponse<NewsListBean>>
+    fun getWangYiNewsByBody(@Body requestBody: RequestBody): Observable<NewsListBean>
 
     @GET("getWangYiNews")
-    fun getWangYiNewsByBody(@Query("page") page: Int, @Query("count") count: Int): Observable<BaseListResponse<NewsListBean>>
+    fun getWangYiNewsByBody(@Query("page") page: Int, @Query("count") count: Int): Observable<NewsListBean>
 
 }

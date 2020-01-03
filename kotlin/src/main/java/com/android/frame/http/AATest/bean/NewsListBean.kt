@@ -7,8 +7,16 @@ import java.io.Serializable
  * Desc:
  */
 data class NewsListBean(
-    val path: String,
-    val image: String,
-    val title: String,
-    val passtime: String
-) : Serializable
+    val code: Int,
+    val message: String,
+    val result: MutableList<ResultBean>?
+) : Serializable {
+    data class ResultBean(
+        val path: String,
+        val image: String,
+        val title: String,
+        val passtime: String
+    ) : Serializable
+
+    fun isSuccess(): Boolean = code == 200
+}
