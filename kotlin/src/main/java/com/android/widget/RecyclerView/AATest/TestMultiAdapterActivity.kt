@@ -6,7 +6,7 @@ import com.android.frame.mvc.BaseActivity
 import com.android.widget.RecyclerView.AATest.entity.DetailBean
 import com.android.widget.RecyclerView.AATest.entity.MonthBean
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.layout_recycler_view.*
+import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2019/11/1
@@ -50,5 +50,5 @@ class TestMultiAdapterActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.layout_recycler_view
+    override fun getLayoutId(): Int = R.layout.activity_test_adapter
 }

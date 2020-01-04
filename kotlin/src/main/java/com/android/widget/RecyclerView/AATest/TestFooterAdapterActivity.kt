@@ -4,7 +4,7 @@ import android.os.Bundle
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
 import com.android.util.alert
-import kotlinx.android.synthetic.main.layout_recycler_view.*
+import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2019/11/17
@@ -57,5 +57,5 @@ class TestFooterAdapterActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.layout_recycler_view
+    override fun getLayoutId(): Int = R.layout.activity_test_adapter
 }
