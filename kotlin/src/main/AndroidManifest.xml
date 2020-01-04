@@ -46,12 +46,19 @@
         <!--权限动态申请-->
         <activity android:name="com.android.frame.permission.PermissionRequestActivity" />
         <activity android:name="com.android.frame.permission.PermissionFrameActivity" />
+        <!--通用WebView-->
         <activity android:name="com.android.frame.WebView.CommonWebviewActivity" />
+        <!--测试Retrofit-->
         <activity android:name="com.android.frame.http.AATest.TestRetrofitActivity" />
+        <activity android:name="com.android.frame.http.AATest.WangYiNewsWebviewActivity" />
         <!--zxing扫码-->
         <activity android:name="com.android.frame.camera.zxing.ui.CaptureActivity" />
         <activity android:name="com.android.frame.camera.zxing.AATest.ScanActivity" />
         <activity android:name="com.android.frame.camera.zxing.AATest.TestZXingActivity" />
+        <!--MVP框架-->
+        <activity android:name="com.android.frame.mvp.AATest.activity.TestMvpActivity" />
+        <activity android:name="com.android.frame.mvp.AATest.activity.weather.WeatherActivity" />
+        <activity android:name="com.android.frame.mvp.AATest.activity.newslist.NewsListActivity" />
         <!--控件篇-->
         <!--CommonPopupWindow使用例子-->
         <activity android:name="com.android.widget.PopupWindow.AATest.TestPopupWindowActivity" />

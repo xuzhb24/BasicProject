@@ -9,9 +9,9 @@ import android.text.method.LinkMovementMethod
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.android.basicproject.R
-import com.android.frame.WebView.CommonWebviewActivity
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant
+import com.android.frame.http.AATest.WangYiNewsWebviewActivity
 import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
@@ -255,7 +255,7 @@ class TestUtilActivity : BaseActivity() {
                             try {
                                 thread(start = true) {
                                     val bitmap = target.get()
-                                    val intent = Intent(this@TestUtilActivity, CommonWebviewActivity::class.java)
+                                    val intent = Intent(this@TestUtilActivity, WangYiNewsWebviewActivity::class.java)
                                     with(intent) {
                                         putExtra("EXTRA_TITLE", title)
                                         putExtra("EXTRA_URL", result.path)

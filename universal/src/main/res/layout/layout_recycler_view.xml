@@ -4,22 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
-    <com.android.widget.TitleBar
-        android:id="@+id/title_bar"
-        style="@style/TitleBarStyle"
-        app:titleText="RecyclerView" />
-
     <!--通用的列表刷新布局-->
     <!--禁用SwipeRefreshLayout的下拉刷新功能的话可在Java文件中设置SwipeRefreshLayout.isEnabled=false-->
     <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/srl"
+        android:id="@+id/swipe_refresh_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:overScrollMode="never">
 
         <android.support.v7.widget.RecyclerView
-            android:id="@+id/rv"
+            android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"

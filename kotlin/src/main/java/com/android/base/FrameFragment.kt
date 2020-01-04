@@ -7,6 +7,7 @@ import com.android.frame.camera.zxing.AATest.TestZXingActivity
 import com.android.frame.camera.zxing.ui.CaptureActivity
 import com.android.frame.http.AATest.TestRetrofitActivity
 import com.android.frame.mvc.BaseFragment
+import com.android.frame.mvp.AATest.activity.TestMvpActivity
 import com.android.frame.permission.PermissionFrameActivity
 import com.android.frame.permission.PermissionRequestActivity
 import kotlinx.android.synthetic.main.fragment_frame.*
@@ -42,6 +43,10 @@ class FrameFragment : BaseFragment() {
         //测试Retrofit
         retrofit_tv.setOnClickListener {
             startActivity(TestRetrofitActivity::class.java)
+        }
+        //MVP框架
+        mvp_tv.setOnClickListener {
+            startActivity(TestMvpActivity::class.java)
         }
         //zxing扫码
         zxing_tv.setOnClickListener {

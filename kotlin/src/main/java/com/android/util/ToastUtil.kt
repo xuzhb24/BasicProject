@@ -18,9 +18,9 @@ object ToastUtil {
 
     fun showToast(
         text: CharSequence,
-        context: Context = BaseApplication.instance,
+        isCenter: Boolean = false,
         longToast: Boolean = false,
-        isCenter: Boolean = false
+        context: Context = BaseApplication.instance
     ) {
         val duration = if (longToast) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
         val toast = Toast.makeText(context.applicationContext, text, duration)

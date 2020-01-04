@@ -65,7 +65,7 @@ abstract class BaseActivity : AppCompatActivity() {
         context: Context = BaseApplication.instance
     ) {
         runOnUiThread {
-            ToastUtil.showToast(text, context, longToast, isCenter)
+            ToastUtil.showToast(text, isCenter, longToast, context.applicationContext)
         }
     }
 

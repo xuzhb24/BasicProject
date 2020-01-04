@@ -101,7 +101,7 @@
     <!--通用的RecyclerView风格-->
     <style name="RecyclerViewStyle">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
         <item name="android:scrollbars">none</item>
         <item name="android:overScrollMode">never</item>
         <!--默认线性布局-->
@@ -135,6 +135,11 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:windowIsFloating">true</item>
+    </style>
+
+    <!--加载框样式-->
+    <style name="LoadingDialogStyle" parent="DialogStyle">
+        <item name="android:backgroundDimEnabled">false</item>  <!--activity不变暗-->
     </style>
 
     <style name="CostItemLayoutStyle">

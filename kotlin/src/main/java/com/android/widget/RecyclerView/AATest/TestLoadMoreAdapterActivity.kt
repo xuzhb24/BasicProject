@@ -3,9 +3,9 @@ package com.android.widget.RecyclerView.AATest
 import android.os.Bundle
 import android.support.v4.widget.SwipeRefreshLayout
 import com.android.basicproject.R
-import com.android.frame.WebView.CommonWebviewActivity
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant
+import com.android.frame.http.AATest.WangYiNewsWebviewActivity
 import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
@@ -63,7 +63,7 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
         }
         //设置点击事件
         (mMoreAdapter.itemAdapter as TestLoadMoreAdapter).setOnItemClickListener { obj, position ->
-            CommonWebviewActivity.start(this, "", (obj as NewsListBean.ResultBean).path)
+            WangYiNewsWebviewActivity.start(this, "", (obj as NewsListBean.ResultBean).path)
         }
     }
 
