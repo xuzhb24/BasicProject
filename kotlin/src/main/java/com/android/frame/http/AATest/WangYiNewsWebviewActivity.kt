@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.view.KeyEvent
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
@@ -18,7 +17,7 @@ import com.android.frame.mvc.BaseActivity
 import com.android.util.KeyboardUtil
 import com.android.util.LogUtil
 import com.android.util.StatusBarUtil
-import kotlinx.android.synthetic.main.layout_common_webview.*
+import kotlinx.android.synthetic.main.activity_common_webview.*
 
 /**
  * Created by xuzhb on 2020/1/4
@@ -77,7 +76,7 @@ class WangYiNewsWebviewActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.layout_common_webview
+    override fun getLayoutId(): Int = R.layout.activity_common_webview
 
     override fun onDestroy() {
         destroyWebView()

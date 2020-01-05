@@ -18,8 +18,7 @@ import com.android.frame.mvc.BaseActivity
 import com.android.util.KeyboardUtil
 import com.android.util.LogUtil
 import com.android.util.StatusBarUtil
-import com.android.util.ToastUtil
-import kotlinx.android.synthetic.main.layout_common_webview.*
+import kotlinx.android.synthetic.main.activity_common_webview.*
 
 /**
  * Created by xuzhb on 2019/10/30
@@ -78,7 +77,7 @@ class CommonWebviewActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.layout_common_webview
+    override fun getLayoutId(): Int = R.layout.activity_common_webview
 
     //back键控制网页后退
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
