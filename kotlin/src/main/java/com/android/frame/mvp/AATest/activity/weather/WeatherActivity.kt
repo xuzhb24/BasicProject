@@ -41,16 +41,18 @@ class WeatherActivity : BaseCompatActivity<WeatherView, WeatherPresenter>(), Wea
         if (list != null && list.size > 0) {
             val sb = StringBuilder()
             val today = list.get(0)
-            sb.append("${bean.city}天气\n今天：${today.date}  ${getWenduRange(today.high, today.low)}  ${today.type}\n")
-            sb.append("当前温度：${bean.wendu}℃\n感冒指数：${bean.ganmao}\n")
+            sb.append(bean.city).append("天气\n今天：").append(today.date).append("  ")
+                .append(getWenduRange(today.high, today.low)).append("  ").append(today.type).append("\n当前温度：")
+                .append(bean.wendu).append("℃\n感冒指数：").append(bean.ganmao).append("\n")
             if (list.size > 1) {
-                sb.append("未来${list.size - 1}天天气：\n")
+                sb.append("未来").append(list.size - 1).append("天天气：\n")
                 for (i in list.indices) {
                     if (i == 0) {
                         continue
                     }
                     val forecast = list.get(i)
-                    sb.append("${forecast.date}  ${getWenduRange(forecast.high, forecast.low)}  ${forecast.type}\n")
+                    sb.append(forecast.date).append("  ").append(getWenduRange(forecast.high, forecast.low))
+                        .append("  ").append(forecast.type).append("\n")
                 }
             }
             result_tv.text = sb.toString()
@@ -60,5 +62,5 @@ class WeatherActivity : BaseCompatActivity<WeatherView, WeatherPresenter>(), Wea
     }
 
     private fun getWenduRange(high: String, low: String): String =
-        "${RegexUtil.extractDigit(low)}℃ - ${RegexUtil.extractDigit(high)}℃"
+        "${RegexUtil.extractNumber(low)}℃ 至 ${RegexUtil.extractNumber(high)}℃"
 }
