@@ -2,8 +2,6 @@ package com.android.frame.http.AATest;
 
 import com.android.frame.http.AATest.bean.NewsListBean;
 import com.android.frame.http.AATest.bean.WeatherBean;
-import com.android.frame.http.model.BaseListResponse;
-import com.android.frame.http.model.BaseResponse;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -26,28 +24,27 @@ public interface ApiService {
     @GET("/")
     Observable<ResponseBody> accessUrlRxJava();
 
-    //接口地址：https://www.apiopen.top/api.html#c14353b903984e699c31c08f639baaff
     //获取天气信息，@Query，GET请求
-    @GET("weatherApi")
-    Observable<BaseResponse<WeatherBean>> getWeatherByQuery(@Query("city") String city);
+    @GET("weather_mini")
+    Observable<WeatherBean> getWeatherByQuery(@Query("city") String city);
 
     //获取天气信息，@QueryMap，GET请求
-    @GET("weatherApi")
-    Observable<BaseResponse<WeatherBean>> getWeatherByQueryMap(@QueryMap HashMap<String, Object> map);
-
-    //获取天气信息，@Field，POST请求
-    @FormUrlEncoded
-    @POST("weatherApi")
-    Observable<BaseResponse<WeatherBean>> getWeatherByField(@Field("city") String city);
-
-    //获取天气信息，@FieldMap，POST请求
-    @FormUrlEncoded
-    @POST("weatherApi")
-    Observable<BaseResponse<WeatherBean>> getWeatherByFieldMap(@FieldMap HashMap<String, Object> map);
+    @GET("weather_mini")
+    Observable<WeatherBean> getWeatherByQueryMap(@QueryMap HashMap<String, Object> map);
 
     //接口地址：https://www.apiopen.top/api.html#4c502eec73ce429fb1c4a7f519360d24
+    //获取网易新闻，@Field，POST请求
+    @FormUrlEncoded
+    @POST("getWangYiNews")
+    Observable<NewsListBean> getWangYiNewsByField(@Field("page") String page, @Field("count") String count);
+
+    //获取网易新闻，@FieldMap，POST请求
+    @FormUrlEncoded
+    @POST("getWangYiNews")
+    Observable<NewsListBean> getWangYiNewsByFieldMap(@FieldMap HashMap<String, Object> map);
+
     //获取网易新闻，@Body，POST请求
     @POST("getWangYiNews")
-    Observable<BaseListResponse<NewsListBean>> getWangYiNewsByBody(@Body RequestBody requestBody);
+    Observable<NewsListBean> getWangYiNewsByBody(@Body RequestBody requestBody);
 
 }

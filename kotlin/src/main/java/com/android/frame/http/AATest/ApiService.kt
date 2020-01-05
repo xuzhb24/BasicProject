@@ -22,7 +22,6 @@ interface ApiService {
     @GET("/")
     fun accessUrlRxJava(): Observable<ResponseBody>
 
-    //接口地址：https://www.apiopen.top/api.html#c14353b903984e699c31c08f639baaff
     //获取天气信息，@Query，GET请求
     @GET("weather_mini")
     fun getWeatherByQuery(@Query("city") city: String): Observable<WeatherBean>

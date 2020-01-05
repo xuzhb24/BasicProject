@@ -8,7 +8,7 @@ public class UrlConstant {
 
     public static final String BAIDU_URL = "https://www.baidu.com/";
 
-    public static final String WEATHER_URL = "https://www.apiopen.top/";
+    public static final String WEATHER_URL = "http://wthrcdn.etouch.cn/";
 
     public static final String NEWS_URL = "https://api.apiopen.top/";
 

@@ -11,8 +11,6 @@ import com.android.frame.http.AATest.bean.WeatherBean;
 import com.android.frame.http.ExceptionUtil;
 import com.android.frame.http.RetrofitFactory;
 import com.android.frame.http.SchedulerUtil;
-import com.android.frame.http.model.BaseListResponse;
-import com.android.frame.http.model.BaseResponse;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.util.CommonLayoutUtil;
@@ -31,6 +29,7 @@ import retrofit2.Response;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by xuzhb on 2019/10/26
@@ -48,8 +47,8 @@ public class TestRetrofitActivity extends BaseActivity {
     @Override
     public void handleView(Bundle savedInstanceState) {
         CommonLayoutUtil.initCommonLayout(this, "测试Retrofit", true, true,
-                "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取天气信息(@Field POST)",
-                "获取天气信息(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)");
+                "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取网易新闻(@Field POST)",
+                "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)");
         String city = "北京";
         et.setText(city);
         et.setSelection(city.length());  //将光标移至文字末尾
@@ -81,13 +80,13 @@ public class TestRetrofitActivity extends BaseActivity {
                 getWeatherByQueryMap(city);
                 break;
             case R.id.btn3:
-                getWeatherByField(city);
+                getWangYiNewsByField("1", "1");
                 break;
             case R.id.btn4:
-                getWeatherByFieldMap(city);
+                getWangYiNewsByFieldMap("1", "2");
                 break;
             case R.id.btn5:
-                getWangYiNewsByBody("1", "10");
+                getWangYiNewsByBody("1", "3");
                 break;
             case R.id.btn6:
 //                accessUrl(UrlConstant.BAIDU_URL);
@@ -168,38 +167,20 @@ public class TestRetrofitActivity extends BaseActivity {
                 .subscribe(WeatherObserver());
     }
 
-    //获取天气信息，@Field，POST请求
-    private void getWeatherByField(String city) {
-        RetrofitFactory.getInstance().createService(ApiService.class, UrlConstant.WEATHER_URL)
-                .getWeatherByField(city)
-                .compose(SchedulerUtil.ioToMain())
-                .subscribe(WeatherObserver());
-    }
-
-    //获取天气信息，@FieldMap，POST请求
-    private void getWeatherByFieldMap(String city) {
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("city", city);
-        RetrofitFactory.getInstance().createService(ApiService.class, UrlConstant.WEATHER_URL)
-                .getWeatherByFieldMap(map)
-                .compose(SchedulerUtil.ioToMain())
-                .subscribe(WeatherObserver());
-    }
-
-    private Observer<BaseResponse<WeatherBean>> WeatherObserver() {
-        return new Observer<BaseResponse<WeatherBean>>() {
+    private Observer<WeatherBean> WeatherObserver() {
+        return new Observer<WeatherBean>() {
             @Override
             public void onSubscribe(Disposable d) {
 
             }
 
             @Override
-            public void onNext(BaseResponse<WeatherBean> response) {
-                if (response.isSuccess()) {
-                    String result = JsonUtil.formatJson(new Gson().toJson(response.getData()));
+            public void onNext(WeatherBean bean) {
+                if (bean.isSuccess()) {
+                    String result = JsonUtil.formatJson(new Gson().toJson(bean));
                     ExtraUtil.alert(TestRetrofitActivity.this, result);
                 } else {
-                    showToast(response.getMsg());
+                    showToast(bean.getDesc());
                 }
             }
 
@@ -216,42 +197,71 @@ public class TestRetrofitActivity extends BaseActivity {
         };
     }
 
+    //获取网易新闻，@Field，POST请求
+    private void getWangYiNewsByField(String page, String count) {
+        RetrofitFactory.getInstance().createService(ApiService.class, UrlConstant.NEWS_URL)
+                .getWangYiNewsByField(page, count)
+                .compose(SchedulerUtil.ioToMain())
+                .subscribe(NewsObserver());
+    }
+
+    //获取网易新闻，@FieldMap，POST请求
+    private void getWangYiNewsByFieldMap(String page, String count) {
+        HashMap<String, Object> map = new HashMap<>();
+        map.put("page", page);
+        map.put("count", count);
+        RetrofitFactory.getInstance().createService(ApiService.class, UrlConstant.NEWS_URL)
+                .getWangYiNewsByFieldMap(map)
+                .compose(SchedulerUtil.ioToMain())
+                .subscribe(NewsObserver());
+    }
+
     //获取网易新闻，@Body，POST请求
     private void getWangYiNewsByBody(String page, String count) {
         HashMap<String, Object> map = new HashMap<>();
         map.put("page", page);
         map.put("count", count);
-        RequestBody body = RequestBody.create(MediaType.parse("application/json"), new Gson().toJson(map));
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, Object> entry : map.entrySet()) {
+            sb.append(entry.getKey() + "=" + entry.getValue() + "&");
+        }
+        String data = sb.toString().substring(0, sb.toString().length() - 1);
+//        String data = "page=" + page + "&count=" + count;
+        RequestBody body = RequestBody.create(MediaType.parse("application/x-www-form-urlencoded"), data);
         RetrofitFactory.getInstance().createService(ApiService.class, UrlConstant.NEWS_URL)
                 .getWangYiNewsByBody(body)
                 .compose(SchedulerUtil.ioToMain())
-                .subscribe(new Observer<BaseListResponse<NewsListBean>>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
+                .subscribe(NewsObserver());
+    }
 
-                    }
+    private Observer<NewsListBean> NewsObserver() {
+        return new Observer<NewsListBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
 
-                    @Override
-                    public void onNext(BaseListResponse<NewsListBean> response) {
-                        if (response.isSuccess()) {
-                            String result = JsonUtil.formatJson(new Gson().toJson(response.getResult()));
-                            ExtraUtil.alert(TestRetrofitActivity.this, result);
-                        } else {
-                            showToast(response.getMsg());
-                        }
-                    }
+            }
 
-                    @Override
-                    public void onError(Throwable e) {
-                        showToast(ExceptionUtil.convertExceptopn(e));
-                        e.printStackTrace();
-                    }
+            @Override
+            public void onNext(NewsListBean bean) {
+                if (bean.isSuccess()) {
+                    String result = JsonUtil.formatJson(new Gson().toJson(bean));
+                    ExtraUtil.alert(TestRetrofitActivity.this, result);
+                } else {
+                    showToast(bean.getMessage());
+                }
+            }
 
-                    @Override
-                    public void onComplete() {
+            @Override
+            public void onError(Throwable e) {
+                showToast(ExceptionUtil.convertExceptopn(e));
+                e.printStackTrace();
+            }
 
-                    }
-                });
+            @Override
+            public void onComplete() {
+
+            }
+        };
     }
 
 }
