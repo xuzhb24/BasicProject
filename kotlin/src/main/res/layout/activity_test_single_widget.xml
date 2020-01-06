@@ -56,4 +56,22 @@
         android:layout_marginTop="5dp"
         android:layout_marginBottom="5dp" />
 
+    <com.android.widget.ScrollTextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:text="这是一段很长很长很长很长很长很长很长很长很长很长很长很长很长很长的文本" />
+
+    <com.android.widget.ScrollTextView
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/default_margin"
+        android:layout_marginTop="5dp"
+        android:text="这是一段短文本" />
+
+    <View
+        style="@style/DividerLineStyle"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
+
 </LinearLayout>
