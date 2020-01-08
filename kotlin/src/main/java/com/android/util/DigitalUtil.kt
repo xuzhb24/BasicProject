@@ -33,8 +33,20 @@ object DigitalUtil {
         BigDecimal(number.toString()).setScale(length, BigDecimal.ROUND_DOWN).toString()
 
     //去除小数点尾部的0
+    fun trimEndZero(numberStr: String): String {
+        var number = numberStr
+        if (number.indexOf(".") > 0) {
+            number = number.replace("0+?$".toRegex(), "")  //去掉后面无用的零
+            number = number.replace("[.]$".toRegex(), "")  //若小数点后面全是零则去掉小数点
+        }
+        return number
+    }
+
+    //去除小数点尾部的0
     fun trimEndZero(number: Double): String {
-        return NumberFormat.getInstance().format(number)
+        val format = NumberFormat.getInstance()
+        format.isGroupingUsed = false  //不显示千分位分隔符
+        return format.format(number)
     }
 
     @JvmStatic
@@ -45,7 +57,8 @@ object DigitalUtil {
         test("五舍六入(BigDecimal)：", 4, 1.235, 1.23500001, 1.236)
         test("非零进位(BigDecimal)：", 5, 1.231, 1.23000, 0.0, 1.000001)
         test("直接截取(BigDecimal)：", 6, 0.0, 0.1, 1.0912344, 1.23999999999)
-        test("去除尾部的零：", 7, 1.0, 2.1, 1.00, 1.2345)
+        test("去除尾部的零(正则表达式)：", 7, 1000.0, 2.1, 1.00, 1.2345, 0.0)
+        test("去除尾部的零(NumberFormat)：", 8, 1000.0, 2.1, 1.00, 1.2345, 0.0)
     }
 
     private fun test(tag: String, type: Int, vararg numbers: Double) {
@@ -58,7 +71,8 @@ object DigitalUtil {
                 4 -> print(formatNumberByRounding4(num) + "\t")
                 5 -> print(formatNumberByRounding5(num) + "\t")
                 6 -> print(formatNumberNoRounding(num) + "\t")
-                7 -> print(trimEndZero(num) + "\t")
+                7 -> print(trimEndZero(formatNumberByRounding1(num)) + "\t")
+                8 -> print(trimEndZero(num) + "\t")
             }
         }
         println()
