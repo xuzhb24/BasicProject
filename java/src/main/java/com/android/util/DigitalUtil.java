@@ -56,7 +56,9 @@ public class DigitalUtil {
 
     //去除小数点尾部的0
     public static String trimEndZero(double number) {
-        return NumberFormat.getInstance().format(number);
+        NumberFormat format = NumberFormat.getInstance();
+        format.setGroupingUsed(false);
+        return format.format(number);
     }
 
     public static void main(String[] args) {
@@ -66,8 +68,8 @@ public class DigitalUtil {
         test("五舍六入(BigDecimal)：", 4, 1.235, 1.23500001, 1.236);
         test("非零进位(BigDecimal)：", 5, 1.231, 1.23000, 0.0, 1.000001);
         test("直接截取(BigDecimal)：", 6, 0.0, 0.1, 1.0912344, 1.23999999999);
-        test("去除尾部的零(正则表达式)：", 7, 1, 2.1, 1.00, 1.2345);
-        test("去除尾部的零(NumberFormat)：", 8, 1.0, 2.1, 1.00, 1.2345, 0.0);
+        test("去除尾部的零(正则表达式)：", 7, 1000.0, 2.1, 1.00, 1.2345);
+        test("去除尾部的零(NumberFormat)：", 8, 10000.0, 2.1, 1.00, 1.2345, 0.0);
     }
 
     private static void test(String tag, int type, double... numbers) {
