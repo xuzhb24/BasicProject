@@ -50,6 +50,12 @@
                 android:layout_marginTop="10dp"
                 android:text="测试Retrofit" />
 
+            <TextView
+                android:id="@+id/mvp_tv"
+                style="@style/ItemSingleTextStyle"
+                android:layout_marginTop="10dp"
+                android:text="MVP框架" />
+
         </LinearLayout>
     </ScrollView>
 

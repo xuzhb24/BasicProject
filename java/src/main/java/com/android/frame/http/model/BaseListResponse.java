@@ -11,7 +11,7 @@ public class BaseListResponse<T> implements Serializable {
 
     private int code;
     private String msg;
-    private List<T> result;
+    private List<T> data;
 
     public int getCode() {
         return code;
@@ -29,12 +29,12 @@ public class BaseListResponse<T> implements Serializable {
         this.msg = msg;
     }
 
-    public List<T> getResult() {
-        return result;
+    public List<T> getData() {
+        return data;
     }
 
-    public void setResult(List<T> result) {
-        this.result = result;
+    public void setData(List<T> data) {
+        this.data = data;
     }
 
     public boolean isSuccess() {

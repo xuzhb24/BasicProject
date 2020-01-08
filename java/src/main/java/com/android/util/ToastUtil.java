@@ -16,11 +16,11 @@ import com.android.java.R;
  */
 public class ToastUtil {
 
-    public static void showToast(String text) {
+    public static void showToast(CharSequence text) {
         showToast(text, BaseApplication.getInstance().getApplicationContext(), false, false);
     }
 
-    public static void showToast(String text, Context context, boolean longToast, boolean isCenter) {
+    public static void showToast(CharSequence text, Context context, boolean isCenter, boolean longToast) {
         int duration = Toast.LENGTH_SHORT;
         if (longToast) {
             duration = Toast.LENGTH_LONG;
@@ -37,11 +37,11 @@ public class ToastUtil {
         toast.show();
     }
 
-    public static void toast(String text) {
+    public static void toast(CharSequence text) {
         Toast.makeText(BaseApplication.getInstance().getApplicationContext(), text, Toast.LENGTH_SHORT).show();
     }
 
-    public static void longToast(String text) {
+    public static void longToast(CharSequence text) {
         Toast.makeText(BaseApplication.getInstance().getApplicationContext(), text, Toast.LENGTH_LONG).show();
     }
 

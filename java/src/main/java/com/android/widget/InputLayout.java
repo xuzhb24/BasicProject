@@ -38,6 +38,10 @@ public class InputLayout extends RelativeLayout {
         mInputEt.setText(inputText);
     }
 
+    public String getInputText() {
+        return mInputEt.getText().toString();
+    }
+
     public void setInputTextType(int inputTextType) {
         this.inputTextType = inputTextType;
         mInputEt.setInputType(inputTextType);

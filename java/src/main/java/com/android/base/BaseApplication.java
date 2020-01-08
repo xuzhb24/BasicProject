@@ -1,9 +1,12 @@
 package com.android.base;
 
+import android.app.Activity;
 import android.app.Application;
 import com.android.util.traffic.NetworkStatsHelper;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+
+import java.util.LinkedList;
 
 /**
  * Created by xuzhb on 2019/11/2
@@ -12,6 +15,8 @@ import com.squareup.leakcanary.RefWatcher;
 public class BaseApplication extends Application {
 
     private RefWatcher mRefWatcher;
+    private LinkedList<Activity> mActivityStack;
+
     private static BaseApplication mInstance;
 
     @Override
@@ -20,6 +25,7 @@ public class BaseApplication extends Application {
         mInstance = this;
 
         mRefWatcher = initRefWatcher();
+        mActivityStack = new LinkedList<>();
 
         /* 极光start */
 //        JPushManager.getInstance().init(this);
@@ -43,6 +49,22 @@ public class BaseApplication extends Application {
             return RefWatcher.DISABLED;
         }
         return LeakCanary.install(this);
+    }
+
+    public void addActivity(Activity activity) {
+        mActivityStack.add(activity);
+    }
+
+    public void removeActivity(Activity activity) {
+        mActivityStack.remove(activity);
+    }
+
+    //结束所有的Activity
+    public void finishAllActivities() {
+        for (Activity activity : mActivityStack) {
+            activity.finish();
+        }
+        mActivityStack.clear();
     }
 
 }

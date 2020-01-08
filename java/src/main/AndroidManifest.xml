@@ -22,7 +22,9 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
-    <uses-permission android:name="android.permission.PACKAGE_USAGE_STATS" tools:ignore="ProtectedPermissions"/>
+    <uses-permission
+        android:name="android.permission.PACKAGE_USAGE_STATS"
+        tools:ignore="ProtectedPermissions" />
 
     <!-- 极光start -->
     <permission
@@ -68,8 +70,16 @@
             </intent-filter>
         </activity>
         <!--框架篇-->
-        <activity android:name="com.android.frame.TestLeakActivity" />
+        <!--测试内存泄漏-->
+        <activity
+            android:name="com.android.frame.TestLeakActivity"
+            android:launchMode="singleTop" />  <!--加上singleTop属性可以防止快速点击启动两个相同的Activity-->
+        <!--测试Retrofit-->
         <activity android:name="com.android.frame.http.AATest.TestRetrofitActivity" />
+        <!--MVP框架-->
+        <activity android:name="com.android.frame.mvp.AATest.activity.TestMvpActivity" />
+        <activity android:name="com.android.frame.mvp.AATest.activity.weather.WeatherActivity" />
+        <activity android:name="com.android.frame.mvp.AATest.activity.newslist.NewsListActivity" />
         <!--控件篇-->
         <activity android:name="com.android.widget.TestSingleWidgetActivity" />
         <activity android:name="com.android.widget.Dialog.TestDialogActivity" />

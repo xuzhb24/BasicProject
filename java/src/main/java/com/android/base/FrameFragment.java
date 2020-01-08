@@ -12,6 +12,7 @@ import butterknife.Unbinder;
 import com.android.frame.TestLeakActivity;
 import com.android.frame.http.AATest.TestRetrofitActivity;
 import com.android.frame.mvc.BaseFragment;
+import com.android.frame.mvp.AATest.activity.TestMvpActivity;
 import com.android.java.R;
 import com.android.widget.TitleBar;
 
@@ -43,7 +44,8 @@ public class FrameFragment extends BaseFragment {
         return R.layout.fragment_frame;
     }
 
-    @OnClick({R.id.leak_tv, R.id.orignal_permission_tv, R.id.easy_permission_tv, R.id.retrofit_tv})
+    @OnClick({R.id.leak_tv, R.id.orignal_permission_tv, R.id.easy_permission_tv, R.id.retrofit_tv,
+            R.id.mvp_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.leak_tv:
@@ -56,6 +58,9 @@ public class FrameFragment extends BaseFragment {
             case R.id.retrofit_tv:
                 startActivity(TestRetrofitActivity.class);
                 break;
+            case R.id.mvp_tv:
+                startActivity(TestMvpActivity.class);
+                return;
         }
     }
 }
