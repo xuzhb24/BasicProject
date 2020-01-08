@@ -11,7 +11,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.android.base.BaseApplication
 import com.android.basicproject.R
-import com.android.util.StatusBarUtil
+import com.android.util.StatusBar.StatusBarUtil
 import com.android.widget.TitleBar
 
 /**

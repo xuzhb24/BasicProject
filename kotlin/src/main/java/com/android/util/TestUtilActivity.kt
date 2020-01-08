@@ -17,6 +17,7 @@ import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.mvc.BaseActivity
+import com.android.util.StatusBar.TestStatusBarUtilActivity
 import com.bumptech.glide.Glide
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -31,6 +32,7 @@ import kotlin.random.Random
 class TestUtilActivity : BaseActivity() {
 
     companion object {
+        const val TEST_STATUS_BAR = "TEST_STATUS_BAR"
         const val TEST_DATE = "TEST_DATE"
         const val TEST_KEYBOARD = "TEST_KEYBOARD"
         const val TEST_DRAWABLE = "TEST_DRAWABLE"
@@ -41,6 +43,7 @@ class TestUtilActivity : BaseActivity() {
 
     override fun handleView(savedInstanceState: Bundle?) {
         when (intent.getStringExtra(MODULE_NAME)) {
+            TEST_STATUS_BAR -> testStatusBarUtil();
             TEST_DATE -> testDateUtil()
             TEST_KEYBOARD -> testKeyBoardUtil()
             TEST_DRAWABLE -> testDrawableUtil()
@@ -53,6 +56,33 @@ class TestUtilActivity : BaseActivity() {
     override fun initListener() {}
 
     override fun getLayoutId(): Int = R.layout.activity_common_layout
+
+    private fun testStatusBarUtil() {
+        val text1 = "沉浸背景图片"
+        val text2 = "状态栏白色，字体和图片黑色"
+        val text3 = "状态栏黑色，字体和图片白色"
+        val text4 = "状态栏黑色半透明，字体和图片白色"
+        initCommonLayout(this, "实现沉浸式状态栏", text1, text2, text3, text4)
+        btn1.setOnClickListener {
+            jumpToTestStatusBarActivity(1, text1)
+        }
+        btn2.setOnClickListener {
+            jumpToTestStatusBarActivity(2, text2)
+        }
+        btn3.setOnClickListener {
+            jumpToTestStatusBarActivity(3, text3)
+        }
+        btn4.setOnClickListener {
+            jumpToTestStatusBarActivity(4, text4)
+        }
+    }
+
+    private fun jumpToTestStatusBarActivity(type: Int, text: String) {
+        val intent = Intent(this, TestStatusBarUtilActivity::class.java)
+        intent.putExtra(TestStatusBarUtilActivity.EXTRA_TYPE, type)
+        intent.putExtra(TestStatusBarUtilActivity.EXTRA_TEXT, text)
+        startActivity(intent)
+    }
 
     private fun testDateUtil() {
         initCommonLayout(this, "测试时间工具", "按钮")

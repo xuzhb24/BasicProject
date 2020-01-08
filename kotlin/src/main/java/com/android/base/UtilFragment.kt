@@ -19,6 +19,10 @@ class UtilFragment : BaseFragment() {
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
+        //实现沉浸式状态栏
+        statusbar_tv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_STATUS_BAR)
+        }
         //测试时间
         time_tv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_DATE)

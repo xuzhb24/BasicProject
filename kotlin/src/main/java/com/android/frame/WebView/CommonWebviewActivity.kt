@@ -17,7 +17,7 @@ import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
 import com.android.util.KeyboardUtil
 import com.android.util.LogUtil
-import com.android.util.StatusBarUtil
+import com.android.util.StatusBar.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_common_webview.*
 
 /**
