@@ -19,6 +19,11 @@
             android:orientation="vertical">
 
             <TextView
+                android:id="@+id/statusbar_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="实现沉浸式状态栏" />
+
+            <TextView
                 android:id="@+id/time_tv"
                 style="@style/ItemSingleTextStyle"
                 android:text="时间工具" />

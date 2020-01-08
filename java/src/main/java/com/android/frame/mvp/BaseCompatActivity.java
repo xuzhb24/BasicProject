@@ -15,7 +15,7 @@ import com.android.base.BaseApplication;
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
 import com.android.frame.mvp.extra.NetReceiver;
 import com.android.java.R;
-import com.android.util.StatusBarUtil;
+import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.widget.TitleBar;
 import com.google.gson.Gson;

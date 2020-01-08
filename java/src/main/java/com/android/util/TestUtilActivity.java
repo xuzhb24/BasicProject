@@ -15,6 +15,7 @@ import android.widget.TextView;
 import butterknife.BindView;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.util.StatusBar.TestStatusBarUtilActivity;
 import com.android.util.traffic.ByteUnit;
 import com.android.util.traffic.NetworkStatsHelper;
 import com.android.util.traffic.TrafficInfo;
@@ -30,6 +31,7 @@ public class TestUtilActivity extends BaseActivity {
 
     private static final String TAG = "TestUtilActivity";
 
+    public static final String TEST_STATUS_BAR = "TEST_STATUS_BAR";
     public static final String TEST_DATE = "TEST_DATE";
     public static final String TEST_DRAWABLE = "TEST_DRAWABLE";
     public static final String TEST_KEYBOARD = "TEST_KEYBOARD";
@@ -59,6 +61,9 @@ public class TestUtilActivity extends BaseActivity {
     @Override
     public void handleView(Bundle savedInstanceState) {
         switch (getIntent().getStringExtra(CommonLayoutUtil.MODULE_NAME)) {
+            case TEST_STATUS_BAR:
+                testStatusBarUtil();
+                break;
             case TEST_DATE:
                 testDateUtil();
                 break;
@@ -88,6 +93,33 @@ public class TestUtilActivity extends BaseActivity {
     @Override
     public int getLayoutId() {
         return R.layout.activity_common_layout;
+    }
+
+    private void testStatusBarUtil() {
+        String text1 = "沉浸背景图片";
+        String text2 = "状态栏白色，字体和图片黑色";
+        String text3 = "状态栏黑色，字体和图片白色";
+        String text4 = "状态栏黑色半透明，字体和图片白色";
+        CommonLayoutUtil.initCommonLayout(this, "实现沉浸式状态栏", text1, text2, text3, text4);
+        btn1.setOnClickListener(v -> {
+            jumpToTestStatusBarActivity(1, text1);
+        });
+        btn2.setOnClickListener(v -> {
+            jumpToTestStatusBarActivity(2, text2);
+        });
+        btn3.setOnClickListener(v -> {
+            jumpToTestStatusBarActivity(3, text3);
+        });
+        btn4.setOnClickListener(v -> {
+            jumpToTestStatusBarActivity(4, text4);
+        });
+    }
+
+    private void jumpToTestStatusBarActivity(int type, String text) {
+        Intent intent = new Intent(this, TestStatusBarUtilActivity.class);
+        intent.putExtra(TestStatusBarUtilActivity.EXTRA_TYPE, type);
+        intent.putExtra(TestStatusBarUtilActivity.EXTRA_TEXT, text);
+        startActivity(intent);
     }
 
     private void testDateUtil() {

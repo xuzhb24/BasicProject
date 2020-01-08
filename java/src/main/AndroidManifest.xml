@@ -84,6 +84,8 @@
         <activity android:name="com.android.widget.TestSingleWidgetActivity" />
         <activity android:name="com.android.widget.Dialog.TestDialogActivity" />
         <!--工具篇-->
+        <!--实现沉浸式状态栏-->
+        <activity android:name="com.android.util.StatusBar.TestStatusBarUtilActivity" />
         <activity android:name="com.android.util.TestUtilActivity" />
         <activity android:name="com.android.util.code.TestCodeUtilActivity" />
 
