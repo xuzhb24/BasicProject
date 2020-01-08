@@ -20,7 +20,7 @@ interface IBaseView {
      * isCenter：是否居中显示，true表示居中显示，默认为false
      * longToast：显示长Toast还是短Toast，默认为Toast.LENGTH_SHORT，即短Toast
      */
-    fun showToast(text: CharSequence, isCenter: Boolean = false, longToast: Boolean = false)
+    fun showToast(text: CharSequence, isCenter: Boolean = true, longToast: Boolean = false)
 
     //显示网络错误提示布局，isShow为true表示显示，false表示隐藏
     fun showNetErrorLayout(isShow: Boolean)

@@ -28,7 +28,7 @@ import io.reactivex.disposables.Disposable
 abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), IBaseView,
     SwipeRefreshLayout.OnRefreshListener {
 
-    private val mGson = Gson()
+    protected val mGson = Gson()
     protected var mPresenter: P? = null
 
     //防止RxJava内存泄漏
@@ -149,31 +149,29 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
     //显示网络错误提示布局
     override fun showNetErrorLayout(isShow: Boolean) {
         //如果当前布局文件中不包含layout_net_error则netErrorFl为null，此时不执行下面的逻辑
-        mNetErrorFl?.let {
-            if (isShow) {
-                it.visibility = View.VISIBLE
-            } else {
-                it.visibility = View.GONE
-            }
+        activity?.runOnUiThread {
+            mNetErrorFl?.visibility = if (isShow) View.VISIBLE else View.GONE
         }
     }
 
     //完成数据加载，收起下拉刷新组件SwipeRefreshLayout的刷新头部
     override fun loadFinish() {
         //如果布局文件中不包含id为swipe_refresh_layout的控件，则swipeRefreshLayout为null
-        mSwipeRefreshLayout?.let {
-            if (it.isRefreshing) {
-                it.isRefreshing = false  //停止刷新
+        activity?.runOnUiThread {
+            mSwipeRefreshLayout?.let {
+                if (it.isRefreshing) {
+                    it.isRefreshing = false  //停止刷新
+                }
             }
         }
     }
 
     //跳转到登录界面
     override fun gotoLogin() {
+        BaseApplication.instance.finishAllActivities()
         val intent = Intent()
         intent.setAction("登录页的action")
         startActivity(intent)
-        BaseApplication.instance.finishAllActivities()
     }
 
     //RxJava建立订阅关系，方便Fragment销毁时取消订阅关系防止内存泄漏

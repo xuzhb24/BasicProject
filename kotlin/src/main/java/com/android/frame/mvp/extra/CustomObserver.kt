@@ -90,7 +90,7 @@ abstract class CustomObserver<T>(
 
     //isError表示onNext中的错误还是onError中的错误
     protected open fun onFailure(view: IBaseView?, message: String, isError: Boolean, response: T? = null) {
-        view?.showToast(message, true)
+        view?.showToast(message)
     }
 
 }
