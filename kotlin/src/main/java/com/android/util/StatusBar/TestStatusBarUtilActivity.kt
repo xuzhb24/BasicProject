@@ -29,7 +29,7 @@ class TestStatusBarUtilActivity : BaseActivity() {
             1 -> {
                 root_rl.setBackgroundResource(R.drawable.ic_status_bar)
                 title_bar.visibility = View.GONE
-                StatusBarUtil.darkMode(this)
+                StatusBarUtil.darkMode(this, dark = false)
             }
             2 -> {
                 StatusBarUtil.darkModeAndPadding(
