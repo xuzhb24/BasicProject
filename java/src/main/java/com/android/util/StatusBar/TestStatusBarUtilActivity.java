@@ -36,7 +36,7 @@ public class TestStatusBarUtilActivity extends BaseActivity {
             case 1:
                 rootRl.setBackgroundResource(R.drawable.ic_status_bar);
                 titleBar.setVisibility(View.GONE);
-                StatusBarUtil.darkMode(this);
+                StatusBarUtil.darkMode(this, Color.BLACK, 0, false);
                 break;
             case 2:
                 StatusBarUtil.darkModeAndPadding(this, titleBar,
