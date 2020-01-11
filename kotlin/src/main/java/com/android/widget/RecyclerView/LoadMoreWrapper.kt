@@ -21,31 +21,70 @@ class LoadMoreWrapper(
         private const val TYPE_EMPTY_VIEW = -1;  //数据为空时的布局
         private const val TYPE_FOOTER_VIEW = -2;  //脚布局
         //加载状态
-        const val STATE_DEFAULT = 0    //默认状态
-        const val STATE_LOADING = 1;   //加载中
-        const val STATE_LOAD_FAIL = 2  //加载失败，如网络异常
-        const val STATE_LOAD_END = 3;  //已加载全部数据
+        private const val STATE_DEFAULT = 0    //默认状态
+        private const val STATE_LOADING = 1;   //加载中
+        private const val STATE_FAIL = 2  //加载失败，如网络异常
+        private const val STATE_END = 3;  //已加载全部数据
     }
-
-    var loadState = STATE_DEFAULT  //当前加载状态
-        set(value) {  //设置上拉加载状态，同时刷新数据
-            field = value
-            notifyDataSetChanged()
-        }
 
     @LayoutRes
     var emptyViewId: Int = R.layout.layout_empty_view  //通过ID设置空布局
-    var isEmptyViewEnable: Boolean = true   //是否需要设置空布局，增加对setEmptyView的支持
+    var isEmptyViewEnable = true            //是否需要设置空布局，增加对setEmptyView的支持
     var isEmptyViewLoadMoreEnable = false  //空布局时是否也支持上拉加载更多
+    var showEndTip = true                   //是否显示加载到底没有更多数据的提示
 
     var loadingTip: String = "正在努力加载..."    //设置加载中的文字提示
     var failTip: String = "加载失败，请点我重试"  //设置加载失败的文字提示
     var endTip: String = "没有更多数据了"         //设置加载到底时的文字提示
 
+    private var loadState = STATE_DEFAULT  //当前加载状态
+        set(value) {  //设置上拉加载状态，同时刷新数据
+            field = value
+            notifyDataSetChanged()
+        }
+
+    //开始加载
+    fun startLoading() {
+        loadState = STATE_LOADING
+    }
+
+    //加载完成
+    fun loadMoreComplete() {
+        loadState = STATE_DEFAULT
+    }
+
+    //加载异常
+    fun loadMoreFail() {
+        loadState = STATE_FAIL
+    }
+
+    //加载到底，没有更多数据了
+    fun loadMoreEnd() {
+        loadState = STATE_END
+    }
+
     private var mOnLoadFailListener: ((v: View) -> Unit)? = null
     //设置加载失败时点击重试
     fun setOnLoadFailListener(listener: (v: View) -> Unit) {
         this.mOnLoadFailListener = listener
+    }
+
+    private var mOnLoadMoreListener: (() -> Unit)? = null
+    //监听上拉加载更多
+    fun setOnLoadMoreListener(recyclerView: RecyclerView, listener: () -> Unit) {
+        this.mOnLoadMoreListener = listener
+        loadMore(recyclerView)
+    }
+
+    private fun loadMore(recyclerView: RecyclerView) {
+        recyclerView.addOnScrollListener(object : LoadMoreListener() {
+            override fun onLoadMore() {
+                if (loadState != STATE_LOADING) {
+                    loadState = STATE_LOADING  //设置上拉时只加载一次
+                    mOnLoadMoreListener?.invoke()
+                }
+            }
+        })
     }
 
     init {
@@ -112,7 +151,7 @@ class LoadMoreWrapper(
                         .setViewGone(R.id.end_fl)
                         .setText(R.id.loading_tv, loadingTip)
                 }
-                STATE_LOAD_FAIL -> {  //加载异常
+                STATE_FAIL -> {  //加载异常
                     holder.setViewGone(R.id.loading_ll)
                         .setViewVisible(R.id.fail_fl)
                         .setViewGone(R.id.end_fl)
@@ -121,16 +160,21 @@ class LoadMoreWrapper(
                             mOnLoadFailListener?.invoke(it)
                         }
                 }
-                STATE_LOAD_END -> {  //加载到底
+                STATE_END -> {  //加载到底
                     holder.setViewGone(R.id.loading_ll)
                         .setViewGone(R.id.fail_fl)
                         .setViewVisible(R.id.end_fl)
-                        .setText(R.id.end_tv, endTip)
-                    if (isEmptyViewLoadMoreEnable && itemAdapter.itemCount == 0) {
-                        //空布局时上拉重新加载，如果显示没有更多数据，则1秒后隐藏提示
-                        Handler().postDelayed({
-                            holder.setViewGone(R.id.end_fl)
-                        }, 1000)
+                    if (showEndTip) {
+                        holder.setViewVisible(R.id.end_fl)
+                            .setText(R.id.end_tv, endTip)
+                        if (isEmptyViewLoadMoreEnable && itemAdapter.itemCount == 0) {
+                            //空布局时上拉重新加载，如果显示没有更多数据，则1秒后隐藏提示
+                            Handler().postDelayed({
+                                holder.setViewGone(R.id.end_fl)
+                            }, 1000)
+                        }
+                    } else {
+                        holder.setViewGone(R.id.end_fl)
                     }
                 }
             }

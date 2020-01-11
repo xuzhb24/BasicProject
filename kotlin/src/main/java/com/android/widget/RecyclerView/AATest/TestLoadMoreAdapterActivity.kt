@@ -11,7 +11,6 @@ import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.mvc.BaseActivity
-import com.android.widget.RecyclerView.LoadMoreListener
 import com.android.widget.RecyclerView.LoadMoreWrapper
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -48,17 +47,12 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
             finish()
         }
         //底部上拉加载更多
-        rv.addOnScrollListener(object : LoadMoreListener() {
-            override fun onLoadMore() {
-                if (mMoreAdapter.loadState != LoadMoreWrapper.STATE_LOADING) {
-                    mMoreAdapter.loadState = LoadMoreWrapper.STATE_LOADING
-                    queryData(mCurrentPage)
-                }
-            }
-        })
+        mMoreAdapter.setOnLoadMoreListener(rv) {
+            queryData(mCurrentPage)
+        }
         //设置加载异常监听，如网络异常导致无法加载数据
         mMoreAdapter.setOnLoadFailListener {
-            mMoreAdapter.loadState = LoadMoreWrapper.STATE_LOADING
+            mMoreAdapter.startLoading()
             queryData(mCurrentPage)
         }
         //设置点击事件
@@ -102,15 +96,15 @@ class TestLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
         mCurrentPage++
         mList.addAll(list)
         if (list.size < ONCE_LOAD_SIEE) {
-            mMoreAdapter.loadState = LoadMoreWrapper.STATE_LOAD_END
+            mMoreAdapter.loadMoreEnd()
         } else {
-            mMoreAdapter.loadState = LoadMoreWrapper.STATE_DEFAULT
+            mMoreAdapter.loadMoreComplete()
         }
     }
 
     //加载异常
     private fun loadFail() {
-        mMoreAdapter.loadState = LoadMoreWrapper.STATE_LOAD_FAIL
+        mMoreAdapter.loadMoreFail()
     }
 
     override fun getLayoutId(): Int = R.layout.activity_test_adapter

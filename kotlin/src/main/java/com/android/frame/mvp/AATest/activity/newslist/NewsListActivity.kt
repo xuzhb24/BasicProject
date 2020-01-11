@@ -8,7 +8,6 @@ import com.android.frame.mvp.AATest.UrlConstantMvp
 import com.android.frame.mvp.AATest.adapter.NewsListAdapter
 import com.android.frame.mvp.AATest.bean.NewsListBeanMvp
 import com.android.frame.mvp.BaseCompatActivity
-import com.android.widget.RecyclerView.LoadMoreListener
 import com.android.widget.RecyclerView.LoadMoreWrapper
 import kotlinx.android.synthetic.main.activity_list_layout.*
 
@@ -36,17 +35,12 @@ class NewsListActivity : BaseCompatActivity<NewsListView, NewsListPresenter>(), 
             finish()
         }
         //上拉加载更多
-        mRecyclerView.addOnScrollListener(object : LoadMoreListener() {
-            override fun onLoadMore() {
-                if (mLoadMoreAdapter.loadState != LoadMoreWrapper.STATE_LOADING) {
-                    mLoadMoreAdapter.loadState = LoadMoreWrapper.STATE_LOADING
-                    mPresenter?.getNews(mCurrentPage)
-                }
-            }
-        })
+        mLoadMoreAdapter.setOnLoadMoreListener(mRecyclerView) {
+            mPresenter?.getNews(mCurrentPage)
+        }
         //设置加载异常监听，如网络异常导致无法加载数据
         mLoadMoreAdapter.setOnLoadFailListener {
-            mLoadMoreAdapter.loadState = LoadMoreWrapper.STATE_LOADING
+            mLoadMoreAdapter.startLoading()
             mPresenter?.getNews(mCurrentPage)
         }
         (mLoadMoreAdapter.itemAdapter as NewsListAdapter).setOnItemClickListener { obj, position ->
@@ -61,7 +55,7 @@ class NewsListActivity : BaseCompatActivity<NewsListView, NewsListPresenter>(), 
     override fun refreshData() {
         mCurrentPage = 1
         mList.clear()
-        mLoadMoreAdapter.loadState = LoadMoreWrapper.STATE_LOADING
+        mLoadMoreAdapter.startLoading()
         mPresenter?.getNews(mCurrentPage)
     }
 
@@ -69,13 +63,13 @@ class NewsListActivity : BaseCompatActivity<NewsListView, NewsListPresenter>(), 
         mCurrentPage++
         mList.addAll(list)
         if (list.size < UrlConstantMvp.ONCE_LOAD_SIZE.toInt()) {
-            mLoadMoreAdapter.loadState = LoadMoreWrapper.STATE_LOAD_END
+            mLoadMoreAdapter.loadMoreEnd()
         } else {
-            mLoadMoreAdapter.loadState = LoadMoreWrapper.STATE_DEFAULT
+            mLoadMoreAdapter.loadMoreComplete()
         }
     }
 
     override fun loadFail() {
-        mLoadMoreAdapter.loadState = LoadMoreWrapper.STATE_LOAD_FAIL
+        mLoadMoreAdapter.loadMoreFail()
     }
 }
