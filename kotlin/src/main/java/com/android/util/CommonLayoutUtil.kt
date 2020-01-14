@@ -30,6 +30,9 @@ fun initCommonLayout(
     val btn4: Button = activity.findViewById(R.id.btn4)
     val btn5: Button = activity.findViewById(R.id.btn5)
     val btn6: Button = activity.findViewById(R.id.btn6)
+    val btn7: Button = activity.findViewById(R.id.btn7)
+    val btn8: Button = activity.findViewById(R.id.btn8)
+    val btn9: Button = activity.findViewById(R.id.btn9)
     with(titleBar) {
         titleText = title
         setOnLeftClickListener {
@@ -44,6 +47,9 @@ fun initCommonLayout(
     btn4.visibility = View.GONE
     btn5.visibility = View.GONE
     btn6.visibility = View.GONE
+    btn7.visibility = View.GONE
+    btn8.visibility = View.GONE
+    btn9.visibility = View.GONE
     if (showEditText) {
         et.visibility = View.VISIBLE
     }
@@ -73,6 +79,18 @@ fun initCommonLayout(
     if (text.size >= 6) {
         btn6.visibility = View.VISIBLE
         btn6.text = text[5]
+    }
+    if (text.size >= 7) {
+        btn7.visibility = View.VISIBLE
+        btn7.text = text[6]
+    }
+    if (text.size >= 8) {
+        btn8.visibility = View.VISIBLE
+        btn8.text = text[7]
+    }
+    if (text.size >= 9) {
+        btn9.visibility = View.VISIBLE
+        btn9.text = text[8]
     }
 }
 

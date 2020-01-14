@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2019/11/1
- * Desc:
+ * Desc:多布局
  */
 class TestMultiAdapterActivity : BaseActivity() {
 

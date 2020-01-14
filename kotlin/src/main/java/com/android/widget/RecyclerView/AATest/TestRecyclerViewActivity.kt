@@ -15,7 +15,8 @@ class TestRecyclerViewActivity : BaseActivity() {
     override fun handleView(savedInstanceState: Bundle?) {
         initCommonLayout(
             this, "RecyclerView",
-            "单一布局", "多布局", "头部Header", "尾部Footer", "下拉刷新和上拉加载更多"
+            "单一布局", "多布局", "头部Header", "尾部Footer", "下拉刷新和上拉加载更多",
+            "单一布局上拉加载更多", "多布局上拉加载更多"
         )
     }
 
@@ -36,7 +37,13 @@ class TestRecyclerViewActivity : BaseActivity() {
             startActivity(TestFooterAdapterActivity::class.java)
         }
         btn5.setOnClickListener {
-            startActivity(TestLoadMoreAdapterActivity::class.java)
+            startActivity(TestLoadMoreWrapperActivity::class.java)
+        }
+        btn6.setOnClickListener {
+            startActivity(TestSingleLoadMoreAdapterActivity::class.java)
+        }
+        btn7.setOnClickListener {
+            startActivity(TestMultiLoadMoreAdapterActivity::class.java)
         }
     }
 

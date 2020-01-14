@@ -68,12 +68,15 @@
         <activity android:name="com.android.widget.LineChart.TestLineChartActivity" />
         <activity android:name="com.android.widget.TestSingleWidgetActivity" />
         <activity android:name="com.android.widget.dialog.TestDialogActivity" />
+        <!--RecyclerView-->
         <activity android:name="com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestSingleAdapterActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestMultiAdapterActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestHeaderAdapterActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestFooterAdapterActivity" />
-        <activity android:name="com.android.widget.RecyclerView.AATest.TestLoadMoreAdapterActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestLoadMoreWrapperActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestSingleLoadMoreAdapterActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestMultiLoadMoreAdapterActivity" />
         <!--工具篇-->
         <activity android:name="com.android.util.TestUtilActivity" />
         <activity android:name="com.android.util.code.TestCodeUtilActivity" />

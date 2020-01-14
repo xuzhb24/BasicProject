@@ -20,7 +20,7 @@ abstract class BaseAdapter<T>(
 
     companion object {
         //增加setEmptyView的支持
-        val TYPE_EMPTY_VIEW = -1
+        private const val TYPE_EMPTY_VIEW = -1
     }
 
     private var mViewType: MultiViewType<T>? = null
@@ -75,7 +75,7 @@ abstract class BaseAdapter<T>(
         //设置item点击事件，通过adapter调用
         onItemClickListener?.let {
             holder.itemView.setOnClickListener {
-                onItemClickListener?.invoke(mDataList[position], position)
+                onItemClickListener!!.invoke(mDataList[position], position)
             }
         }
         //设置item长按事件，通过adapter调用

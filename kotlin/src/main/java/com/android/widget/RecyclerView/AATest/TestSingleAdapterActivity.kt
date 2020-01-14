@@ -7,7 +7,7 @@ import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2019/10/31
- * Desc:
+ * Desc:单一布局
  */
 class TestSingleAdapterActivity : BaseActivity() {
 

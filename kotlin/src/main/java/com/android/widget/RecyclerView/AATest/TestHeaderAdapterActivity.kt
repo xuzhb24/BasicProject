@@ -8,7 +8,7 @@ import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2019/11/17
- * Desc:
+ * Desc:头部Header
  */
 class TestHeaderAdapterActivity : BaseActivity() {
 

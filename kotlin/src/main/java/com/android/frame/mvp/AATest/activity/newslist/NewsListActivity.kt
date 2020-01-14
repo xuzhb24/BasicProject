@@ -40,7 +40,6 @@ class NewsListActivity : BaseCompatActivity<NewsListView, NewsListPresenter>(), 
         }
         //设置加载异常监听，如网络异常导致无法加载数据
         mLoadMoreAdapter.setOnLoadFailListener {
-            mLoadMoreAdapter.startLoading()
             mPresenter?.getNews(mCurrentPage)
         }
         (mLoadMoreAdapter.itemAdapter as NewsListAdapter).setOnItemClickListener { obj, position ->
@@ -55,7 +54,7 @@ class NewsListActivity : BaseCompatActivity<NewsListView, NewsListPresenter>(), 
     override fun refreshData() {
         mCurrentPage = 1
         mList.clear()
-        mLoadMoreAdapter.startLoading()
+        mLoadMoreAdapter.notifyDataSetChanged()
         mPresenter?.getNews(mCurrentPage)
     }
 
