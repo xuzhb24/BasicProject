@@ -60,7 +60,7 @@ abstract class BaseActivity : AppCompatActivity() {
     //弹出Toast
     fun showToast(
         text: CharSequence,
-        isCenter: Boolean = false,
+        isCenter: Boolean = true,
         longToast: Boolean = false,
         context: Context = BaseApplication.instance
     ) {

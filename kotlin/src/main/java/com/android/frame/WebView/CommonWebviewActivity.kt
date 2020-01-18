@@ -24,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_common_webview.*
  * Created by xuzhb on 2019/10/30
  * Desc:H5 Activity基类
  */
-class CommonWebviewActivity : BaseActivity() {
+open class CommonWebviewActivity : BaseActivity() {
 
     companion object {
         private const val TAG = "CommonWebviewActivity"
@@ -43,8 +43,8 @@ class CommonWebviewActivity : BaseActivity() {
     private var mTitle: String = ""
     private var mUrl: String = ""
 
-    private var mUploadMessageDown: ValueCallback<Uri>? = null
-    private var mUploadMessageUp: ValueCallback<Array<Uri>>? = null
+    private var mUploadMsg: ValueCallback<Uri>? = null
+    private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
 
     protected var mWebView: WebView? = null
 
@@ -56,127 +56,94 @@ class CommonWebviewActivity : BaseActivity() {
     override fun handleView(savedInstanceState: Bundle?) {
         mTitle = intent.getStringExtra(EXTRA_TITLE)
         mUrl = intent.getStringExtra(EXTRA_URL)
-//        showLoadingDialog()
+//        showLoadingDialog()  //显示加载框
         title_bar.titleText = mTitle
         createWebView()
         mWebView!!.loadUrl(mUrl)
         initWebView()
     }
 
-    override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            goPageBack()
-        }
-        if (BuildConfig.DEBUG) {
-            title_bar.setOnLongClickListener {
-                val url = mWebView?.url.toString()
-                KeyboardUtil.copyToClipboard(applicationContext, url)
-                showToast("${url}\n已复制到剪切板！")
-                true
-            }
-        }
-    }
-
-    override fun getLayoutId(): Int = R.layout.activity_common_webview
-
-    //back键控制网页后退
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event?.action == KeyEvent.ACTION_DOWN) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && mWebView!!.canGoBack()) {
-                mWebView!!.goBack()
-                return true
-            }
-        }
-        return super.onKeyDown(keyCode, event)
-    }
-
-    override fun onDestroy() {
-        destroyWebView()
-        super.onDestroy()
-    }
-
     //创建WebView
     private fun createWebView() {
-        val params = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        val params = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.LayoutParams.MATCH_PARENT
+        )
         mWebView = WebView(applicationContext)
         with(mWebView!!) {
             layoutParams = params
-            overScrollMode = WebView.OVER_SCROLL_NEVER
-            isVerticalScrollBarEnabled = false //不显示垂直滚动条
-            isHorizontalFadingEdgeEnabled = false  //不显示水平滚动条
+            overScrollMode = WebView.OVER_SCROLL_NEVER  //取消滑动到边缘时的波纹效果
+            isVerticalScrollBarEnabled = false    //不显示垂直滚动条
+            isHorizontalScrollBarEnabled = false  //不显示水平滚动条
         }
         web_ll.addView(mWebView)
-    }
-
-    //销毁WebView
-    private fun destroyWebView() {
-        mWebView?.let {
-            with(it) {
-                //加载null的内容
-                loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
-                //清除历史记录
-                clearHistory()
-
-                //先移除WebView再销毁WebView
-                (parent as ViewGroup).removeView(it)
-                it.destroy()
-            }
-            mWebView = null
-        }
-
     }
 
     //可以通过重写以下方法重新初始化WebView
     protected open fun initWebView() {
         mWebView?.let {
             with(it) {
-                settings.javaScriptEnabled = true
+                settings.javaScriptEnabled = true  //支持javascript
                 //解决H5页面中的图片不显示的问题
                 //安卓5.0之后，WebView默认不允许加载http与https混合内容，需要设置webview允许其加载混合网络协议内容
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                     settings.mixedContentMode = WebSettings.MIXED_CONTENT_ALWAYS_ALLOW
                 }
-                addJavascriptInterface(JavaScriptMethods(), "androidjs")
+                settings.textZoom = 100            //防止系统字体改变导致H5页面排版错乱
+                settings.domStorageEnabled = true  //支持html5的DomStorage
+                settings.cacheMode = WebSettings.LOAD_DEFAULT  //设置缓存模式，根据cache-control决定是否从网络上取数据
+                //支持缩放
+                settings.setSupportZoom(true)
+                settings.builtInZoomControls = true
+                settings.displayZoomControls = false  //隐藏缩放工具
+                settings.useWideViewPort = true       //支持meta标签的viewport属性
+                //自适应屏幕
+                settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
+                settings.loadWithOverviewMode = true
+                addJavascriptInterface(JavaScriptMethods(), "androidjs")  //js调用Android的方法
                 requestFocus()
-                settings.textZoom = 100  //防止系统字体改变导致H5页面排版错乱
-                settings.domStorageEnabled = true
-                settings.cacheMode = WebSettings.LOAD_DEFAULT
-                scrollBarStyle = View.SCROLLBARS_INSIDE_OVERLAY
-                webViewClient = object : WebViewClient() {
-                    override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                        LogUtil.i(TAG, "url===" + url)
-                        url?.let {
-                            if (!it.equals("about:blank", ignoreCase = true)) {
-                                if (it.startsWith("http://") or it.startsWith("https://")) {
-//                                    showLoadingDialog()
-                                    view?.loadUrl(url)
-                                }
+                initWebViewClient()
+                initWebChromeClient()
+            }
+        }
+    }
+
+    //可以通过重写以下方法改变WebView的setWebViewClient行为
+    protected open fun initWebViewClient() {
+        mWebView?.let {
+            it.webViewClient = object : WebViewClient() {
+                override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
+                    LogUtil.i(TAG, "url===" + url)
+                    url?.let {
+                        if (!it.equals("about:blank", ignoreCase = true)) {
+                            if (it.startsWith("http://") or it.startsWith("https://")) {
+//                                    showLoadingDialog()  //显示加载框
+                                view?.loadUrl(url)
+                            }
 //                                else if (url.equals("yeahkalepos://goback")) {
 //                                    goPageBack()
 //                                }
-                            }
                         }
-                        return true
                     }
-
-                    //页面加载结束时调用
-                    override fun onPageFinished(view: WebView?, url: String?) {
-//                        dismissLoadingDialog()
-                    }
-
-                    //加载页面的服务器出现错误时调用
-                    override fun onReceivedError(
-                        view: WebView?,
-                        errorCode: Int,
-                        description: String?,
-                        failingUrl: String?
-                    ) {
-//                        dismissLoadingDialog()
-//                        view?.loadUrl("file:///android_asset/html/error.html")
-                    }
-
+                    return true
                 }
-                initWebChromeClient()
+
+                //页面加载结束时调用
+                override fun onPageFinished(view: WebView?, url: String?) {
+//                        dismissLoadingDialog()  //取消加载框
+                }
+
+                //加载页面的服务器出现错误时调用
+                override fun onReceivedError(
+                    view: WebView?,
+                    errorCode: Int,
+                    description: String?,
+                    failingUrl: String?
+                ) {
+//                        dismissLoadingDialog()  //取消加载框
+//                        view?.loadUrl("file:///android_asset/html/error.html")
+                }
+
             }
         }
     }
@@ -186,27 +153,25 @@ class CommonWebviewActivity : BaseActivity() {
         mWebView?.let {
             it.webChromeClient = object : WebChromeClient() {
 
-                //Android 3.0+
+                //Android 3.0以下
                 fun openFileChooser(uploadMsg: ValueCallback<Uri>) {
-                    mUploadMessageDown = uploadMsg
-                    showImageChooseDialog()
+                    openFileChooser(uploadMsg, "")
                 }
 
-                //Android 3.0+
+                //Android 3.0 - 4.0
                 fun openFileChooser(
                     uploadMsg: ValueCallback<Uri>,
                     acceptType: String
                 ) {
-                    mUploadMessageDown = uploadMsg
-                    showImageChooseDialog()
+                    openFileChooser(uploadMsg, acceptType, "")
                 }
 
-                //Android 4.1
+                //Android 4.0 - 5.0
                 fun openFileChooser(
                     uploadMsg: ValueCallback<Uri>,
                     acceptType: String, capture: String
                 ) {
-                    mUploadMessageDown = uploadMsg
+                    mUploadMsg = uploadMsg
                     showImageChooseDialog()
                 }
 
@@ -216,7 +181,7 @@ class CommonWebviewActivity : BaseActivity() {
                     filePathCallback: ValueCallback<Array<Uri>>?,
                     fileChooserParams: FileChooserParams?
                 ): Boolean {
-                    mUploadMessageUp = filePathCallback
+                    mFilePathCallback = filePathCallback
                     showImageChooseDialog()
                     return true
                 }
@@ -246,21 +211,21 @@ class CommonWebviewActivity : BaseActivity() {
 //        dialog.setOnPicGetterListener(object : OnPicGetterListener {
 //            override fun onSuc(bitmap: Bitmap?, picPath: String?) {
 //                if (picPath == null) {
-//                    if (mUploadMessageUp != null) {
-//                        mUploadMessageUp!!.onReceiveValue(arrayOf())
-//                        mUploadMessageUp = null
-//                    } else if (mUploadMessageDown != null) {
-//                        mUploadMessageDown!!.onReceiveValue(null)
-//                        mUploadMessageDown = null
+//                    if (mFilePathCallback != null) {
+//                        mFilePathCallback!!.onReceiveValue(arrayOf())
+//                        mFilePathCallback = null
+//                    } else if (mUploadMsg != null) {
+//                        mUploadMsg!!.onReceiveValue(null)
+//                        mUploadMsg = null
 //                    }
 //                } else {
 //                    val result = Uri.fromFile(File(picPath))
-//                    if (mUploadMessageUp != null) {
-//                        mUploadMessageUp!!.onReceiveValue(arrayOf(result))
-//                        mUploadMessageUp = null
+//                    if (mFilePathCallback != null) {
+//                        mFilePathCallback!!.onReceiveValue(arrayOf(result))
+//                        mFilePathCallback = null
 //                    } else {
-//                        mUploadMessageDown!!.onReceiveValue(result)
-//                        mUploadMessageDown = null
+//                        mUploadMsg!!.onReceiveValue(result)
+//                        mUploadMsg = null
 //                    }
 //                }
 //            }
@@ -280,18 +245,32 @@ class CommonWebviewActivity : BaseActivity() {
     }
 
     private fun releaseUploadMessage() {
-        if (mUploadMessageUp != null) {
-            mUploadMessageUp!!.onReceiveValue(null)
-            mUploadMessageUp = null
+        if (mFilePathCallback != null) {
+            mFilePathCallback!!.onReceiveValue(null)
+            mFilePathCallback = null
         }
-        if (mUploadMessageDown != null) {
-            mUploadMessageDown!!.onReceiveValue(null)
-            mUploadMessageDown = null
+        if (mUploadMsg != null) {
+            mUploadMsg!!.onReceiveValue(null)
+            mUploadMsg = null
+        }
+    }
+
+    override fun initListener() {
+        title_bar.setOnLeftClickListener {
+            goPageBack()
+        }
+        if (BuildConfig.DEBUG) {
+            title_bar.setOnLongClickListener {
+                val url = mWebView?.url.toString()
+                KeyboardUtil.copyToClipboard(applicationContext, url)
+                showToast("${url}\n已复制到剪切板！")
+                true
+            }
         }
     }
 
     //返回操作
-    private fun goPageBack() {
+    protected open fun goPageBack() {
         if (mWebView != null && mWebView!!.canGoBack()) {
             mWebView!!.goBack()
         } else {
@@ -299,13 +278,47 @@ class CommonWebviewActivity : BaseActivity() {
         }
     }
 
+    override fun getLayoutId(): Int = R.layout.activity_common_webview
+
+    override fun onDestroy() {
+        destroyWebView()
+        super.onDestroy()
+    }
+
+    //销毁WebView
+    private fun destroyWebView() {
+        mWebView?.let {
+            with(it) {
+                //加载null的内容
+                loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
+                //清除历史记录
+                clearHistory()
+
+                //先移除WebView再销毁WebView
+                (parent as ViewGroup).removeView(it)
+                it.destroy()
+            }
+            mWebView = null
+        }
+
+    }
+
+    //back键控制网页后退
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (event?.action == KeyEvent.ACTION_DOWN) {
+            if (keyCode == KeyEvent.KEYCODE_BACK && mWebView!!.canGoBack()) {
+                mWebView!!.goBack()
+                return true
+            }
+        }
+        return super.onKeyDown(keyCode, event)
+    }
+
     inner class JavaScriptMethods {
         //返回首页
         @JavascriptInterface
         fun toHome() {
-            runOnUiThread {
-                startActivity(MainActivity::class.java)
-            }
+            startActivity(MainActivity::class.java)
         }
     }
 

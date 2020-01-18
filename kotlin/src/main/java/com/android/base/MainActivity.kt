@@ -105,7 +105,7 @@ class MainActivity : BaseActivity() {
     override fun onBackPressed() {
         val currentTimeMillis = System.currentTimeMillis()
         if (currentTimeMillis - mLastPressTime > 2 * 1000) {
-            showToast("再按一次退出程序")
+            showToast("再按一次退出程序", false)
         } else {
             super.onBackPressed()
         }
