@@ -2,8 +2,10 @@ package com.android.base
 
 import android.app.Activity
 import android.app.Application
+import com.squareup.leakcanary.BuildConfig
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
+import com.tencent.bugly.crashreport.CrashReport
 import java.util.*
 
 /**
@@ -31,6 +33,10 @@ class BaseApplication : Application() {
         instance = this
         refWatcher = initRefWatcher()
         mActivityStack = LinkedList()
+
+        /* Bugly start*/
+        CrashReport.initCrashReport(applicationContext, "4728a77b29", BuildConfig.DEBUG)
+        /* Bugly end*/
     }
 
     private fun initRefWatcher(): RefWatcher =
