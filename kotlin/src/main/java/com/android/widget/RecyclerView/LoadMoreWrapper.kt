@@ -18,20 +18,20 @@ class LoadMoreWrapper(
 ) : RecyclerView.Adapter<ViewHolder>() {
 
     companion object {
-        private const val TYPE_EMPTY_VIEW = -1;  //数据为空时的布局
-        private const val TYPE_FOOTER_VIEW = -2;  //脚布局
+        private const val TYPE_EMPTY_VIEW = -1   //数据为空时的布局
+        private const val TYPE_FOOTER_VIEW = -2  //脚布局
         //加载状态
-        private const val STATE_DEFAULT = 0    //默认状态
-        private const val STATE_LOADING = 1;   //加载中
-        private const val STATE_FAIL = 2  //加载失败，如网络异常
-        private const val STATE_END = 3;  //已加载全部数据
+        private const val STATE_DEFAULT = 0  //默认状态
+        private const val STATE_LOADING = 1  //加载中
+        private const val STATE_FAIL = 2     //加载失败，如网络异常
+        private const val STATE_END = 3      //已加载全部数据
     }
 
     @LayoutRes
     var emptyViewId: Int = R.layout.layout_empty_view  //通过ID设置空布局
-    var isEmptyViewEnable = true            //是否需要设置空布局，增加对setEmptyView的支持
+    var isEmptyViewEnable = true           //是否需要设置空布局，增加对setEmptyView的支持
     var isEmptyViewLoadMoreEnable = false  //空布局时是否也支持上拉加载更多
-    var showEndTip = true                   //是否显示加载到底没有更多数据的提示
+    var showEndTip = true                  //是否显示加载到底没有更多数据的提示
 
     var loadingTip: String = "正在努力加载..."    //设置加载中的文字提示
     var failTip: String = "加载失败，请点我重试"  //设置加载失败的文字提示
