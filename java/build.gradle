@@ -2,14 +2,24 @@
 apply plugin: 'com.android.application'  //Module独立运行
 
 android {
+    //配置自动签名
+    signingConfigs {
+        config {
+            storeFile file("../universal/BasicProject.jks")
+            storePassword '123456'
+            keyAlias = 'BasicProjectRelease'
+            keyPassword '123456'
+        }
+    }
+
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
     defaultConfig {
         applicationId "com.android.java"
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
-        versionCode 100001
-        versionName "1.0.0(001)"
+        versionCode 100002
+        versionName "1.0.0(002)"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         /* 极光start */
@@ -30,8 +40,37 @@ android {
 
     buildTypes {
         release {
+            zipAlignEnabled true
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config  //自动签名
+        }
+        debug {
+            debuggable true
+            jniDebuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config  //自动签名
+        }
+    }
+
+    //删除之前生成的APK
+    delete("../java/build/outputs/apk")
+    //修改生成的APK名字
+    applicationVariants.all { variant ->
+        variant.outputs.all { output ->
+            def outputFile = output.outputFile
+            def fileName    //apk文件名
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+//                def productFlavor = ""
+//                if (variant.productFlavors != null && variant.productFlavors.size() > 0) {
+//                    productFlavor = "${variant.productFlavors[0].name}"
+//                }
+//                fileName = "Java_${productFlavor}_${variant.buildType.name}_v${defaultConfig.versionName}.apk"
+                fileName = "Java_${variant.buildType.name}_v${defaultConfig.versionName}.apk"
+                outputFileName = fileName
+            }
         }
     }
 

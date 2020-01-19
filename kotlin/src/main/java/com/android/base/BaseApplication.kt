@@ -2,7 +2,7 @@ package com.android.base
 
 import android.app.Activity
 import android.app.Application
-import com.squareup.leakcanary.BuildConfig
+import com.android.basicproject.BuildConfig
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
 import com.tencent.bugly.crashreport.CrashReport

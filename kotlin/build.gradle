@@ -5,6 +5,16 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
+    //配置自动签名
+    signingConfigs {
+        config {
+            storeFile file("../universal/BasicProject.jks")
+            storePassword '123456'
+            keyAlias = 'BasicProjectRelease'
+            keyPassword '123456'
+        }
+    }
+
     compileSdkVersion compile_sdk_version
     buildToolsVersion build_tools_version
     defaultConfig {
@@ -24,29 +34,36 @@ android {
     }
     buildTypes {
         release {
+            zipAlignEnabled true
+            shrinkResources true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config  //自动签名
+        }
+        debug {
+            debuggable true
+            jniDebuggable true
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.config  //自动签名
         }
     }
-    //修改APK名字和存储路径
+
+    //删除之前生成的APK
+    delete("../kotlin/build/outputs/apk")
+    //修改生成的APK名字
     applicationVariants.all { variant ->
         variant.outputs.all { output ->
             def outputFile = output.outputFile
             def fileName    //apk文件名
-            def directory   //apk存储路径
             if (outputFile != null && outputFile.name.endsWith('.apk')) {
-//                if (variant.buildType.name.equals('release')) {  //release包
-//                    fileName = "BasicProject_release_v${defaultConfig.versionName}_${releaseTime()}.apk"
-//                    directory = new File(project.rootDir.absolutePath + "/outputs/release")
-//                } else if (variant.buildType.name.equals('debug')) {  //debug包
-//                    fileName = "BasicProject_debug_v${defaultConfig.versionName}_${releaseTime()}.apk"
-//                    directory = new File(project.rootDir.absolutePath + "/outputs/debug")
+//                def productFlavor = ""
+//                if (variant.productFlavors != null && variant.productFlavors.size() > 0) {
+//                    productFlavor = "${variant.productFlavors[0].name}"
 //                }
-//                fileName = "BasicProject_v${defaultConfig.versionName}_${releaseTime()}.apk"
-                fileName = "BasicProject_v${defaultConfig.versionName}.apk"
-                outputFileName = fileName  //修改apk名字
-//                directory = new File(project.rootDir.absolutePath + "/outputs")
-//                variant.getPackageApplication().outputDirectory = directory  //修改apk存储路径
+//                fileName = "Kotlin_${productFlavor}_${variant.buildType.name}_v${defaultConfig.versionName}.apk"
+                fileName = "Kotlin_${variant.buildType.name}_v${defaultConfig.versionName}.apk"
+                outputFileName = fileName
             }
         }
     }
