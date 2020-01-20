@@ -30,28 +30,29 @@ abstract class LoadMoreAdapter<T>(
         private const val STATE_END = 3;      //已加载全部数据
     }
 
-    @LayoutRes
-    var emptyViewId: Int = R.layout.layout_empty_view  //通过ID设置空布局
-    var isEmptyViewEnable = true            //是否需要设置空布局，增加对setEmptyView的支持
-    var isEmptyViewLoadMoreEnable = false  //空布局时是否也支持上拉加载更多
-    var showEndTip = true                   //是否显示加载到底没有更多数据的提示
-
-    var loadingTip: String = "正在努力加载..."    //设置加载中的文字提示
-    var failTip: String = "加载失败，请点我重试"  //设置加载失败的文字提示
-    var endTip: String = "没有更多数据了"         //设置加载到底时的文字提示
-
     private var mViewType: MultiViewType<T>? = null  //布局类型
-    private var mLoadState = STATE_DEFAULT          //当前加载状态
-        set(value) {  //设置上拉加载状态，同时刷新数据
-            field = value
-            notifyDataSetChanged()
-        }
 
     //实现多种Item布局，如添加头部Item和底部Item
     constructor(context: Context, data: MutableList<T>, viewType: MultiViewType<T>)
             : this(context, data, -1) {
         this.mViewType = viewType
     }
+
+    @LayoutRes
+    var emptyViewId: Int = R.layout.layout_empty_view  //通过ID设置空布局
+    var isEmptyViewEnable = true            //是否需要设置空布局，增加对setEmptyView的支持
+    var isEmptyViewLoadMoreEnable = false   //空布局时是否也支持上拉加载更多
+    var showEndTip = true                   //是否显示加载到底没有更多数据的提示
+
+    var loadingTip: String = "正在努力加载..."    //设置加载中的文字提示
+    var failTip: String = "加载失败，请点我重试"  //设置加载失败的文字提示
+    var endTip: String = "没有更多数据了"         //设置加载到底时的文字提示
+
+    private var mLoadState = STATE_DEFAULT           //当前加载状态
+        set(value) {  //设置上拉加载状态，同时刷新数据
+            field = value
+            notifyDataSetChanged()
+        }
 
     override fun getItemCount(): Int {
         if (isEmptyViewEnable && mDataList.size == 0) {  //无数据
@@ -150,13 +151,13 @@ abstract class LoadMoreAdapter<T>(
             }
             //绑定数据
             bindData(holder, mDataList[position], position)
-            //设置item点击事件，通过adapter调用
+            //设置Item点击事件，通过adapter调用
             onItemClickListener?.let {
                 holder.itemView.setOnClickListener {
                     onItemClickListener!!.invoke(mDataList[position], position)
                 }
             }
-            //设置item长按事件，通过adapter调用
+            //设置Item长按事件，通过adapter调用
             onItemLongClickListener?.let {
                 holder.itemView.setOnLongClickListener {
                     onItemLongClickListener!!.invoke(mDataList[position], position)
@@ -184,12 +185,14 @@ abstract class LoadMoreAdapter<T>(
     }
 
     private var mOnLoadFailListener: ((v: View) -> Unit)? = null
+
     //设置加载失败时点击重试
     fun setOnLoadFailListener(listener: (v: View) -> Unit) {
         this.mOnLoadFailListener = listener
     }
 
     private var mOnLoadMoreListener: (() -> Unit)? = null
+
     //监听上拉加载更多
     fun setOnLoadMoreListener(recyclerView: RecyclerView, listener: () -> Unit) {
         this.mOnLoadMoreListener = listener
@@ -199,6 +202,9 @@ abstract class LoadMoreAdapter<T>(
     private fun loadMore(recyclerView: RecyclerView) {
         recyclerView.addOnScrollListener(object : LoadMoreListener() {
             override fun onLoadMore() {
+                if (mDataList.size == 0 && (!isEmptyViewLoadMoreEnable || !isEmptyViewEnable)) {
+                    return  //如果无数据且设置了空布局时不能上拉加载更多，则不执行loadMore
+                }
                 if (mLoadState != STATE_LOADING) {
                     mLoadState = STATE_LOADING  //设置上拉时只加载一次
                     mOnLoadMoreListener?.invoke()
@@ -208,24 +214,25 @@ abstract class LoadMoreAdapter<T>(
     }
 
     //设置新数据
-    fun setData(newDataList: MutableList<T>) {
-        mDataList = newDataList
+    fun setData(dataList: MutableList<T>) {
+        mDataList = dataList
     }
 
     //添加数据
-    fun addData(newDataList: MutableList<T>) {
-        mDataList.addAll(newDataList)
+    fun addData(dataList: MutableList<T>) {
+        mDataList.addAll(dataList)
     }
 
-    //item点击事件
+    //Item点击事件
     private var onItemClickListener: ((obj: Any?, position: Int) -> Unit)? = null
-    //item长按事件
-    private var onItemLongClickListener: ((obj: Any?, position: Int) -> Boolean)? = null
 
     //设置Item点击事件，通过Adapter调用
     fun setOnItemClickListener(onItemClickListener: ((obj: Any?, position: Int) -> Unit)) {
         this.onItemClickListener = onItemClickListener
     }
+
+    //Item长按事件
+    private var onItemLongClickListener: ((obj: Any?, position: Int) -> Boolean)? = null
 
     //设置Item长按事件，通过Adapter调用
     fun setOnItemLongClickListener(onItemLongClickListener: ((obj: Any?, position: Int) -> Boolean)) {

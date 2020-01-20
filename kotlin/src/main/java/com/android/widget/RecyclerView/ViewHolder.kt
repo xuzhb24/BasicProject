@@ -36,22 +36,22 @@ open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
     //设置文本
     fun setText(viewId: Int, text: CharSequence): ViewHolder {
-        val view = getView<TextView>(viewId)
-        view?.text = text
-        return this //链式调用
+        val tv = getView<TextView>(viewId)
+        tv?.text = text
+        return this  //链式调用
     }
 
     //设置文本字体颜色
     fun setTextColor(viewId: Int, color: Int): ViewHolder {
-        val view = getView<TextView>(viewId)
-        view?.setTextColor(color)
+        val tv = getView<TextView>(viewId)
+        tv?.setTextColor(color)
         return this
     }
 
     //设置文本字体大小，单位默认为SP，故设置时只需要传递数值就可以，如setTextSize(R.id.xxx,15f)
     fun setTextSize(viewId: Int, textSize: Float): ViewHolder {
-        val view = getView<TextView>(viewId)
-        view?.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
+        val tv = getView<TextView>(viewId)
+        tv?.setTextSize(TypedValue.COMPLEX_UNIT_SP, textSize)
         return this
     }
 
@@ -99,22 +99,22 @@ open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         return this
     }
 
-    //设置控件的点击事件，通过ViewHolder调用
+    //设置子View的点击事件，通过ViewHolder调用
     fun setOnItemChildClickListener(viewId: Int, listener: (v: View) -> Unit) {
         getView<View>(viewId)?.setOnClickListener { v -> listener.invoke(v) }
     }
 
-    //设置控件的长按事件，通过ViewHolder调用
+    //设置子View的长按事件，通过ViewHolder调用
     fun setOnItemChildLongClickListener(viewId: Int, listener: (v: View) -> Boolean) {
         getView<View>(viewId)?.setOnLongClickListener { v -> listener.invoke(v) }
     }
 
-    //设置条目点击事件，通过ViewHolder调用
+    //设置Item点击事件，通过ViewHolder调用
     fun setOnItemClickListener(listener: (v: View) -> Unit) {
         itemView.setOnClickListener { v -> listener.invoke(v) }
     }
 
-    //设置条目长按事件，通过ViewHolder调用
+    //设置Item长按事件，通过ViewHolder调用
     fun setOnItemLongClickListener(listener: (v: View) -> Boolean) {
         itemView.setOnLongClickListener { v -> listener.invoke(v) }
     }

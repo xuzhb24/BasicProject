@@ -27,6 +27,16 @@ class LoadMoreWrapper(
         private const val STATE_END = 3      //已加载全部数据
     }
 
+    init {
+        try {
+            //继承至BaseAdapter的Adapter默认支持空布局显示，
+            //如果需要实现上拉加载更多，则需要取消掉被包装的Adapter默认支持空布局显示的属性
+            (itemAdapter as BaseAdapter<*>).isEmptyViewEnable = false
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+    }
+
     @LayoutRes
     var emptyViewId: Int = R.layout.layout_empty_view  //通过ID设置空布局
     var isEmptyViewEnable = true           //是否需要设置空布局，增加对setEmptyView的支持
@@ -42,55 +52,6 @@ class LoadMoreWrapper(
             field = value
             notifyDataSetChanged()
         }
-
-    //加载完成
-    fun loadMoreComplete() {
-        mLoadState = STATE_DEFAULT
-    }
-
-    //加载异常
-    fun loadMoreFail() {
-        mLoadState = STATE_FAIL
-    }
-
-    //加载到底，没有更多数据了
-    fun loadMoreEnd() {
-        mLoadState = STATE_END
-    }
-
-    private var mOnLoadFailListener: ((v: View) -> Unit)? = null
-    //设置加载失败时点击重试
-    fun setOnLoadFailListener(listener: (v: View) -> Unit) {
-        this.mOnLoadFailListener = listener
-    }
-
-    private var mOnLoadMoreListener: (() -> Unit)? = null
-    //监听上拉加载更多
-    fun setOnLoadMoreListener(recyclerView: RecyclerView, listener: () -> Unit) {
-        this.mOnLoadMoreListener = listener
-        loadMore(recyclerView)
-    }
-
-    private fun loadMore(recyclerView: RecyclerView) {
-        recyclerView.addOnScrollListener(object : LoadMoreListener() {
-            override fun onLoadMore() {
-                if (mLoadState != STATE_LOADING) {
-                    mLoadState = STATE_LOADING  //设置上拉时只加载一次
-                    mOnLoadMoreListener?.invoke()
-                }
-            }
-        })
-    }
-
-    init {
-        try {
-            //继承至BaseAdapter的Adapter默认支持空布局显示，
-            //如果需要实现上拉加载更多，则需要取消掉被包装的Adapter默认支持空布局显示的属性
-            (itemAdapter as BaseAdapter<*>).isEmptyViewEnable = false
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
 
     override fun getItemCount(): Int {
         if (isEmptyViewEnable && itemAdapter.itemCount == 0) {  //无数据
@@ -196,6 +157,50 @@ class LoadMoreWrapper(
 
             }
         }
+    }
+
+    //加载完成
+    fun loadMoreComplete() {
+        mLoadState = STATE_DEFAULT
+    }
+
+    //加载异常
+    fun loadMoreFail() {
+        mLoadState = STATE_FAIL
+    }
+
+    //加载到底，没有更多数据了
+    fun loadMoreEnd() {
+        mLoadState = STATE_END
+    }
+
+    private var mOnLoadFailListener: ((v: View) -> Unit)? = null
+
+    //设置加载失败时点击重试
+    fun setOnLoadFailListener(listener: (v: View) -> Unit) {
+        this.mOnLoadFailListener = listener
+    }
+
+    private var mOnLoadMoreListener: (() -> Unit)? = null
+
+    //监听上拉加载更多
+    fun setOnLoadMoreListener(recyclerView: RecyclerView, listener: () -> Unit) {
+        this.mOnLoadMoreListener = listener
+        loadMore(recyclerView)
+    }
+
+    private fun loadMore(recyclerView: RecyclerView) {
+        recyclerView.addOnScrollListener(object : LoadMoreListener() {
+            override fun onLoadMore() {
+                if (itemAdapter.itemCount == 0 && (!isEmptyViewLoadMoreEnable || !isEmptyViewEnable)) {
+                    return  //如果无数据且设置了空布局时不能上拉加载更多，则不执行loadMore
+                }
+                if (mLoadState != STATE_LOADING) {
+                    mLoadState = STATE_LOADING  //设置上拉时只加载一次
+                    mOnLoadMoreListener?.invoke()
+                }
+            }
+        })
     }
 
     private class FootViewHolder(view: View) : ViewHolder(view)
