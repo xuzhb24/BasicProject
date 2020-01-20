@@ -5,8 +5,8 @@ import com.android.java.BuildConfig;
 import com.tencent.bugly.crashreport.CrashReport;
 
 /**
- * Create by KD on 2020/1/19
- * 腾讯Bugly
+ * Create by xuzhb on 2020/1/19
+ * Desc:腾讯Bugly
  */
 public class BuglyUtil {
 

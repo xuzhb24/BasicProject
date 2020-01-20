@@ -1,20 +1,22 @@
 package com.android.widget.RecyclerView;
 
+import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.android.java.R;
 
+import java.util.ArrayList;
+
 /**
  * Create by xuzhb on 2020/1/20
- * Desc:使用装饰着模式实现上拉加载更多，目前支持LinearLayoutManager和GridLayoutManager
+ * Desc:上拉加载更多
  */
-public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public abstract class LoadMoreAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
 
     private static final int TYPE_EMPTY_VIEW = -1;   //数据为空时的布局
     private static final int TYPE_FOOTER_VIEW = -2;  //脚布局
@@ -24,17 +26,25 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private static final int STATE_FAIL = 2;     //加载失败，如网络异常
     private static final int STATE_END = 3;      //已加载全部数据
 
-    private RecyclerView.Adapter mItemAdapter;
+    private Context mContext;
+    private ArrayList<T> mDataList;      //数据列表
+    private int mLayoutId;               //对应的布局
+    private MultiViewType<T> mViewType;  //布局的类型
 
-    public LoadMoreWrapper(RecyclerView.Adapter itemAdapter) {
-        this.mItemAdapter = itemAdapter;
-        try {
-            //继承至BaseAdapter的Adapter默认支持空布局显示，
-            //如果需要实现上拉加载更多，则需要取消掉被包装的Adapter默认支持空布局显示的属性
-            ((BaseAdapter) mItemAdapter).setEmptyViewEnable(false);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+    //单布局的构造函数
+    public LoadMoreAdapter(Context context, ArrayList<T> dataList, int layoutId) {
+        this.mContext = context;
+        this.mDataList = dataList;
+        this.mLayoutId = layoutId;
+        this.mViewType = null;
+    }
+
+    //实现多种Item布局的构造函数，如添加头部Item和底部Item
+    public LoadMoreAdapter(Context context, ArrayList<T> dataList, MultiViewType<T> viewType) {
+        this.mContext = context;
+        this.mDataList = dataList;
+        this.mLayoutId = -1;
+        this.mViewType = viewType;
     }
 
     @LayoutRes
@@ -84,31 +94,37 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
 
     @Override
     public int getItemCount() {
-        if (isEmptyViewEnable && mItemAdapter.getItemCount() == 0) {  //无数据
+        if (isEmptyViewEnable && mDataList.size() == 0) {  //无数据
             if (isEmptyViewLoadMoreEnable) {  //设置了空布局时也支持上拉加载更多
                 return 2;  //1个是空布局，1个是上拉加载的脚布局
             } else {
                 return 1;  //空布局
             }
         }
-        return mItemAdapter.getItemCount() + 1;  //尾部的1表示脚布局
+        return mDataList.size() + 1;  //尾部的1表示脚布局
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (isEmptyViewEnable && mItemAdapter.getItemCount() == 0) {  //无数据
+        if (isEmptyViewEnable && mDataList.size() == 0) {  //无数据
             if (isEmptyViewLoadMoreEnable) {  //设置了空布局时也支持上拉加载更多
                 return (position + 1 == getItemCount()) ? TYPE_FOOTER_VIEW : TYPE_EMPTY_VIEW;
             } else {
                 return TYPE_EMPTY_VIEW;
             }
         }
-        return (position + 1 == getItemCount()) ? TYPE_FOOTER_VIEW : mItemAdapter.getItemViewType(position);
+        if (position + 1 == getItemCount()) {
+            return TYPE_FOOTER_VIEW;
+        }
+        if (mViewType != null) {
+            return mViewType.getLayoutId(mDataList.get(position), position, mDataList.size());
+        }
+        return position;  //如果没有使用多布局要返回position防止数据错乱
     }
 
     @NonNull
     @Override
-    public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == TYPE_EMPTY_VIEW) {
             View view = LayoutInflater.from(parent.getContext()).inflate(mEmptyViewId, parent, false);
             return new ViewHolder(view);
@@ -117,13 +133,17 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.layout_refresh_footer, parent, false);
             return new FootViewHolder(view);
         }
-        return mItemAdapter.onCreateViewHolder(parent, viewType);
+        //实现多种Item布局
+        if (mViewType != null) {
+            mLayoutId = viewType;
+        }
+        View view = LayoutInflater.from(mContext).inflate(mLayoutId, parent, false);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder viewHolder, int position) {
-        if (viewHolder instanceof FootViewHolder) {
-            FootViewHolder holder = (FootViewHolder) viewHolder;
+    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        if (holder instanceof FootViewHolder) {
             switch (mLoadState) {
                 case STATE_DEFAULT:  //默认状态
                     holder.setViewGone(R.id.loading_ll)
@@ -155,7 +175,7 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     if (mShowEndTip) {
                         holder.setViewVisible(R.id.end_fl)
                                 .setText(R.id.end_tv, mEndTip);
-                        if (isEmptyViewLoadMoreEnable && mItemAdapter.getItemCount() == 0) {
+                        if (isEmptyViewLoadMoreEnable && mDataList.size() == 0) {
                             //空布局时上拉重新加载，如果显示没有更多数据，则1秒后隐藏提示
                             new Handler().postDelayed(() -> {
                                 holder.setViewGone(R.id.end_fl);
@@ -167,28 +187,24 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     break;
             }
         } else {
-            mItemAdapter.onBindViewHolder(viewHolder, position);
+            if (mDataList.size() == 0) {
+                return;
+            }
+            //绑定数据
+            bindData(holder, mDataList.get(position), position);
+            //设置Item点击事件，通过adapter调用
+            if (mOnItemClickListener != null) {
+                holder.itemView.setOnClickListener(v -> mOnItemClickListener.onClick(mDataList.get(position), position));
+            }
+            //设置Item长按事件，通过adapter调用
+            if (mOnItemLongClickListener != null) {
+                holder.itemView.setOnLongClickListener(v -> mOnItemLongClickListener.onLongClick(mDataList.get(position), position));
+            }
         }
     }
 
-    @Override
-    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-        super.onAttachedToRecyclerView(recyclerView);
-        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
-        if (manager instanceof GridLayoutManager) {
-            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
-            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-                @Override
-                public int getSpanSize(int position) {
-                    //如果当前是footer的位置或者是空布局，那么该item占据2个单元格，正常情况下占据1个单元格
-                    //注意RecyclerView要先设置layoutManager再设置adapter
-                    return (getItemViewType(position) == TYPE_FOOTER_VIEW ||
-                            getItemViewType(position) == TYPE_EMPTY_VIEW
-                    ) ? gridManager.getSpanCount() : 1;
-                }
-            });
-        }
-    }
+    //绑定数据，由具体的adapter类实现
+    protected abstract void bindData(ViewHolder holder, T data, int position);
 
     //加载完成
     public void loadMoreComplete() {
@@ -232,7 +248,7 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
         recyclerView.addOnScrollListener(new LoadMoreListener() {
             @Override
             public void onLoadMore() {
-                if (mItemAdapter.getItemCount() == 0 && (!isEmptyViewLoadMoreEnable || !isEmptyViewEnable)) {
+                if (mDataList.size() == 0 && (!isEmptyViewLoadMoreEnable || !isEmptyViewEnable)) {
                     return;  //如果无数据且设置了空布局时不能上拉加载更多，则不执行loadMore
                 }
                 if (mOnLoadMoreListener != null) {
@@ -243,6 +259,40 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
             }
         });
+    }
+
+    //设置新数据
+    public void setData(ArrayList<T> dataList) {
+        mDataList = dataList;
+    }
+
+    //添加数据
+    public void addData(ArrayList<T> dataList) {
+        mDataList.addAll(dataList);
+    }
+
+    private OnItemClickListener mOnItemClickListener;
+
+    //Item点击事件
+    public interface OnItemClickListener {
+        void onClick(Object data, int position);
+    }
+
+    //设置Item点击事件，通过Adapter调用
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        this.mOnItemClickListener = listener;
+    }
+
+    private OnItemLongClickListener mOnItemLongClickListener;
+
+    //Item长按事件
+    public interface OnItemLongClickListener {
+        boolean onLongClick(Object data, int position);
+    }
+
+    //设置Item长按事件，通过Adapter调用
+    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+        this.mOnItemLongClickListener = listener;
     }
 
     private static class FootViewHolder extends ViewHolder {
