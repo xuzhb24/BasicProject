@@ -21,15 +21,18 @@ public class CommonLayoutUtil {
     }
 
     public static void initCommonLayout(Activity activity, String title, boolean showEditText, boolean showTextView, String... text) {
-        TitleBar titleBar = (TitleBar) activity.findViewById(R.id.title_bar);
-        EditText et = (EditText) activity.findViewById(R.id.et);
-        TextView tv = (TextView) activity.findViewById(R.id.tv);
-        Button btn1 = (Button) activity.findViewById(R.id.btn1);
-        Button btn2 = (Button) activity.findViewById(R.id.btn2);
-        Button btn3 = (Button) activity.findViewById(R.id.btn3);
-        Button btn4 = (Button) activity.findViewById(R.id.btn4);
-        Button btn5 = (Button) activity.findViewById(R.id.btn5);
-        Button btn6 = (Button) activity.findViewById(R.id.btn6);
+        TitleBar titleBar = activity.findViewById(R.id.title_bar);
+        EditText et = activity.findViewById(R.id.et);
+        TextView tv = activity.findViewById(R.id.tv);
+        Button btn1 = activity.findViewById(R.id.btn1);
+        Button btn2 = activity.findViewById(R.id.btn2);
+        Button btn3 = activity.findViewById(R.id.btn3);
+        Button btn4 = activity.findViewById(R.id.btn4);
+        Button btn5 = activity.findViewById(R.id.btn5);
+        Button btn6 = activity.findViewById(R.id.btn6);
+        Button btn7 = activity.findViewById(R.id.btn7);
+        Button btn8 = activity.findViewById(R.id.btn8);
+        Button btn9 = activity.findViewById(R.id.btn9);
         titleBar.setTitleText(title);
         titleBar.setOnLeftClickListener(new TitleBar.OnLeftClickListener() {
             @Override
@@ -45,6 +48,9 @@ public class CommonLayoutUtil {
         btn4.setVisibility(View.GONE);
         btn5.setVisibility(View.GONE);
         btn6.setVisibility(View.GONE);
+        btn7.setVisibility(View.GONE);
+        btn8.setVisibility(View.GONE);
+        btn9.setVisibility(View.GONE);
         if (showEditText) {
             et.setVisibility(View.VISIBLE);
         }
@@ -74,6 +80,18 @@ public class CommonLayoutUtil {
         if (text.length >= 6) {
             btn6.setVisibility(View.VISIBLE);
             btn6.setText(text[5]);
+        }
+        if (text.length >= 7) {
+            btn7.setVisibility(View.VISIBLE);
+            btn7.setText(text[6]);
+        }
+        if (text.length >= 8) {
+            btn8.setVisibility(View.VISIBLE);
+            btn8.setText(text[7]);
+        }
+        if (text.length >= 9) {
+            btn9.setVisibility(View.VISIBLE);
+            btn9.setText(text[8]);
         }
     }
 

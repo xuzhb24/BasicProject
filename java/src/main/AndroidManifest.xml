@@ -76,6 +76,7 @@
             android:launchMode="singleTop" />  <!--加上singleTop属性可以防止快速点击启动两个相同的Activity-->
         <!--测试Retrofit-->
         <activity android:name="com.android.frame.http.AATest.TestRetrofitActivity" />
+        <activity android:name="com.android.frame.http.AATest.WangYiNewsWebviewActivity" />
         <!--MVP框架-->
         <activity android:name="com.android.frame.mvp.AATest.activity.TestMvpActivity" />
         <activity android:name="com.android.frame.mvp.AATest.activity.weather.WeatherActivity" />
@@ -85,6 +86,15 @@
         <!--控件篇-->
         <activity android:name="com.android.widget.TestSingleWidgetActivity" />
         <activity android:name="com.android.widget.Dialog.TestDialogActivity" />
+        <!--RecyclerView-->
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestSingleAdapterActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestMultiAdapterActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestHeaderAdapterActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestFooterAdapterActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestLoadMoreWrapperActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestSingleLoadMoreAdapterActivity" />
+        <activity android:name="com.android.widget.RecyclerView.AATest.TestMultiLoadMoreAdapterActivity" />
         <!--工具篇-->
         <!--实现沉浸式状态栏-->
         <activity android:name="com.android.util.StatusBar.TestStatusBarUtilActivity" />

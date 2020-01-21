@@ -17,7 +17,7 @@ import com.android.java.R;
 public class ToastUtil {
 
     public static void showToast(CharSequence text) {
-        showToast(text, BaseApplication.getInstance().getApplicationContext(), false, false);
+        showToast(text, BaseApplication.getInstance().getApplicationContext(), true, false);
     }
 
     public static void showToast(CharSequence text, Context context, boolean isCenter, boolean longToast) {

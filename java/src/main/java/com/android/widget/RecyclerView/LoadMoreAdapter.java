@@ -4,13 +4,14 @@ import android.content.Context;
 import android.os.Handler;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import com.android.java.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create by xuzhb on 2020/1/20
@@ -27,12 +28,12 @@ public abstract class LoadMoreAdapter<T> extends RecyclerView.Adapter<ViewHolder
     private static final int STATE_END = 3;      //已加载全部数据
 
     private Context mContext;
-    private ArrayList<T> mDataList;      //数据列表
+    private List<T> mDataList;      //数据列表
     private int mLayoutId;               //对应的布局
     private MultiViewType<T> mViewType;  //布局的类型
 
     //单布局的构造函数
-    public LoadMoreAdapter(Context context, ArrayList<T> dataList, int layoutId) {
+    public LoadMoreAdapter(Context context, List<T> dataList, int layoutId) {
         this.mContext = context;
         this.mDataList = dataList;
         this.mLayoutId = layoutId;
@@ -40,7 +41,7 @@ public abstract class LoadMoreAdapter<T> extends RecyclerView.Adapter<ViewHolder
     }
 
     //实现多种Item布局的构造函数，如添加头部Item和底部Item
-    public LoadMoreAdapter(Context context, ArrayList<T> dataList, MultiViewType<T> viewType) {
+    public LoadMoreAdapter(Context context, List<T> dataList, MultiViewType<T> viewType) {
         this.mContext = context;
         this.mDataList = dataList;
         this.mLayoutId = -1;
@@ -206,6 +207,25 @@ public abstract class LoadMoreAdapter<T> extends RecyclerView.Adapter<ViewHolder
     //绑定数据，由具体的adapter类实现
     protected abstract void bindData(ViewHolder holder, T data, int position);
 
+    @Override
+    public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+        super.onAttachedToRecyclerView(recyclerView);
+        RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        if (manager instanceof GridLayoutManager) {
+            final GridLayoutManager gridManager = ((GridLayoutManager) manager);
+            gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+                @Override
+                public int getSpanSize(int position) {
+                    //如果当前是footer的位置或者是空布局，那么该item占据2个单元格，正常情况下占据1个单元格
+                    //注意RecyclerView要先设置layoutManager再设置adapter
+                    return (getItemViewType(position) == TYPE_FOOTER_VIEW ||
+                            getItemViewType(position) == TYPE_EMPTY_VIEW
+                    ) ? gridManager.getSpanCount() : 1;
+                }
+            });
+        }
+    }
+
     //加载完成
     public void loadMoreComplete() {
         setLoadState(STATE_DEFAULT);
@@ -253,7 +273,7 @@ public abstract class LoadMoreAdapter<T> extends RecyclerView.Adapter<ViewHolder
                 }
                 if (mOnLoadMoreListener != null) {
                     if (mLoadState != STATE_LOADING) {
-                        mLoadState = STATE_LOADING;  //设置上拉时只加载一次
+                        setLoadState(STATE_LOADING);  //设置上拉时只加载一次
                         mOnLoadMoreListener.onLoadMore();
                     }
                 }
@@ -262,12 +282,12 @@ public abstract class LoadMoreAdapter<T> extends RecyclerView.Adapter<ViewHolder
     }
 
     //设置新数据
-    public void setData(ArrayList<T> dataList) {
+    public void setData(List<T> dataList) {
         mDataList = dataList;
     }
 
     //添加数据
-    public void addData(ArrayList<T> dataList) {
+    public void addData(List<T> dataList) {
         mDataList.addAll(dataList);
     }
 

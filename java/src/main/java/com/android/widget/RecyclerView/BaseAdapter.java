@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import com.android.java.R;
 
-import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Create by xuzhb on 2020/1/20
@@ -20,12 +20,12 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     private static final int TYPE_EMPTY_VIEW = -1;  //增加setEmptyView的支持
 
     private Context mContext;
-    private ArrayList<T> mDataList;      //数据列表
+    private List<T> mDataList;      //数据列表
     private int mLayoutId;               //对应的布局
     private MultiViewType<T> mViewType;  //布局的类型
 
     //单布局的构造函数
-    public BaseAdapter(Context context, ArrayList<T> dataList, int layoutId) {
+    public BaseAdapter(Context context, List<T> dataList, int layoutId) {
         this.mContext = context;
         this.mDataList = dataList;
         this.mLayoutId = layoutId;
@@ -33,7 +33,7 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     }
 
     //实现多种Item布局的构造函数，如添加头部Item和底部Item
-    public BaseAdapter(Context context, ArrayList<T> dataList, MultiViewType<T> viewType) {
+    public BaseAdapter(Context context, List<T> dataList, MultiViewType<T> viewType) {
         this.mContext = context;
         this.mDataList = dataList;
         this.mLayoutId = -1;
@@ -108,13 +108,13 @@ public abstract class BaseAdapter<T> extends RecyclerView.Adapter<ViewHolder> {
     protected abstract void bindData(ViewHolder holder, T data, int position);
 
     //设置新数据
-    public void setData(ArrayList<T> dataList) {
+    public void setData(List<T> dataList) {
         mDataList = dataList;
         notifyDataSetChanged();
     }
 
     //添加数据
-    public void addData(ArrayList<T> dataList) {
+    public void addData(List<T> dataList) {
         mDataList.addAll(dataList);
 //        notifyDataSetChanged();  //全局刷新
         if (dataList.size() == 0 || mDataList.size() == dataList.size()) {

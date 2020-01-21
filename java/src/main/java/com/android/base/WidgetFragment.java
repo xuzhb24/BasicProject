@@ -10,6 +10,7 @@ import butterknife.Unbinder;
 import com.android.frame.mvc.BaseFragment;
 import com.android.java.R;
 import com.android.widget.Dialog.TestDialogActivity;
+import com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity;
 import com.android.widget.TestSingleWidgetActivity;
 
 /**
@@ -37,19 +38,23 @@ public class WidgetFragment extends BaseFragment {
         return R.layout.fragment_widget;
     }
 
-    @OnClick({R.id.popup_tv, R.id.piechart_tv, R.id.linechart_tv, R.id.dialog_tv, R.id.single_tv})
+    @OnClick({R.id.popup_tv, R.id.piechart_tv, R.id.linechart_tv, R.id.dialog_tv, R.id.recyclerview_tv,
+            R.id.single_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.popup_tv:
+            case R.id.popup_tv:  //通用PopupWindow
                 break;
-            case R.id.piechart_tv:
+            case R.id.piechart_tv:  //饼状图
                 break;
-            case R.id.linechart_tv:
+            case R.id.linechart_tv:  //曲线图/折线图
                 break;
-            case R.id.dialog_tv:
+            case R.id.dialog_tv:  //对话框
                 startActivity(TestDialogActivity.class);
                 break;
-            case R.id.single_tv:
+            case R.id.recyclerview_tv:  //RecyclerView组件
+                startActivity(TestRecyclerViewActivity.class);
+                break;
+            case R.id.single_tv:  //单一控件
                 startActivity(TestSingleWidgetActivity.class);
                 break;
         }

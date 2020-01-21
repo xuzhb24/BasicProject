@@ -3,6 +3,7 @@ package com.android.widget.RecyclerView
 import android.content.Context
 import android.os.Handler
 import android.support.annotation.LayoutRes
+import android.support.v7.widget.GridLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
@@ -168,6 +169,23 @@ abstract class LoadMoreAdapter<T>(
 
     //绑定数据，由具体的adapter类实现
     protected abstract fun bindData(holder: ViewHolder, data: T, position: Int)
+
+    override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
+        super.onAttachedToRecyclerView(recyclerView)
+        val manager = recyclerView.layoutManager
+        if (manager is GridLayoutManager) {
+            manager.spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
+                override fun getSpanSize(position: Int): Int {
+                    //如果当前是footer的位置或者是空布局，那么该item占据2个单元格，正常情况下占据1个单元格
+                    //注意RecyclerView要先设置layoutManager再设置adapter
+                    return if (getItemViewType(position) == TYPE_FOOTER_VIEW ||
+                        getItemViewType(position) == TYPE_EMPTY_VIEW
+                    ) manager.spanCount else 1
+                }
+
+            }
+        }
+    }
 
     //加载完成
     fun loadMoreComplete() {

@@ -21,9 +21,6 @@ class TestRecyclerViewActivity : BaseActivity() {
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
         btn1.setOnClickListener {
             startActivity(TestSingleAdapterActivity::class.java)
         }

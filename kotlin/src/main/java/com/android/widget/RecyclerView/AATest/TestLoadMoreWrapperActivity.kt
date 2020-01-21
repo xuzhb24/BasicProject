@@ -26,9 +26,8 @@ class TestLoadMoreWrapperActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
         private const val ONCE_LOAD_SIEE = 10
     }
 
-    private var mList: MutableList<NewsListBean.ResultBean> = mutableListOf()
-    private val mAdapter by lazy { TestLoadMoreWrapper(this, mList) }
-    private val mMoreAdapter by lazy { LoadMoreWrapper(mAdapter) }  //实现上拉加载更多
+    private var mList: MutableList<NewsListBean.ResultBean> = mutableListOf()  //后续通过mList更新数据
+    private val mMoreAdapter by lazy { LoadMoreWrapper(TestLoadMoreWrapper(this, mList)) }  //实现上拉加载更多
     private var mCurrentPage: Int = 1  //记录当前页面
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -60,15 +59,22 @@ class TestLoadMoreWrapperActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
         }
     }
 
+    override fun getLayoutId(): Int = R.layout.activity_test_adapter
+
+    //下拉刷新
+    override fun onRefresh() {
+        mCurrentPage = 1
+        mList.clear()
+        mMoreAdapter.notifyDataSetChanged()
+        queryData(mCurrentPage)
+    }
+
     //加载数据
     private fun queryData(page: Int) {
         RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.NEWS_URL)
             .getWangYiNewsByBody(page, ONCE_LOAD_SIEE)
             .compose(SchedulerUtil.ioToMain())
             .subscribe(object : Observer<NewsListBean> {
-                override fun onComplete() {
-                    endRefresh()
-                }
 
                 override fun onSubscribe(d: Disposable) {
                 }
@@ -87,6 +93,11 @@ class TestLoadMoreWrapperActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
                     showToast(ExceptionUtil.convertExceptopn(e))
                     e.printStackTrace()
                 }
+
+                override fun onComplete() {
+                    endRefresh()
+                }
+
             })
     }
 
@@ -104,16 +115,6 @@ class TestLoadMoreWrapperActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
     //加载异常
     private fun loadFail() {
         mMoreAdapter.loadMoreFail()
-    }
-
-    override fun getLayoutId(): Int = R.layout.activity_test_adapter
-
-    //下拉刷新
-    override fun onRefresh() {
-        mCurrentPage = 1
-        mList.clear()
-        mMoreAdapter.notifyDataSetChanged()
-        queryData(mCurrentPage)
     }
 
     //停止刷新，即收起刷新头部

@@ -73,6 +73,24 @@
             android:layout_marginTop="30dp"
             android:text="按钮六" />
 
+        <Button
+            android:id="@+id/btn7"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="按钮七" />
+
+        <Button
+            android:id="@+id/btn8"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="按钮八" />
+
+        <Button
+            android:id="@+id/btn9"
+            style="@style/ButtonStyle"
+            android:layout_marginTop="30dp"
+            android:text="按钮九" />
+
     </LinearLayout>
 
 </RelativeLayout>

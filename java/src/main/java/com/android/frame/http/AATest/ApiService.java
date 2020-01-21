@@ -47,4 +47,7 @@ public interface ApiService {
     @POST("getWangYiNews")
     Observable<NewsListBean> getWangYiNewsByBody(@Body RequestBody requestBody);
 
+    @POST("getWangYiNews")
+    Observable<NewsListBean> getWangYiNewsByBody(@Query("page") int page, @Query("count") int count);
+
 }

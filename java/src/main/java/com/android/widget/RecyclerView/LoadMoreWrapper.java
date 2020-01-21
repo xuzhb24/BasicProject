@@ -48,6 +48,10 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
     private String mEndTip = "没有更多数据了";
     private int mLoadState = STATE_DEFAULT;  //当前加载状态
 
+    public RecyclerView.Adapter getItemAdapter() {
+        return mItemAdapter;
+    }
+
     public void setEmptyViewId(int emptyViewId) {
         this.mEmptyViewId = emptyViewId;
     }
@@ -237,7 +241,7 @@ public class LoadMoreWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
                 if (mOnLoadMoreListener != null) {
                     if (mLoadState != STATE_LOADING) {
-                        mLoadState = STATE_LOADING;  //设置上拉时只加载一次
+                        setLoadState(STATE_LOADING);  //设置上拉时只加载一次
                         mOnLoadMoreListener.onLoadMore();
                     }
                 }

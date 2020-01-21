@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.KeyEvent;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.*;
@@ -114,7 +113,7 @@ public class CommonWebviewActivity extends BaseActivity {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 LogUtil.i(TAG, "url===" + url);
-                if ("about:blank".equalsIgnoreCase(url)) {
+                if (!"about:blank".equalsIgnoreCase(url)) {
                     if (url.startsWith("http://") || url.startsWith("https://")) {
 //                        showLoadingDialog();  //显示加载框
                         view.loadUrl(url);
@@ -215,7 +214,7 @@ public class CommonWebviewActivity extends BaseActivity {
     }
 
     //返回操作
-    private void goPageBack() {
+    protected void goPageBack() {
         if (mWebView != null && mWebView.canGoBack()) {
             mWebView.goBack();
         } else {

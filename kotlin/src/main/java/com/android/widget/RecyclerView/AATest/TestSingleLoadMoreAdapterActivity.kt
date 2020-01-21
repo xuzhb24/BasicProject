@@ -31,6 +31,7 @@ class TestSingleLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnR
     override fun handleView(savedInstanceState: Bundle?) {
         srl.setOnRefreshListener(this)  //下拉监听
         srl.setColorSchemeColors(resources.getColor(R.color.colorPrimaryDark))  //设置颜色
+//        rv.layoutManager = GridLayoutManager(this, 2)
         rv.adapter = mAdapter
         queryData(mCurrentPage)
     }
