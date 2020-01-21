@@ -6,7 +6,8 @@ import android.view.KeyEvent;
 import com.android.frame.WebView.CommonWebviewActivity;
 
 /**
- * Create by KD on 2020/1/21
+ * Create by xuzhb on 2020/1/21
+ * Desc
  */
 public class WangYiNewsWebviewActivity extends CommonWebviewActivity {
 

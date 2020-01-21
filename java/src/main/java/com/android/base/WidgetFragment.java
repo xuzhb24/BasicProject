@@ -10,6 +10,7 @@ import butterknife.Unbinder;
 import com.android.frame.mvc.BaseFragment;
 import com.android.java.R;
 import com.android.widget.Dialog.TestDialogActivity;
+import com.android.widget.PopupWindow.AATest.TestPopupWindowActivity;
 import com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity;
 import com.android.widget.TestSingleWidgetActivity;
 
@@ -43,6 +44,7 @@ public class WidgetFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.popup_tv:  //通用PopupWindow
+                startActivity(TestPopupWindowActivity.class);
                 break;
             case R.id.piechart_tv:  //饼状图
                 break;

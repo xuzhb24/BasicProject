@@ -6,7 +6,6 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.support.annotation.FloatRange
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import com.android.widget.ViewHolder
@@ -31,7 +30,6 @@ class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
     class Builder(private var mContext: Context) {
 
         private var mLayoutId: Int = -1          //弹窗的布局id
-        private var mView: View? = null          //弹窗的布局
         private var mWidth: Int = 0              //弹窗的宽度
         private var mHeight: Int = 0             //弹窗的高度
         private var mAlpha: Float = 1.0f        //背景透明度
@@ -43,7 +41,6 @@ class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
         //通过布局id设置弹窗布局的View
         fun setContentView(layoutId: Int): Builder {
             mLayoutId = layoutId
-            mView = null
             return this
         }
 
@@ -66,7 +63,7 @@ class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
             return this
         }
 
-        //设置Outside是否可点击
+        //设置外部区域是否可点击取消对话框
         fun setOutsideTouchable(touchable: Boolean): Builder {
             mTouchable = touchable
             return this
@@ -89,13 +86,9 @@ class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
             with(popupWindow) {
                 if (mLayoutId != -1) {
                     contentView = LayoutInflater.from(mContext).inflate(mLayoutId, null)
-                } else if (mView != null) {
-                    contentView = mView
                 } else {
                     throw IllegalArgumentException("The contentView of PopupWindow is null")
                 }
-
-                mOnViewListener?.invoke(ViewHolder(contentView), this)
 
                 if (mWidth == 0) {
                     width = ViewGroup.LayoutParams.WRAP_CONTENT
@@ -114,6 +107,8 @@ class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
                 setBackgroundDrawable(mBackgroundDrawable)
                 isOutsideTouchable = mTouchable
                 isFocusable = mTouchable
+
+                mOnViewListener?.invoke(ViewHolder(contentView), this)
             }
             return popupWindow
         }

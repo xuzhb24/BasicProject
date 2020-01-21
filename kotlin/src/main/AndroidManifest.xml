@@ -38,6 +38,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!--框架篇-->
         <!--测试内存泄漏-->
         <activity
@@ -59,9 +60,8 @@
         <activity android:name="com.android.frame.mvp.AATest.activity.TestMvpActivity" />
         <activity android:name="com.android.frame.mvp.AATest.activity.weather.WeatherActivity" />
         <activity android:name="com.android.frame.mvp.AATest.activity.newslist.NewsListActivity" />
+
         <!--控件篇-->
-        <!--实现沉浸式状态栏-->
-        <activity android:name="com.android.util.StatusBar.TestStatusBarUtilActivity" />
         <!--CommonPopupWindow使用例子-->
         <activity android:name="com.android.widget.PopupWindow.AATest.TestPopupWindowActivity" />
         <activity android:name="com.android.widget.PieChart.TestPieChartActivity" />
@@ -77,7 +77,10 @@
         <activity android:name="com.android.widget.RecyclerView.AATest.TestLoadMoreWrapperActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestSingleLoadMoreAdapterActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestMultiLoadMoreAdapterActivity" />
+
         <!--工具篇-->
+        <!--实现沉浸式状态栏-->
+        <activity android:name="com.android.util.StatusBar.TestStatusBarUtilActivity" />
         <activity android:name="com.android.util.TestUtilActivity" />
         <activity android:name="com.android.util.code.TestCodeUtilActivity" />
     </application>

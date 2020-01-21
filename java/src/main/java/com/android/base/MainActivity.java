@@ -123,6 +123,11 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    protected void initBar() {
+
+    }
+
+    @Override
     public void initListener() {
 
     }

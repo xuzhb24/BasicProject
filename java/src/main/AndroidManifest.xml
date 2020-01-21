@@ -69,6 +69,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <!--框架篇-->
         <!--测试内存泄漏-->
         <activity
@@ -83,7 +84,10 @@
         <activity android:name="com.android.frame.mvp.AATest.activity.newslist.NewsListActivity" />
         <!--通用WebView-->
         <activity android:name="com.android.frame.WebView.CommonWebviewActivity" />
+
         <!--控件篇-->
+        <!--CommonPopupWindow使用例子-->
+        <activity android:name="com.android.widget.PopupWindow.AATest.TestPopupWindowActivity" />
         <activity android:name="com.android.widget.TestSingleWidgetActivity" />
         <activity android:name="com.android.widget.Dialog.TestDialogActivity" />
         <!--RecyclerView-->
@@ -95,6 +99,7 @@
         <activity android:name="com.android.widget.RecyclerView.AATest.TestLoadMoreWrapperActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestSingleLoadMoreAdapterActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestMultiLoadMoreAdapterActivity" />
+
         <!--工具篇-->
         <!--实现沉浸式状态栏-->
         <activity android:name="com.android.util.StatusBar.TestStatusBarUtilActivity" />
