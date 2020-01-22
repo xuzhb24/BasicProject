@@ -6,6 +6,8 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
+import android.view.Gravity
+import android.view.View
 import android.widget.EditText
 import android.widget.LinearLayout
 import com.android.basicproject.R
@@ -39,6 +41,7 @@ class TestUtilActivity : BaseActivity() {
         const val TEST_SPUTIL = "TEST_SPUTIL"
         const val TEST_STRING = "TEST_STRING"
         const val TEST_NOTIFICATION = "TEST_NOTIFICATION"
+        const val TEST_CONTINUOUS_CLICK = "TEST_CONTINUOUS_CLICK"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -50,6 +53,7 @@ class TestUtilActivity : BaseActivity() {
             TEST_SPUTIL -> testSPUtil()
             TEST_STRING -> testStringUtil()
             TEST_NOTIFICATION -> testNotification()
+            TEST_CONTINUOUS_CLICK -> testContinuousClick()
         }
     }
 
@@ -317,6 +321,37 @@ class TestUtilActivity : BaseActivity() {
                 }
 
             })
+    }
+
+    private var mLastTime = 0L
+    //连续点击事件监听
+    private fun testContinuousClick() {
+        initCommonLayout(this, "连续点击", "连续点击", "连续点击(点击最大时间间隔2秒)", showTextView = true)
+        tv.gravity = Gravity.CENTER
+        btn1.setOnClickListener(object : OnMultiClickListener() {
+            override fun onMultiClick(v: View?, clickCount: Int) {
+                val currentTime = System.currentTimeMillis()
+                val sb = StringBuilder()
+                sb.append("点击次数:").append(clickCount).append("\n距离上次点击的时间间隔:")
+                    .append(currentTime - mLastTime).append("ms\n")
+                    .append("当前默认最大时间间隔:").append(getClickInterval()).append("ms")
+                tv.text = sb.toString()
+                mLastTime = currentTime
+            }
+        })
+        btn2.setOnClickListener(object : OnMultiClickListener() {
+            override fun onMultiClick(v: View?, clickCount: Int) {
+                val currentTime = System.currentTimeMillis()
+                val sb = StringBuilder()
+                sb.append("点击次数:").append(clickCount).append("\n距离上次点击的时间间隔:")
+                    .append(currentTime - mLastTime).append("ms\n")
+                    .append("当前默认最大时间间隔:").append(getClickInterval()).append("ms")
+                tv.text = sb.toString()
+                mLastTime = currentTime
+            }
+
+            override fun getClickInterval(): Int = 2000
+        })
     }
 
 }

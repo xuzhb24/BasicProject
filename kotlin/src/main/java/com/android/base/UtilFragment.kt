@@ -51,6 +51,10 @@ class UtilFragment : BaseFragment() {
         notification_tv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_NOTIFICATION)
         }
+        //连续点击事件监听
+        continuous_click_tv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CONTINUOUS_CLICK)
+        }
     }
 
     override fun initListener() {

@@ -58,6 +58,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="通知管理" />
 
+            <TextView
+                android:id="@+id/continuous_click_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="连续点击事件监听" />
+
         </LinearLayout>
     </ScrollView>
 
