@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.android.base.BaseApplication;
 import com.android.java.R;
+import com.android.util.ExtraUtil;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.widget.TitleBar;
@@ -26,6 +27,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         initBar();
         handleView(savedInstanceState);
         initListener();
+        ExtraUtil.getTopActivityName(this);
     }
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
@@ -62,20 +64,14 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
     public void showToast(String text) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ToastUtil.showToast(text);
-            }
+        runOnUiThread(() -> {
+            ToastUtil.showToast(text);
         });
     }
 
     public void showToast(String text, boolean longToast, boolean isCenter) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                ToastUtil.showToast(text, BaseApplication.getInstance(), longToast, isCenter);
-            }
+        runOnUiThread(() -> {
+            ToastUtil.showToast(text, BaseApplication.getInstance(), longToast, isCenter);
         });
     }
 

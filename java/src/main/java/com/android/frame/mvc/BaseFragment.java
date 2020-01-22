@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import com.android.base.BaseApplication;
+import com.android.util.ExtraUtil;
 
 /**
  * Created by xuzhb on 2019/10/19
@@ -49,6 +50,7 @@ public abstract class BaseFragment extends Fragment {
         initBar();
         handleView(savedInstanceState);
         initListener();
+        ExtraUtil.getTopActivityName(mActivity);
     }
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
