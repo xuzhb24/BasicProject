@@ -3,6 +3,7 @@ package com.android.util;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.os.Handler;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -22,6 +23,18 @@ public class KeyboardUtil {
         if (manager != null) {
             manager.showSoftInput(view, 0);
         }
+    }
+
+    //延迟弹出软键盘，默认延迟200ms
+    public static void showSoftInputDelay(Context context, View view) {
+        showSoftInputDelay(context, view, 200);
+    }
+
+    //延迟弹出软键盘
+    public static void showSoftInputDelay(Context context, View view, long delay) {
+        new Handler().postDelayed(() -> {
+            showSoftInput(context, view);
+        }, delay);
     }
 
     //收起软键盘

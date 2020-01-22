@@ -12,6 +12,7 @@ import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.util.CommonLayoutUtil;
 import com.android.util.DrawableUtil;
+import com.android.util.KeyboardUtil;
 import com.android.util.SizeUtil;
 import com.android.widget.TitleBar;
 
@@ -141,6 +142,7 @@ public class TestDialogActivity extends BaseActivity {
                             dialog.dismiss();
                         }
                     });
+                    KeyboardUtil.showSoftInputDelay(this, commentEt);
                 }))
                 .showAtBottom(getSupportFragmentManager());
     }
