@@ -7,6 +7,8 @@ import android.net.ConnectivityManager;
 import android.net.TrafficStats;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
@@ -38,6 +40,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_NOTIFICATION = "TEST_NOTIFICATION";
     public static final String TEST_TRAFFICSTATS = "TEST_TRAFFICSTATS";
     public static final String TEST_NETWORK_STATS = "TEST_NETWORK_STATS";
+    public static final String TEST_CONTINUOUS_CLICK = "TEST_CONTINUOUS_CLICK";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -81,6 +84,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_NETWORK_STATS:
                 testNetworkStats();
+                break;
+            case TEST_CONTINUOUS_CLICK:
+                testContinuousClick();
                 break;
         }
     }
@@ -286,6 +292,7 @@ public class TestUtilActivity extends BaseActivity {
         return String.format("%.2f", (value / 1024f / 1024f));
     }
 
+    //流量统计
     private void testNetworkStats() {
         CommonLayoutUtil.initCommonLayout(this, "NetworkStatsManager", false, true,
                 "流量统计", "已安装应用流量统计", "已安装应用流量排行", "是否有权限", "跳转权限申请页面");
@@ -359,6 +366,45 @@ public class TestUtilActivity extends BaseActivity {
         });
         btn5.setOnClickListener(v -> {
             NetworkStatsHelper.requestReadNetworkStats();
+        });
+    }
+
+
+    private long mLastClickTime = 0;
+
+    //连续点击事件监听
+    private void testContinuousClick() {
+        CommonLayoutUtil.initCommonLayout(this, "连续点击", false, true,
+                "连续点击", "连续点击(点击最大时间间隔2秒)");
+        tv.setGravity(Gravity.CENTER);
+        btn1.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v, int clickCount) {
+                long currentClickTime = System.currentTimeMillis();
+                StringBuilder sb = new StringBuilder();
+                sb.append("点击次数:").append(clickCount).append("\n距离上次点击的时间间隔:")
+                        .append(currentClickTime - mLastClickTime).append("ms\n")
+                        .append("当前默认最大时间间隔:").append(getClickInterval()).append("ms");
+                tv.setText(sb.toString());
+                mLastClickTime = currentClickTime;
+            }
+        });
+        btn2.setOnClickListener(new OnMultiClickListener() {
+            @Override
+            public void onMultiClick(View v, int clickCount) {
+                long currentClickTime = System.currentTimeMillis();
+                StringBuilder sb = new StringBuilder();
+                sb.append("点击次数:").append(clickCount).append("\n距离上次点击的时间间隔:")
+                        .append(currentClickTime - mLastClickTime).append("ms\n")
+                        .append("当前默认最大时间间隔:").append(getClickInterval()).append("ms");
+                tv.setText(sb.toString());
+                mLastClickTime = currentClickTime;
+            }
+
+            @Override
+            protected int getClickInterval() {
+                return 2000;
+            }
         });
     }
 
