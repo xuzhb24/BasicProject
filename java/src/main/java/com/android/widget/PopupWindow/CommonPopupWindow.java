@@ -17,18 +17,21 @@ import com.android.widget.ViewHolder;
  */
 public class CommonPopupWindow extends PopupWindow {
 
-    private static WindowHelper mWindowHelper;
+    private WindowHelper mWindowHelper;
 
     public CommonPopupWindow(Context context) {
         super(context);
-        mWindowHelper = new WindowHelper((Activity) context);
+        if (context instanceof Activity) {
+            mWindowHelper = new WindowHelper((Activity) context);
+        }
     }
 
     @Override
     public void dismiss() {
         super.dismiss();
-        mWindowHelper.setBackGroundAlpha(1.0f);
-        mWindowHelper = null;
+        if (mWindowHelper != null) {
+            mWindowHelper.setBackGroundAlpha(1.0f);
+        }
     }
 
     public static class Builder {
@@ -109,7 +112,10 @@ public class CommonPopupWindow extends PopupWindow {
             } else {
                 popupWindow.setHeight(mHeight);
             }
-            mWindowHelper.setBackGroundAlpha(mAlpha);
+            if (mContext instanceof Activity) {
+                WindowHelper helper = new WindowHelper((Activity) mContext);
+                helper.setBackGroundAlpha(mAlpha);
+            }
             if (mAnimationStyle != -1) {
                 popupWindow.setAnimationStyle(mAnimationStyle);
             }
