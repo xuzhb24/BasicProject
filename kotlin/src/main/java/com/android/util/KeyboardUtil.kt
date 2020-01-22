@@ -3,6 +3,7 @@ package com.android.util
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
+import android.os.Handler
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 
@@ -21,6 +22,11 @@ object KeyboardUtil {
         }
         val manager = context.applicationContext.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
         manager?.showSoftInput(view, 0)
+    }
+
+    //延迟弹出软键盘，默认延迟200ms
+    fun showSoftInputDelay(context: Context, view: View, delay: Long = 200L) {
+        Handler().postDelayed({ showSoftInput(context, view) }, delay)
     }
 
     //收起软件盘

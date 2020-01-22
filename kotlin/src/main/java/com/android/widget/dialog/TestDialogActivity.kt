@@ -2,7 +2,6 @@ package com.android.widget.dialog
 
 import android.graphics.Color
 import android.os.Bundle
-import android.os.Handler
 import android.text.TextUtils
 import android.view.WindowManager
 import android.widget.EditText
@@ -118,9 +117,7 @@ class TestDialogActivity : BaseActivity() {
                         dialog.dismiss()
                     }
                 }
-                Handler().postDelayed({
-                    KeyboardUtil.showSoftInput(this, commentEt)
-                }, 200)
+                KeyboardUtil.showSoftInputDelay(this, commentEt)
             }
             .showAtBottom(supportFragmentManager)
     }
