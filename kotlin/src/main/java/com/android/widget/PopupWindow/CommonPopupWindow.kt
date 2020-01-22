@@ -16,17 +16,20 @@ import com.android.widget.ViewHolder
  */
 class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
 
-    private val mWindowHelper: WindowHelper
+    private var mWindowHelper: WindowHelper? = null
 
     init {
-        mWindowHelper = WindowHelper(context as Activity)
+        if (context is Activity) {
+            mWindowHelper = WindowHelper(context)
+        }
     }
 
     override fun dismiss() {
         super.dismiss()
-        mWindowHelper.setBackGroundAlpha(1.0f)
+        mWindowHelper?.setBackGroundAlpha(1.0f)
     }
 
+    //默认静态内部类，如果加上inner，即inner class则是非静态内部类
     class Builder(private var mContext: Context) {
 
         private var mLayoutId: Int = -1          //弹窗的布局id
@@ -100,7 +103,7 @@ class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
                 } else {
                     height = mHeight
                 }
-                mWindowHelper.setBackGroundAlpha(mAlpha)
+                mWindowHelper?.setBackGroundAlpha(mAlpha)
                 if (mAnimationStyle != -1) {
                     animationStyle = mAnimationStyle
                 }
