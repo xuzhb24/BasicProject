@@ -1,5 +1,6 @@
 package com.android.widget.dialog
 
+import android.app.Dialog
 import android.os.Bundle
 import android.support.annotation.FloatRange
 import android.support.annotation.LayoutRes
@@ -34,7 +35,7 @@ abstract class BaseDialog : DialogFragment() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(mLayoutId, container, false)
-        convertView(ViewHolder(view), this)  //获取dialog布局的控件
+        convertView(ViewHolder(view), dialog)  //获取dialog布局的控件
         return view
     }
 
@@ -120,6 +121,6 @@ abstract class BaseDialog : DialogFragment() {
     abstract fun getLayoutId(): Int
 
     //处理dialog布局上的控件
-    abstract fun convertView(holder: ViewHolder, dialog: BaseDialog)
+    abstract fun convertView(holder: ViewHolder, dialog: Dialog)
 
 }

@@ -2,12 +2,14 @@ package com.android.widget.dialog
 
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Handler
 import android.text.TextUtils
 import android.view.WindowManager
 import android.widget.EditText
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
 import com.android.util.DrawableUtil
+import com.android.util.KeyboardUtil
 import com.android.util.SizeUtil
 import com.android.util.initCommonLayout
 import kotlinx.android.synthetic.main.activity_common_layout.*
@@ -116,6 +118,9 @@ class TestDialogActivity : BaseActivity() {
                         dialog.dismiss()
                     }
                 }
+                Handler().postDelayed({
+                    KeyboardUtil.showSoftInput(this, commentEt)
+                }, 200)
             }
             .showAtBottom(supportFragmentManager)
     }
@@ -126,6 +131,7 @@ class TestDialogActivity : BaseActivity() {
             .setLayoutId(R.layout.layout_coupon_dialog)
             .setOnViewListener { holder, dialog ->
                 holder.setOnClickListener(R.id.return_tv) {
+                    showToast("领取成功！")
                     dialog.dismiss()
                 }
             }
