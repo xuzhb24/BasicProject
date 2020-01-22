@@ -1,5 +1,6 @@
 package com.android.widget.Dialog;
 
+import android.app.Dialog;
 import android.support.annotation.LayoutRes;
 import com.android.widget.ViewHolder;
 
@@ -33,14 +34,14 @@ public class CommonDialog extends BaseDialog {
     }
 
     @Override
-    public void convertView(ViewHolder holder, BaseDialog dialog) {
+    public void convertView(ViewHolder holder, Dialog dialog) {
         if (mListener != null) {
             mListener.convertView(holder, dialog);
         }
     }
 
     public interface OnViewListener {
-        void convertView(ViewHolder holder, BaseDialog dialog);
+        void convertView(ViewHolder holder, Dialog dialog);
     }
 
 }

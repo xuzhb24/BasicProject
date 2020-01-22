@@ -1,8 +1,8 @@
 package com.android.widget.Dialog;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.view.View;
 import com.android.java.R;
 import com.android.widget.ViewHolder;
 
@@ -107,7 +107,7 @@ public class ConfirmDialog extends BaseDialog {
     }
 
     @Override
-    public void convertView(ViewHolder holder, final BaseDialog dialog) {
+    public void convertView(ViewHolder holder, final Dialog dialog) {
         holder.setText(R.id.title_tv, mTitle)
                 .setText(R.id.content_tv, mContent)
                 .setText(R.id.confirm_tv, mConfirmText);
@@ -118,29 +118,23 @@ public class ConfirmDialog extends BaseDialog {
                     .setViewGone(R.id.vertical_view);
         }
         if (mOnConfirmListener != null) {
-            holder.setOnClickListener(R.id.confirm_tv, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mOnConfirmListener.onConfirm(dialog);
-                }
+            holder.setOnClickListener(R.id.confirm_tv, v -> {
+                mOnConfirmListener.onConfirm(dialog);
             });
         }
         if (mOnCancelListener != null) {
-            holder.setOnClickListener(R.id.cancel_tv, new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    mOnCancelListener.onCancel(dialog);
-                }
+            holder.setOnClickListener(R.id.cancel_tv, v -> {
+                mOnCancelListener.onCancel(dialog);
             });
         }
     }
 
     public interface OnConfirmListener {
-        void onConfirm(BaseDialog dialog);
+        void onConfirm(Dialog dialog);
     }
 
     public interface OnCancelListener {
-        void onCancel(BaseDialog dialog);
+        void onCancel(Dialog dialog);
     }
 
 }

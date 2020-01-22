@@ -1,5 +1,6 @@
 package com.android.widget.Dialog;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.support.annotation.*;
 import android.support.v4.app.DialogFragment;
@@ -35,7 +36,7 @@ public abstract class BaseDialog extends DialogFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(mLayoutId, container, false);
-        convertView(new ViewHolder(view), this);  //获取dialog布局的控件
+        convertView(new ViewHolder(view), getDialog());  //获取dialog布局的控件
         return view;
     }
 
@@ -121,7 +122,7 @@ public abstract class BaseDialog extends DialogFragment {
     public abstract int getLayoutId();
 
     //处理dialog布局上的控件
-    public abstract void convertView(ViewHolder holder, BaseDialog dialog);
+    public abstract void convertView(ViewHolder holder, Dialog dialog);
 
 }
 

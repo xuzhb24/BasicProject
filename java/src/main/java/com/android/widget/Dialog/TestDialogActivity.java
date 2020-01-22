@@ -14,7 +14,6 @@ import com.android.util.CommonLayoutUtil;
 import com.android.util.DrawableUtil;
 import com.android.util.SizeUtil;
 import com.android.widget.TitleBar;
-import com.android.widget.ViewHolder;
 
 /**
  * Created by xuzhb on 2019/10/21
@@ -72,12 +71,9 @@ public class TestDialogActivity extends BaseActivity {
                 .setTitle("警告")
                 .setContent("对不起审核不通过！")
                 .setConfirmText("我知道了")
-                .setOnConfirmListener(new ConfirmDialog.OnConfirmListener() {
-                    @Override
-                    public void onConfirm(BaseDialog dialog) {
-                        dialog.dismiss();
-                        showToast("确定");
-                    }
+                .setOnConfirmListener(dialog -> {
+                    dialog.dismiss();
+                    showToast("确定");
                 })
                 .setCancelVisible(false)
                 .setDimAmount(0.6f)
@@ -89,19 +85,13 @@ public class TestDialogActivity extends BaseActivity {
     //双按钮Dialog
     private void showMultiDialog() {
         ConfirmDialog.newInstance("提示", "提交成功！", "确定", "取消", true)
-                .setOnConfirmListener(new ConfirmDialog.OnConfirmListener() {
-                    @Override
-                    public void onConfirm(BaseDialog dialog) {
-                        dialog.dismiss();
-                        showToast("确定");
-                    }
+                .setOnConfirmListener(dialog -> {
+                    dialog.dismiss();
+                    showToast("确定");
                 })
-                .setOnCancelListener(new ConfirmDialog.OnCancelListener() {
-                    @Override
-                    public void onCancel(BaseDialog dialog) {
-                        dialog.dismiss();
-                        showToast("取消");
-                    }
+                .setOnCancelListener(dialog -> {
+                    dialog.dismiss();
+                    showToast("取消");
                 })
                 .setOutsideCancelable(true)
                 .setHorizontalMargin((int) SizeUtil.dp2px(60))
@@ -112,37 +102,22 @@ public class TestDialogActivity extends BaseActivity {
     private void showShareDialog() {
         CommonDialog.newInstance()
                 .setLayoutId(R.layout.layout_share_dialog)
-                .setOnViewListener(new CommonDialog.OnViewListener() {
-                    @Override
-                    public void convertView(ViewHolder holder, BaseDialog dialog) {
-                        holder.setOnClickListener(R.id.weixin_tv, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                showToast("微信");
-                                dialog.dismiss();
-                            }
-                        });
-                        holder.setOnClickListener(R.id.qq_tv, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                showToast("QQ");
-                                dialog.dismiss();
-                            }
-                        });
-                        holder.setOnClickListener(R.id.weibo_tv, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                showToast("微博");
-                                dialog.dismiss();
-                            }
-                        });
-                        holder.setOnClickListener(R.id.cancel_tv, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                    }
+                .setOnViewListener((holder, dialog) -> {
+                    holder.setOnClickListener(R.id.weixin_tv, v -> {
+                        showToast("微信");
+                        dialog.dismiss();
+                    });
+                    holder.setOnClickListener(R.id.qq_tv, v -> {
+                        showToast("QQ");
+                        dialog.dismiss();
+                    });
+                    holder.setOnClickListener(R.id.weibo_tv, v -> {
+                        showToast("微博");
+                        dialog.dismiss();
+                    });
+                    holder.setOnClickListener(R.id.cancel_tv, v -> {
+                        dialog.dismiss();
+                    });
                 })
                 .setDimAmount(0.3f)
                 .setAnimationStyle(R.style.AnimUp)
@@ -153,26 +128,20 @@ public class TestDialogActivity extends BaseActivity {
     private void showCommentDialog() {
         CommonDialog.newInstance()
                 .setLayoutId(R.layout.layout_comment_dialog)
-                .setOnViewListener(new CommonDialog.OnViewListener() {
-                    @Override
-                    public void convertView(ViewHolder holder, BaseDialog dialog) {
-                        EditText commentEt = holder.getView(R.id.comment_et);
-                        commentEt.setBackground(DrawableUtil.createSolidShape(
-                                SizeUtil.dp2px(10f), Color.parseColor("#e6e6e6")));
-                        holder.setOnClickListener(R.id.send_tv, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                String text = commentEt.getText().toString().trim();
-                                if (TextUtils.isEmpty(text)) {
-                                    showToast("请输入文字！");
-                                } else {
-                                    showToast(text);
-                                    dialog.dismiss();
-                                }
-                            }
-                        });
-                    }
-                })
+                .setOnViewListener(((holder, dialog) -> {
+                    EditText commentEt = holder.getView(R.id.comment_et);
+                    commentEt.setBackground(DrawableUtil.createSolidShape(
+                            SizeUtil.dp2px(10f), Color.parseColor("#e6e6e6")));
+                    holder.setOnClickListener(R.id.send_tv, v -> {
+                        String text = commentEt.getText().toString().trim();
+                        if (TextUtils.isEmpty(text)) {
+                            showToast("请输入文字！");
+                        } else {
+                            showToast(text);
+                            dialog.dismiss();
+                        }
+                    });
+                }))
                 .showAtBottom(getSupportFragmentManager());
     }
 
@@ -180,17 +149,12 @@ public class TestDialogActivity extends BaseActivity {
     private void showCouponDialog() {
         CommonDialog.newInstance()
                 .setLayoutId(R.layout.layout_coupon_dialog)
-                .setOnViewListener(new CommonDialog.OnViewListener() {
-                    @Override
-                    public void convertView(ViewHolder holder, BaseDialog dialog) {
-                        holder.setOnClickListener(R.id.return_tv, new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                    }
-                })
+                .setOnViewListener(((holder, dialog) -> {
+                    holder.setOnClickListener(R.id.return_tv, v -> {
+                        showToast("领取成功！");
+                        dialog.dismiss();
+                    });
+                }))
                 .setDimAmount(0.5f)
                 .show(getSupportFragmentManager());
     }
