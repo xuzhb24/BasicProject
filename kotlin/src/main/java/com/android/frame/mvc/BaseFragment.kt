@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import com.android.base.BaseApplication
 import com.android.basicproject.R
 import com.android.util.StatusBar.StatusBarUtil
+import com.android.util.getTopActivityName
 import com.android.widget.TitleBar
 
 /**
@@ -42,6 +43,7 @@ abstract class BaseFragment : Fragment() {
         initBar()
         handleView(savedInstanceState)
         initListener()
+        getTopActivityName(mActivity!!)
     }
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
