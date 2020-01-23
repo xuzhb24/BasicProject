@@ -62,4 +62,6 @@ dependencies {
     api 'com.tencent.bugly:crashreport:3.1.0'
     //Bugly NDK
     api 'com.tencent.bugly:nativecrashreport:3.7.1'
+    //图片裁剪框架uCrop
+    api 'com.yalantis:ucrop:2.2.0'
 }

@@ -159,6 +159,12 @@
  }
 #---------------------------------banner end---------------------------------
 
+#---------------------------------uCrop start---------------------------------
+-dontwarn com.yalantis.ucrop**
+-keep class com.yalantis.ucrop** { *; }
+-keep interface com.yalantis.ucrop** { *; }
+#---------------------------------uCrop end---------------------------------
+
 #---------------------------------项目本身---------------------------------
 -keep class com.android.frame.http.model.** { *; }
 -keep class com.android.frame.http.AATest.bean.**{*;}
