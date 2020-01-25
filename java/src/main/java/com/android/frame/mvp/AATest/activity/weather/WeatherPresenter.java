@@ -14,8 +14,8 @@ public class WeatherPresenter extends BasePresenter<WeatherView> {
     private WeatherView mView;
     private WeatherModel mModel;
 
-    public WeatherPresenter(WeatherView mView) {
-        this.mView = mView;
+    public WeatherPresenter(WeatherView view) {
+        this.mView = view;
         mModel = new WeatherModel();
     }
 

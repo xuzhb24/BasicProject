@@ -1,7 +1,6 @@
 package com.android.frame.mvp.AATest;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
 import okhttp3.ResponseBody;
 import retrofit2.http.*;
 
@@ -16,6 +15,6 @@ public interface ApiServiceMvp {
 
     @FormUrlEncoded
     @POST("getWangYiNews")
-    Observer<ResponseBody> getNews(@Field("page") String page, @Field("count") String count);
+    Observable<ResponseBody> getNews(@Field("page") String page, @Field("count") String count);
 
 }
