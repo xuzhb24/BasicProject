@@ -3,20 +3,30 @@ package com.android.widget.PicGetterDialog;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.*;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
+import android.text.TextUtils;
 import android.view.*;
 import com.android.java.R;
+import com.android.util.BitmapUtil;
 import com.android.widget.ViewHolder;
 import com.yalantis.ucrop.UCrop;
+
+import java.io.File;
+import java.io.IOException;
 
 /**
  * Create by xuzhb on 2020/1/22
@@ -28,7 +38,7 @@ public abstract class BasePicGetterDialog extends DialogFragment {
     private static final int OPEN_GALLERY_REQUEST_CODE = 0x0002;  //从相册选取
     private static final int CAMERA_PERMISSION_REQUEST_CODE = 0x0100;      //申请相机权限
     private static final int READ_WRITE_PERMISSION_REQUEST_CODE = 0x0200;  //申请读写权限
-    private static final String PIC_URL = "PIC_URL";
+    private static final String EXTRA_PIC_URL = "EXTRA_PIC_URL";
 
     @LayoutRes
     protected int mLayoutId = -1;           //对话框的布局id
@@ -38,10 +48,12 @@ public abstract class BasePicGetterDialog extends DialogFragment {
     private float mDimAmount = 0.5f;        //背景透明度
     private int mAnimationStyle = -1;       //对话框出现消失的动画
     private boolean mCancelable = true;     //是否可点击取消
-    private int mGravity = Gravity.CENTER;  //对话框显示的位置，默认正中间
-
+    private UCrop.Options mCropOptions;      //裁剪配置
+    private int mMaxCropWidth = 1080;       //裁剪图片支持的最大宽度
+    private int mMaxCropHeight = 2400;      //裁剪图片支持的最大高度
+    private int mGravity = Gravity.BOTTOM;  //对话框显示的位置，默认底部
     private OnPicGetterListener mOnPicGetterListener;  //图片获取回调
-    private UCrop.Options mCropOptions;     //
+
     private String mCurrentPhotoPath;  //当前拍照的地址
 
     @Override
@@ -61,7 +73,7 @@ public abstract class BasePicGetterDialog extends DialogFragment {
 
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-        outState.putString(PIC_URL, mCurrentPhotoPath);
+        outState.putString(EXTRA_PIC_URL, mCurrentPhotoPath);
         super.onSaveInstanceState(outState);
     }
 
@@ -69,7 +81,14 @@ public abstract class BasePicGetterDialog extends DialogFragment {
     public void onViewStateRestored(@Nullable Bundle savedInstanceState) {
         super.onViewStateRestored(savedInstanceState);
         if (savedInstanceState != null) {
-            mCurrentPhotoPath = savedInstanceState.getString(PIC_URL);
+            mCurrentPhotoPath = savedInstanceState.getString(EXTRA_PIC_URL);
+        }
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        if (mOnPicGetterListener != null) {
+            mOnPicGetterListener.onCancel();
         }
     }
 
@@ -138,17 +157,28 @@ public abstract class BasePicGetterDialog extends DialogFragment {
         return this;
     }
 
-    //在中间显示
-    public BasePicGetterDialog show(FragmentManager manager) {
-        super.show(manager, BasePicGetterDialog.class.getName());
+    //裁剪配置
+    public BasePicGetterDialog setCropOptions(UCrop.Options options) {
+        mCropOptions = options;
+        return this;
+    }
+
+    //设置裁剪的图片支持的最大宽度和高度
+    public BasePicGetterDialog setMaxCropSize(int width, int height) {
+        mMaxCropWidth = width;
+        mMaxCropHeight = height;
         return this;
     }
 
     //在底部显示
-    public BasePicGetterDialog showAtBottom(FragmentManager manager) {
-        mGravity = Gravity.BOTTOM;
+    public void show(FragmentManager manager) {
         super.show(manager, BasePicGetterDialog.class.getName());
-        return this;
+    }
+
+    //在中间显示
+    public void showAtCenter(FragmentManager manager) {
+        mGravity = Gravity.CENTER;
+        super.show(manager, BasePicGetterDialog.class.getName());
     }
 
     //监听图片获取事件
@@ -165,16 +195,41 @@ public abstract class BasePicGetterDialog extends DialogFragment {
             return;
         }
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
+            String picName = "temp_" + System.currentTimeMillis();
+            File picDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+            mCurrentPhotoPath = "";
+            try {
+                File photoFile = File.createTempFile(picName, ".jpg", picDir);
+                mCurrentPhotoPath = photoFile.getAbsolutePath();
+                Uri photoUri;
+                //Android 7.0后通过FileProvider共享文件，如系统照片
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    photoUri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext()
+                            .getApplicationInfo().packageName + ".fileprovider", photoFile);
+                } else {
+                    photoUri = Uri.fromFile(photoFile);
+                }
+                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(intent, OPEN_CAMERA_REQUEST_CODE);  //开启拍照
+            } catch (IOException e) {
+                e.printStackTrace();
+                getPicFailure(e.getMessage());
+            }
+        }
     }
 
     //从相册选取
     protected void openGallery() {
-
-    }
-
-    //启动剪裁页
-    protected void openUCrop(Uri uri) {
-
+        if (getActivity() == null) {
+            return;
+        }
+        if (!hasReadWritePermission()) {
+            return;
+        }
+        Intent intent = new Intent(Intent.ACTION_PICK, null);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        startActivityForResult(intent, OPEN_GALLERY_REQUEST_CODE);  //开启相册
     }
 
     //是否开启相机权限
@@ -228,10 +283,18 @@ public abstract class BasePicGetterDialog extends DialogFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {  //申请相机权限
-
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openCamera();
+            } else {
+                getPicFailure("相机权限获取失败");
+            }
         }
         if (requestCode == READ_WRITE_PERMISSION_REQUEST_CODE) {  //申请读写权限
-
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                openGallery();
+            } else {
+                getPicFailure("读写权限获取失败");
+            }
         }
     }
 
@@ -239,11 +302,79 @@ public abstract class BasePicGetterDialog extends DialogFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == OPEN_CAMERA_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-
+            onCameraResult();
         }
         if (requestCode == OPEN_GALLERY_REQUEST_CODE && resultCode == Activity.RESULT_OK) {
-
+            onGalleryResult(data);
         }
-//        if(requestCode==)
+        if (requestCode == UCrop.REQUEST_CROP) {
+            onCropResult(resultCode, data);
+        }
     }
+
+    //拍照回调
+    private void onCameraResult() {
+        if (TextUtils.isEmpty(mCurrentPhotoPath)) {
+            getPicFailure("无法获取图片地址");
+            return;
+        }
+        Uri uri = Uri.fromFile(new File(mCurrentPhotoPath));
+        openUCrop(uri);
+    }
+
+    //相册采集回调
+    private void onGalleryResult(Intent data) {
+        if (data == null) {
+            getPicFailure("获取相册图片失败");
+            return;
+        }
+        Uri uri = data.getData();
+        if (uri == null) {
+            getPicFailure("无法获取图片地址");
+            return;
+        }
+        openUCrop(uri);
+    }
+
+    //启动剪裁页
+    protected void openUCrop(Uri uri) {
+        if (getActivity() == null) {
+            return;
+        }
+        File cacheDir = getActivity().getCacheDir();
+        UCrop.Options options = mCropOptions != null ? mCropOptions : new UCrop.Options();
+        options.setShowCropFrame(false);
+        UCrop.of(uri, Uri.fromFile(new File(cacheDir, System.currentTimeMillis() + "_cache.jpg")))
+                .withOptions(options)
+                .withMaxResultSize(mMaxCropWidth, mMaxCropHeight)
+                .start(getActivity(), this);
+    }
+
+    //图片裁剪回调
+    private void onCropResult(int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            Uri uri = UCrop.getOutput(data);
+            if (uri == null) {
+                getPicFailure("图片剪裁出错");
+                return;
+            }
+            if (mOnPicGetterListener != null) {
+                Bitmap bitmap = BitmapUtil.bytesToBitmap(BitmapUtil.compressImage(BitmapFactory.decodeFile(uri.getPath()), 500));
+                mOnPicGetterListener.onSuccess(bitmap, uri.getPath());
+                dismiss();
+            }
+        } else if (resultCode == UCrop.RESULT_ERROR) {
+            getPicFailure("图片剪裁出错");
+        } else {
+            getPicFailure("图片剪裁已取消");
+        }
+    }
+
+    //获取图片失败
+    private void getPicFailure(String errorMsg) {
+        if (mOnPicGetterListener != null) {
+            mOnPicGetterListener.onFailure(errorMsg);
+        }
+    }
+
 }

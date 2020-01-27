@@ -106,16 +106,14 @@ public abstract class BaseDialog extends DialogFragment {
     }
 
     //在中间显示
-    public BaseDialog show(FragmentManager manager) {
+    public void show(FragmentManager manager) {
         super.show(manager, BaseDialog.class.getName());
-        return this;
     }
 
     //在底部显示
-    public BaseDialog showAtBottom(FragmentManager manager) {
+    public void showAtBottom(FragmentManager manager) {
         mGravity = Gravity.BOTTOM;
         super.show(manager, BaseDialog.class.getName());
-        return this;
     }
 
     //获取dialog的布局Id

@@ -19,10 +19,9 @@ public interface OnPicGetterListener {
     /**
      * 图片获取失败
      *
-     * @param errorCode 错误码
-     * @param errorMsg  错误信息
+     * @param errorMsg 错误信息
      */
-    void onFailure(int errorCode, String errorMsg);
+    void onFailure(String errorMsg);
 
     /**
      * 取消图片获取

@@ -104,17 +104,14 @@ abstract class BaseDialog : DialogFragment() {
     }
 
     //在中间显示
-    fun show(manager: FragmentManager): BaseDialog {
+    fun show(manager: FragmentManager) {
         super.show(manager, BaseDialog::class.java.name)
-        return this
     }
 
     //在底部显示
-    fun showAtBottom(manager: FragmentManager): BaseDialog {
+    fun showAtBottom(manager: FragmentManager) {
         mGravity = Gravity.BOTTOM
         super.show(manager, BaseDialog::class.java.name)
-        return this
-
     }
 
     //获取dialog的布局Id

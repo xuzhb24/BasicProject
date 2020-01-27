@@ -58,12 +58,12 @@ public class BitmapUtil {
     }
 
     //byte数组转换成Bitmap
-    public static Bitmap byteArrayToBitmap(byte[] bytes) {
+    public static Bitmap bytesToBitmap(byte[] bytes) {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
     //Bitmap转换成byte数组
-    public static byte[] bitmapToByteArray(Bitmap bitmap) {
+    public static byte[] bitmapToBytes(Bitmap bitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         return baos.toByteArray();

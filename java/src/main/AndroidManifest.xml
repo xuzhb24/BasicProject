@@ -99,6 +99,23 @@
         <activity android:name="com.android.widget.RecyclerView.AATest.TestLoadMoreWrapperActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestSingleLoadMoreAdapterActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestMultiLoadMoreAdapterActivity" />
+        <!--拍照或从相册选取弹窗-->
+        <activity android:name="com.android.widget.PicGetterDialog.AATest.TestPicGetterDialogActivity" />
+        <!--Android 7.0后通过fileprovider共享文件-->
+        <provider
+            android:name="com.android.widget.PicGetterDialog.PicProvider"
+            android:authorities="${applicationId}.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/pic_getter_file_paths" />
+        </provider>
+        <!--图片裁剪UCrop-->
+        <activity
+            android:name="com.yalantis.ucrop.UCropActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <!--工具篇-->
         <!--实现沉浸式状态栏-->
