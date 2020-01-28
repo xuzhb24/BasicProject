@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseFragment
 import com.android.widget.LineChart.TestLineChartActivity
+import com.android.widget.PicGetterDialog.AATest.TestPicGetterDialogActivity
 import com.android.widget.PieChart.TestPieChartActivity
 import com.android.widget.PopupWindow.AATest.TestPopupWindowActivity
 import com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity
@@ -37,6 +38,10 @@ class WidgetFragment : BaseFragment() {
         //对话框
         dialog_tv.setOnClickListener {
             startActivity(TestDialogActivity::class.java)
+        }
+        //拍照和相册弹窗
+        pic_dialog_tv.setOnClickListener {
+            startActivity(TestPicGetterDialogActivity::class.java)
         }
         //RecyclerView组件
         recyclerview_tv.setOnClickListener {
