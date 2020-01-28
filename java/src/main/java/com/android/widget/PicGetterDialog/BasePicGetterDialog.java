@@ -3,6 +3,7 @@ package com.android.widget.PicGetterDialog;
 import android.Manifest;
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -202,14 +203,9 @@ public abstract class BasePicGetterDialog extends DialogFragment {
             try {
                 File photoFile = File.createTempFile(picName, ".jpg", picDir);
                 mCurrentPhotoPath = photoFile.getAbsolutePath();
-                Uri photoUri;
-                //Android 7.0后通过FileProvider共享文件，如系统照片
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-                    photoUri = FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext()
-                            .getApplicationInfo().packageName + ".fileprovider", photoFile);
-                } else {
-                    photoUri = Uri.fromFile(photoFile);
-                }
+                Uri photoUri = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N   //Android 7.0后通过FileProvider共享文件，如系统照片
+                        ? FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getApplicationInfo().packageName + ".fileprovider", photoFile)
+                        : Uri.fromFile(photoFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(intent, OPEN_CAMERA_REQUEST_CODE);  //开启拍照
             } catch (IOException e) {
@@ -235,9 +231,9 @@ public abstract class BasePicGetterDialog extends DialogFragment {
     //是否开启相机权限
     private boolean hasCameraPermission() {
         if (getActivity() != null) {
-            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED
-                    || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                    || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (!isPermissionGranted(getActivity(), Manifest.permission.CAMERA)
+                    || !isPermissionGranted(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    || !isPermissionGranted(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {  //Android 6.0以后权限动态申请
                     requestPermissions(new String[]{
                                     Manifest.permission.CAMERA,
@@ -256,8 +252,8 @@ public abstract class BasePicGetterDialog extends DialogFragment {
     //是否开启读写权限
     private boolean hasReadWritePermission() {
         if (getActivity() != null) {
-            if (ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED
-                    || ContextCompat.checkSelfPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            if (!isPermissionGranted(getActivity(), Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                    || !isPermissionGranted(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE)) {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {  //Android 6.0以后权限动态申请
                     requestPermissions(new String[]{
                                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -272,6 +268,10 @@ public abstract class BasePicGetterDialog extends DialogFragment {
         return false;
     }
 
+    private boolean isPermissionGranted(Context context, String permission) {
+        return ContextCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+    }
+
     //获取dialog的布局Id
     public abstract int getLayoutId();
 
@@ -283,19 +283,28 @@ public abstract class BasePicGetterDialog extends DialogFragment {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (requestCode == CAMERA_PERMISSION_REQUEST_CODE) {  //申请相机权限
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (hasAllPermissions(grantResults)) {
                 openCamera();
             } else {
                 getPicFailure("相机权限获取失败");
             }
         }
         if (requestCode == READ_WRITE_PERMISSION_REQUEST_CODE) {  //申请读写权限
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (hasAllPermissions(grantResults)) {
                 openGallery();
             } else {
                 getPicFailure("读写权限获取失败");
             }
         }
+    }
+
+    private boolean hasAllPermissions(int[] grantResults) {
+        for (int grantResult : grantResults) {
+            if (grantResult != PackageManager.PERMISSION_GRANTED) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
@@ -353,6 +362,10 @@ public abstract class BasePicGetterDialog extends DialogFragment {
     //图片裁剪回调
     private void onCropResult(int resultCode, Intent data) {
         if (resultCode == Activity.RESULT_OK) {
+            if (data == null) {
+                getPicFailure("获取图片失败");
+                return;
+            }
             Uri uri = UCrop.getOutput(data);
             if (uri == null) {
                 getPicFailure("图片剪裁出错");

@@ -66,6 +66,7 @@ public class TestPicGetterDialogActivity extends BaseActivity {
             return;
         }
         UCrop.Options options = new UCrop.Options();
+        options.setToolbarTitle("裁剪图片");
         options.setToolbarColor(getResources().getColor(R.color.colorPrimary));
         options.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
         mPicGetterDialog = PicGetterDialog.newInstance();

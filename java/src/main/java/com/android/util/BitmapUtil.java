@@ -166,16 +166,12 @@ public class BitmapUtil {
     //质量压缩
     public static byte[] compressImage(Bitmap bitmap, int limitK) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);// 质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);  //质量压缩方法，这里100表示不压缩，把压缩后的数据存放到baos中
         int options = 90;
-        while (baos.toByteArray().length / 1024 > limitK) { // 循环判断如果压缩后图片是否大于100kb,大于继续压缩
-            baos.reset(); // 重置baos即清空baos
-            bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);// 这里压缩options%，把压缩后的数据存放到baos中
-            options -= 10;// 每次都减少10
-        }
-        File dirFile = new File(Environment.getExternalStorageDirectory() + "保存图片的路径");
-        if (!dirFile.exists()) {
-            dirFile.mkdirs();
+        while (baos.toByteArray().length / 1024 > limitK) {  //循环判断如果压缩后图片是否大于100kb,大于继续压缩
+            baos.reset();  //重置baos即清空baos
+            bitmap.compress(Bitmap.CompressFormat.JPEG, options, baos);  //这里压缩options%，把压缩后的数据存放到baos中
+            options -= 10;  //每次都减少10
         }
         byte[] bytes = baos.toByteArray();
         recycleBitmap(bitmap);
@@ -184,11 +180,8 @@ public class BitmapUtil {
 
     //回收Bitmap
     public static void recycleBitmap(Bitmap... bitmaps) {
-        if (bitmaps == null) {
-            return;
-        }
         for (Bitmap bm : bitmaps) {
-            if (null != bm && !bm.isRecycled()) {
+            if (bm != null && !bm.isRecycled()) {
                 bm.recycle();
             }
         }
