@@ -195,4 +195,17 @@
         <attr name="showBottomLine" format="boolean" />
     </declare-styleable>
 
+    <!--密码输入框-->
+    <declare-styleable name="PasswordEditText">
+        <attr name="frameSize" format="dimension" />
+        <attr name="frameStrokeWidth" format="dimension" />
+        <attr name="frameCorner" format="dimension" />
+        <attr name="frameColor" format="color" />
+        <attr name="frameBackgroundColor" format="color" />
+        <attr name="frameMargin" format="dimension" />
+        <attr name="dotColor" format="color" />
+        <attr name="dotRadius" format="dimension" />
+        <attr name="passwordCount" format="integer" />
+    </declare-styleable>
+
 </resources>

@@ -98,6 +98,19 @@
         <item name="android:layout_marginLeft">1dp</item>
     </style>
 
+    <style name="SingleWidgetStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/default_margin</item>
+        <item name="android:layout_marginRight">@dimen/default_margin</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="SingleWidgetDividerLineStyle" parent="DividerLineStyle">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
     <!--通用的RecyclerView风格-->
     <style name="RecyclerViewStyle">
         <item name="android:layout_width">match_parent</item>

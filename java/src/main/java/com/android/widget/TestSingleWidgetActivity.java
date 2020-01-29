@@ -27,6 +27,10 @@ public class TestSingleWidgetActivity extends BaseActivity {
     InputLayout inputLayout;
     @BindView(R.id.inputlayout_tv)
     TextView inputlayoutTv;
+    @BindView(R.id.password_edittext)
+    PasswordEditText passwordEdittext;
+    @BindView(R.id.pet_tv)
+    TextView petTv;
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -50,6 +54,7 @@ public class TestSingleWidgetActivity extends BaseActivity {
                         .show();
             }
         });
+        //带删除按钮的输入框
         inputLayout.setOnTextChangedListener(new InputLayout.OnTextChangedListener() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -62,6 +67,11 @@ public class TestSingleWidgetActivity extends BaseActivity {
                 showToast("文本被清空了");
             }
         });
+        //密码输入框
+        passwordEdittext.setOnTextChangeListener(text -> {
+            petTv.setText(text);
+        });
+        passwordEdittext.setOnTextCompleteListener(this::showToast);
     }
 
     @Override
@@ -69,11 +79,10 @@ public class TestSingleWidgetActivity extends BaseActivity {
         return R.layout.activity_test_single_widget;
     }
 
-    @OnClick({R.id.verify_code_btn})
+    @OnClick({R.id.verify_code_btn, R.id.pet_btn})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            //验证码
-            case R.id.verify_code_btn:
+            case R.id.verify_code_btn:  //验证码
                 String code = verifyCodeEt.getText().toString().trim();
                 if (!TextUtils.isEmpty(code)) {
                     if (verifyCodeView.isEquals(code)) {
@@ -84,6 +93,9 @@ public class TestSingleWidgetActivity extends BaseActivity {
                 } else {
                     showToast("请输入验证码");
                 }
+                break;
+            case R.id.pet_btn:  //密码输入框
+                passwordEdittext.clearText();
                 break;
         }
     }
