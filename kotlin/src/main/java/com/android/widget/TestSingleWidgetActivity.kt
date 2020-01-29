@@ -29,12 +29,22 @@ class TestSingleWidgetActivity : BaseActivity() {
         search_layout.setOnTextChangedListener { s, start, before, count ->
             searchlayout_tv.text = s
         }
-        //输入框
+        //带删除按钮的输入框
         input_layout.setOnTextChangedListener { s, start, before, count ->
             inputlayout_tv.text = s
         }
         input_layout.setOnTextClearListener {
             showToast("文本被清空了")
+        }
+        //密码输入框
+        password_edittext.setOnTextChangeListener {
+            pet_tv.text = it
+        }
+        password_edittext.setOnTextCompleteListener {
+            showToast(it)
+        }
+        pet_btn.setOnClickListener {
+            password_edittext.clearText()
         }
     }
 

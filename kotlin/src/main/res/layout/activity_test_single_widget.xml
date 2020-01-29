@@ -6,56 +6,63 @@
     android:background="@color/white"
     android:orientation="vertical">
 
+    <!--标题栏-->
     <com.android.widget.TitleBar
         android:id="@+id/title_bar"
         style="@style/TitleBarStyle"
         app:rightText="说明"
         app:titleText="单一控件" />
 
+    <!--密码输入框-->
+    <com.android.widget.PasswordEditText
+        android:id="@+id/password_edittext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/interval_margin" />
+
+    <TextView
+        android:id="@+id/pet_tv"
+        style="@style/SingleWidgetStyle" />
+
+    <Button
+        android:id="@+id/pet_btn"
+        style="@style/SingleWidgetStyle"
+        android:text="清空" />
+
+    <View style="@style/SingleWidgetDividerLineStyle" />
+
+    <!--搜索框-->
     <com.android.widget.SearchLayout
         android:id="@+id/search_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="@dimen/interval_margin"
         android:layout_marginRight="@dimen/default_margin"
         app:searchHint="请输入文本" />
 
     <TextView
         android:id="@+id/searchlayout_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="@dimen/default_margin" />
+        style="@style/SingleWidgetStyle" />
 
-    <View
-        style="@style/DividerLineStyle"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+    <View style="@style/SingleWidgetDividerLineStyle" />
 
+    <!--输入框-->
     <com.android.widget.InputLayout
         android:id="@+id/input_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="@dimen/interval_margin"
         android:layout_marginRight="@dimen/default_margin"
         app:inputTextHint="请输入文本" />
 
     <TextView
         android:id="@+id/inputlayout_tv"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="5dp"
-        android:layout_marginRight="@dimen/default_margin" />
+        style="@style/SingleWidgetStyle" />
 
-    <View
-        style="@style/DividerLineStyle"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+    <View style="@style/SingleWidgetDividerLineStyle" />
 
+    <!--TextView文字滚动显示-->
     <com.android.widget.ScrollTextView
         android:layout_width="300dp"
         android:layout_height="wrap_content"
@@ -69,9 +76,6 @@
         android:layout_marginTop="5dp"
         android:text="这是一段短文本" />
 
-    <View
-        style="@style/DividerLineStyle"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+    <View style="@style/SingleWidgetDividerLineStyle" />
 
 </LinearLayout>
