@@ -5,9 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.view.View
 import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import com.android.basicproject.R
+import com.android.widget.InputLayout
 import com.android.widget.TitleBar
 
 /**
@@ -18,11 +18,11 @@ fun initCommonLayout(
     activity: Activity,
     title: String,
     vararg text: String,
-    showEditText: Boolean = false,
+    showInputLayout: Boolean = false,
     showTextView: Boolean = false
 ) {
     val titleBar: TitleBar = activity.findViewById(R.id.title_bar)
-    val et: EditText = activity.findViewById(R.id.et)
+    val il: InputLayout = activity.findViewById(R.id.il)
     val tv: TextView = activity.findViewById(R.id.tv)
     val btn1: Button = activity.findViewById(R.id.btn1)
     val btn2: Button = activity.findViewById(R.id.btn2)
@@ -39,7 +39,7 @@ fun initCommonLayout(
             activity.finish()
         }
     }
-    et.visibility = View.GONE
+    il.visibility = View.GONE
     tv.visibility = View.GONE
     btn1.visibility = View.GONE
     btn2.visibility = View.GONE
@@ -50,8 +50,8 @@ fun initCommonLayout(
     btn7.visibility = View.GONE
     btn8.visibility = View.GONE
     btn9.visibility = View.GONE
-    if (showEditText) {
-        et.visibility = View.VISIBLE
+    if (showInputLayout) {
+        il.visibility = View.VISIBLE
     }
     if (showTextView) {
         tv.visibility = View.VISIBLE

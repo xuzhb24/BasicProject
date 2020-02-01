@@ -8,7 +8,6 @@ import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.View
-import android.widget.EditText
 import android.widget.LinearLayout
 import com.android.basicproject.R
 import com.android.frame.http.AATest.ApiService
@@ -20,6 +19,7 @@ import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.mvc.BaseActivity
 import com.android.util.StatusBar.TestStatusBarUtilActivity
+import com.android.widget.InputLayout
 import com.bumptech.glide.Glide
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -153,12 +153,12 @@ class TestUtilActivity : BaseActivity() {
     }
 
     private fun testSPUtil() {
-        initCommonLayout(this, "SharePreferences工具类", "保存", "读取", showEditText = true, showTextView = true)
-        et.hint = "请输入名字"
+        initCommonLayout(this, "SharePreferences工具类", "保存", "读取", showInputLayout = true, showTextView = true)
+        il.inputTextHint = "请输入名字"
         var name by SPUtil(applicationContext, "default", "name", "")
         btn1.setOnClickListener {
-            name = et.text.toString().trim()
-            et.setText("")
+            name = il.inputText.trim()
+            il.inputText = ""
             KeyboardUtil.hideSoftInput(this, it)
         }
         btn2.setOnClickListener {
@@ -202,33 +202,33 @@ class TestUtilActivity : BaseActivity() {
 
     private fun testNotification() {
         tv.text = intent.getStringExtra("content")
-        val titleEt = EditText(this)
-        titleEt.layoutParams =
-            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT)
-        titleEt.hint = "请输入标题"
-        ll.addView(titleEt, 0)
-        et.hint = "请输入内容"
+        val titleIl = InputLayout(this)
+        titleIl.layoutParams =
+            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, SizeUtil.dp2px(40f).toInt())
+        titleIl.inputTextHint = "请输入标题"
+        ll.addView(titleIl, 0)
+        il.inputTextHint = "请输入内容"
         initCommonLayout(
             this, "通知管理", "自定义通知", "自定义通知(带跳转)", "自定义通知(最全使用示例)",
-            "新闻通知", "通知是否打开", "跳转通知设置界面", showEditText = true, showTextView = true
+            "新闻通知", "通知是否打开", "跳转通知设置界面", showInputLayout = true, showTextView = true
         )
         btn1.setOnClickListener {
-            var title = titleEt.text.toString().trim()
+            var title = titleIl.inputText.trim()
             if (TextUtils.isEmpty(title)) {
                 title = "这是标题"
             }
-            var content = et.text.toString().trim()
+            var content = il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 content = "这是内容"
             }
             NotificationUtil.showNotification(applicationContext, title, content)
         }
         btn2.setOnClickListener {
-            var title = titleEt.text.toString().trim()
+            var title = titleIl.inputText.trim()
             if (TextUtils.isEmpty(title)) {
                 title = "这是标题"
             }
-            var content = et.text.toString().trim()
+            var content = il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 content = "跳转到通知管理页面"
             }
@@ -245,11 +245,11 @@ class TestUtilActivity : BaseActivity() {
             finish()
         }
         btn3.setOnClickListener {
-            var title = titleEt.text.toString().trim()
+            var title = titleIl.inputText.trim()
             if (TextUtils.isEmpty(title)) {
                 title = "这是标题"
             }
-            var content = et.text.toString().trim()
+            var content = il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 content = "这是内容"
             }

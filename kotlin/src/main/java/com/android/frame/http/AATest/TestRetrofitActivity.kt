@@ -32,11 +32,11 @@ class TestRetrofitActivity : BaseActivity() {
             this, "测试Retrofit",
             "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取网易新闻(@Field POST)",
             "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)",
-            showEditText = true
+            showInputLayout = true
         )
         val city = "北京"
-        et.setText(city)
-        et.setSelection(city.length)  //将光标移至文字末尾
+        il.inputText = city
+        il.getEditText().setSelection(city.length)  //将光标移至文字末尾
     }
 
     override fun initListener() {
@@ -44,10 +44,10 @@ class TestRetrofitActivity : BaseActivity() {
             finish()
         }
         btn1.setOnClickListener {
-            getWeatherByQuery(et.text.toString().trim())
+            getWeatherByQuery(il.inputText.trim())
         }
         btn2.setOnClickListener {
-            getWeatherByQueryMap(et.text.toString().trim())
+            getWeatherByQueryMap(il.inputText.trim())
         }
         btn3.setOnClickListener {
             getWangYiNewsByField("1", "1")
