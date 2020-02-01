@@ -55,6 +55,10 @@ class UtilFragment : BaseFragment() {
         continuous_click_tv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CONTINUOUS_CLICK)
         }
+        //拼音工具
+        pinyin_tv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_PINYIN)
+        }
     }
 
     override fun initListener() {

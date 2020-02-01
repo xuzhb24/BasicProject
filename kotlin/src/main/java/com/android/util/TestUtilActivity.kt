@@ -42,6 +42,7 @@ class TestUtilActivity : BaseActivity() {
         const val TEST_STRING = "TEST_STRING"
         const val TEST_NOTIFICATION = "TEST_NOTIFICATION"
         const val TEST_CONTINUOUS_CLICK = "TEST_CONTINUOUS_CLICK"
+        const val TEST_PINYIN = "TEST_PINYIN"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -54,6 +55,7 @@ class TestUtilActivity : BaseActivity() {
             TEST_STRING -> testStringUtil()
             TEST_NOTIFICATION -> testNotification()
             TEST_CONTINUOUS_CLICK -> testContinuousClick()
+            TEST_PINYIN -> testPinyin()
         }
     }
 
@@ -352,6 +354,36 @@ class TestUtilActivity : BaseActivity() {
 
             override fun getClickInterval(): Int = 2000
         })
+    }
+
+    //拼音工具
+    private fun testPinyin() {
+        initCommonLayout(
+            this, "拼音工具", "获取汉字拼音", "获取姓氏拼音",
+            showInputLayout = true, showTextView = true
+        )
+        il.inputText = "测试拼音工具"
+        val s = il.inputText.trim()
+        val text = "汉字拼音：${PinyinUtil.hanzi2Pinyin(s)}" +
+                "\n首字母拼音：${PinyinUtil.getFirstLetter(s)}"
+        il.getEditText().setSelection(s.length)
+        tv.text = text
+        btn1.setOnClickListener {
+            val content = il.inputText.trim()
+            val split = " "
+            val result = "汉字拼音：${PinyinUtil.hanzi2Pinyin(content, split)}" +
+                    "\n首字母拼音：${PinyinUtil.getFirstLetter(content, split)}"
+            tv.text = result
+        }
+        btn2.setOnClickListener {
+            val name = il.inputText.trim()
+            val result = "姓氏的拼音：${PinyinUtil.getSurnamePinyin(name)}" +
+                    "\n首字母拼音：${PinyinUtil.getSurnameFirstLetter(name)}"
+            tv.text = result
+        }
+        il.setOnTextClearListener {
+            tv.text = ""
+        }
     }
 
 }
