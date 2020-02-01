@@ -35,35 +35,39 @@ public class UtilFragment extends BaseFragment {
     }
 
     @OnClick({R.id.statusbar_tv, R.id.time_tv, R.id.keyboard_tv, R.id.drawable_tv, R.id.code_tv,
-            R.id.notification_tv, R.id.traffic_tv, R.id.network_stats_tv, R.id.continuous_click_tv})
+            R.id.notification_tv, R.id.traffic_tv, R.id.network_stats_tv, R.id.continuous_click_tv,
+            R.id.pinyin_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.statusbar_tv:
+            case R.id.statusbar_tv:  //实现沉浸式状态栏
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_STATUS_BAR);
                 break;
-            case R.id.time_tv:
+            case R.id.time_tv:  //时间工具
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_DATE);
                 break;
-            case R.id.keyboard_tv:
+            case R.id.keyboard_tv:  //键盘工具
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_KEYBOARD);
                 break;
-            case R.id.drawable_tv:
+            case R.id.drawable_tv:  //代码创建Drawable
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_DRAWABLE);
                 break;
-            case R.id.code_tv:
+            case R.id.code_tv:  //二维码/条形码工具
                 startActivity(TestCodeUtilActivity.class);
                 break;
-            case R.id.notification_tv:
+            case R.id.notification_tv:  //通知管理
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_NOTIFICATION);
                 break;
-            case R.id.traffic_tv:
+            case R.id.traffic_tv:  //TrafficStats
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_TRAFFICSTATS);
                 break;
-            case R.id.network_stats_tv:
+            case R.id.network_stats_tv:  //NetworkStatsManager
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_NETWORK_STATS);
                 break;
-            case R.id.continuous_click_tv:
+            case R.id.continuous_click_tv:  //连续点击事件监听
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_CONTINUOUS_CLICK);
+                break;
+            case R.id.pinyin_tv:  //拼音工具
+                CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_PINYIN);
                 break;
         }
     }

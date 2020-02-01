@@ -41,6 +41,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_TRAFFICSTATS = "TEST_TRAFFICSTATS";
     public static final String TEST_NETWORK_STATS = "TEST_NETWORK_STATS";
     public static final String TEST_CONTINUOUS_CLICK = "TEST_CONTINUOUS_CLICK";
+    public static final String TEST_PINYIN = "TEST_PINYIN";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -87,6 +88,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_CONTINUOUS_CLICK:
                 testContinuousClick();
+                break;
+            case TEST_PINYIN:
+                testPinyin();
                 break;
         }
     }
@@ -405,6 +409,35 @@ public class TestUtilActivity extends BaseActivity {
             protected int getClickInterval() {
                 return 2000;
             }
+        });
+    }
+
+    //拼音工具
+    private void testPinyin() {
+        CommonLayoutUtil.initCommonLayout(this, "拼音工具", true, true,
+                "清空", "获取汉字拼音", "获取姓氏拼音");
+        et.setText("测试拼音工具");
+        String s = et.getText().toString().trim();
+        String text = "汉字拼音：" + PinyinUtil.hanzi2Pinyin(s) +
+                "\n首字母拼音：" + PinyinUtil.getFirstLetter(s);
+        tv.setText(text);
+        btn1.setOnClickListener(v -> {
+            et.setText("");
+            tv.setText("");
+            KeyboardUtil.showSoftInputDelay(this, et);
+        });
+        btn2.setOnClickListener(v -> {
+            String content = et.getText().toString().trim();
+            String split = " ";
+            String result = "汉字拼音：" + PinyinUtil.hanzi2Pinyin(content, split) +
+                    "\n首字母拼音：" + PinyinUtil.getFirstLetter(content, split);
+            tv.setText(result);
+        });
+        btn3.setOnClickListener(v -> {
+            String name = et.getText().toString().trim();
+            String result = "姓氏的拼音：" + PinyinUtil.getSurnamePinyin(name) +
+                    "\n首字母拼音：" + PinyinUtil.getSurnameFirstLetter(name);
+            tv.setText(result);
         });
     }
 

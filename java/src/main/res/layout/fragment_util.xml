@@ -73,6 +73,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="连续点击事件监听" />
 
+            <TextView
+                android:id="@+id/pinyin_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="拼音工具" />
+
         </LinearLayout>
     </ScrollView>
 
