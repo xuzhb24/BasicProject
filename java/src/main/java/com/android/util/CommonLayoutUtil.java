@@ -5,9 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import com.android.java.R;
+import com.android.widget.InputLayout;
 import com.android.widget.TitleBar;
 
 /**
@@ -20,9 +20,9 @@ public class CommonLayoutUtil {
         initCommonLayout(activity, title, false, false, text);
     }
 
-    public static void initCommonLayout(Activity activity, String title, boolean showEditText, boolean showTextView, String... text) {
+    public static void initCommonLayout(Activity activity, String title, boolean showInputLayout, boolean showTextView, String... text) {
         TitleBar titleBar = activity.findViewById(R.id.title_bar);
-        EditText et = activity.findViewById(R.id.et);
+        InputLayout il = activity.findViewById(R.id.il);
         TextView tv = activity.findViewById(R.id.tv);
         Button btn1 = activity.findViewById(R.id.btn1);
         Button btn2 = activity.findViewById(R.id.btn2);
@@ -34,13 +34,10 @@ public class CommonLayoutUtil {
         Button btn8 = activity.findViewById(R.id.btn8);
         Button btn9 = activity.findViewById(R.id.btn9);
         titleBar.setTitleText(title);
-        titleBar.setOnLeftClickListener(new TitleBar.OnLeftClickListener() {
-            @Override
-            public void onLeftClick(View v) {
-                activity.finish();
-            }
+        titleBar.setOnLeftClickListener(v -> {
+            activity.finish();
         });
-        et.setVisibility(View.GONE);
+        il.setVisibility(View.GONE);
         tv.setVisibility(View.GONE);
         btn1.setVisibility(View.GONE);
         btn2.setVisibility(View.GONE);
@@ -51,8 +48,8 @@ public class CommonLayoutUtil {
         btn7.setVisibility(View.GONE);
         btn8.setVisibility(View.GONE);
         btn9.setVisibility(View.GONE);
-        if (showEditText) {
-            et.setVisibility(View.VISIBLE);
+        if (showInputLayout) {
+            il.setVisibility(View.VISIBLE);
         }
         if (showTextView) {
             tv.setVisibility(View.VISIBLE);

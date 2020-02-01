@@ -2,13 +2,10 @@ package com.android.widget.RecyclerView.AATest;
 
 import android.os.Bundle;
 import android.view.View;
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.util.CommonLayoutUtil;
-import com.android.widget.TitleBar;
 
 /**
  * Create by xuzhb on 2020/1/21

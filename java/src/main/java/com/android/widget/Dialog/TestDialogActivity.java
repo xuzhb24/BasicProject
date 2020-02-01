@@ -32,12 +32,7 @@ public class TestDialogActivity extends BaseActivity {
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(new TitleBar.OnLeftClickListener() {
-            @Override
-            public void onLeftClick(View v) {
-                finish();
-            }
-        });
+
     }
 
     @Override

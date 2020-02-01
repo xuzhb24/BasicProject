@@ -2,7 +2,6 @@ package com.android.frame.http.AATest;
 
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -16,6 +15,7 @@ import com.android.java.R;
 import com.android.util.CommonLayoutUtil;
 import com.android.util.ExtraUtil;
 import com.android.util.JsonUtil;
+import com.android.widget.InputLayout;
 import com.android.widget.TitleBar;
 import com.google.gson.Gson;
 import io.reactivex.Observer;
@@ -39,8 +39,8 @@ public class TestRetrofitActivity extends BaseActivity {
 
     @BindView(R.id.title_bar)
     TitleBar titleBar;
-    @BindView(R.id.et)
-    EditText et;
+    @BindView(R.id.il)
+    InputLayout il;
     @BindView(R.id.tv)
     TextView tv;
 
@@ -50,18 +50,13 @@ public class TestRetrofitActivity extends BaseActivity {
                 "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取网易新闻(@Field POST)",
                 "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)");
         String city = "北京";
-        et.setText(city);
-        et.setSelection(city.length());  //将光标移至文字末尾
+        il.setInputText(city);
+        il.getEditText().setSelection(city.length());  //将光标移至文字末尾
     }
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(new TitleBar.OnLeftClickListener() {
-            @Override
-            public void onLeftClick(View v) {
-                finish();
-            }
-        });
+
     }
 
     @Override
@@ -71,7 +66,7 @@ public class TestRetrofitActivity extends BaseActivity {
 
     @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5, R.id.btn6})
     public void onViewClicked(View view) {
-        String city = et.getText().toString().trim();
+        String city = il.getInputText().trim();
         switch (view.getId()) {
             case R.id.btn1:
                 getWeatherByQuery(city);

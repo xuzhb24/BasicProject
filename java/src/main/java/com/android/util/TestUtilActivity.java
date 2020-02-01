@@ -2,10 +2,12 @@ package com.android.util;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.TrafficStats;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
@@ -22,6 +24,7 @@ import com.android.util.traffic.ByteUnit;
 import com.android.util.traffic.NetworkStatsHelper;
 import com.android.util.traffic.TrafficInfo;
 import com.android.util.traffic.TrafficStatsUtil;
+import com.android.widget.InputLayout;
 
 import java.util.List;
 
@@ -45,8 +48,8 @@ public class TestUtilActivity extends BaseActivity {
 
     @BindView(R.id.ll)
     LinearLayout ll;
-    @BindView(R.id.et)
-    EditText et;
+    @BindView(R.id.il)
+    InputLayout il;
     @BindView(R.id.tv)
     TextView tv;
     @BindView(R.id.btn1)
@@ -207,30 +210,35 @@ public class TestUtilActivity extends BaseActivity {
     private void testNotification() {
         String extraCpntent = getIntent().getStringExtra("content");
         tv.setText(extraCpntent);  //传递过来的参数
-        EditText titleEt = new EditText(this);
-        titleEt.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-        titleEt.setHint("请输入标题");
-        ll.addView(titleEt, 0);
-        et.setHint("请输入内容");
+        InputLayout titleIl = new InputLayout(this);
+        titleIl.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) SizeUtil.dp2px(40)));
+        titleIl.setInputTextHint("请输入标题");
+        titleIl.setInputTextType(InputType.TYPE_CLASS_TEXT);
+        titleIl.setInputTextSize(SizeUtil.sp2px(15));
+        titleIl.setInputTextColor(Color.BLACK);
+        titleIl.setInputTextColorHint(Color.parseColor("#E6E6E6"));
+        titleIl.setShowBottomLine(true);
+        ll.addView(titleIl, 0);
+        il.setInputTextHint("请输入内容");
         CommonLayoutUtil.initCommonLayout(this, "通知管理", true, true,
                 "自定义通知", "自定义通知（带跳转）", "通知是否打开", "跳转通知设置界面");
         btn1.setOnClickListener(v -> {
-            String title = titleEt.getText().toString().trim();
+            String title = titleIl.getInputText().trim();
             if (TextUtils.isEmpty(title)) {
                 title = "这是标题";
             }
-            String content = et.getText().toString().trim();
+            String content = il.getInputText().trim();
             if (TextUtils.isEmpty(content)) {
                 content = "这是内容";
             }
             NotificationUtil.showNotification(getApplicationContext(), title, content);
         });
         btn2.setOnClickListener(v -> {
-            String title = titleEt.getText().toString().trim();
+            String title = titleIl.getInputText().trim();
             if (TextUtils.isEmpty(title)) {
                 title = "这是标题";
             }
-            String content = et.getText().toString().trim();
+            String content = il.getInputText().trim();
             if (TextUtils.isEmpty(content)) {
                 content = "跳转到通知管理页面";
             }
@@ -415,29 +423,28 @@ public class TestUtilActivity extends BaseActivity {
     //拼音工具
     private void testPinyin() {
         CommonLayoutUtil.initCommonLayout(this, "拼音工具", true, true,
-                "清空", "获取汉字拼音", "获取姓氏拼音");
-        et.setText("测试拼音工具");
-        String s = et.getText().toString().trim();
+                "获取汉字拼音", "获取姓氏拼音");
+        il.setInputText("测试拼音工具");
+        String s = il.getInputText().trim();
         String text = "汉字拼音：" + PinyinUtil.hanzi2Pinyin(s) +
                 "\n首字母拼音：" + PinyinUtil.getFirstLetter(s);
+        il.getEditText().setSelection(s.length());
         tv.setText(text);
         btn1.setOnClickListener(v -> {
-            et.setText("");
-            tv.setText("");
-            KeyboardUtil.showSoftInputDelay(this, et);
-        });
-        btn2.setOnClickListener(v -> {
-            String content = et.getText().toString().trim();
+            String content = il.getInputText().trim();
             String split = " ";
             String result = "汉字拼音：" + PinyinUtil.hanzi2Pinyin(content, split) +
                     "\n首字母拼音：" + PinyinUtil.getFirstLetter(content, split);
             tv.setText(result);
         });
-        btn3.setOnClickListener(v -> {
-            String name = et.getText().toString().trim();
+        btn2.setOnClickListener(v -> {
+            String name = il.getInputText().trim();
             String result = "姓氏的拼音：" + PinyinUtil.getSurnamePinyin(name) +
                     "\n首字母拼音：" + PinyinUtil.getSurnameFirstLetter(name);
             tv.setText(result);
+        });
+        il.setOnTextClearListener(() -> {
+            tv.setText("");
         });
     }
 

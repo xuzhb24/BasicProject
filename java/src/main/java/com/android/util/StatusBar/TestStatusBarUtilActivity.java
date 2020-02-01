@@ -6,7 +6,6 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.util.CommonLayoutUtil;
@@ -29,9 +28,7 @@ public class TestStatusBarUtilActivity extends BaseActivity {
     RelativeLayout rootRl;
 
     @Override
-    public void handleView(Bundle savedInstanceState) {
-        CommonLayoutUtil.initCommonLayout(this, "标题", false, true);
-        tv.setText(getIntent().getStringExtra(EXTRA_TEXT));
+    protected void initBar() {
         switch (getIntent().getIntExtra(EXTRA_TYPE, 1)) {
             case 1:
                 rootRl.setBackgroundResource(R.drawable.ic_status_bar);
@@ -51,6 +48,12 @@ public class TestStatusBarUtilActivity extends BaseActivity {
                         getResources().getColor(R.color.black), 0.5f, false);
                 break;
         }
+    }
+
+    @Override
+    public void handleView(Bundle savedInstanceState) {
+        CommonLayoutUtil.initCommonLayout(this, "标题", false, true);
+        tv.setText(getIntent().getStringExtra(EXTRA_TEXT));
     }
 
     @Override

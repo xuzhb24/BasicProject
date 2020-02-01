@@ -18,8 +18,8 @@
         android:layout_marginRight="20dp"
         android:orientation="vertical">
 
-        <EditText
-            android:id="@+id/et"
+        <com.android.widget.InputLayout
+            android:id="@+id/il"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
@@ -27,6 +27,7 @@
             android:id="@+id/tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:lineSpacingExtra="3dp" />
 
     </LinearLayout>
