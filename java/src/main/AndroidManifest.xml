@@ -122,6 +122,7 @@
         <activity android:name="com.android.util.StatusBar.TestStatusBarUtilActivity" />
         <activity android:name="com.android.util.TestUtilActivity" />
         <activity android:name="com.android.util.code.TestCodeUtilActivity" />
+        <activity android:name="com.android.util.activity.TestJumpActivity" />
 
         <!-- 极光start -->
         <service

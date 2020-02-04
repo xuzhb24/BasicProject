@@ -1,6 +1,7 @@
 package com.android.util;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
@@ -13,18 +14,20 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.util.StatusBar.TestStatusBarUtilActivity;
+import com.android.util.activity.ActivityUtil;
+import com.android.util.activity.TestJumpActivity;
 import com.android.util.traffic.ByteUnit;
 import com.android.util.traffic.NetworkStatsHelper;
 import com.android.util.traffic.TrafficInfo;
 import com.android.util.traffic.TrafficStatsUtil;
 import com.android.widget.InputLayout;
+import com.android.widget.TestSingleWidgetActivity;
 
 import java.util.List;
 
@@ -45,6 +48,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_NETWORK_STATS = "TEST_NETWORK_STATS";
     public static final String TEST_CONTINUOUS_CLICK = "TEST_CONTINUOUS_CLICK";
     public static final String TEST_PINYIN = "TEST_PINYIN";
+    public static final String TEST_ACTIVITY = "TEST_ACTIVITY";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -94,6 +98,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_PINYIN:
                 testPinyin();
+                break;
+            case TEST_ACTIVITY:
+                testActivity();
                 break;
         }
     }
@@ -445,6 +452,54 @@ public class TestUtilActivity extends BaseActivity {
         });
         il.setOnTextClearListener(() -> {
             tv.setText("");
+        });
+    }
+
+    //Activity工具
+    private void testActivity() {
+        CommonLayoutUtil.initCommonLayout(this, "Activity工具", false, true,
+                "跳转到东方财富", "跳转Activity(带动画)", "跳转Activity(携带参数)");
+        StringBuilder sb = new StringBuilder();
+        sb.append("MainActivity是否存在：")
+                .append(ActivityUtil.isActivityExists(this, "com.android.java",
+                        "com.android.base.MainActivity"))
+                .append("\n启动Activity名：")
+                .append(ActivityUtil.getLauncherActivityName(this, getPackageName()));
+        String[] topActivity = ActivityUtil.getTopActivityName(this).split(" ");
+        sb.append("\n\n栈顶Activity信息：\n")
+                .append(topActivity[0]).append("(包名)\n")
+                .append(topActivity[1]).append("(类名)");
+        tv.setText(sb.toString());
+        btn1.setOnClickListener(v -> {
+            /*
+             * 哔哩哔哩：tv.danmaku.bili，tv.danmaku.bili.ui.splash.SplashActivity
+             * 微博：com.sina.weibo，com.sina.weibo.SplashActivity
+             * 东方财富：com.eastmoney.android.berlin，com.eastmoney.android.berlin.activity.MainActivity
+             * 铁路12306：com.MobileTicket，com.alipay.mobile.quinox.LauncherActivity
+             * 微信：com.tencent.mm，com.tencent.mm.ui.LauncherUI
+             * 支付宝：com.eg.android.AlipayGphone，com.eg.android.AlipayGphone.AlipayLogin
+             * UC浏览器：com.UCMobile，com.UCMobile.main.UCMobile
+             * 淘宝：com.taobao.taobao，com.taobao.tao.welcome.Welcome
+             * 京东：com.jingdong.app.mall，com.jingdong.app.mall.main.MainActivity
+             * 爱奇艺：com.qiyi.video，com.qiyi.video.WelcomeActivity
+             * 今日头条：com.ss.android.article.news，com.ss.android.article.news.activity.MainActivity
+             */
+            String packageName = "com.eastmoney.android.berlin";
+            String className = "com.eastmoney.android.berlin.activity.MainActivity";
+            if (ActivityUtil.isActivityExists(this, packageName, className)) {
+                ActivityUtil.startActivity(this, packageName, className);
+            } else {
+                showToast("不存在该应用");
+            }
+        });
+        btn2.setOnClickListener(v -> {
+            ActivityUtil.startActivity(this, TestJumpActivity.class,
+                    R.anim.slide_in_right, R.anim.slide_out_left);
+        });
+        btn3.setOnClickListener(v -> {
+            Bundle bundle = new Bundle();
+            bundle.putString(TestJumpActivity.EXTRA_DATA, btn3.getText().toString());
+            ActivityUtil.startActivity(this, TestJumpActivity.class, bundle);
         });
     }
 
