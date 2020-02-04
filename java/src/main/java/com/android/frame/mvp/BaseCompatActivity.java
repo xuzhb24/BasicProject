@@ -210,7 +210,14 @@ public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePres
 
     //启动指定的Activity
     protected void startActivity(Class clazz) {
+        startActivity(clazz, null);
+    }
+
+    protected void startActivity(Class clazz, Bundle extras) {
         Intent intent = new Intent();
+        if (extras != null) {
+            intent.putExtras(extras);
+        }
         intent.setClass(this, clazz);
         startActivity(intent);
     }
