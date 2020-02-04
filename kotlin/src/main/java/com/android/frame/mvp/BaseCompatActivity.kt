@@ -183,8 +183,11 @@ abstract class BaseCompatActivity<V : IBaseView, P : BasePresenter<V>> : AppComp
     }
 
     //启动指定的Activity
-    protected fun startActivity(clazz: Class<*>) {
+    protected fun startActivity(clazz: Class<*>, extras: Bundle? = null) {
         val intent = Intent()
+        extras?.let {
+            intent.putExtras(it)
+        }
         intent.setClass(this, clazz)
         startActivity(intent)
     }
