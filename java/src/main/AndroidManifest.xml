@@ -101,16 +101,6 @@
         <activity android:name="com.android.widget.RecyclerView.AATest.TestMultiLoadMoreAdapterActivity" />
         <!--拍照或从相册选取弹窗-->
         <activity android:name="com.android.widget.PicGetterDialog.AATest.TestPicGetterDialogActivity" />
-        <!--Android 7.0后通过fileprovider共享文件-->
-        <provider
-            android:name="com.android.widget.PicGetterDialog.PicProvider"
-            android:authorities="${applicationId}.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/pic_getter_file_paths" />
-        </provider>
         <!--图片裁剪UCrop-->
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
@@ -123,6 +113,19 @@
         <activity android:name="com.android.util.TestUtilActivity" />
         <activity android:name="com.android.util.code.TestCodeUtilActivity" />
         <activity android:name="com.android.util.activity.TestJumpActivity" />
+        <activity android:name="com.android.util.app.AATest.TestAppListActivity" />
+
+        <!--Android 7.0以后通过FileProvider实现应用间文件共享，涉及到拍照，应用安装等-->
+        <!--参考https://www.jianshu.com/p/47fcd7873f39-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
 
         <!-- 极光start -->
         <service

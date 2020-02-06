@@ -204,7 +204,7 @@ public abstract class BasePicGetterDialog extends DialogFragment {
                 File photoFile = File.createTempFile(picName, ".jpg", picDir);
                 mCurrentPhotoPath = photoFile.getAbsolutePath();
                 Uri photoUri = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N   //Android 7.0后通过FileProvider共享文件，如系统照片
-                        ? FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getApplicationInfo().packageName + ".fileprovider", photoFile)
+                        ? FileProvider.getUriForFile(getActivity(), getActivity().getApplicationContext().getApplicationInfo().packageName + ".provider", photoFile)
                         : Uri.fromFile(photoFile);
                 intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
                 startActivityForResult(intent, OPEN_CAMERA_REQUEST_CODE);  //开启拍照
