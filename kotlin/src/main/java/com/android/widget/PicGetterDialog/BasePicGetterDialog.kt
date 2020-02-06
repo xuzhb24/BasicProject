@@ -196,7 +196,7 @@ abstract class BasePicGetterDialog : DialogFragment() {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)  //Android 7.0后通过FileProvider共享文件，如系统照片
                             FileProvider.getUriForFile(
                                 it,
-                                it.applicationContext.applicationInfo.packageName + ".fileprovider",
+                                it.applicationContext.applicationInfo.packageName + ".provider",
                                 photoFile
                             )
                         else Uri.fromFile(photoFile)
