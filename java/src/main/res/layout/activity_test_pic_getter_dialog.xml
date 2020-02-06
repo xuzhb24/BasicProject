@@ -22,6 +22,12 @@
         android:layout_marginTop="@dimen/interval_margin"
         android:text="自定义拍照和相册弹窗" />
 
+    <Button
+        android:id="@+id/dialog_btn3"
+        style="@style/ButtonStyle"
+        android:layout_marginTop="@dimen/interval_margin"
+        android:text="分享图片" />
+
     <TextView
         android:id="@+id/pic_tv"
         android:layout_width="match_parent"

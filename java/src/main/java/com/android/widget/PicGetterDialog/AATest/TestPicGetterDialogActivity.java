@@ -2,6 +2,7 @@ package com.android.widget.PicGetterDialog.AATest;
 
 import android.graphics.Bitmap;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -10,6 +11,8 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.util.DateUtil;
+import com.android.util.IntentUtil;
 import com.android.util.SizeUtil;
 import com.android.widget.PicGetterDialog.OnPicGetterListener;
 import com.android.widget.PicGetterDialog.PicGetterDialog;
@@ -30,6 +33,7 @@ public class TestPicGetterDialogActivity extends BaseActivity {
     ImageView picIv;
 
     private PicGetterDialog mPicGetterDialog;
+    private String mPicPath;
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -48,7 +52,7 @@ public class TestPicGetterDialogActivity extends BaseActivity {
         return R.layout.activity_test_pic_getter_dialog;
     }
 
-    @OnClick({R.id.dialog_btn1, R.id.dialog_btn2})
+    @OnClick({R.id.dialog_btn1, R.id.dialog_btn2, R.id.dialog_btn3})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.dialog_btn1:
@@ -56,6 +60,15 @@ public class TestPicGetterDialogActivity extends BaseActivity {
                 break;
             case R.id.dialog_btn2:
                 showCustomPicGetDialog();
+                break;
+            case R.id.dialog_btn3:
+                if (TextUtils.isEmpty(mPicPath)) {
+                    showToast("请先选择或拍一张照片");
+                } else {
+                    String content = "分享于" + DateUtil.getCurrentDateTime();
+                    String authority = getApplicationInfo().packageName + ".provider";
+                    startActivity(IntentUtil.getShareImageIntent(this, content, mPicPath, authority));
+                }
                 break;
         }
     }
@@ -76,6 +89,7 @@ public class TestPicGetterDialogActivity extends BaseActivity {
                 .setOnPicGetterListener(new OnPicGetterListener() {
                     @Override
                     public void onSuccess(Bitmap bitmap, String picPath) {
+                        mPicPath = picPath;
                         picIv.setImageBitmap(bitmap);
                         picTv.setText(picPath);
                     }
@@ -99,6 +113,7 @@ public class TestPicGetterDialogActivity extends BaseActivity {
                 .setOnPicGetterListener(new OnPicGetterListener() {
                     @Override
                     public void onSuccess(Bitmap bitmap, String picPath) {
+                        mPicPath = picPath;
                         picIv.setImageBitmap(bitmap);
                         picTv.setText(picPath);
                     }
