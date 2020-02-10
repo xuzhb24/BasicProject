@@ -1,5 +1,6 @@
 package com.android.widget.RecyclerView;
 
+import android.graphics.drawable.Drawable;
 import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -59,6 +60,13 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     public ViewHolder setImageResource(int viewId, int resId) {
         ImageView iv = getView(viewId);
         iv.setImageResource(resId);
+        return this;
+    }
+
+    //设置图片
+    public ViewHolder setImageDrawable(int viewId, Drawable drawable) {
+        ImageView iv = getView(viewId);
+        iv.setImageDrawable(drawable);
         return this;
     }
 

@@ -83,6 +83,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="Activity工具" />
 
+            <TextView
+                android:id="@+id/app_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="APP工具" />
+
         </LinearLayout>
     </ScrollView>
 

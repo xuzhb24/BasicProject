@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.text.SpannableStringBuilder;
 import android.view.View;
 import com.android.java.BuildConfig;
 import com.android.java.R;
@@ -48,6 +49,12 @@ public class ExtraUtil {
     }
 
     public static void alert(Context context, String msg) {
+        new AlertDialog.Builder(context)
+                .setMessage(msg)
+                .show();
+    }
+
+    public static void alert(Context context, SpannableStringBuilder msg) {
         new AlertDialog.Builder(context)
                 .setMessage(msg)
                 .show();

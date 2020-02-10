@@ -1,15 +1,20 @@
 package com.android.util;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
 import android.net.TrafficStats;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.InputType;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.style.ImageSpan;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,12 +27,12 @@ import com.android.java.R;
 import com.android.util.StatusBar.TestStatusBarUtilActivity;
 import com.android.util.activity.ActivityUtil;
 import com.android.util.activity.TestJumpActivity;
-import com.android.util.traffic.ByteUnit;
+import com.android.util.app.AATest.TestAppListActivity;
+import com.android.util.app.AppUtil;
 import com.android.util.traffic.NetworkStatsHelper;
 import com.android.util.traffic.TrafficInfo;
 import com.android.util.traffic.TrafficStatsUtil;
 import com.android.widget.InputLayout;
-import com.android.widget.TestSingleWidgetActivity;
 
 import java.util.List;
 
@@ -49,6 +54,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_CONTINUOUS_CLICK = "TEST_CONTINUOUS_CLICK";
     public static final String TEST_PINYIN = "TEST_PINYIN";
     public static final String TEST_ACTIVITY = "TEST_ACTIVITY";
+    public static final String TEST_APP = "TEST_APP";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -68,6 +74,12 @@ public class TestUtilActivity extends BaseActivity {
     Button btn5;
     @BindView(R.id.btn6)
     Button btn6;
+    @BindView(R.id.btn7)
+    Button btn7;
+    @BindView(R.id.btn8)
+    Button btn8;
+    @BindView(R.id.btn9)
+    Button btn9;
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -101,6 +113,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_ACTIVITY:
                 testActivity();
+                break;
+            case TEST_APP:
+                testApp();
                 break;
         }
     }
@@ -501,6 +516,112 @@ public class TestUtilActivity extends BaseActivity {
             bundle.putString(TestJumpActivity.EXTRA_DATA, btn3.getText().toString());
             ActivityUtil.startActivity(this, TestJumpActivity.class, bundle);
         });
+    }
+
+    //App工具
+    private void testApp() {
+        CommonLayoutUtil.initCommonLayout(this, "App工具",
+                "本应用相关信息", "已安装应用列表", "打开应用设置页面",
+                "安装测试应用", "卸载测试应用", "打开测试应用", "跳转至拨号界面",
+                "拨打电话", "发送短信");
+        btn1.setOnClickListener(v -> {
+            ExtraUtil.alert(this, getAppInfo());
+        });
+        btn2.setOnClickListener(v -> {
+            startActivity(TestAppListActivity.class);
+        });
+        btn3.setOnClickListener(v -> {
+            AppUtil.openLocalAppSettings(this);
+        });
+        String testApkPackageName = "com.android.testinstall";
+        String testApkPath = Environment.getExternalStorageDirectory() + "/AATest/test_install.apk";
+        btn4.setOnClickListener(v -> {
+            if (!PermissionUtil.requestPermissions(this, 1,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                showToast("请先允许权限");
+                return;
+            }
+            if (AppUtil.isAppInstall(this, testApkPackageName)) {
+                showToast("应用已安装");
+            } else {
+                if (FileUtil.isFileExists(testApkPath)) {
+                    AppUtil.installApp(this, testApkPath, getApplicationInfo().packageName + ".provider");
+                } else {
+                    try {
+                        if (IOUtil.writeFileFromInputStream(testApkPath, getAssets().open("test_install.apk"), false)) { //写入成功
+                            AppUtil.installApp(this, testApkPath, getApplicationInfo().packageName + ".provider");
+                        } else {
+                            showToast("文件写入失败");
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        showToast("文件写入异常，" + e.getMessage());
+                    }
+                }
+            }
+        });
+        btn5.setOnClickListener(v -> {
+            if (AppUtil.isAppInstall(this, testApkPackageName)) {
+                AppUtil.uninstallApp(this, testApkPackageName);
+            } else {
+                showToast("应用未安装");
+            }
+        });
+        btn6.setOnClickListener(v -> {
+            if (AppUtil.isAppInstall(this, testApkPackageName)) {
+                AppUtil.openApp(this, testApkPackageName);
+            } else {
+                showToast("应用未安装");
+            }
+        });
+        btn7.setOnClickListener(v -> {
+            startActivity(IntentUtil.getDialIntent("13302480305"));
+        });
+        btn8.setOnClickListener(v -> {
+            if (!PermissionUtil.requestPermissions(this, 1,
+                    Manifest.permission.CALL_PHONE)) {
+                showToast("请先允许权限");
+                return;
+            }
+            startActivity(IntentUtil.getCallIntent("13302480305"));
+        });
+        btn9.setOnClickListener(v -> {
+            startActivity(IntentUtil.getSendSmsIntent("13302480305", "短信内容"));
+        });
+    }
+
+    private SpannableStringBuilder getAppInfo() {
+        SpannableStringBuilder builder = new SpannableStringBuilder();
+        builder.append("应用图标： ");
+        Drawable icon = AppUtil.getLocalAppIcon(this);
+        if (icon != null) {
+            icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+            ImageSpan span = new ImageSpan(icon);
+            builder.setSpan(span, 5, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE);
+        }
+        builder.append("\n应用名称：")
+                .append(AppUtil.getLocalAppLabel(this))
+                .append("\n安装路径：\n")
+                .append(AppUtil.getLocalAppPath(this))
+                .append("\nversionName：")
+                .append(AppUtil.getLocalAppVersionName(this))
+                .append("\nversionCode：")
+                .append(String.valueOf(AppUtil.getLocalAppVersionCode(this)))
+                .append("\n是否系统应用：")
+                .append(String.valueOf(AppUtil.isLocalSystemApp(this)))
+                .append("\n是否是Debug版本：")
+                .append(String.valueOf(AppUtil.isLocalAppDebug(this)))
+                .append("\n是否有root权限：")
+                .append(String.valueOf(AppUtil.isLocalAppRoot()))
+                .append("\nMD5值：\n")
+                .append(AppUtil.getLocalAppSignatureMD5(this))
+                .append("\nSHA1值：\n")
+                .append(AppUtil.getLocalAppSignatureSHA1(this))
+                .append("\n是否处于前台：")
+                .append(String.valueOf(AppUtil.isLocalAppForeground(this)));
+        LogUtil.e("AppInfo", " \n" + AppUtil.getLocalAppInfo(this));
+        return builder;
     }
 
 }
