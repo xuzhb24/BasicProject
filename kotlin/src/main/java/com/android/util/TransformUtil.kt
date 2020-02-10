@@ -6,12 +6,7 @@ package com.android.util
  */
 object TransformUtil {
 
-    /**
-     * byte转16进制
-     *
-     * @param b 需要进行转换的byte字节
-     * @return 转换后的Hex字符串
-     */
+    //byte转16进制
     fun byte2Hex(b: Byte): String {
         var hex = Integer.toHexString(b.toInt() and 0xFF)
         if (hex.length < 2) {
@@ -20,22 +15,11 @@ object TransformUtil {
         return hex
     }
 
-    /**
-     * 16进制转byte
-     *
-     * @param hex 待转换的Hex字符串
-     * @return 转换后的byte
-     */
+    //16进制转byte
     fun hex2Byte(hex: String): Byte = Integer.parseInt(hex, 16).toByte()
 
-
-    /**
-     * byte数组转16进制
-     *
-     * @param bytes 需要转换的byte数组
-     * @return 转换后的Hex字符串
-     */
-    fun byteArray2Hex(bytes: ByteArray): String {
+    //byte数组转16进制
+    fun bytes2Hex(bytes: ByteArray): String {
         val sb = StringBuilder()
         for (i in bytes.indices) {
             val hex = Integer.toHexString(bytes[i].toInt() and 0xFF)
@@ -47,13 +31,8 @@ object TransformUtil {
         return sb.toString()
     }
 
-    /**
-     * 16进制转byte数组
-     *
-     * @param hex 待转换的Hex字符串
-     * @return 转换后的byte数组结果
-     */
-    fun hex2ByteArray(hex: String): ByteArray {
+    //16进制转byte数组
+    fun hex2Bytes(hex: String): ByteArray {
         var hex = hex
         var hexlen = hex.length
         val result: ByteArray
@@ -78,9 +57,9 @@ object TransformUtil {
     fun main(args: Array<String>) {
         logTitlt("16进制和byte数组相互转换")
         val data = "HIJKLMN"
-        val hex = byteArray2Hex(data.toByteArray(charset("UTF-8")))
+        val hex = bytes2Hex(data.toByteArray(charset("UTF-8")))
         println(hex)
-        println(String(hex2ByteArray(hex), Charsets.UTF_8))
+        println(String(hex2Bytes(hex), Charsets.UTF_8))
     }
 
     private fun logTitlt(title: String) {
