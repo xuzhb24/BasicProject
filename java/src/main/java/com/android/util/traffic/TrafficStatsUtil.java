@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.TrafficStats;
+import com.android.util.ByteUnit;
 import com.android.util.SystemUtil;
 
 import java.util.ArrayList;
@@ -63,7 +64,7 @@ public class TrafficStatsUtil {
         List<TrafficInfo> list = new ArrayList<>();
         PackageManager pm = context.getPackageManager();
         //获取所有已安装应用
-        List<PackageInfo> packageInfos = pm.getInstalledPackages(PackageManager.GET_PERMISSIONS);
+        List<PackageInfo> packageInfos = pm.getInstalledPackages(0);
         for (PackageInfo info : packageInfos) {
             TrafficInfo bean = new TrafficInfo();
             int uid = info.applicationInfo.uid;

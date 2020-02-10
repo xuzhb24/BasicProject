@@ -17,6 +17,7 @@ import android.provider.Settings;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
+import com.android.util.ByteUnit;
 import com.android.util.LogUtil;
 
 import java.text.SimpleDateFormat;
@@ -165,7 +166,7 @@ public class NetworkStatsHelper {
         List<TrafficInfo> list = new ArrayList<>();
         PackageManager pm = mContext.getPackageManager();
         //获取所有已安装应用
-        List<PackageInfo> packageInfos = pm.getInstalledPackages(PackageManager.GET_PERMISSIONS);
+        List<PackageInfo> packageInfos = pm.getInstalledPackages(0);
         for (PackageInfo info : packageInfos) {
             TrafficInfo bean = new TrafficInfo();
             int uid = info.applicationInfo.uid;
