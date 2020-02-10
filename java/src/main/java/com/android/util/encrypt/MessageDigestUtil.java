@@ -12,40 +12,63 @@ import java.security.NoSuchAlgorithmException;
 public class MessageDigestUtil {
 
     //MD5加密(32位）
+    public static byte[] md5(byte[] data) {
+        return digest(data, "MD5");
+    }
+
+    //MD5加密(32位）
     public static String md5(String plaintext) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("MD5");
-            return byte2Hex(digest.digest(plaintext.getBytes("UTF-8")));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            byte[] result = md5(plaintext.getBytes("UTF-8"));
+            if (result != null) {
+                return byte2Hex(result);
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return plaintext;
+    }
+
+    public static byte[] sha1(byte[] data) {
+        return digest(data, "SHA-1");
     }
 
     public static String sha1(String plaintext) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-1");
-            return byte2Hex(digest.digest(plaintext.getBytes("UTF-8")));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            byte[] result = sha1(plaintext.getBytes("UTF-8"));
+            if (result != null) {
+                return byte2Hex(result);
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return plaintext;
     }
 
+    public static byte[] sha256(byte[] data) {
+        return digest(data, "SHA-256");
+    }
+
     public static String sha256(String plaintext) {
         try {
-            MessageDigest digest = MessageDigest.getInstance("SHA-256");
-            return byte2Hex(digest.digest(plaintext.getBytes("UTF-8")));
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            byte[] result = sha256(plaintext.getBytes("UTF-8"));
+            if (result != null) {
+                return byte2Hex(result);
+            }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
         return plaintext;
+    }
+
+    private static byte[] digest(byte[] data, String algorithm) {
+        try {
+            MessageDigest md = MessageDigest.getInstance(algorithm);
+            return md.digest(data);
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     //byte数组转成16进制
