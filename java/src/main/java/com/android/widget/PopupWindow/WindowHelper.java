@@ -17,7 +17,7 @@ public class WindowHelper {
         this.mActivity = activity;
     }
 
-    //设置背景灰色程度
+    //设置外部区域背景透明度，0：完全不透明，1：完全透明
     public void setBackGroundAlpha(@FloatRange(from = 0.0, to = 1.0) float alpha) {
         Window window = mActivity.getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();

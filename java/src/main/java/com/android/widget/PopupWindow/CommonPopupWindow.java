@@ -19,7 +19,7 @@ public class CommonPopupWindow extends PopupWindow {
 
     private WindowHelper mWindowHelper;
 
-    public CommonPopupWindow(Context context) {
+    private CommonPopupWindow(Context context) {
         super(context);
         if (context instanceof Activity) {
             mWindowHelper = new WindowHelper((Activity) context);
@@ -64,13 +64,13 @@ public class CommonPopupWindow extends PopupWindow {
             return this;
         }
 
-        //设置背景灰色程度
+        //设置外部区域背景透明度，0：完全不透明，1：完全透明
         public Builder setBackGroundAlpha(@FloatRange(from = 0.0, to = 1.0) float alpha) {
             mAlpha = alpha;
             return this;
         }
 
-        //设置动画
+        //设置显示和消失动画
         public Builder setAnimationStyle(int animationStyle) {
             mAnimationStyle = animationStyle;
             return this;
@@ -97,11 +97,16 @@ public class CommonPopupWindow extends PopupWindow {
         public CommonPopupWindow build() {
             CommonPopupWindow popupWindow = new CommonPopupWindow(mContext);
             if (mLayoutId != -1) {
+                //设置contentView
                 View view = LayoutInflater.from(mContext).inflate(mLayoutId, null);
+                //因为PopupWindow在显示前无法获取准确的宽高值(getWidth和getHeight可能会返回0或-2），
+                //通过提前测量contentView的宽高就可以通过getMeasuredWidth和getMeasuredHeight获取contentView的宽高
+                view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED);
                 popupWindow.setContentView(view);
             } else {
-                throw new IllegalArgumentException("The contentView of PopupWindow is null");
+                throw new NullPointerException("The contentView of PopupWindow is null");
             }
+            //设置宽高，没有设置宽高的话默认为ViewGroup.LayoutParams.WRAP_CONTENT
             if (mWidth == 0) {
                 popupWindow.setWidth(ViewGroup.LayoutParams.WRAP_CONTENT);
             } else {
@@ -112,17 +117,21 @@ public class CommonPopupWindow extends PopupWindow {
             } else {
                 popupWindow.setHeight(mHeight);
             }
+            //设置外部区域的透明度
             if (mContext instanceof Activity) {
                 WindowHelper helper = new WindowHelper((Activity) mContext);
                 helper.setBackGroundAlpha(mAlpha);
             }
+            //设置弹窗显示和消失的动画效果
             if (mAnimationStyle != -1) {
                 popupWindow.setAnimationStyle(mAnimationStyle);
             }
+            //设置弹窗背景，如果contentView对应的View已经设置android:background可能会覆盖弹窗背景
             popupWindow.setBackgroundDrawable(mBackgroundDrawable);
+            //设置点击外部区域是否可取消弹窗
             popupWindow.setOutsideTouchable(mTouchable);
             popupWindow.setFocusable(mTouchable);
-
+            //设置contentView上控件的事件监听
             if (mOnViewListener != null) {
                 mOnViewListener.onView(new ViewHolder(popupWindow.getContentView()), popupWindow);
             }
