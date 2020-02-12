@@ -46,7 +46,7 @@ class TestPicGetterDialogActivity : BaseActivity() {
         options.setToolbarColor(resources.getColor(R.color.colorPrimary))
         options.setStatusBarColor(resources.getColor(R.color.colorPrimary))
         mPicGetterDialog = PicGetterDialog()
-        mPicGetterDialog!!.setAnimationStyle(R.style.AnimUp)
+        mPicGetterDialog!!.setAnimationStyle(R.style.AnimTranslateBottom)
             .setCropOptions(options)
             .setMaxCropSize(800, 2400)
             .setOnPicGetterListener(object : OnPicGetterListener {

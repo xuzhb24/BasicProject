@@ -509,7 +509,7 @@ public class TestUtilActivity extends BaseActivity {
         });
         btn2.setOnClickListener(v -> {
             ActivityUtil.startActivity(this, TestJumpActivity.class,
-                    R.anim.slide_in_right, R.anim.slide_out_left);
+                    R.anim.slide_right_in, R.anim.slide_left_out);
         });
         btn3.setOnClickListener(v -> {
             Bundle bundle = new Bundle();

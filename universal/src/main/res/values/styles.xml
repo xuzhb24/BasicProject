@@ -121,22 +121,52 @@
         <item name="layoutManager">android.support.v7.widget.LinearLayoutManager</item>
     </style>
 
-    <!--向上的动画-->
-    <style name="AnimUp">
-        <item name="android:windowEnterAnimation">@anim/alpha_translate_appear_bottom_to_top</item>
-        <item name="android:windowExitAnimation">@anim/alpha_translate_disappear_top_to_bottom</item>
+    <!--向上弹出的平移动画-->
+    <style name="AnimTranslateBottom">
+        <item name="android:windowEnterAnimation">@anim/translate_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/translate_bottom_out</item>
     </style>
 
-    <!--向下的平移动画-->
-    <style name="AnimTranslateDown">
-        <item name="android:windowEnterAnimation">@anim/translate_appear_top_to_bottom</item>
-        <item name="android:windowExitAnimation">@anim/translate_disappear_bottom_to_top</item>
+    <!--向下弹出的平移动画-->
+    <style name="AnimTranslateTop">
+        <item name="android:windowEnterAnimation">@anim/translate_top_in</item>
+        <item name="android:windowExitAnimation">@anim/translate_top_out</item>
     </style>
 
-    <!--向下的缩放动画-->
-    <style name="AnimScaleDown">
-        <item name="android:windowEnterAnimation">@anim/scale_appear_top_to_bottom</item>
-        <item name="android:windowExitAnimation">@anim/scale_disappear_bottom_to_top</item>
+    <!--向左弹出的平移动画-->
+    <style name="AnimTranslateRight">
+        <item name="android:windowEnterAnimation">@anim/translate_right_in</item>
+        <item name="android:windowExitAnimation">@anim/translate_right_out</item>
+    </style>
+
+    <!--向右弹出的平移动画-->
+    <style name="AnimTranslateLeft">
+        <item name="android:windowEnterAnimation">@anim/translate_left_in</item>
+        <item name="android:windowExitAnimation">@anim/translate_left_out</item>
+    </style>
+
+    <!--向上弹出的缩放动画-->
+    <style name="AnimScaleBottom">
+        <item name="android:windowEnterAnimation">@anim/scale_bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/scale_bottom_out</item>
+    </style>
+
+    <!--向下弹出的缩放动画-->
+    <style name="AnimScaleTop">
+        <item name="android:windowEnterAnimation">@anim/scale_top_in</item>
+        <item name="android:windowExitAnimation">@anim/scale_top_out</item>
+    </style>
+
+    <!--向左弹出的缩放动画-->
+    <style name="AnimScaleRight">
+        <item name="android:windowEnterAnimation">@anim/scale_right_in</item>
+        <item name="android:windowExitAnimation">@anim/scale_right_out</item>
+    </style>
+
+    <!--向右弹出的缩放动画-->
+    <style name="AnimScaleLeft">
+        <item name="android:windowEnterAnimation">@anim/scale_left_in</item>
+        <item name="android:windowExitAnimation">@anim/scale_left_out</item>
     </style>
 
     <!--对话框样式-->

@@ -116,7 +116,7 @@ public class TestDialogActivity extends BaseActivity {
                     });
                 })
                 .setDimAmount(0.3f)
-                .setAnimationStyle(R.style.AnimUp)
+                .setAnimationStyle(R.style.AnimTranslateBottom)
                 .showAtBottom(getSupportFragmentManager());
     }
 

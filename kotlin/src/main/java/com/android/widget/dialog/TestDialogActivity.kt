@@ -96,7 +96,7 @@ class TestDialogActivity : BaseActivity() {
                 holder.setOnClickListener(R.id.cancel_tv, { dialog.dismiss() })
             }
             .setDimAmount(0.3f)
-            .setAnimationStyle(R.style.AnimUp)
+            .setAnimationStyle(R.style.AnimTranslateBottom)
             .showAtBottom(supportFragmentManager)
     }
 

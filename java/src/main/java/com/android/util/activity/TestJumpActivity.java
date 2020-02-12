@@ -44,6 +44,6 @@ public class TestJumpActivity extends BaseActivity {
     @OnClick(R.id.btn1)
     public void onViewClicked() {
         finish();
-        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+        overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out);
     }
 }
