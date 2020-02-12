@@ -6,6 +6,7 @@ import android.graphics.drawable.ColorDrawable
 import android.graphics.drawable.Drawable
 import android.support.annotation.FloatRange
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.PopupWindow
 import com.android.widget.ViewHolder
@@ -54,13 +55,13 @@ class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
             return this
         }
 
-        //设置背景灰色程度
+        //设置外部区域背景透明度，0：完全不透明，1：完全透明
         fun setBackGroundAlpha(@FloatRange(from = 0.0, to = 1.0) alpha: Float): Builder {
             mAlpha = alpha
             return this
         }
 
-        //设置动画
+        //设置显示和消失动画
         fun setAnimationStyle(animationStyle: Int): Builder {
             mAnimationStyle = animationStyle
             return this
@@ -87,12 +88,17 @@ class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
         fun build(): CommonPopupWindow {
             val popupWindow = CommonPopupWindow(mContext)
             with(popupWindow) {
+                //设置contentView
                 if (mLayoutId != -1) {
-                    contentView = LayoutInflater.from(mContext).inflate(mLayoutId, null)
+                    val view = LayoutInflater.from(mContext).inflate(mLayoutId, null)
+                    //因为PopupWindow在显示前无法获取准确的宽高值(getWidth和getHeight可能会返回0或-2），
+                    //通过提前测量contentView的宽高就可以通过getMeasuredWidth和getMeasuredHeight获取contentView的宽高
+                    view.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+                    contentView = view
                 } else {
-                    throw IllegalArgumentException("The contentView of PopupWindow is null")
+                    throw NullPointerException("The contentView of PopupWindow is null")
                 }
-
+                //设置宽高，没有设置宽高的话默认为ViewGroup.LayoutParams.WRAP_CONTENT
                 if (mWidth == 0) {
                     width = ViewGroup.LayoutParams.WRAP_CONTENT
                 } else {
@@ -103,14 +109,17 @@ class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
                 } else {
                     height = mHeight
                 }
-                mWindowHelper?.setBackGroundAlpha(mAlpha)
+                mWindowHelper?.setBackGroundAlpha(mAlpha)  //设置外部区域的透明度
+                //设置弹窗显示和消失的动画效果
                 if (mAnimationStyle != -1) {
                     animationStyle = mAnimationStyle
                 }
+                //设置弹窗背景，如果contentView对应的View已经设置android:background可能会覆盖弹窗背景
                 setBackgroundDrawable(mBackgroundDrawable)
+                //设置点击外部区域是否可取消弹窗
                 isOutsideTouchable = mTouchable
                 isFocusable = mTouchable
-
+                //设置contentView上控件的事件监听
                 mOnViewListener?.invoke(ViewHolder(contentView), this)
             }
             return popupWindow

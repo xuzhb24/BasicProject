@@ -17,13 +17,13 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/down_btn1"
+            android:id="@+id/to_bottom_btn1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="向下弹出" />
 
         <Button
-            android:id="@+id/down_btn2"
+            android:id="@+id/to_bottom_btn2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
@@ -31,14 +31,14 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/right_btn"
+        android:id="@+id/to_right_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
         android:text="向右弹出" />
 
     <Button
-        android:id="@+id/left_btn"
+        android:id="@+id/to_left_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
@@ -53,20 +53,11 @@
         android:text="全屏弹出" />
 
     <Button
-        android:id="@+id/up_btn"
+        android:id="@+id/to_top_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="20dp"
         android:text="向上弹出" />
-
-    <ImageView
-        android:id="@+id/query_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|right"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="100dp"
-        android:src="@drawable/ic_query" />
 
 </FrameLayout>

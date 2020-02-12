@@ -2,10 +2,12 @@ package com.android.widget.PopupWindow.AATest
 
 import android.os.Bundle
 import android.support.v7.widget.RecyclerView
+import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
+import com.android.util.SizeUtil
 import com.android.widget.PopupWindow.CommonPopupWindow
 import kotlinx.android.synthetic.main.activity_test_popup_window.*
 
@@ -26,68 +28,66 @@ class TestPopupWindowActivity : BaseActivity() {
             finish()
         }
         //向下弹出
-        down_btn1.setOnClickListener {
-            showDownWindow1(it)
+        to_bottom_btn1.setOnClickListener {
+            showToBottomWindow1(it)
         }
-        down_btn2.setOnClickListener {
-            showDownWindow2(it)
-        }
-        //向上弹出
-        up_btn.setOnClickListener {
-
+        to_bottom_btn2.setOnClickListener {
+            showToBottomWindow2(it)
         }
         //向右弹出
-        right_btn.setOnClickListener {
-
+        to_right_btn.setOnClickListener {
+            showToRightWindow(it)
         }
         //向左弹出
-        left_btn.setOnClickListener {
-
+        to_left_btn.setOnClickListener {
+            showToLeftWindow(it)
         }
         //全屏弹出
         full_btn.setOnClickListener {
-
+            showFullWindow(it)
         }
-        //问号
-        query_iv.setOnClickListener {
-
+        //向上弹出
+        to_top_btn.setOnClickListener {
+            showToTopWindow(it)
         }
     }
 
     override fun getLayoutId(): Int = R.layout.activity_test_popup_window
 
-    fun showDownWindow1(view: View) {
+    //向下弹出
+    private fun showToBottomWindow1(view: View) {
         if (mPopupWindow != null && mPopupWindow!!.isShowing)
             return
         mPopupWindow = CommonPopupWindow.Builder(this)
-            .setContentView(R.layout.layout_popup_window_down1)
+            .setContentView(R.layout.layout_popup_window_to_bottom1)
             .setViewParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
             .setOutsideTouchable(true)
-//            .setAnimationStyle(R.style.AnimScaleDown)
+//            .setAnimationStyle(R.style.AnimScaleTop)
 //            .setBackGroundAlpha(0.6f)
             .setOnViewListener { holder, popupWindow ->
-                holder.setOnClickListener(R.id.cancel_btn, { holder.setText(R.id.content_tv, "取消") })
-                holder.setOnClickListener(R.id.confirm_btn, { holder.setText(R.id.content_tv, "确定") })
-                holder.setOnClickListener(R.id.outside_view, { popupWindow.dismiss() })
+                holder.setOnClickListener(R.id.cancel_btn) { holder.setText(R.id.content_tv, "取消") }
+                holder.setOnClickListener(R.id.confirm_btn) { holder.setText(R.id.content_tv, "确定") }
+                holder.setOnClickListener(R.id.outside_view) { popupWindow.dismiss() }
             }
             .build()
         mPopupWindow!!.showAsDropDown(view)
     }
 
-    fun showDownWindow2(view: View) {
+    //向下弹出
+    private fun showToBottomWindow2(view: View) {
         if (mPopupWindow != null && mPopupWindow!!.isShowing)
             return
         mPopupWindow = CommonPopupWindow.Builder(this)
-            .setContentView(R.layout.layout_popup_window_down2)
+            .setContentView(R.layout.layout_popup_window_to_bottom2)
             .setViewParams(
                 view.width,
                 ViewGroup.LayoutParams.WRAP_CONTENT
             )
-            .setOutsideTouchable(true)
-            .setAnimationStyle(R.style.AnimScaleDown)
+            .setOutsideTouchable(false)
+            .setAnimationStyle(R.style.AnimScaleTop)
             .setBackGroundAlpha(0.6f)
             .setOnViewListener { holder, popupWindow ->
                 val list = ArrayList<String>()
@@ -105,11 +105,113 @@ class TestPopupWindowActivity : BaseActivity() {
                 popupRv.adapter = adapter
                 adapter.setOnItemClickListener { obj, position ->
                     showToast("${position + 1}  $obj")
-//                    popupWindow.dismiss()
+                    popupWindow.dismiss()
                 }
             }
             .build()
         mPopupWindow!!.showAsDropDown(view)
+    }
+
+    //向右弹出
+    private fun showToRightWindow(view: View) {
+        if (mPopupWindow != null && mPopupWindow!!.isShowing)
+            return
+        mPopupWindow = CommonPopupWindow.Builder(this)
+            .setContentView(R.layout.layout_popup_window_to_left_or_right)
+            .setViewParams(SizeUtil.dp2px(160f).toInt(), SizeUtil.dp2px(50f).toInt())
+            .setAnimationStyle(R.style.AnimScaleLeft)
+            .setOnViewListener { holder, popupWindow ->
+                holder.setOnClickListener(R.id.praise_tv) {
+                    showToast("赞")
+                    popupWindow.dismiss()
+                }
+                holder.setOnClickListener(R.id.comment_tv) {
+                    showToast("评论")
+                    popupWindow.dismiss()
+                }
+            }.build()
+        mPopupWindow!!.showAsDropDown(view, view.width, -(view.height + (mPopupWindow!!.height - view.height) / 2))
+    }
+
+    //向左弹出
+    private fun showToLeftWindow(view: View) {
+        if (mPopupWindow != null && mPopupWindow!!.isShowing)
+            return
+        mPopupWindow = CommonPopupWindow.Builder(this)
+            .setContentView(R.layout.layout_popup_window_to_left_or_right)
+            .setViewParams(SizeUtil.dp2px(160f).toInt(), SizeUtil.dp2px(50f).toInt())
+            .setAnimationStyle(R.style.AnimScaleRight)
+            .setOnViewListener { holder, popupWindow ->
+                holder.setOnClickListener(R.id.praise_tv) {
+                    showToast("赞")
+                    popupWindow.dismiss()
+                }
+                holder.setOnClickListener(R.id.comment_tv) {
+                    showToast("评论")
+                    popupWindow.dismiss()
+                }
+            }.build()
+        mPopupWindow!!.showAsDropDown(
+            view,
+            -mPopupWindow!!.width,
+            -(view.height + (mPopupWindow!!.height - view.height) / 2)
+        )
+    }
+
+    //全屏弹出
+    private fun showFullWindow(view: View) {
+        if (mPopupWindow != null && mPopupWindow!!.isShowing)
+            return
+        mPopupWindow = CommonPopupWindow.Builder(this)
+            .setContentView(R.layout.layout_popup_window_full)
+            .setViewParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+            .setBackGroundAlpha(0.5f)
+            .setAnimationStyle(R.style.AnimTranslateBottom)
+            .setOnViewListener { holder, popupWindow ->
+                holder.setOnClickListener(R.id.camera_tv) {
+                    showToast("拍照")
+                }
+                holder.setOnClickListener(R.id.gallery_tv) {
+                    showToast("相册")
+                }
+                holder.setOnClickListener(R.id.cancel_tv) {
+                    showToast("取消")
+                    popupWindow.dismiss()
+                }
+            }.build()
+        mPopupWindow!!.showAtLocation(findViewById(android.R.id.content), Gravity.BOTTOM, 0, 0)
+    }
+
+    //向上弹出
+    private fun showToTopWindow(view: View) {
+        if (mPopupWindow != null && mPopupWindow!!.isShowing)
+            return
+        mPopupWindow = CommonPopupWindow.Builder(this)
+            .setContentView(R.layout.layout_popup_window_to_top)
+            .setAnimationStyle(R.style.AnimScaleBottom)
+            .setOnViewListener { holder, popupWindow ->
+                holder.setOnClickListener(R.id.reply_tv) {
+                    showToast("回复")
+                    popupWindow.dismiss()
+                }
+                holder.setOnClickListener(R.id.share_tv) {
+                    showToast("分享")
+                    popupWindow.dismiss()
+                }
+                holder.setOnClickListener(R.id.report_tv) {
+                    showToast("举报")
+                    popupWindow.dismiss()
+                }
+                holder.setOnClickListener(R.id.copy_tv) {
+                    showToast("复制")
+                    popupWindow.dismiss()
+                }
+            }.build()
+        mPopupWindow!!.showAsDropDown(
+            view,
+            -(mPopupWindow!!.contentView.measuredWidth - view.width) / 2,
+            -(mPopupWindow!!.contentView.measuredHeight + view.height)
+        )
     }
 
 }

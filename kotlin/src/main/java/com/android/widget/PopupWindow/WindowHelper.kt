@@ -9,7 +9,7 @@ import android.support.annotation.FloatRange
  */
 class WindowHelper(private var mActivity: Activity) {
 
-    //设置背景灰色程度
+    //设置外部区域背景透明度，0：完全不透明，1：完全透明
     fun setBackGroundAlpha(@FloatRange(from = 0.0, to = 1.0) alpha: Float) {
         val window = mActivity.window
         val lp = window.attributes
