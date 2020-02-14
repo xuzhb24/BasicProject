@@ -54,10 +54,22 @@
     <style name="ScrollViewStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">match_parent</item>
-        <!--不显示波纹效果-->
-        <item name="android:overScrollMode">never</item>
         <!--隐藏滚动条-->
         <item name="android:scrollbars">none</item>
+        <!--不显示波纹效果-->
+        <item name="android:overScrollMode">never</item>
+    </style>
+
+    <!--通用的RecyclerView风格-->
+    <style name="RecyclerViewStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <!--隐藏滚动条-->
+        <item name="android:scrollbars">none</item>
+        <!--不显示波纹效果-->
+        <item name="android:overScrollMode">never</item>
+        <!--默认线性布局-->
+        <item name="layoutManager">android.support.v7.widget.LinearLayoutManager</item>
     </style>
 
     <style name="ItemTextStyle">
@@ -109,16 +121,6 @@
     <style name="SingleWidgetDividerLineStyle" parent="DividerLineStyle">
         <item name="android:layout_marginTop">10dp</item>
         <item name="android:layout_marginBottom">10dp</item>
-    </style>
-
-    <!--通用的RecyclerView风格-->
-    <style name="RecyclerViewStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">match_parent</item>
-        <item name="android:scrollbars">none</item>
-        <item name="android:overScrollMode">never</item>
-        <!--默认线性布局-->
-        <item name="layoutManager">android.support.v7.widget.LinearLayoutManager</item>
     </style>
 
     <!--向上弹出的平移动画-->

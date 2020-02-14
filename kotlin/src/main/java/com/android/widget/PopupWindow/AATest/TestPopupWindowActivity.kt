@@ -119,6 +119,7 @@ class TestPopupWindowActivity : BaseActivity() {
         mPopupWindow = CommonPopupWindow.Builder(this)
             .setContentView(R.layout.layout_popup_window_to_left_or_right)
             .setViewParams(SizeUtil.dp2px(160f).toInt(), SizeUtil.dp2px(50f).toInt())
+            .setBackgroundDrawable(resources.getDrawable(R.drawable.shape_corners_10_solid_000000))
             .setAnimationStyle(R.style.AnimScaleLeft)
             .setOnViewListener { holder, popupWindow ->
                 holder.setOnClickListener(R.id.praise_tv) {
@@ -140,6 +141,7 @@ class TestPopupWindowActivity : BaseActivity() {
         mPopupWindow = CommonPopupWindow.Builder(this)
             .setContentView(R.layout.layout_popup_window_to_left_or_right)
             .setViewParams(SizeUtil.dp2px(160f).toInt(), SizeUtil.dp2px(50f).toInt())
+            .setBackgroundDrawable(resources.getDrawable(R.drawable.shape_corners_10_solid_000000))
             .setAnimationStyle(R.style.AnimScaleRight)
             .setOnViewListener { holder, popupWindow ->
                 holder.setOnClickListener(R.id.praise_tv) {
