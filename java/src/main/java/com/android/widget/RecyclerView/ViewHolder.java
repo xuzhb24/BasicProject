@@ -112,8 +112,9 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
     //设置子View的点击事件，通过ViewHolder调用
-    public void setOnItemChildClickListener(int viewId, OnItemChildClickListener listener) {
+    public ViewHolder setOnItemChildClickListener(int viewId, OnItemChildClickListener listener) {
         getView(viewId).setOnClickListener(listener::onClick);
+        return this;
     }
 
     //子View的长按事件
@@ -122,8 +123,9 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
     //设置子View的长按事件，通过ViewHolder调用
-    public void setOnItemChildLongClickListener(int viewId, OnItemChildLongClickListener listener) {
+    public ViewHolder setOnItemChildLongClickListener(int viewId, OnItemChildLongClickListener listener) {
         getView(viewId).setOnLongClickListener(listener::onLongClick);
+        return this;
     }
 
     //Item点击事件
@@ -132,8 +134,9 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
     //设置Item点击事件，通过ViewHolder调用
-    public void setOnItemClickListener(OnItemClickListener listener) {
+    public ViewHolder setOnItemClickListener(OnItemClickListener listener) {
         itemView.setOnClickListener(listener::onClick);
+        return this;
     }
 
     //Item长按事件
@@ -142,8 +145,9 @@ public class ViewHolder extends RecyclerView.ViewHolder {
     }
 
     //设置Item长按事件，通过ViewHolder调用
-    public void setOnItemLongClickListener(OnItemLongClickListener listener) {
+    public ViewHolder setOnItemLongClickListener(OnItemLongClickListener listener) {
         itemView.setOnLongClickListener(listener::onLongClick);
+        return this;
     }
 
 }

@@ -101,15 +101,17 @@ public class ViewHolder {
     }
 
     //设置点击事件
-    public void setOnClickListener(@IdRes int viewId, View.OnClickListener listener) {
+    public ViewHolder setOnClickListener(@IdRes int viewId, View.OnClickListener listener) {
         View view = getView(viewId);
         view.setOnClickListener(listener);
+        return this;
     }
 
     //设置长按事件
-    public void setOnLongClickListener(@IdRes int viewId, View.OnLongClickListener listener) {
+    public ViewHolder setOnLongClickListener(@IdRes int viewId, View.OnLongClickListener listener) {
         View view = getView(viewId);
         view.setOnLongClickListener(listener);
+        return this;
     }
 
 }
