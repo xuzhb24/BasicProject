@@ -100,23 +100,27 @@ open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     //设置子View的点击事件，通过ViewHolder调用
-    fun setOnItemChildClickListener(viewId: Int, listener: (v: View) -> Unit) {
+    fun setOnItemChildClickListener(viewId: Int, listener: (v: View) -> Unit): ViewHolder {
         getView<View>(viewId)?.setOnClickListener { v -> listener.invoke(v) }
+        return this
     }
 
     //设置子View的长按事件，通过ViewHolder调用
-    fun setOnItemChildLongClickListener(viewId: Int, listener: (v: View) -> Boolean) {
+    fun setOnItemChildLongClickListener(viewId: Int, listener: (v: View) -> Boolean): ViewHolder {
         getView<View>(viewId)?.setOnLongClickListener { v -> listener.invoke(v) }
+        return this
     }
 
     //设置Item点击事件，通过ViewHolder调用
-    fun setOnItemClickListener(listener: (v: View) -> Unit) {
+    fun setOnItemClickListener(listener: (v: View) -> Unit): ViewHolder {
         itemView.setOnClickListener { v -> listener.invoke(v) }
+        return this
     }
 
     //设置Item长按事件，通过ViewHolder调用
-    fun setOnItemLongClickListener(listener: (v: View) -> Boolean) {
+    fun setOnItemLongClickListener(listener: (v: View) -> Boolean): ViewHolder {
         itemView.setOnLongClickListener { v -> listener.invoke(v) }
+        return this
     }
 
 }

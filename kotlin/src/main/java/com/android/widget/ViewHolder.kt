@@ -100,13 +100,15 @@ class ViewHolder(private var mView: View) {
     }
 
     //设置点击事件
-    fun setOnClickListener(@IdRes viewId: Int, listener: (v: View) -> Unit) {
+    fun setOnClickListener(@IdRes viewId: Int, listener: (v: View) -> Unit): ViewHolder {
         getView<View>(viewId)?.setOnClickListener { v -> listener.invoke(v) }
+        return this
     }
 
     //设置长按事件
-    fun setOnLongClickListener(@IdRes viewId: Int, listener: (v: View) -> Boolean) {
+    fun setOnLongClickListener(@IdRes viewId: Int, listener: (v: View) -> Boolean): ViewHolder {
         getView<View>(viewId)?.setOnLongClickListener { v -> listener.invoke(v) }
+        return this
     }
 
 }
