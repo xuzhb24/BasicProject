@@ -93,6 +93,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="设备工具" />
 
+            <TextView
+                android:id="@+id/shell_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="Shell工具" />
+
         </LinearLayout>
     </ScrollView>
 

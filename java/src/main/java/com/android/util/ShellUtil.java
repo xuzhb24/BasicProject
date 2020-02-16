@@ -13,6 +13,9 @@ import java.util.List;
  */
 public class ShellUtil {
 
+    //获取操作系统对应的换行符，如java中的\r\n，windows中的\r\n，linux/unix中的\r，mac中的\n
+    private static final String LINE_SEPARATOR = System.getProperty("line.separator");
+
     //执行shell命令
     public static CommandResult execShellCmd(String command) {
         return execCmd(new String[]{command}, false, true);
@@ -82,10 +85,10 @@ public class ShellUtil {
                 failureReader = new BufferedReader(new InputStreamReader(process.getErrorStream(), "UTF-8"));
                 String s;
                 while ((s = successReader.readLine()) != null) {
-                    successMsg.append(s);
+                    successMsg.append(s).append(LINE_SEPARATOR);
                 }
                 while ((s = failureReader.readLine()) != null) {
-                    failureMsg.append(s);
+                    failureMsg.append(s).append(LINE_SEPARATOR);
                 }
             }
         } catch (Exception e) {
@@ -150,6 +153,15 @@ public class ShellUtil {
 
         public void setFailureMsg(String failureMsg) {
             this.failureMsg = failureMsg;
+        }
+
+        @Override
+        public String toString() {
+            return "CommandResult{" +
+                    "code=" + code +
+                    ", successMsg='" + successMsg + '\'' +
+                    ", failureMsg='" + failureMsg + '\'' +
+                    '}';
         }
     }
 

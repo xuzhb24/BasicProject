@@ -15,10 +15,12 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.style.ImageSpan;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import butterknife.BindView;
@@ -56,6 +58,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_ACTIVITY = "TEST_ACTIVITY";
     public static final String TEST_APP = "TEST_APP";
     public static final String TEST_DEVICE = "TEST_DEVICE";
+    public static final String TEST_SHELL = "TEST_SHELL";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -120,6 +123,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_DEVICE:
                 testDevice();
+                break;
+            case TEST_SHELL:
+                testShell();
                 break;
         }
     }
@@ -645,6 +651,46 @@ public class TestUtilActivity extends BaseActivity {
                 .append("\n系统语言：").append(DeviceUtil.getSystemLanguage())
                 .append("\nIMEI：").append(DeviceUtil.getIMEI(this));
         tv.setText(sb.toString());
+    }
+
+    //Shell工具
+    private void testShell() {
+        String command1 = "getprop ro.product.model";
+        String command2 = "cd sdcard/AATest\ncat test.txt";
+        CommonLayoutUtil.initCommonLayout(this, "Shell工具", false, true,
+                "运行命令", command1, command2);
+        EditText et = new EditText(this);
+        et.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+        ll.addView(et, 0);
+        et.setHint("请输入要执行的Shell命令，多条的话换行输入");
+        btn1.setOnClickListener(v -> {
+            String content = et.getText().toString().trim();
+            if (TextUtils.isEmpty(content)) {
+                showToast("请先输入命令");
+            } else {
+                String[] commands = content.split("\n");
+                String result = ShellUtil.execCmd(commands, false).toString();
+                LogUtil.w("Shell", result);
+                tv.setText(result);
+            }
+        });
+        btn2.setOnClickListener(v -> {
+            tv.setText(ShellUtil.execShellCmd(command1).toString());
+        });
+        btn3.setOnClickListener(v -> {
+            String testFilePath = Environment.getExternalStorageDirectory() + "/AATest/test.txt";
+            if (!PermissionUtil.requestPermissions(this, 1,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                showToast("请先允许权限");
+                return;
+            }
+            FileUtil.createOrExistsFile(testFilePath);
+            IOUtil.writeFileFromString(testFilePath, "test shell " + DateUtil.getCurrentDateTime(), false);
+            String result = ShellUtil.execCmd(command2.split("\n"), false).toString();
+            LogUtil.w("Shell", result);
+            tv.setText(result);
+        });
     }
 
 }
