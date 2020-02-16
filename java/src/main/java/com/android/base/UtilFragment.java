@@ -34,7 +34,7 @@ public class UtilFragment extends BaseFragment {
         return R.layout.fragment_util;
     }
 
-    @OnClick({R.id.statusbar_tv, R.id.time_tv, R.id.keyboard_tv, R.id.drawable_tv, R.id.code_tv,
+    @OnClick({R.id.statusbar_tv, R.id.time_tv, R.id.keyboard_tv, R.id.drawable_tv, R.id.string_tv, R.id.code_tv,
             R.id.notification_tv, R.id.traffic_tv, R.id.network_stats_tv, R.id.continuous_click_tv,
             R.id.pinyin_tv, R.id.activity_tv, R.id.app_tv, R.id.device_tv, R.id.shell_tv})
     public void onViewClicked(View view) {
@@ -50,6 +50,9 @@ public class UtilFragment extends BaseFragment {
                 break;
             case R.id.drawable_tv:  //代码创建Drawable
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_DRAWABLE);
+                break;
+            case R.id.string_tv:  //字符串工具类
+                CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_STRING);
                 break;
             case R.id.code_tv:  //二维码/条形码工具
                 startActivity(TestCodeUtilActivity.class);

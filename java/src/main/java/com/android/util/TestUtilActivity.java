@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.net.ConnectivityManager;
@@ -14,6 +15,7 @@ import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
+import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -49,6 +51,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_STATUS_BAR = "TEST_STATUS_BAR";
     public static final String TEST_DATE = "TEST_DATE";
     public static final String TEST_DRAWABLE = "TEST_DRAWABLE";
+    public static final String TEST_STRING = "TEST_STRING";
     public static final String TEST_KEYBOARD = "TEST_KEYBOARD";
     public static final String TEST_NOTIFICATION = "TEST_NOTIFICATION";
     public static final String TEST_TRAFFICSTATS = "TEST_TRAFFICSTATS";
@@ -99,6 +102,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_DRAWABLE:
                 testDrawableUtil();
+                break;
+            case TEST_STRING:
+                testStringUtil();
                 break;
             case TEST_NOTIFICATION:
                 testNotification();
@@ -235,6 +241,42 @@ public class TestUtilActivity extends BaseActivity {
             );
             btn1.setBackground(drawable);
             btn1.setTextColor(getResources().getColor(R.color.orange));
+        });
+    }
+
+    private void testStringUtil() {
+        CommonLayoutUtil.initCommonLayout(this, "字符串工具类", false, true,
+                "显示不同颜色", "带下划线", "带点击事件");
+        String content = "欢迎拨打热线电话";
+        tv.setTextColor(Color.BLACK);
+        tv.setTextSize(15);
+        btn1.setOnClickListener(v -> {
+            tv.setText(StringUtil.createTextSpan(
+                    content, 4, 8,
+                    getResources().getColor(R.color.orange),
+                    (int) SizeUtil.sp2px(18),
+                    Typeface.ITALIC, false, null
+            ));
+        });
+        btn2.setOnClickListener(v -> {
+            tv.setText(StringUtil.createTextSpan(
+                    content, 4, 8,
+                    getResources().getColor(R.color.orange),
+                    (int) SizeUtil.sp2px(18),
+                    Typeface.NORMAL, true, null
+            ));
+        });
+        btn3.setOnClickListener(v -> {
+            tv.setMovementMethod(LinkMovementMethod.getInstance());  //必须设置这个点击事件才能生效
+            tv.setText(StringUtil.createTextSpan(
+                    content, 4, 8,
+                    getResources().getColor(R.color.orange),
+                    (int) SizeUtil.sp2px(18),
+                    Typeface.BOLD_ITALIC, true,
+                    view -> {
+                        showToast("热线电话：10086");
+                    }
+            ));
         });
     }
 
