@@ -55,6 +55,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_PINYIN = "TEST_PINYIN";
     public static final String TEST_ACTIVITY = "TEST_ACTIVITY";
     public static final String TEST_APP = "TEST_APP";
+    public static final String TEST_DEVICE = "TEST_DEVICE";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -116,6 +117,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_APP:
                 testApp();
+                break;
+            case TEST_DEVICE:
+                testDevice();
                 break;
         }
     }
@@ -622,6 +626,25 @@ public class TestUtilActivity extends BaseActivity {
                 .append(String.valueOf(AppUtil.isLocalAppForeground(this)));
         LogUtil.e("AppInfo", " \n" + AppUtil.getLocalAppInfo(this));
         return builder;
+    }
+
+    //设备工具
+    private void testDevice() {
+        CommonLayoutUtil.initCommonLayout(this, "设备工具", false, true);
+        StringBuilder sb = new StringBuilder();
+        sb.append("设备是否root：").append(DeviceUtil.isDeviceRooted())
+                .append("\n设备MAC地址：").append(DeviceUtil.getMacAddress(this))
+                .append("\n设备厂商：").append(DeviceUtil.getManufacturer())
+                .append("\n设备型号：").append(DeviceUtil.getModel())
+                .append("\n设备品牌：").append(DeviceUtil.getBrand())
+                .append("\nSDK版本号：").append(DeviceUtil.getSDKVersion())
+                .append("\n系统版本号：").append(DeviceUtil.getOSVersion())
+                .append("\n设备AndroidID：").append(DeviceUtil.getAndroidID(this))
+                .append("\n分辨率：").append(DeviceUtil.getScreenResolution(this))
+                .append("\n运营商名称：").append(DeviceUtil.getSimOperatorName(this))
+                .append("\n系统语言：").append(DeviceUtil.getSystemLanguage())
+                .append("\nIMEI：").append(DeviceUtil.getIMEI(this));
+        tv.setText(sb.toString());
     }
 
 }
