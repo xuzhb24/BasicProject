@@ -3,6 +3,7 @@ package com.android.base;
 import android.os.Bundle;
 import android.view.View;
 import butterknife.OnClick;
+import com.android.universal.TestSystemWidgetActivity;
 import com.android.frame.mvc.BaseFragment;
 import com.android.java.R;
 import com.android.widget.Dialog.TestDialogActivity;
@@ -37,7 +38,7 @@ public class WidgetFragment extends BaseFragment {
     }
 
     @OnClick({R.id.popup_tv, R.id.piechart_tv, R.id.linechart_tv, R.id.dialog_tv, R.id.pic_dialog_tv,
-            R.id.recyclerview_tv, R.id.single_tv})
+            R.id.recyclerview_tv, R.id.single_tv, R.id.system_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.popup_tv:  //通用PopupWindow
@@ -58,6 +59,9 @@ public class WidgetFragment extends BaseFragment {
                 break;
             case R.id.single_tv:  //单一控件
                 startActivity(TestSingleWidgetActivity.class);
+                break;
+            case R.id.system_tv:  //系统控件
+                startActivity(TestSystemWidgetActivity.class);
                 break;
         }
     }

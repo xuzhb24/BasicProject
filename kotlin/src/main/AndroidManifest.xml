@@ -62,11 +62,14 @@
         <activity android:name="com.android.frame.mvp.AATest.activity.newslist.NewsListActivity" />
 
         <!--控件篇-->
+        <!--记录一些系统自带控件的使用-->
+        <activity android:name="com.android.universal.TestSystemWidgetActivity" />
+        <!--自己写的一些自定义View-->
+        <activity android:name="com.android.widget.TestSingleWidgetActivity" />
         <!--CommonPopupWindow使用例子-->
         <activity android:name="com.android.widget.PopupWindow.AATest.TestPopupWindowActivity" />
         <activity android:name="com.android.widget.PieChart.TestPieChartActivity" />
         <activity android:name="com.android.widget.LineChart.TestLineChartActivity" />
-        <activity android:name="com.android.widget.TestSingleWidgetActivity" />
         <activity android:name="com.android.widget.dialog.TestDialogActivity" />
         <!--RecyclerView-->
         <activity android:name="com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity" />

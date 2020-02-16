@@ -1,6 +1,7 @@
 package com.android.base
 
 import android.os.Bundle
+import com.android.universal.TestSystemWidgetActivity
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseFragment
 import com.android.widget.LineChart.TestLineChartActivity
@@ -50,6 +51,10 @@ class WidgetFragment : BaseFragment() {
         //单一控件
         single_tv.setOnClickListener {
             startActivity(TestSingleWidgetActivity::class.java)
+        }
+        //系统控件
+        system_tv.setOnClickListener {
+            startActivity(TestSystemWidgetActivity::class.java)
         }
     }
 
