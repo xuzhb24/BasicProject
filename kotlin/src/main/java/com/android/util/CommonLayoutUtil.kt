@@ -3,6 +3,7 @@ package com.android.util
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
+import android.text.TextUtils
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
@@ -14,6 +15,15 @@ import com.android.widget.TitleBar
  * Created by xuzhb on 2019/9/22
  * Desc:
  */
+fun initCommonLayout(
+    activity: Activity,
+    title: String,
+    showInputLayout: Boolean = false,
+    showTextView: Boolean = false
+) {
+    initCommonLayout(activity, title, "", showInputLayout = showInputLayout, showTextView = showTextView)
+}
+
 fun initCommonLayout(
     activity: Activity,
     title: String,
@@ -55,6 +65,9 @@ fun initCommonLayout(
     }
     if (showTextView) {
         tv.visibility = View.VISIBLE
+    }
+    if (TextUtils.isEmpty(text[0]) && text.size == 1) {
+        return
     }
     if (text.size >= 1) {
         btn1.visibility = View.VISIBLE

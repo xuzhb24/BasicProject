@@ -20,23 +20,27 @@ object DateUtil {
     const val YMD_CH = "yyyy年MM月dd日"
     const val YM_CH = "yyyy年MM月"
     const val MD_CH = "MM月dd日"
+    const val H_M_S_S = "HH:mm:ss.SSS"
     const val H_M_S = "HH:mm:ss"
     const val H_M = "HH:mm"
     const val M_S = "mm:ss"
-    const val H_M_S_S = "HH:mm:ss.SSS"
+    const val HMSS = "HHmmssSSS"
     const val HMS = "HHmmss"
     const val HM = "HHmm"
     const val MS = "mmss"
+    const val HMSS_CH = "HH时mm分ss秒SSS毫秒"
     const val HMS_CH = "HH时mm分ss秒"
     const val HM_CH = "HH时mm分"
     const val MS_CH = "mm分ss秒"
-    const val Y_M_D_H_M_S = "yyyy-MM-dd HH:mm:ss"
     const val Y_M_D_H_M_S_S = "yyyy-MM-dd HH:mm:ss.SSS"
-    const val YMDHMS = "yyyyMMddHHmmss"
+    const val Y_M_D_H_M_S = "yyyy-MM-dd HH:mm:ss"
+    const val YMDHMSS_CH = "yyyy年MM月dd日 HH时mm分ss秒SSS毫秒"
     const val YMDHMS_CH = "yyyy年MM月dd日 HH时mm分ss秒"
+    const val YMDHMSS = "yyyyMMddHHmmssSSS"
+    const val YMDHMS = "yyyyMMddHHmmss"
 
-    //获取当前的日期
-    fun getCurrentDateTime(formatStr: String = Y_M_D): String {
+    //获取当前的日期时间，默认格式为"yyyy-MM-dd HH:mm:ss"
+    fun getCurrentDateTime(formatStr: String = Y_M_D_H_M_S): String {
         val df = SimpleDateFormat(formatStr, Locale.getDefault())
         return df.format(Date())
     }
@@ -59,9 +63,14 @@ object DateUtil {
     }
 
     //日期时间long类型转换成String类型
-    fun long2String(currentTimeMillis: Long, formatStr: String): String {
+    fun long2String(currentTimeMillis: Long, formatStr: String): String? {
         val df = SimpleDateFormat(formatStr, Locale.getDefault())
-        return df.format(currentTimeMillis)
+        try {
+            return df.format(currentTimeMillis)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
     }
 
     //日期时间String类型转换成long类型
@@ -72,14 +81,21 @@ object DateUtil {
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return null
+        return -1
     }
 
     //日期时间Date类型转换成long类型
     fun date2Long(date: Date): Long = date.time
 
     //日期时间long类型转换成Date类型
-    fun long2Date(currentTimeMillis: Long): Date = Date(currentTimeMillis)
+    fun long2Date(currentTimeMillis: Long): Date? {
+        try {
+            return Date(currentTimeMillis)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 
     //判断是否润年
     fun isLeapYear(year: Int): Boolean {
@@ -124,7 +140,67 @@ object DateUtil {
         return 0
     }
 
-    //获取两个日期间隔的天数
+    //获取指定日期n年前/后的日期，distance为负数表示n年前，distance为正数表示n年后，dateTime传空时表示当天
+    fun getDistanceDateByYear(distance: Int, formatStr: String, dateTime: String = ""): String {
+        val df = SimpleDateFormat(formatStr, Locale.getDefault())
+        try {
+            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + distance)
+            return df.format(calendar.time)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return dateTime
+    }
+
+    //获取指定日期n月前/后的日期，distance为负数表示n月前，distance为正数表示n月后，dateTime传空时表示当天
+    fun getDistanceDateByMonth(distance: Int, formatStr: String, dateTime: String = ""): String {
+        val df = SimpleDateFormat(formatStr, Locale.getDefault())
+        try {
+            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + distance)
+            return df.format(calendar.time)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return dateTime
+    }
+
+    //获取指定日期n周前/后的日期，distance为负数表示n周前，distance为正数表示n周后，dateTime传空时表示当天
+    fun getDistanceDateByWeek(distance: Int, formatStr: String, dateTime: String = ""): String {
+        val df = SimpleDateFormat(formatStr, Locale.getDefault())
+        try {
+            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) + distance)
+            return df.format(calendar.time)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return dateTime
+    }
+
+    //获取指定日期n天前/后的日期，distance为负数表示n天前，distance为正数表示n天后，dateTime传空时表示当天
+    fun getDistanceDateByDay(distance: Int, formatStr: String, dateTime: String = ""): String {
+        val df = SimpleDateFormat(formatStr, Locale.getDefault())
+        try {
+            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
+            val calendar = Calendar.getInstance()
+            calendar.time = date
+            calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + distance)
+            return df.format(calendar.time)
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return dateTime
+    }
+
+    //获取两个时间点间隔的天数
     fun getDistanceDay(startDate: String, endDate: String, formatStr: String): Int {
         val df = SimpleDateFormat(formatStr, Locale.getDefault())
         try {
@@ -156,7 +232,7 @@ object DateUtil {
         return 0
     }
 
-    //获取两个日期间隔的秒数
+    //获取两个时间点间隔的秒数
     fun getDistanceSecond(startDate: String, endDate: String, formatStr: String): Long {
         val df = SimpleDateFormat(formatStr, Locale.getDefault())
         try {
@@ -169,126 +245,135 @@ object DateUtil {
         return 0
     }
 
-    //获取指定日期的当月第一天
-    fun getFirstDayOfMonth(dateTime: String, formatStr: String): Date {
-        val calendar = Calendar.getInstance()
-        with(calendar) {
-            time = string2Date(dateTime, formatStr)
-            set(Calendar.DAY_OF_MONTH, 1)
-            set(Calendar.HOUR_OF_DAY, 0)
-            set(Calendar.MINUTE, 0)
-            set(Calendar.SECOND, 0)
-        }
-        return calendar.time
-    }
-
-    //获取指定日期的当月最后一天
-    fun getLastDayOfMonth(dateTime: String, formatStr: String): Date {
-        val calendar = Calendar.getInstance()
-        with(calendar) {
-            time = string2Date(dateTime, formatStr)
-            set(Calendar.DAY_OF_MONTH, getActualMaximum(Calendar.DAY_OF_MONTH))
-            set(Calendar.HOUR_OF_DAY, 23)
-            set(Calendar.MINUTE, 59)
-            set(Calendar.SECOND, 59)
-        }
-        return calendar.time
-    }
-
-    //获取指定日期n天前/后的日期，distance为负数表示n天前，distance为正数表示n天后，dateTime传空时表示当天
-    fun getDistanceDateByDay(distance: Int, formatStr: String, dateTime: String = ""): String {
-        val df = SimpleDateFormat(formatStr, Locale.getDefault())
-        val calendar = Calendar.getInstance()
-        try {
-            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
-            calendar.time = date
-            calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + distance)
-            return df.format(calendar.time)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return dateTime
-    }
-
-    //获取指定日期n周前/后的日期，distance为负数表示n周前，distance为正数表示n周后，dateTime传空时表示当天
-    fun getDistanceDateByWeek(distance: Int, formatStr: String, dateTime: String = ""): String {
-        val df = SimpleDateFormat(formatStr, Locale.getDefault())
-        val calendar = Calendar.getInstance()
-        try {
-            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
-            calendar.time = date
-            calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) + distance)
-            return df.format(calendar.time)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return dateTime
-    }
-
-    //获取指定日期n月前/后的日期，distance为负数表示n月前，distance为正数表示n月后，dateTime传空时表示当天
-    fun getDistanceDateByMonth(distance: Int, formatStr: String, dateTime: String = ""): String {
-        val df = SimpleDateFormat(formatStr, Locale.getDefault())
-        val calendar = Calendar.getInstance()
-        try {
-            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
-            calendar.time = date
-            calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + distance)
-            return df.format(calendar.time)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return dateTime
-    }
-
-    //获取指定日期n年前/后的日期，distance为负数表示n年前，distance为正数表示n年后，dateTime传空时表示当天
-    fun getDistanceDateByYear(distance: Int, formatStr: String, dateTime: String = ""): String {
-        val df = SimpleDateFormat(formatStr, Locale.getDefault())
-        val calendar = Calendar.getInstance()
-        try {
-            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
-            calendar.time = date
-            calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + distance)
-            return df.format(calendar.time)
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-        return dateTime
-    }
-
-    //某个时间点是否在某段时间内，dateTime传空时表示当天
-    fun isInThePeriod(startDate: String, endDate: String, formatStr: String, dateTime: String = ""): Boolean? {
+    //某个时间点是否在某个时间段内，dateTime传空时表示当前时间
+    fun isInThePeriod(startDate: String, endDate: String, formatStr: String, dateTime: String = ""): Boolean {
         val df = SimpleDateFormat(formatStr, Locale.getDefault())
         try {
             val key = if (TextUtils.isEmpty(dateTime)) Date().time else df.parse(dateTime).time
             val start = df.parse(startDate).time
             val end = df.parse(endDate).time
-            return if (start <= key && key <= end) true else false
+            return key in start..end
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return null
+        return false
     }
 
-    //根据日期获取星期几
-    fun getWeek(dateTime: String, formatStr: String): String {
-        val df = SimpleDateFormat(formatStr, Locale.getDefault())
-        val calendar = Calendar.getInstance()
-        var week = ""
+    //获取当天的零点时间，即"00:00:00.000"
+    fun getStartTimeOfToday(): Long = getStartTimeOfDay("", "")
+
+    //获取某一天的零点时间，即"00:00:00.000"，dateTime传空时表示当天
+    fun getStartTimeOfDay(dateTime: String, formatStr: String): Long {
         try {
-            calendar.time = df.parse(dateTime)
-            when (calendar.get(Calendar.DAY_OF_WEEK)) {
-                1 -> week = "日"
-                2 -> week = "一"
-                3 -> week = "二"
-                4 -> week = "三"
-                5 -> week = "四"
-                6 -> week = "五"
-                7 -> week = "六"
+            val c = Calendar.getInstance()
+            if (!TextUtils.isEmpty(dateTime)) {
+                val df = SimpleDateFormat(formatStr, Locale.getDefault())
+                c.time = df.parse(dateTime)
+            }
+            c.set(Calendar.HOUR_OF_DAY, 0)
+            c.set(Calendar.SECOND, 0)
+            c.set(Calendar.MINUTE, 0)
+            c.set(Calendar.MILLISECOND, 0)
+            return c.timeInMillis
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return -1
+    }
+
+    //获取当天的最后时间，即"23:59:59.999"
+    fun getEndTimeOfToday(): Long = getEndTimeOfDay("", "")
+
+    //获取某一天的最后时间，即"23:59:59.999"，dateTime传空时表示当天
+    fun getEndTimeOfDay(dateTime: String, formatStr: String): Long {
+        try {
+            val c = Calendar.getInstance()
+            if (!TextUtils.isEmpty(dateTime)) {
+                val df = SimpleDateFormat(formatStr, Locale.getDefault())
+                c.time = df.parse(dateTime)
+            }
+            c.set(Calendar.HOUR_OF_DAY, 23)
+            c.set(Calendar.SECOND, 59)
+            c.set(Calendar.MINUTE, 59)
+            c.set(Calendar.MILLISECOND, 999)
+            return c.timeInMillis
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return -1
+    }
+
+    //获得本月第一天的零点时间，即"00:00:00.000"
+    fun getStartTimeOfCurrentMonth(): Long = getStartTimeOfMonth("", "")
+
+    //获取某月第一天的零点时间，即"00:00:00.000"，dateTime传空时表示本月
+    fun getStartTimeOfMonth(dateTime: String, formatStr: String): Long {
+        try {
+            val c = Calendar.getInstance()
+            if (!TextUtils.isEmpty(dateTime)) {
+                val df = SimpleDateFormat(formatStr, Locale.getDefault())
+                c.time = df.parse(dateTime)
+            }
+            c.set(Calendar.HOUR_OF_DAY, 0)
+            c.set(Calendar.SECOND, 0)
+            c.set(Calendar.MINUTE, 0)
+            c.set(Calendar.MILLISECOND, 0)
+            c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH))
+            return c.timeInMillis
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return -1
+    }
+
+    //获得本月最后一天的最后时间，即"23:59:59.999"
+    fun getEndTimeOfCurrentMonth(): Long = getEndTimeOfMonth("", "")
+
+    //获取某月最后一天的最后时间，即"23:59:59.999"，dateTime传空时表示本月
+    fun getEndTimeOfMonth(dateTime: String, formatStr: String): Long {
+        try {
+            val c = Calendar.getInstance()
+            if (!TextUtils.isEmpty(dateTime)) {
+                val df = SimpleDateFormat(formatStr, Locale.getDefault())
+                c.time = df.parse(dateTime)
+            }
+            c.set(Calendar.HOUR_OF_DAY, 23)
+            c.set(Calendar.SECOND, 59)
+            c.set(Calendar.MINUTE, 59)
+            c.set(Calendar.MILLISECOND, 999)
+            c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH))
+            return c.timeInMillis
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return -1
+    }
+
+    //当天是星期几
+    fun getCurrentDayOfWeekCH(): String = getDayOfWeekCH("", "")
+
+    //指定日期是星期几，dateTime传空时表示当天
+    fun getDayOfWeekCH(dateTime: String, formatStr: String): String {
+        var dayOfWeek = ""
+        try {
+            val c = Calendar.getInstance()
+            if (!TextUtils.isEmpty(dateTime)) {
+                val df = SimpleDateFormat(formatStr, Locale.getDefault())
+                c.time = df.parse(dateTime)
+            }
+            when (c.get(Calendar.DAY_OF_WEEK)) {
+                1 -> dayOfWeek = "日"
+                2 -> dayOfWeek = "一"
+                3 -> dayOfWeek = "二"
+                4 -> dayOfWeek = "三"
+                5 -> dayOfWeek = "四"
+                6 -> dayOfWeek = "五"
+                7 -> dayOfWeek = "六"
             }
         } catch (e: Exception) {
             e.printStackTrace()
         }
-        return if (TextUtils.isEmpty(week)) "未知" else "星期$week"
+        return if (TextUtils.isEmpty(dayOfWeek)) "未知" else "星期$dayOfWeek"
     }
 
 }
