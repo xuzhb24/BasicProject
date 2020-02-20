@@ -126,6 +126,41 @@ public class IOUtil {
         }
     }
 
+    //读取InputStream到字符串中
+    public static String readInputStreameToString(InputStream inputStream) {
+        return readInputStreameToString(inputStream, "");
+    }
+
+    /**
+     * 读取InputStream到字符串中
+     *
+     * @param inputStream 输出流
+     * @param charsetName 编码格式
+     * @return 字符串
+     */
+    public static String readInputStreameToString(InputStream inputStream, String charsetName) {
+        BufferedReader reader = null;
+        try {
+            StringBuilder sb = new StringBuilder();
+            if (StringUtil.isEmpty(charsetName)) {
+                reader = new BufferedReader(new InputStreamReader(inputStream));
+            } else {
+                reader = new BufferedReader(new InputStreamReader(inputStream, charsetName));
+            }
+            String line;
+            while ((line = reader.readLine()) != null) {
+                sb.append(line).append(LINE_SEPARATOR);
+            }
+            //删除最后的换行符
+            return sb.delete(sb.length() - LINE_SEPARATOR.length(), sb.length()).toString();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        } finally {
+            closeIO(reader);
+        }
+    }
+
     //将字节数组写入文件
     public static boolean writeFileFromBytes(String filePath, byte[] bytes, boolean append) {
         return writeFileFromBytes(FileUtil.getFileByPath(filePath), bytes, append);

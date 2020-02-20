@@ -69,7 +69,8 @@ class TestUtilActivity : BaseActivity() {
         val text2 = "状态栏白色，字体和图片黑色"
         val text3 = "状态栏黑色，字体和图片白色"
         val text4 = "状态栏黑色半透明，字体和图片白色"
-        initCommonLayout(this, "实现沉浸式状态栏", text1, text2, text3, text4)
+        val text5 = "透明度和十六进制对应表"
+        initCommonLayout(this, "实现沉浸式状态栏", text1, text2, text3, text4, text5)
         btn1.setOnClickListener {
             jumpToTestStatusBarActivity(1, text1)
         }
@@ -81,6 +82,10 @@ class TestUtilActivity : BaseActivity() {
         }
         btn4.setOnClickListener {
             jumpToTestStatusBarActivity(4, text4)
+        }
+        btn5.setOnClickListener {
+            val content = IOUtil.readInputStreameToString(resources.openRawResource(R.raw.hex_alpha_table))
+            alert(this, content ?: "")
         }
     }
 
