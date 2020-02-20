@@ -23,42 +23,24 @@ public class DateUtil {
     public static final String YMD_CH = "yyyy年MM月dd日";
     public static final String YM_CH = "yyyy年MM月";
     public static final String MD_CH = "MM月dd日";
+    public static final String H_M_S_S = "HH:mm:ss.SSS";
     public static final String H_M_S = "HH:mm:ss";
     public static final String H_M = "HH:mm";
     public static final String M_S = "mm:ss";
-    public static final String H_M_S_S = "HH:mm:ss.SSS";
+    public static final String HMSS = "HHmmssSSS";
     public static final String HMS = "HHmmss";
     public static final String HM = "HHmm";
     public static final String MS = "mmss";
+    public static final String HMSS_CH = "HH时mm分ss秒SSS毫秒";
     public static final String HMS_CH = "HH时mm分ss秒";
     public static final String HM_CH = "HH时mm分";
     public static final String MS_CH = "mm分ss秒";
-    public static final String Y_M_D_H_M_S = "yyyy-MM-dd HH:mm:ss";
     public static final String Y_M_D_H_M_S_S = "yyyy-MM-dd HH:mm:ss.SSS";
-    public static final String YMDHMS = "yyyyMMddHHmmss";
+    public static final String Y_M_D_H_M_S = "yyyy-MM-dd HH:mm:ss";
+    public static final String YMDHMSS_CH = "yyyy年MM月dd日 HH时mm分ss秒SSS毫秒";
     public static final String YMDHMS_CH = "yyyy年MM月dd日 HH时mm分ss秒";
-
-    //获取当前的日期，默认格式为"yyyy-MM-dd"
-    public static String getCurrentDate() {
-        return getCurrentDate(Y_M_D);
-    }
-
-    //获取当前的日期
-    public static String getCurrentDate(String formatStr) {
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        return df.format(new Date());
-    }
-
-    //获取当前的时间，默认格式为"HH:mm:ss"
-    public static String getCurrentTime() {
-        return getCurrentTime(H_M_S);
-    }
-
-    //获取当前的时间
-    public static String getCurrentTime(String formatStr) {
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        return df.format(new Date());
-    }
+    public static final String YMDHMSS = "yyyyMMddHHmmssSSS";
+    public static final String YMDHMS = "yyyyMMddHHmmss";
 
     //获取当前的日期时间，默认格式为"yyyy-MM-dd HH:mm:ss"
     public static String getCurrentDateTime() {
@@ -90,13 +72,13 @@ public class DateUtil {
 
     //日期时间long类型转换成String类型
     public static String long2String(long currentTimeMillis, String formatStr) {
+        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
         try {
-            SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
             return df.format(currentTimeMillis);
         } catch (Exception e) {
             e.printStackTrace();
-            return "时间格式化异常";
         }
+        return null;
     }
 
     //日期时间String类型转换成long类型
@@ -107,7 +89,7 @@ public class DateUtil {
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return 0;
+        return -1;
     }
 
     //日期时间Date类型转换成long类型
@@ -121,20 +103,16 @@ public class DateUtil {
             return new Date(currentTimeMillis);
         } catch (Exception e) {
             e.printStackTrace();
-            return null;
         }
+        return null;
     }
 
     //判断是否润年
     public static boolean isLeapYear(int year) {
         if ((year % 400) == 0) {
             return true;
-        } else if ((year % 4) == 0) {
-            if ((year % 100) == 0) {
-                return false;
-            } else {
-                return true;
-            }
+        } else if (year % 4 == 0) {
+            return year % 100 != 0;
         } else {
             return false;
         }
@@ -172,115 +150,90 @@ public class DateUtil {
         return 0;
     }
 
-    //获取当天n年前/后的日期,distanceYear为正数表示n年后，distanceYear为负数表示n年前
-    public static String getDistanceDateByYear(int distanceYear, String formatStr) {
-        Date currentDate = new Date();
-        Calendar calender = Calendar.getInstance();
-        calender.setTime(currentDate);
-        calender.set(Calendar.YEAR, calender.get(Calendar.YEAR) + distanceYear);
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        return df.format(calender.getTime());
+    //获取当天n年前/后的日期，distance为负数表示n年前，distance为正数表示n年后
+    public static String getDistanceDateByYear(int distance, String formatStr) {
+        return getDistanceDateByYear(distance, formatStr, "");
     }
 
-    //获取某一天n年前/后的日期,distanceYear为正数表示n年后，distanceYear为负数表示n年前
-    public static String getDistanceDateByYear(String someDay, int distanceYear, String formatStr) {
+    //获取指定日期n年前/后的日期，distance为负数表示n年前，distance为正数表示n年后，dateTime传空时表示当天
+    public static String getDistanceDateByYear(int distance, String formatStr, String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Date beginDate = null;
         try {
-            beginDate = df.parse(someDay);
+            Date date = TextUtils.isEmpty(dateTime) ? new Date() : df.parse(dateTime);
             Calendar calender = Calendar.getInstance();
-            calender.setTime(beginDate);
-            calender.set(Calendar.YEAR, calender.get(Calendar.YEAR) + distanceYear);
+            calender.setTime(date);
+            calender.set(Calendar.YEAR, calender.get(Calendar.YEAR) + distance);
             return df.format(calender.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return someDay;
+        return dateTime;
     }
 
-    //获取当天n月前/后的日期，distanceMonth为负数表示n月后，distanceMonth为正数表示n月后
-    public static String getDistanceDateByMonth(int distanceMonth, String formatStr) {
-        Date currentDate = new Date();
-        Calendar calender = Calendar.getInstance();
-        calender.setTime(currentDate);
-        calender.set(Calendar.MONTH, calender.get(Calendar.MONTH) + distanceMonth);
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        return df.format(calender.getTime());
+    //获取当天n月前/后的日期，distance为负数表示n月前，distance为正数表示n月后
+    public static String getDistanceDateByMonth(int distance, String formatStr) {
+        return getDistanceDateByMonth(distance, formatStr, "");
     }
 
-    //获取某一天n月前/后的日期，distanceMonth为负数表示n月后，distanceMonth为正数表示n月后
-    public static String getDistanceDateByMonth(String someDay, int distanceMonth, String formatStr) {
+    //获取指定日期n月前/后的日期，distance为负数表示n月前，distance为正数表示n月后，dateTime传空时表示当天
+    public static String getDistanceDateByMonth(int distance, String formatStr, String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Date beginDate = null;
         try {
-            beginDate = df.parse(someDay);
+            Date date = TextUtils.isEmpty(dateTime) ? new Date() : df.parse(dateTime);
             Calendar calender = Calendar.getInstance();
-            calender.setTime(beginDate);
-            calender.set(Calendar.MONTH, calender.get(Calendar.MONTH) + distanceMonth);
+            calender.setTime(date);
+            calender.set(Calendar.MONTH, calender.get(Calendar.MONTH) + distance);
             return df.format(calender.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return someDay;
+        return dateTime;
     }
 
-    //获取当天n周前/后的日期，distanceWeek为负数表示n周前，distanceWeek为正数表示n周后
-    public static String getDistanceDateByWeek(int distanceWeek, String formatStr) {
-        Date currentDate = new Date();
-        Calendar calender = Calendar.getInstance();
-        calender.setTime(currentDate);
-        calender.set(Calendar.WEEK_OF_YEAR, calender.get(Calendar.WEEK_OF_YEAR) + distanceWeek);
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        return df.format(calender.getTime());
+    //获取当天n周前/后的日期，distance为负数表示n周前，distance为正数表示n周后，dateTime传空时表示当天
+    public static String getDistanceDateByWeek(int distance, String formatStr) {
+        return getDistanceDateByWeek(distance, formatStr, "");
     }
 
-    //获取某一天n周前/后的日期，distanceWeek为负数表示n周前，distanceWeek为正数表示n周后
-    public static String getDistanceDateByWeek(String someDay, int distanceWeek, String formatStr) {
+    //获取指定日期n周前/后的日期，distance为负数表示n周前，distance为正数表示n周后，dateTime传空时表示当天
+    public static String getDistanceDateByWeek(int distance, String formatStr, String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Date beginDate = null;
         try {
-            beginDate = df.parse(someDay);
+            Date date = TextUtils.isEmpty(dateTime) ? new Date() : df.parse(dateTime);
             Calendar calender = Calendar.getInstance();
-            calender.setTime(beginDate);
-            calender.set(Calendar.WEEK_OF_YEAR, calender.get(Calendar.WEEK_OF_YEAR) + distanceWeek);
+            calender.setTime(date);
+            calender.set(Calendar.WEEK_OF_YEAR, calender.get(Calendar.WEEK_OF_YEAR) + distance);
             return df.format(calender.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return someDay;
+        return dateTime;
     }
 
-
-    //获取当天n天前/后的日期，distanceDay为负数表示n天前，distanceDay为正数表示n天后
-    public static String getDistanceDateByDay(int distanceDay, String formatStr) {
-        Date currentDate = new Date();
-        Calendar calender = Calendar.getInstance();
-        calender.setTime(currentDate);
-        calender.set(Calendar.DATE, calender.get(Calendar.DATE) + distanceDay);
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        return df.format(calender.getTime());
+    //获取当天n天前/后的日期，distance为负数表示n天前，distance为正数表示n天后
+    public static String getDistanceDateByDay(int distance, String formatStr) {
+        return getDistanceDateByDay(distance, formatStr, "");
     }
 
-    //获取某一天n天前/后的日期，distanceDay为负数表示n天前，distanceDay为正数表示n天后
-    public static String getDistanceDateByDay(String someDay, int distanceDay, String formatStr) {
+    //获取指定日期n天前/后的日期，distance为负数表示n天前，distance为正数表示n天后，dateTime传空时表示当天
+    public static String getDistanceDateByDay(int distance, String formatStr, String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Date beginDate = null;
         try {
-            beginDate = df.parse(someDay);
+            Date date = TextUtils.isEmpty(dateTime) ? new Date() : df.parse(dateTime);
             Calendar calender = Calendar.getInstance();
-            calender.setTime(beginDate);
-            calender.set(Calendar.DATE, calender.get(Calendar.DATE) + distanceDay);
+            calender.setTime(date);
+            calender.set(Calendar.DATE, calender.get(Calendar.DATE) + distance);
             return df.format(calender.getTime());
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return someDay;
+        return dateTime;
     }
 
-    //获取两个日期间隔的天数
-    public static int differentDays(String startDate, String endDate, String formatStr) {
+    //获取两个时间点间隔的天数
+    public static int getDistanceDay(String startDate, String endDate, String formatStr) {
+        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
         try {
-            SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
             Date date1 = df.parse(startDate);
             Date date2 = df.parse(endDate);
             Calendar cal1 = Calendar.getInstance();
@@ -292,15 +245,15 @@ public class DateUtil {
             int year1 = cal1.get(Calendar.YEAR);
             int year2 = cal2.get(Calendar.YEAR);
             if (year1 != year2) { //同一年
-                int timeDistance = 0;
+                int distance = 0;
                 for (int i = year1; i < year2; i++) {
                     if (i % 4 == 0 && i % 100 != 0 || i % 400 == 0) { //闰年
-                        timeDistance += 366;
+                        distance += 366;
                     } else { //不是闰年
-                        timeDistance += 365;
+                        distance += 365;
                     }
                 }
-                return timeDistance + (day2 - day1);
+                return distance + (day2 - day1);
             } else {
                 return day2 - day1;
             }
@@ -310,10 +263,10 @@ public class DateUtil {
         return 0;
     }
 
-    //获取两个日期间隔的秒数
-    public static long differentSeconds(String startDate, String endDate, String formatStr) {
+    //获取两个时间点间隔的秒数
+    public static long getDistanceSecond(String startDate, String endDate, String formatStr) {
+        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
         try {
-            SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
             long start = df.parse(startDate).getTime();
             long end = df.parse(endDate).getTime();
             return Math.abs((end - start) / 1000);
@@ -323,178 +276,168 @@ public class DateUtil {
         return 0;
     }
 
-    //某个时间点是否在某段时间内
-    public static boolean isBetwennStartAndEnd(String keyDate, String startDate, String endDate, String formatStr) {
+    //当前时间是否在某个时间段内
+    public static boolean isInThePeriod(String startDate, String endDate, String formatStr) {
+        return isInThePeriod(startDate, endDate, formatStr, "");
+    }
+
+    //某个时间点是否在某个时间段内，dateTime传空时表示当前时间
+    public static boolean isInThePeriod(String startDate, String endDate, String formatStr, String dateTime) {
+        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
         try {
-            SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
+            long key = TextUtils.isEmpty(dateTime) ? new Date().getTime() : df.parse(dateTime).getTime();
             long start = df.parse(startDate).getTime();
             long end = df.parse(endDate).getTime();
-            long key = df.parse(keyDate).getTime();
-            if (start <= key && key <= end) {
-                return true;
-            } else {
-                return false;
-            }
+            return start <= key && key <= end;
         } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
     }
 
-    //当前时间是否在某段时间内
-    public static boolean isBetweenStartAndEnd(String startDate, String endDate, String formatStr) {
-        try {
-            SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-            return isBetwennStartAndEnd(df.format(new Date()), startDate, endDate, formatStr);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    //根据日期获取星期几
-    public static String getWeek(String dateTime, String formatStr) {
-        String week = "";
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Calendar c = Calendar.getInstance();
-        try {
-            c.setTime(df.parse(dateTime));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        switch (c.get(Calendar.DAY_OF_WEEK)) {
-            case 1:
-                week = "日";
-                break;
-            case 2:
-                week = "一";
-                break;
-            case 3:
-                week = "二";
-                break;
-            case 4:
-                week = "三";
-                break;
-            case 5:
-                week = "四";
-                break;
-            case 6:
-                week = "五";
-                break;
-            case 7:
-                week = "六";
-                break;
-
-        }
-        if (TextUtils.isEmpty(week)) {
-            return "未知";
-        } else {
-            return "星期" + week;
-        }
-    }
-
-    //获取当天的零点时间
+    //获取当天的零点时间，即"00:00:00.000"
     public static long getStartTimeOfToday() {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 0);
-        c.set(Calendar.SECOND, 0);
-        c.set(Calendar.MINUTE, 0);
-        c.set(Calendar.MILLISECOND, 0);
-        return c.getTimeInMillis();
+        return getStartTimeOfDay("", "");
     }
 
-    //获取当天的最后时间，即"23:59:59"
-    public static long getEndTimeOfToday() {
-        Calendar c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, 23);
-        c.set(Calendar.SECOND, 59);
-        c.set(Calendar.MINUTE, 59);
-        c.set(Calendar.MILLISECOND, 999);
-        return c.getTimeInMillis();
-    }
-
-    //获取某一天的零点时间，即"00:00:00.000"
+    //获取某一天的零点时间，即"00:00:00.000"，dateTime传空时表示当天
     public static long getStartTimeOfDay(String dateTime, String formatStr) {
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Calendar c = Calendar.getInstance();
         try {
-            c.setTime(df.parse(dateTime));
+            Calendar c = Calendar.getInstance();
+            if (!TextUtils.isEmpty(dateTime)) {
+                SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
+                c.setTime(df.parse(dateTime));
+            }
             c.set(Calendar.HOUR_OF_DAY, 0);
             c.set(Calendar.SECOND, 0);
             c.set(Calendar.MINUTE, 0);
             c.set(Calendar.MILLISECOND, 0);
+            return c.getTimeInMillis();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return c.getTimeInMillis();
+        return -1;
     }
 
-    //获取某一天的最后时间，即"23:59:59.999"
+    //获取当天的最后时间，即"23:59:59.999"
+    public static long getEndTimeOfToday() {
+        return getEndTimeOfDay("", "");
+    }
+
+    //获取某一天的最后时间，即"23:59:59.999"，dateTime传空时表示当天
     public static long getEndTimeOfDay(String dateTime, String formatStr) {
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Calendar c = Calendar.getInstance();
         try {
-            c.setTime(df.parse(dateTime));
+            Calendar c = Calendar.getInstance();
+            if (!TextUtils.isEmpty(dateTime)) {
+                SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
+                c.setTime(df.parse(dateTime));
+            }
             c.set(Calendar.HOUR_OF_DAY, 23);
             c.set(Calendar.SECOND, 59);
             c.set(Calendar.MINUTE, 59);
             c.set(Calendar.MILLISECOND, 999);
+            return c.getTimeInMillis();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return c.getTimeInMillis();
+        return -1;
     }
 
-    //获得本月第一天的零点时间
+    //获得本月第一天的零点时间，即"00:00:00.000"
     public static long getStartTimeOfCurrentMonth() {
-        Calendar c = Calendar.getInstance();
-        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONDAY), c.get(Calendar.DAY_OF_MONTH),
-                0, 0, 0);
-        c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
-        return c.getTimeInMillis();
+        return getStartTimeOfMonth("", "");
     }
 
-    //获得本月最后一天的最后时间
-    public static long getEndTimeOfCurrentMonth() {
-        Calendar c = Calendar.getInstance();
-        c.set(c.get(Calendar.YEAR), c.get(Calendar.MONDAY), c.get(Calendar.DAY_OF_MONTH),
-                23, 59, 59);
-        c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
-        return c.getTimeInMillis();
-    }
-
-    //获取某月第一天的零点时间
+    //获取某月第一天的零点时间，即"00:00:00.000"，dateTime传空时表示本月
     public static long getStartTimeOfMonth(String dateTime, String formatStr) {
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Calendar c = Calendar.getInstance();
         try {
-            c.setTime(df.parse(dateTime));
+            Calendar c = Calendar.getInstance();
+            if (!TextUtils.isEmpty(dateTime)) {
+                SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
+                c.setTime(df.parse(dateTime));
+            }
             c.set(Calendar.HOUR_OF_DAY, 0);
             c.set(Calendar.SECOND, 0);
             c.set(Calendar.MINUTE, 0);
             c.set(Calendar.MILLISECOND, 0);
             c.set(Calendar.DAY_OF_MONTH, c.getActualMinimum(Calendar.DAY_OF_MONTH));
+            return c.getTimeInMillis();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return c.getTimeInMillis();
+        return -1;
     }
 
-    //获取某月第一天的最后时间
+    //获得本月最后一天的最后时间，即"23:59:59.999"
+    public static long getEndTimeOfCurrentMonth() {
+        return getEndTimeOfMonth("", "");
+    }
+
+    //获取某月最后一天的最后时间，即"23:59:59.999"，dateTime传空时表示本月
     public static long getEndTimeOfMonth(String dateTime, String formatStr) {
-        SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
-        Calendar c = Calendar.getInstance();
         try {
-            c.setTime(df.parse(dateTime));
+            Calendar c = Calendar.getInstance();
+            if (!TextUtils.isEmpty(dateTime)) {
+                SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
+                c.setTime(df.parse(dateTime));
+            }
             c.set(Calendar.HOUR_OF_DAY, 23);
             c.set(Calendar.SECOND, 59);
             c.set(Calendar.MINUTE, 59);
             c.set(Calendar.MILLISECOND, 999);
             c.set(Calendar.DAY_OF_MONTH, c.getActualMaximum(Calendar.DAY_OF_MONTH));
+            return c.getTimeInMillis();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        return c.getTimeInMillis();
+        return -1;
+    }
+
+    //当天是星期几
+    public static String getCurrentDayOfWeekCH() {
+        return getDayOfWeekCH("", "");
+    }
+
+    //指定日期是星期几，dateTime传空时表示当天
+    public static String getDayOfWeekCH(String dateTime, String formatStr) {
+        String dayOfWeek = "";
+        try {
+            Calendar c = Calendar.getInstance();
+            if (!TextUtils.isEmpty(dateTime)) {
+                SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
+                c.setTime(df.parse(dateTime));
+            }
+            switch (c.get(Calendar.DAY_OF_WEEK)) {
+                case 1:
+                    dayOfWeek = "日";
+                    break;
+                case 2:
+                    dayOfWeek = "一";
+                    break;
+                case 3:
+                    dayOfWeek = "二";
+                    break;
+                case 4:
+                    dayOfWeek = "三";
+                    break;
+                case 5:
+                    dayOfWeek = "四";
+                    break;
+                case 6:
+                    dayOfWeek = "五";
+                    break;
+                case 7:
+                    dayOfWeek = "六";
+                    break;
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        if (TextUtils.isEmpty(dayOfWeek)) {
+            return "未知";
+        } else {
+            return "星期" + dayOfWeek;
+        }
     }
 
 }

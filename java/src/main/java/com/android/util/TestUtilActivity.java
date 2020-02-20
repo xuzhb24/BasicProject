@@ -38,6 +38,7 @@ import com.android.util.traffic.TrafficInfo;
 import com.android.util.traffic.TrafficStatsUtil;
 import com.android.widget.InputLayout;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -174,19 +175,120 @@ public class TestUtilActivity extends BaseActivity {
     }
 
     private void testDateUtil() {
-        CommonLayoutUtil.initCommonLayout(this, "测试时间工具", "按钮");
-        btn1.setOnClickListener(v -> {
-            LogUtil.e(TAG, "当天开始时间:" + DateUtil.long2String(DateUtil.getStartTimeOfToday(), DateUtil.Y_M_D_H_M_S));
-            LogUtil.e(TAG, "当天结束时间:" + DateUtil.long2String(DateUtil.getEndTimeOfToday(), DateUtil.Y_M_D_H_M_S));
-            String someDay = "2019-12-01";
-            LogUtil.e(TAG, someDay + "开始时间:" + DateUtil.long2String(DateUtil.getStartTimeOfDay(someDay, DateUtil.Y_M_D), DateUtil.Y_M_D_H_M_S));
-            LogUtil.e(TAG, someDay + "结束时间:" + DateUtil.long2String(DateUtil.getEndTimeOfDay(someDay, DateUtil.Y_M_D), DateUtil.Y_M_D_H_M_S));
-            LogUtil.e(TAG, "本月开始时间:" + DateUtil.long2String(DateUtil.getStartTimeOfCurrentMonth(), DateUtil.Y_M_D_H_M_S));
-            LogUtil.e(TAG, "本月结束时间:" + DateUtil.long2String(DateUtil.getEndTimeOfCurrentMonth(), DateUtil.Y_M_D_H_M_S));
-            String someMonth = "2019-02";
-            LogUtil.e(TAG, someMonth + "开始时间:" + DateUtil.long2String(DateUtil.getStartTimeOfMonth(someMonth, DateUtil.Y_M), DateUtil.Y_M_D_H_M_S));
-            LogUtil.e(TAG, someMonth + "结束时间:" + DateUtil.long2String(DateUtil.getEndTimeOfMonth(someMonth, DateUtil.Y_M), DateUtil.Y_M_D_H_M_S));
-        });
+        CommonLayoutUtil.initCommonLayout(this, "测试时间工具", false, true);
+        StringBuilder sb = new StringBuilder();
+        //测试getCurrentDateTime
+        sb.append("当前时间\n").append(DateUtil.getCurrentDateTime())
+                .append("\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D_H_M_S_S));
+        //测试date2String和string2Date
+        sb.append("\n\nDate <--> String\n").append(DateUtil.date2String(new Date(), DateUtil.Y_M_D_H_M_S))
+                .append("\n").append(DateUtil.date2String(DateUtil.string2Date("20200202", DateUtil.YMD), DateUtil.Y_M_D_H_M_S_S));
+        //测试long2String和string2Long
+        sb.append("\n\nLong <--> String\n").append(DateUtil.long2String(System.currentTimeMillis(), DateUtil.Y_M_D_H_M_S_S))
+                .append("\n").append(DateUtil.long2String(DateUtil.string2Long("20200202", DateUtil.YMD), DateUtil.Y_M_D_H_M_S_S));
+        //测试date2Long和long2Date
+        Date dateLong = new Date();
+        sb.append("\n\nDate <--> Long\n").append(DateUtil.date2Long(dateLong))
+                .append("\n").append(DateUtil.date2Long(DateUtil.long2Date(dateLong.getTime())));
+        //测试isLeapYear
+        sb.append("\n\n是否是闰年：\n").append("2000：").append(DateUtil.isLeapYear(2000))
+                .append("\n").append("2012：").append(DateUtil.isLeapYear(2012))
+                .append("\n").append("2019：").append(DateUtil.isLeapYear(2019));
+        //测试convertOtherFormat
+        String convertTime = DateUtil.getCurrentDateTime();
+        sb.append("\n\n转换时间格式\n").append(convertTime).append(" -> ")
+                .append(DateUtil.convertOtherFormat(convertTime, DateUtil.Y_M_D_H_M_S, "yyyyMMddHHmmssSSS"));
+        //测试compareDate
+        String compareTime1 = "2019-02-28";
+        String compareTime2 = "2019-02-28";
+        String compareTime3 = "2019-02-27";
+        String compareTime4 = "2019-03-01";
+        sb.append("\n\n比较日期大小\n")
+                .append(compareTime1).append(" ").append(compareTime2).append("：")
+                .append(DateUtil.compareDate(compareTime1, compareTime2, DateUtil.Y_M_D)).append("\n")
+                .append(compareTime1).append(" ").append(compareTime3).append("：")
+                .append(DateUtil.compareDate(compareTime1, compareTime3, DateUtil.Y_M_D)).append("\n")
+                .append(compareTime1).append(" ").append(compareTime4).append("：")
+                .append(DateUtil.compareDate(compareTime1, compareTime4, DateUtil.Y_M_D));
+        //测试getDistanceDateByYear
+        String distanceDate = "2020-02-02 12:11:03.123";
+        sb.append("\n\nN年前/后的日期\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D))
+                .append("\n1年前：").append(DateUtil.getDistanceDateByYear(-1, DateUtil.Y_M_D))
+                .append("\n2年后：").append(DateUtil.getDistanceDateByYear(2, DateUtil.Y_M_D))
+                .append("\n").append(distanceDate)
+                .append("\n3年前：").append(DateUtil.getDistanceDateByYear(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+                .append("\n4年后：").append(DateUtil.getDistanceDateByYear(4, DateUtil.Y_M_D_H_M_S_S, distanceDate));
+        //测试getDistanceDateByMonth
+        sb.append("\n\nN月前/后的日期\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D))
+                .append("\n1月前：").append(DateUtil.getDistanceDateByMonth(-1, DateUtil.Y_M_D))
+                .append("\n2月后：").append(DateUtil.getDistanceDateByMonth(2, DateUtil.Y_M_D))
+                .append("\n").append(distanceDate)
+                .append("\n3月前：").append(DateUtil.getDistanceDateByMonth(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+                .append("\n4月后：").append(DateUtil.getDistanceDateByMonth(4, DateUtil.Y_M_D_H_M_S_S, distanceDate));
+        //测试getDistanceDateByWeek
+        sb.append("\n\nN周前/后的日期\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D))
+                .append("\n1周前：").append(DateUtil.getDistanceDateByWeek(-1, DateUtil.Y_M_D))
+                .append("\n2周后：").append(DateUtil.getDistanceDateByWeek(2, DateUtil.Y_M_D))
+                .append("\n").append(distanceDate)
+                .append("\n3周前：").append(DateUtil.getDistanceDateByWeek(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+                .append("\n4周后：").append(DateUtil.getDistanceDateByWeek(4, DateUtil.Y_M_D_H_M_S_S, distanceDate));
+        //测试getDistanceDateByDay
+        sb.append("\n\nN天前/后的日期\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D))
+                .append("\n1天前：").append(DateUtil.getDistanceDateByDay(-1, DateUtil.Y_M_D))
+                .append("\n2天后：").append(DateUtil.getDistanceDateByDay(2, DateUtil.Y_M_D))
+                .append("\n").append(distanceDate)
+                .append("\n3天前：").append(DateUtil.getDistanceDateByDay(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+                .append("\n4天后：").append(DateUtil.getDistanceDateByDay(4, DateUtil.Y_M_D_H_M_S_S, distanceDate));
+        //测试getDistanceDay
+        String distanceDay1 = "2020-02-02";
+        String distanceDay2 = "2020-01-31";
+        sb.append("\n\n间隔天数\n").append(distanceDay1).append(" ").append(distanceDay2).append("：")
+                .append(DateUtil.getDistanceDay(distanceDay1, distanceDay2, DateUtil.Y_M_D));
+        //测试getDistanceSecond
+        String distanceSecond1 = "12:11:56.786";
+        String distanceSecond2 = "12:12:03.123";
+        sb.append("\n\n间隔秒数\n").append(distanceSecond1).append(" ").append(distanceSecond2).append("：")
+                .append(DateUtil.getDistanceSecond(distanceSecond1, distanceSecond2, DateUtil.H_M_S_S));
+        //测试isInThePeriod
+        String startDate = "2020-02-02 12:23:45.004";
+        String endDate = "2020-12-02 12:23:45.004";
+        String dateTimeInThePeriod1 = "2020-02-02 12:23:45.002";
+        String dateTimeInThePeriod2 = "2020-12-02 12:23:46.002";
+        sb.append("\n\n是否在某个时间段\n").append("[").append(startDate).append(" - ").append(endDate).append("]\n")
+                .append(DateUtil.getCurrentDateTime()).append("：")
+                .append(DateUtil.isInThePeriod(startDate, endDate, DateUtil.Y_M_D_H_M_S))
+                .append("\n").append(dateTimeInThePeriod1).append("：")
+                .append(DateUtil.isInThePeriod(startDate, endDate, DateUtil.Y_M_D_H_M_S, dateTimeInThePeriod1))
+                .append("\n").append(dateTimeInThePeriod2).append("：")
+                .append(DateUtil.isInThePeriod(startDate, endDate, DateUtil.Y_M_D_H_M_S, dateTimeInThePeriod2));
+        //测试getStartTimeOfToday和getStartTimeOfDay
+        String startTime = "2020-02-02";
+        sb.append("\n\n某天零点时间\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D)).append("：")
+                .append(DateUtil.long2String(DateUtil.getStartTimeOfToday(), DateUtil.Y_M_D_H_M_S_S))
+                .append("\n").append(startTime).append("：")
+                .append(DateUtil.long2String(DateUtil.getStartTimeOfDay(startTime, DateUtil.Y_M_D), DateUtil.Y_M_D_H_M_S_S));
+        //测试getStartTimeOfCurrentMonth和getStartTimeOfMonth
+        sb.append("\n\n某月零点时间\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M)).append("：")
+                .append(DateUtil.long2String(DateUtil.getStartTimeOfCurrentMonth(), DateUtil.Y_M_D_H_M_S_S))
+                .append("\n").append(DateUtil.convertOtherFormat(startTime, DateUtil.Y_M_D, DateUtil.Y_M)).append("：")
+                .append(DateUtil.long2String(DateUtil.getStartTimeOfMonth(startTime, DateUtil.Y_M_D), DateUtil.Y_M_D_H_M_S_S));
+        //测试getEndTimeOfToday和getEndTimeOfDay
+        String endTime = "2020-02-02";
+        sb.append("\n\n某天最后时间\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D)).append("：")
+                .append(DateUtil.long2String(DateUtil.getEndTimeOfToday(), DateUtil.Y_M_D_H_M_S_S))
+                .append("\n").append(endTime).append("：")
+                .append(DateUtil.long2String(DateUtil.getEndTimeOfDay(startTime, DateUtil.Y_M_D), DateUtil.Y_M_D_H_M_S_S));
+        //测试getEndTimeOfCurrentMonth和getEndTimeOfMonth
+        sb.append("\n\n某月最后时间\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M)).append("：")
+                .append(DateUtil.long2String(DateUtil.getEndTimeOfCurrentMonth(), DateUtil.Y_M_D_H_M_S_S))
+                .append("\n").append(DateUtil.convertOtherFormat(startTime, DateUtil.Y_M_D, DateUtil.Y_M)).append("：")
+                .append(DateUtil.long2String(DateUtil.getEndTimeOfMonth(startTime, DateUtil.Y_M_D), DateUtil.Y_M_D_H_M_S_S));
+        //测试getCurrentDayOfWeekCH和getDayOfWeekCH
+        String weekTime = "2020-02-02";
+        sb.append("\n\n判断周几\n").append(DateUtil.getCurrentDateTime()).append("：")
+                .append(DateUtil.getCurrentDayOfWeekCH()).append("\n").append(weekTime).append("：")
+                .append(DateUtil.getDayOfWeekCH(weekTime, DateUtil.Y_M_D));
+        tv.setText(sb.toString());
     }
 
     private void testKeyBoardUtil() {
