@@ -13,6 +13,18 @@ import android.view.View
  */
 object StringUtil {
 
+    //纯Kotlin判断是否是空字符，相当于Android中的TextUtils.isEmpty
+    fun isEmpty(s: String?): Boolean {
+        s?.let {
+            for (i in 0..it.length - 1) {
+                if (!Character.isWhitespace(it[i])) {
+                    return false
+                }
+            }
+        }
+        return true
+    }
+
     //设置同一个字符串不同字体大小和颜色
     fun createTextSpan(
         content: String,
