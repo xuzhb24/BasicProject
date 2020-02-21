@@ -64,4 +64,6 @@ dependencies {
     api 'com.tencent.bugly:nativecrashreport:3.7.1'
     //图片裁剪框架uCrop
     api 'com.yalantis:ucrop:2.2.0'
+    //底部选择器
+    api 'com.contrarywind:Android-PickerView:4.1.8'
 }

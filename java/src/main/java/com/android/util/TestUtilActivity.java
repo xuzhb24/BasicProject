@@ -63,6 +63,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_APP = "TEST_APP";
     public static final String TEST_DEVICE = "TEST_DEVICE";
     public static final String TEST_SHELL = "TEST_SHELL";
+    public static final String TEST_PICKER_VIEW = "TEST_PICKER_VIEW";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -133,6 +134,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_SHELL:
                 testShell();
+                break;
+            case TEST_PICKER_VIEW:
+                testPickerView();
                 break;
         }
     }
@@ -839,6 +843,31 @@ public class TestUtilActivity extends BaseActivity {
             String result = ShellUtil.execCmd(command2.split("\n"), false).toString();
             LogUtil.w("Shell", result);
             tv.setText(result);
+        });
+    }
+
+    //选择器工具类
+    private void testPickerView() {
+        CommonLayoutUtil.initCommonLayout(this, "底部选择器工具", false, true,
+                "选择年月日", "选择年月日时分秒");
+        btn1.setOnClickListener(v -> {
+            String curentTime = DateUtil.convertOtherFormat(tv.getText().toString(), DateUtil.Y_M_D_H_M_S, DateUtil.Y_M_D);
+            PickerViewUtil.selectDate(this, (date, v1) -> {
+                tv.setText(DateUtil.date2String(date, DateUtil.Y_M_D));
+            }, curentTime);
+        });
+        btn2.setOnClickListener(v -> {
+            String startTime = "1990-01-01 00:00:00";
+            String endTime = "2100-01-01 12:00:00";
+            String formatStr = DateUtil.Y_M_D_H_M_S;
+            boolean[] type = new boolean[]{true, true, true, true, true, true};
+            String curentTime = DateUtil.convertOtherFormat(tv.getText().toString(), DateUtil.Y_M_D, DateUtil.Y_M_D_H_M_S);
+            PickerViewUtil.selectDateTime(
+                    this, (date, v1) -> {
+                        tv.setText(DateUtil.date2String(date, formatStr));
+                    }, curentTime, startTime, endTime, formatStr,
+                    "选择日期时间", "取消", "确定", type
+            );
         });
     }
 

@@ -103,6 +103,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="Shell工具" />
 
+            <TextView
+                android:id="@+id/picker_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="底部选择器工具" />
+
         </LinearLayout>
     </ScrollView>
 
