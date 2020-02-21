@@ -72,57 +72,6 @@
         <item name="layoutManager">android.support.v7.widget.LinearLayoutManager</item>
     </style>
 
-    <style name="ItemTextStyle">
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">50dp</item>
-        <item name="android:background">@drawable/selector_item_layout_bg</item>
-        <item name="android:gravity">center</item>
-        <item name="android:textSize">15sp</item>
-        <item name="android:textColor">@color/white</item>
-    </style>
-
-    <style name="ItemTitleTextStyle" parent="ItemTextStyle">
-        <item name="android:textSize">18sp</item>
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:layout_marginRight">5dp</item>
-    </style>
-
-    <style name="ItemSingleTextStyle" parent="ItemTextStyle">
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:layout_marginRight">5dp</item>
-    </style>
-
-    <style name="ItemLeftTextStyle" parent="ItemTextStyle">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginTop">2dp</item>
-        <item name="android:layout_marginLeft">5dp</item>
-        <item name="android:layout_marginRight">1dp</item>
-    </style>
-
-    <style name="ItemRightTextStyle" parent="ItemTextStyle">
-        <item name="android:layout_width">0dp</item>
-        <item name="android:layout_weight">1</item>
-        <item name="android:layout_marginTop">2dp</item>
-        <item name="android:layout_marginRight">5dp</item>
-        <item name="android:layout_marginLeft">1dp</item>
-    </style>
-
-    <style name="SingleWidgetStyle">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_marginLeft">@dimen/default_margin</item>
-        <item name="android:layout_marginRight">@dimen/default_margin</item>
-        <item name="android:layout_marginTop">5dp</item>
-    </style>
-
-    <style name="SingleWidgetDividerLineStyle" parent="DividerLineStyle">
-        <item name="android:layout_marginTop">10dp</item>
-        <item name="android:layout_marginBottom">10dp</item>
-    </style>
-
     <!--向上弹出的平移动画-->
     <style name="AnimTranslateBottom">
         <item name="android:windowEnterAnimation">@anim/translate_bottom_in</item>
@@ -187,6 +136,66 @@
         <item name="android:backgroundDimEnabled">false</item>  <!--activity不变暗-->
     </style>
 
+    <style name="ItemLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@color/white</item>
+        <item name="android:paddingLeft">20dp</item>
+        <item name="android:paddingRight">20dp</item>
+        <item name="android:orientation">horizontal</item>
+    </style>
+
+    <style name="ItemTextStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">50dp</item>
+        <item name="android:background">@drawable/selector_item_layout_bg</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="ItemTitleTextStyle" parent="ItemTextStyle">
+        <item name="android:textSize">18sp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <style name="ItemSingleTextStyle" parent="ItemTextStyle">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+    </style>
+
+    <style name="ItemLeftTextStyle" parent="ItemTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginLeft">5dp</item>
+        <item name="android:layout_marginRight">1dp</item>
+    </style>
+
+    <style name="ItemRightTextStyle" parent="ItemTextStyle">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_marginTop">2dp</item>
+        <item name="android:layout_marginRight">5dp</item>
+        <item name="android:layout_marginLeft">1dp</item>
+    </style>
+
+    <style name="SingleWidgetStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/default_margin</item>
+        <item name="android:layout_marginRight">@dimen/default_margin</item>
+        <item name="android:layout_marginTop">5dp</item>
+    </style>
+
+    <style name="SingleWidgetDividerLineStyle" parent="DividerLineStyle">
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+    </style>
+
     <style name="CostItemLayoutStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">55dp</item>
@@ -233,6 +242,17 @@
         <item name="android:layout_centerVertical">true</item>
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:src">@drawable/ic_more</item>
+    </style>
+
+    <style name="SystemWidgetTextStyle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:layout_marginLeft">20dp</item>
+        <item name="android:layout_marginTop">15dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
     </style>
 
     <style name="ToggleButtonStyle" parent="@style/Widget.AppCompat.Button.Borderless">

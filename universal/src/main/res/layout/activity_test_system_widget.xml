@@ -9,11 +9,14 @@
     <include layout="@layout/layout_title_bar" />
 
     <!--ConstraintLayout-->
+    <TextView
+        style="@style/SystemWidgetTextStyle"
+        android:text="ConstraintLayout" />
+
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="215dp"
         android:layout_marginLeft="8dp"
-        android:layout_marginTop="15dp"
         android:layout_marginRight="8dp"
         android:background="@drawable/ic_bg">
 
@@ -131,13 +134,15 @@
 
     </android.support.constraint.ConstraintLayout>
 
+    <!--ToggleButton-->
+    <TextView
+        style="@style/SystemWidgetTextStyle"
+        android:text="ToggleButton" />
+
     <LinearLayout
-        android:layout_width="match_parent"
+        style="@style/ItemLayoutStyle"
         android:layout_height="100dp"
-        android:background="@color/white"
-        android:gravity="center_vertical"
-        android:paddingLeft="@dimen/default_margin"
-        android:paddingRight="@dimen/default_margin">
+        android:gravity="center_vertical">
 
         <ToggleButton
             style="@style/ToggleButtonStyle"
@@ -156,6 +161,38 @@
             android:layout_marginLeft="@dimen/interval_margin"
             android:textOff="按钮三"
             android:textOn="按钮三" />
+
+    </LinearLayout>
+
+    <!--ProgressBar-->
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            style="@style/SystemWidgetTextStyle"
+            android:text="ProgressBar + ValueAnimator" />
+
+        <TextView
+            android:id="@+id/progress_tv"
+            style="@style/SystemWidgetTextStyle"
+            android:layout_gravity="right|center_vertical"
+            android:layout_marginRight="20dp"
+            android:gravity="right" />
+
+    </FrameLayout>
+
+    <LinearLayout style="@style/ItemLayoutStyle">
+
+        <ProgressBar
+            android:id="@+id/progress_pb"
+            style="@android:style/Widget.ProgressBar.Horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="10dp"
+            android:layout_gravity="center_vertical"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/layer_list_progress_drawable" />
 
     </LinearLayout>
 
