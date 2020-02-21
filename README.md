@@ -1,7 +1,7 @@
-<span id="nameNorm"><font face="微软雅黑" size=5 color=#db4b3c>命名规范</font></span>  
-<span id="codeList"><font face="微软雅黑" size=5 color=#db4b3c>代码清单</font></span>
+[<font face="微软雅黑" size=5>命名规范</font>](#nameNorm)   
+[<font face="微软雅黑" size=5>代码清单</font>](#codeList)
 
-# [命名规范](#nameNorm)
+# <span id="nameNorm">命名规范</span>
 * Activity  
 第一种：标题_Activity，如标题名称为"我的"命名为"MineActivity"  
 第二种：功能_Activity，如登录页命名为"LoginActivity"  
@@ -79,7 +79,7 @@ selector_xxx，如按钮的Drawable命名为"selector_btn_bg"
 
 ***
 
-# [代码清单](#codeList)
+# <span id="codeList">代码清单</span>
 
 ## 框架篇 frame
 * ### camera/zxing：扫码框架zxing
