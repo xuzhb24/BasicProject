@@ -3,6 +3,7 @@ package com.android.base;
 import android.app.Activity;
 import android.app.Application;
 import com.android.frame.bugly.BuglyUtil;
+import com.android.util.CrashHandler;
 import com.android.util.traffic.NetworkStatsHelper;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
@@ -33,8 +34,10 @@ public class BaseApplication extends Application {
         /* 极光end */
 
         /* Bugly start*/
-        BuglyUtil.init(getApplicationContext());
+//        BuglyUtil.init(getApplicationContext());
         /* Bugly end*/
+
+        CrashHandler.getInstance().init(this);
 
         NetworkStatsHelper.init(this);  //流量统计
     }

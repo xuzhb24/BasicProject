@@ -64,6 +64,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_DEVICE = "TEST_DEVICE";
     public static final String TEST_SHELL = "TEST_SHELL";
     public static final String TEST_PICKER_VIEW = "TEST_PICKER_VIEW";
+    public static final String TEST_CRASH = "TEST_CRASH";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -137,6 +138,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_PICKER_VIEW:
                 testPickerView();
+                break;
+            case TEST_CRASH:
+                testCrash();
                 break;
         }
     }
@@ -868,6 +872,47 @@ public class TestUtilActivity extends BaseActivity {
                     }, curentTime, startTime, endTime, formatStr,
                     "选择日期时间", "取消", "确定", type
             );
+        });
+    }
+
+    //崩溃异常监听
+    private void testCrash() {
+        CommonLayoutUtil.initCommonLayout(this, "崩溃异常监听",
+                "抛异常", "读取crash文件", "删除crash文件", "移动文件到sd卡");
+        String dirName = getCacheDir() + "/log";
+        String fileName = dirName + "/crash.trace";
+        btn1.setOnClickListener(v -> {
+            ((TextView) findViewById(R.id.toast_tv)).setText("");  //空指针异常
+//            throw new RuntimeException("自定义异常");
+        });
+        btn2.setOnClickListener(v -> {
+            if (FileUtil.isFileExists(fileName)) {
+                String content = IOUtil.readFileToString(fileName);
+                ExtraUtil.alert(this, content);
+            } else {
+                showToast("crash文件不存在");
+            }
+        });
+        btn3.setOnClickListener(v -> {
+            if (FileUtil.isFileExists(fileName)) {
+                showToast(FileUtil.deleteDirectory(dirName) ? "删除成功" : "删除失败");
+            } else {
+                showToast("crash文件不存在");
+            }
+        });
+        btn4.setOnClickListener(v -> {
+            if (!PermissionUtil.requestPermissions(this, 1,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                showToast("请先允许权限");
+                return;
+            }
+            String moveFileName = "sdcard/AATest/crash.trace";
+            if (FileUtil.deleteFile(moveFileName) && FileUtil.isFileExists(fileName)) {
+                showToast(FileUtil.moveFile(fileName, moveFileName) ? "文件已移动到" + moveFileName : "移动失败");
+            } else {
+                showToast("crash文件不存在");
+            }
         });
     }
 
