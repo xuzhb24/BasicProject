@@ -1,11 +1,12 @@
 package com.android.universal
 
-import android.animation.ValueAnimator
-import android.app.Activity
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
-import android.view.animation.LinearInterpolator
+import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v7.app.AppCompatActivity
+import android.view.View
 import kotlinx.android.synthetic.main.activity_test_system_widget.*
 import kotlinx.android.synthetic.main.layout_title_bar.*
 
@@ -13,12 +14,13 @@ import kotlinx.android.synthetic.main.layout_title_bar.*
  * Created by xuzhb on 2020/2/16
  * Desc:系统自带控件的使用
  */
-class TestSystemWidgetActivity : Activity() {
+class TestSystemWidgetActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test_system_widget)
         initTitleBar()
+        initView()
         initListener()
     }
 
@@ -30,6 +32,7 @@ class TestSystemWidgetActivity : Activity() {
         title_tv.setTextColor(Color.WHITE)
         right_tv.text = "说明"
         right_tv.setTextColor(Color.WHITE)
+        divider_line.visibility = View.GONE
         left_fl.setOnClickListener {
             finish()
         }
@@ -40,20 +43,34 @@ class TestSystemWidgetActivity : Activity() {
         }
     }
 
-    private fun initListener() {
-        //ProgressBar
-        val animator = ValueAnimator.ofInt(0, 100)
-        animator.addUpdateListener {
-            //onAnimationUpdate的调用次数和setDuration有关
-            val value = it.animatedValue  //数值
-            val fraction = it.animatedFraction  //百分比
-            progress_pb.progress = value as Int
-            if ((fraction * 100).toInt() % 1 == 0) {  //调用100次
-                progress_tv.text = "${value} ${fraction}"
-            }
+    private fun initView() {
+        val titleList = mutableListOf<String>(
+            "页面一", "页面二", "页面三", "页面四", "页面五", "页面六", "页面七", "页面八"
+        )
+        val fragmentList = mutableListOf<Fragment>(
+            TestSystemWidgetFragment.newInstance(R.layout.fragment_test_system_widget1),
+            TestSystemWidgetFragment.newInstance(R.layout.fragment_test_system_widget2),
+            TestSystemWidgetFragment.newInstance(R.layout.fragment_test_system_widget3),
+            TestSystemWidgetFragment.newInstance(R.layout.fragment_test_system_widget4),
+            TestSystemWidgetFragment.newInstance(R.layout.fragment_test_system_widget5),
+            TestSystemWidgetFragment.newInstance(R.layout.fragment_test_system_widget6),
+            TestSystemWidgetFragment.newInstance(R.layout.fragment_test_system_widget7),
+            TestSystemWidgetFragment.newInstance(R.layout.fragment_test_system_widget8)
+        )
+        view_pager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
+
+            override fun getItem(i: Int): Fragment = fragmentList.get(i)
+
+            override fun getCount(): Int = titleList.size
+
+            override fun getPageTitle(i: Int): CharSequence? = titleList.get(i)
+
         }
-        animator.interpolator = LinearInterpolator()
-        animator.setDuration(5 * 1000).start()
+        tab_layout.setupWithViewPager(view_pager)
+    }
+
+    private fun initListener() {
+
     }
 
 }

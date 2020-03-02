@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ScrollViewStyle">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--带背景的圆形ImageView-->
+        <TextView
+            style="@style/SystemWidgetTextStyle"
+            android:text="带背景色的圆形ImageView" />
+
+        <LinearLayout
+            style="@style/ItemLayoutStyle"
+            android:gravity="center_vertical">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/shape_oval_size_34_solid_db4b3c"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_settings" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:background="@drawable/shape_oval_size_34_solid_db4b3c"
+                android:scaleType="centerInside"
+                android:src="@drawable/ic_msg" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</ScrollView>

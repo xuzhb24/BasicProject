@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/ScrollViewStyle">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!--layer-list-->
+        <TextView
+            style="@style/SystemWidgetTextStyle"
+            android:text="layer-list" />
+
+        <FrameLayout
+            style="@style/ItemLayoutStyle"
+            android:layout_height="250dp"
+            android:background="@drawable/layer_list_bg">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:background="@drawable/layer_list_input_layout"
+                android:gravity="bottom"
+                android:minHeight="40dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="4dp"
+                android:textCursorDrawable="@drawable/shape_size_2_solid_0071ff" />
+
+        </FrameLayout>
+
+        <!--ToggleButton-->
+        <TextView
+            style="@style/SystemWidgetTextStyle"
+            android:text="ToggleButton" />
+
+        <LinearLayout
+            style="@style/ItemLayoutStyle"
+            android:layout_height="100dp"
+            android:gravity="center_vertical">
+
+            <ToggleButton
+                style="@style/ToggleButtonStyle"
+                android:checked="true"
+                android:textOff="按钮一"
+                android:textOn="按钮一" />
+
+            <ToggleButton
+                style="@style/ToggleButtonStyle"
+                android:layout_marginLeft="@dimen/interval_margin"
+                android:textOff="按钮二"
+                android:textOn="按钮二" />
+
+            <ToggleButton
+                style="@style/ToggleButtonStyle"
+                android:layout_marginLeft="@dimen/interval_margin"
+                android:textOff="按钮三"
+                android:textOn="按钮三" />
+
+        </LinearLayout>
+
+        <!--ProgressBar-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/SystemWidgetTextStyle"
+                android:text="ProgressBar + ValueAnimator" />
+
+            <TextView
+                android:id="@+id/progress_tv"
+                style="@style/SystemWidgetTextStyle"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="20dp"
+                android:gravity="right" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <Button
+                android:id="@+id/progress_btn"
+                style="@style/ButtonStyle"
+                android:layout_width="100dp"
+                android:layout_marginLeft="0dp"
+                android:text="开始动画" />
+
+            <ProgressBar
+                android:id="@+id/progress_pb"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="15dp"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/layer_list_progress_drawable" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>
