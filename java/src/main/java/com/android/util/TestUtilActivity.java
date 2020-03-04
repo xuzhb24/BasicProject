@@ -2,7 +2,10 @@ package com.android.util;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -17,6 +20,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -38,6 +42,7 @@ import com.android.util.traffic.TrafficInfo;
 import com.android.util.traffic.TrafficStatsUtil;
 import com.android.widget.InputLayout;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -65,6 +70,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_SHELL = "TEST_SHELL";
     public static final String TEST_PICKER_VIEW = "TEST_PICKER_VIEW";
     public static final String TEST_CRASH = "TEST_CRASH";
+    public static final String TEST_CLEAN = "TEST_CLEAN";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -141,6 +147,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_CRASH:
                 testCrash();
+                break;
+            case TEST_CLEAN:
+                testClean();
                 break;
         }
     }
@@ -913,6 +922,131 @@ public class TestUtilActivity extends BaseActivity {
             } else {
                 showToast("crash文件不存在");
             }
+        });
+    }
+
+    //应用文件清除工具
+    private void testClean() {
+        CommonLayoutUtil.initCommonLayout(this, "应用文件清除工具",
+                true, true,
+                "创建测试数据", "清除内部缓存(cache)", "清除内部数据库(databases)",
+                "清除内部文件(files)", "清除内部SharePreference", "清除外部缓存(cache)");
+        il.setInputTextHint("请输入要删除文件，如a.txt，不输入默认全部删除");
+        btn1.setOnClickListener(v -> {
+            showToast("正在创建");
+            new Thread(() -> {
+                FileUtil.createOrExistsFile(getCacheDir() + "/cache1.txt");
+                FileUtil.createOrExistsFile(getCacheDir() + "/cache2.txt");
+                FileUtil.createOrExistsFile(getCacheDir() + "/cache3.txt");
+                FileUtil.createOrExistsFile(getCacheDir() + "/cache4.txt");
+                new DBHelper(this, "test1.db").getReadableDatabase();
+                new DBHelper(this, "test2.db").getReadableDatabase();
+                new DBHelper(this, "test3.db").getReadableDatabase();
+                new DBHelper(this, "test4.db").getReadableDatabase();
+                FileUtil.createOrExistsFile(getFilesDir() + "/files1.trace");
+                FileUtil.createOrExistsFile(getFilesDir() + "/files2.trace");
+                FileUtil.createOrExistsFile(getFilesDir() + "/files3.trace");
+                FileUtil.createOrExistsFile(getFilesDir() + "/files4.trace");
+                getSharedPreferences("share1", Context.MODE_PRIVATE).edit().putString("key", "value").apply();
+                getSharedPreferences("share2", Context.MODE_PRIVATE).edit().putString("key", "value").apply();
+                getSharedPreferences("share3", Context.MODE_PRIVATE).edit().putString("key", "value").apply();
+                getSharedPreferences("share4", Context.MODE_PRIVATE).edit().putString("key", "value").apply();
+                FileUtil.createOrExistsFile(getExternalCacheDir() + "/ecache1.txt");
+                FileUtil.createOrExistsFile(getExternalCacheDir() + "/ecache2.txt");
+                FileUtil.createOrExistsFile(getExternalCacheDir() + "/ecache3.txt");
+                FileUtil.createOrExistsFile(getExternalCacheDir() + "/ecache4.txt");
+                listFilesInDir();
+            }).start();
+        });
+        btn2.setOnClickListener(v -> {
+            String name = il.getInputText().trim();
+            if (TextUtils.isEmpty(name)) {  //删除全部文件
+                showToast(CleanUtil.cleanInternalCache(this) ? "删除成功" : "删除失败");
+            } else {  //删除指定文件
+                showToast(CleanUtil.cleanInternalCacheByName(this, name) ? "删除成功" : "删除失败");
+            }
+            listFilesInDir();
+        });
+        btn3.setOnClickListener(v -> {
+            String name = il.getInputText().trim();
+            if (TextUtils.isEmpty(name)) {  //删除全部文件
+                showToast(CleanUtil.cleanInternalDatabase(this) ? "删除成功" : "删除失败");
+            } else {  //删除指定文件
+                showToast(CleanUtil.cleanInternalDatabaseByName(this, name) ? "删除成功" : "删除失败");
+            }
+            listFilesInDir();
+        });
+        btn4.setOnClickListener(v -> {
+            String name = il.getInputText().trim();
+            if (TextUtils.isEmpty(name)) {  //删除全部文件
+                showToast(CleanUtil.cleanInternalFiles(this) ? "删除成功" : "删除失败");
+            } else {  //删除指定文件
+                showToast(CleanUtil.cleanInternalFilesByName(this, name) ? "删除成功" : "删除失败");
+            }
+            listFilesInDir();
+        });
+        btn5.setOnClickListener(v -> {
+            String name = il.getInputText().trim();
+            if (TextUtils.isEmpty(name)) {  //删除全部文件
+                showToast(CleanUtil.cleanInternalSharePreference(this) ? "删除成功" : "删除失败");
+            } else {  //删除指定文件
+                showToast(CleanUtil.cleanInternalSharePreferenceByName(this, name) ? "删除成功" : "删除失败");
+            }
+            listFilesInDir();
+        });
+        btn6.setOnClickListener(v -> {
+            String name = il.getInputText().trim();
+            if (TextUtils.isEmpty(name)) {  //删除全部文件
+                showToast(CleanUtil.cleanExternalCache(this) ? "删除成功" : "删除失败");
+            } else {  //删除指定文件
+                showToast(CleanUtil.cleanExternalCacheByName(this, name) ? "删除成功" : "删除失败");
+            }
+            listFilesInDir();
+        });
+    }
+
+    //创建数据库
+    public class DBHelper extends SQLiteOpenHelper {
+
+        public DBHelper(Context context, String datebaseName) {
+            super(context, datebaseName, null, 1);
+        }
+
+
+        /**
+         * 创建数据库表：person
+         * _id为主键，自增
+         **/
+        @Override
+        public void onCreate(SQLiteDatabase sqLiteDatabase) {
+            Log.i(TAG, "创建test数据库表！");
+            sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS test(_id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    " name VARCHAR,info TEXT)");
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase sqLiteDatabase, int oldVersion, int newVersion) {
+
+        }
+
+        @Override
+        public void onOpen(SQLiteDatabase sqLiteDatabase) {
+            super.onOpen(sqLiteDatabase);
+        }
+    }
+
+    private void listFilesInDir() {
+        runOnUiThread(() -> {
+            StringBuilder sb = new StringBuilder();
+            List<File> internalList = FileUtil.listFilesInDirectory(getCacheDir().getParent(), true);
+            for (File file : internalList) {
+                sb.append(file.getAbsolutePath()).append("\n").append("------------------------------------").append("\n");
+            }
+            List<File> externalList = FileUtil.listFilesInDirectory(getExternalCacheDir().getAbsolutePath(), true);
+            for (File file : externalList) {
+                sb.append(file.getAbsolutePath()).append("\n").append("------------------------------------").append("\n");
+            }
+            ExtraUtil.alert(this, sb.toString());
         });
     }
 

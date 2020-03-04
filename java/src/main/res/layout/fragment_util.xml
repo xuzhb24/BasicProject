@@ -113,6 +113,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="崩溃异常监听" />
 
+            <TextView
+                android:id="@+id/clean_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="应用文件清除工具" />
+
         </LinearLayout>
     </ScrollView>
 
