@@ -118,6 +118,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="应用文件清除工具" />
 
+            <TextView
+                android:id="@+id/sdcard_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="SD卡工具" />
+
         </LinearLayout>
     </ScrollView>
 
