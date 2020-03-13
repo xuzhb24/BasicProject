@@ -18,6 +18,7 @@ android {
         applicationId "com.android.java"
         minSdkVersion min_sdk_version
         targetSdkVersion target_sdk_version
+        multiDexEnabled true
         versionCode 100002
         versionName "1.0.0(002)"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"

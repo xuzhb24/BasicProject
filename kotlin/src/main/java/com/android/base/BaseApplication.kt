@@ -2,6 +2,8 @@ package com.android.base
 
 import android.app.Activity
 import android.app.Application
+import android.content.Context
+import android.support.multidex.MultiDex
 import com.android.basicproject.BuildConfig
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
@@ -37,6 +39,11 @@ class BaseApplication : Application() {
         /* Bugly start*/
         CrashReport.initCrashReport(applicationContext, "4728a77b29", BuildConfig.DEBUG)
         /* Bugly end*/
+    }
+
+    override fun attachBaseContext(base: Context?) {
+        super.attachBaseContext(base)
+        MultiDex.install(this)
     }
 
     private fun initRefWatcher(): RefWatcher =

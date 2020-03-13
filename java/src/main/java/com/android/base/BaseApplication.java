@@ -2,7 +2,9 @@ package com.android.base;
 
 import android.app.Activity;
 import android.app.Application;
-import com.android.frame.bugly.BuglyUtil;
+import android.content.Context;
+import android.support.multidex.MultiDex;
+
 import com.android.util.CrashHandler;
 import com.android.util.traffic.NetworkStatsHelper;
 import com.squareup.leakcanary.LeakCanary;
@@ -40,6 +42,12 @@ public class BaseApplication extends Application {
         CrashHandler.getInstance().init(this);
 
         NetworkStatsHelper.init(this);  //流量统计
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     //获取Application单例
