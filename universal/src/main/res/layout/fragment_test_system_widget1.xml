@@ -52,6 +52,16 @@
             app:layout_constraintStart_toStartOf="parent"
             -->
 
+            <!--
+            一个View的尺寸设为特定的宽高比
+            app:layout_constraintDimensionRatio="4:3"
+            偏移比例
+            app:layout_constraintHorizontal_bias=""
+            app:layout_constraintVertical_bias=""
+            基线约束控件
+            app:layout_constraintBaseline_toBaselineOf=""
+            -->
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
