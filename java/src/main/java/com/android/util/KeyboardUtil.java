@@ -47,11 +47,22 @@ public class KeyboardUtil {
     }
 
     //复制内容到剪切板
-    public static void copyToClipboard(Context context, String data) {
+    public static void copyToClipboard(Context context, CharSequence text) {
         ClipboardManager cm = (ClipboardManager) context.getApplicationContext()
                 .getSystemService(Context.CLIPBOARD_SERVICE);
-        ClipData clipData = ClipData.newPlainText(null, data);
+        ClipData clipData = ClipData.newPlainText(null, text);
         cm.setPrimaryClip(clipData);
+    }
+
+    //获取剪切板的文本
+    public static CharSequence getClipboardText(Context context) {
+        ClipboardManager cm = (ClipboardManager) context.getApplicationContext()
+                .getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = cm.getPrimaryClip();
+        if (clipData != null && clipData.getItemCount() > 0) {
+            return clipData.getItemAt(0).coerceToText(context);
+        }
+        return null;
     }
 
 }

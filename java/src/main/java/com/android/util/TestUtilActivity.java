@@ -31,7 +31,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import butterknife.BindView;
+
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.util.StatusBar.TestStatusBarUtilActivity;
@@ -48,6 +48,8 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * Created by xuzhb on 2019/10/20
@@ -321,7 +323,8 @@ public class TestUtilActivity extends BaseActivity {
     }
 
     private void testKeyBoardUtil() {
-        CommonLayoutUtil.initCommonLayout(this, "测试键盘工具", "弹出软键盘", "收起软键盘", "复制到剪切板");
+        CommonLayoutUtil.initCommonLayout(this, "测试键盘工具", true, true,
+                "弹出软键盘", "收起软键盘", "复制到剪切板", "获取剪切板的内容");
         btn1.setOnClickListener(v -> {
             KeyboardUtil.showSoftInput(getApplicationContext(), v);
         });
@@ -329,7 +332,14 @@ public class TestUtilActivity extends BaseActivity {
             KeyboardUtil.hideSoftInput(getApplicationContext(), v);
         });
         btn3.setOnClickListener(v -> {
-            KeyboardUtil.copyToClipboard(getApplicationContext(), "https://www.baidu.com");
+            if (TextUtils.isEmpty(il.getInputText().trim())) {
+                showToast("请先输入内容");
+                return;
+            }
+            KeyboardUtil.copyToClipboard(getApplicationContext(), il.getInputText());
+        });
+        btn4.setOnClickListener(v -> {
+            tv.setText(KeyboardUtil.getClipboardText(this));
         });
     }
 
