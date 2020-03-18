@@ -121,7 +121,7 @@ public class ShellUtil {
     //返回的命令结果
     public static class CommandResult {
 
-        private int code;           //结果码
+        private int code;           //结果码，返回值说明见https://blog.csdn.net/qq_35661171/article/details/79096786
         private String successMsg;  //成功信息
         private String failureMsg;  //失败信息
 
@@ -153,6 +153,10 @@ public class ShellUtil {
 
         public void setFailureMsg(String failureMsg) {
             this.failureMsg = failureMsg;
+        }
+
+        public boolean isSuccess() {
+            return code == 0;
         }
 
         @Override

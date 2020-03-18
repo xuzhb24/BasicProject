@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -22,6 +23,7 @@ import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -77,6 +79,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_CRASH = "TEST_CRASH";
     public static final String TEST_CLEAN = "TEST_CLEAN";
     public static final String TEST_SDCARD = "TEST_SDCARD";
+    public static final String TEST_SCREEN = "TEST_SCREEN";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -159,6 +162,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_SDCARD:
                 testSdcard();
+                break;
+            case TEST_SCREEN:
+                testScreen();
                 break;
         }
     }
@@ -1084,6 +1090,52 @@ public class TestUtilActivity extends BaseActivity {
                 .append("\n已用空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getUsedSize(), ByteUnit.GB)).append(" GB")
                 .append("\n\nSD卡信息：\n").append(JsonUtil.formatJson(new Gson().toJson(SDCardUtil.getSDCardInfo())));
         tv.setText(sb.toString());
+    }
+
+    //屏幕工具
+    private void testScreen() {
+        CommonLayoutUtil.initCommonLayout(this, "屏幕工具", false, true,
+                "截屏(包含状态栏)", "截屏(不包含状态栏)", "设置屏幕横屏", "设置屏幕竖屏",
+                "设置屏幕跟随系统状态", "获取屏幕信息");
+        btn1.setOnClickListener(v -> {
+            Bitmap bitmap = ScreenUtil.captureWithStatusBar(this);
+            if (BitmapUtil.saveImageToGallery(this, bitmap, "截屏带状态栏")) {
+                showToast("保存成功！");
+            } else {
+                showToast("保存失败");
+            }
+        });
+        btn2.setOnClickListener(v -> {
+            Bitmap bitmap = ScreenUtil.captureWithoutStatusBar(this);
+            if (BitmapUtil.saveImageToGallery(this, bitmap, "截屏不带状态栏")) {
+                showToast("保存成功！");
+            } else {
+                showToast("保存失败");
+            }
+        });
+        btn3.setOnClickListener(v -> {
+            ScreenUtil.setLandscape(this);
+        });
+        btn4.setOnClickListener(v -> {
+            ScreenUtil.setPortrait(this);
+        });
+        btn5.setOnClickListener(v -> {
+            ScreenUtil.setSensor(this);
+        });
+        btn6.setOnClickListener(v -> {
+            StringBuilder sb = new StringBuilder();
+            DisplayMetrics dm = ScreenUtil.getDisplayMetrics(this);
+            sb.append("屏幕宽度：").append(ScreenUtil.getScreenWidth(this))
+                    .append("\n屏幕高度：").append(ScreenUtil.getScreenHeight(this))
+                    .append("\ndensity：").append(dm.density)
+                    .append("\nscaledDensity：").append(dm.scaledDensity)
+                    .append("\ndensityDpi：").append(dm.densityDpi)
+                    .append("\n是否是横屏：").append(ScreenUtil.isLandscape(this))
+                    .append("\n是否是竖屏：").append(ScreenUtil.isPortrait(this))
+                    .append("\n是否锁屏：").append(ScreenUtil.isScreenLock(this))
+                    .append("\n旋转角度：").append(ScreenUtil.getScreenRotation(this));
+            ExtraUtil.alert(this, sb.toString());
+        });
     }
 
 }

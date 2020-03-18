@@ -210,40 +210,55 @@ class LineChart @JvmOverloads constructor(
         valueUnit = ta.getString(R.styleable.LineChart_valueUnit) ?: DEFAULT_VALUE_UNIT
         xLabelCount = ta.getInt(R.styleable.LineChart_xLabelCount, DEFAULT_XLABEL_COUNT)
         yLabelCount = ta.getInt(R.styleable.LineChart_yLabelCount, DEFAULT_YLABEL_COUNT)
-        xLabelTextSize = ta.getDimension(R.styleable.LineChart_xLabelTextSize, DEFAULT_XLABEL_TEXT_SIZE)
-        xLabelTextColor = ta.getColor(R.styleable.LineChart_xLabelTextColor, DEFAULT_XLABEL_TEXT_COLOR)
-        xLabelTextMargin = ta.getDimension(R.styleable.LineChart_xLabelTextMargin, DEFAULT_XLABEL_TEXT_MARGIN)
-        yLabelTextSize = ta.getDimension(R.styleable.LineChart_yLabelTextSize, DEFAULT_YLABEL_TEXT_SIZE)
-        yLabelTextColor = ta.getColor(R.styleable.LineChart_yLabelTextColor, DEFAULT_YLABEL_TEXT_COLOR)
-        yLabelTextMargin = ta.getDimension(R.styleable.LineChart_yLabelTextMargin, DEFAULT_YLABEL_TEXT_MARGIN)
+        xLabelTextSize =
+            ta.getDimension(R.styleable.LineChart_xLabelTextSize, DEFAULT_XLABEL_TEXT_SIZE)
+        xLabelTextColor =
+            ta.getColor(R.styleable.LineChart_xLabelTextColor, DEFAULT_XLABEL_TEXT_COLOR)
+        xLabelTextMargin =
+            ta.getDimension(R.styleable.LineChart_xLabelTextMargin, DEFAULT_XLABEL_TEXT_MARGIN)
+        yLabelTextSize =
+            ta.getDimension(R.styleable.LineChart_yLabelTextSize, DEFAULT_YLABEL_TEXT_SIZE)
+        yLabelTextColor =
+            ta.getColor(R.styleable.LineChart_yLabelTextColor, DEFAULT_YLABEL_TEXT_COLOR)
+        yLabelTextMargin =
+            ta.getDimension(R.styleable.LineChart_yLabelTextMargin, DEFAULT_YLABEL_TEXT_MARGIN)
         axisWidth = ta.getDimension(R.styleable.LineChart_axisWidth, DEFAULT_AXIS_WIDTH)
         axisColor = ta.getColor(R.styleable.LineChart_axisColor, DEFAULT_AXIS_COLOR)
         showScale = ta.getBoolean(R.styleable.LineChart_showScale, DEFAULT_SHOW_SCALE)
         scaleLength = ta.getDimension(R.styleable.LineChart_scaleLength, DEFAULT_SCALE_LENGTH)
         showGrid = ta.getBoolean(R.styleable.LineChart_showGrid, DEFAULT_SHOW_GRID)
         gridWidth = ta.getDimension(R.styleable.LineChart_gridWidth, DEFAULT_GRID_WIDTH)
-        gridDashInterval = ta.getDimension(R.styleable.LineChart_gridDashInterval, DEFAULT_GRID_DASH_INTERVAL)
-        gridDashLength = ta.getDimension(R.styleable.LineChart_gridDashLength, DEFAULT_GRID_DASH_LENGTH)
+        gridDashInterval =
+            ta.getDimension(R.styleable.LineChart_gridDashInterval, DEFAULT_GRID_DASH_INTERVAL)
+        gridDashLength =
+            ta.getDimension(R.styleable.LineChart_gridDashLength, DEFAULT_GRID_DASH_LENGTH)
         gridColor = ta.getColor(R.styleable.LineChart_gridColor, DEFAULT_GRID_COLOR)
         lineWidth = ta.getDimension(R.styleable.LineChart_lineWidth, DEFAULT_LINE_WIDTH)
         lineStartColor = ta.getColor(R.styleable.LineChart_lineStartColor, DEFAULT_LINE_START_COLOR)
         lineEndColor = ta.getColor(R.styleable.LineChart_lineEndColor, DEFAULT_LINE_END_COLOR)
-        bottomStartColor = ta.getColor(R.styleable.LineChart_bottomStartColor, DEFAULT_BOTTOM_START_COLOR)
+        bottomStartColor =
+            ta.getColor(R.styleable.LineChart_bottomStartColor, DEFAULT_BOTTOM_START_COLOR)
         bottomEndColor = ta.getColor(R.styleable.LineChart_bottomEndColor, DEFAULT_BOTTOM_END_COLOR)
         labelColor = ta.getColor(R.styleable.LineChart_labelColor, DEFAULT_LABEL_COLOR)
         labelRadius = ta.getDimension(R.styleable.LineChart_labelRadius, DEFAULT_LABEL_RADIUS)
         showLabelDate = ta.getBoolean(R.styleable.LineChart_showLabelDate, DEFAULT_SHOW_LABEL_DATE)
-        labelTextSize = ta.getDimension(R.styleable.LineChart_labelTextSize, DEFAULT_LABEL_TEXT_SIZE)
+        labelTextSize =
+            ta.getDimension(R.styleable.LineChart_labelTextSize, DEFAULT_LABEL_TEXT_SIZE)
         labelTextColor = ta.getColor(R.styleable.LineChart_labelTextColor, DEFAULT_LABEL_TEXT_COLOR)
-        labelTextMargin = ta.getDimension(R.styleable.LineChart_labelTextMargin, DEFAULT_LABEL_TEXT_MARGIN)
+        labelTextMargin =
+            ta.getDimension(R.styleable.LineChart_labelTextMargin, DEFAULT_LABEL_TEXT_MARGIN)
         labelTextLineSpacingExtra = ta.getDimension(
             R.styleable.LineChart_labelTextLineSpacingExtra,
             DEFAULT_LABEL_TEXT_LINE_SPACING_EXTRA
         )
-        labelArrowWidth = ta.getDimension(R.styleable.LineChart_labelArrowWidth, DEFAULT_LABEL_ARROW_WIDTH)
-        labelArrowHeight = ta.getDimension(R.styleable.LineChart_labelArrowHeight, DEFAULT_LABEL_ARROW_HEIGHT)
-        labelArrowOffset = ta.getDimension(R.styleable.LineChart_labelArrowMargin, DEFAULT_LABEL_ARROW_OFFSET)
-        labelArrowMargin = ta.getDimension(R.styleable.LineChart_labelArrowMargin, DEFAULT_LABEL_ARROW_MARGIN)
+        labelArrowWidth =
+            ta.getDimension(R.styleable.LineChart_labelArrowWidth, DEFAULT_LABEL_ARROW_WIDTH)
+        labelArrowHeight =
+            ta.getDimension(R.styleable.LineChart_labelArrowHeight, DEFAULT_LABEL_ARROW_HEIGHT)
+        labelArrowOffset =
+            ta.getDimension(R.styleable.LineChart_labelArrowMargin, DEFAULT_LABEL_ARROW_OFFSET)
+        labelArrowMargin =
+            ta.getDimension(R.styleable.LineChart_labelArrowMargin, DEFAULT_LABEL_ARROW_MARGIN)
         clickAble = ta.getBoolean(R.styleable.LineChart_clickAble, DEFAULT_CLICKABLE)
         leftMargin = ta.getDimension(R.styleable.LineChart_leftMargin, DEFAULT_LEFT_MARGIN)
         topMargin = ta.getDimension(R.styleable.LineChart_topMargin, DEFAULT_TOP_MARGIN)
@@ -265,7 +280,12 @@ class LineChart @JvmOverloads constructor(
             isAntiAlias = true
             color = gridColor
             strokeWidth = gridWidth
-            setPathEffect(DashPathEffect(floatArrayOf(gridDashLength, gridDashInterval), 0f))  //设置虚线效果
+            setPathEffect(
+                DashPathEffect(
+                    floatArrayOf(gridDashLength, gridDashInterval),
+                    0f
+                )
+            )  //设置虚线效果
         }
         mLinePaint = Paint()
         with(mLinePaint) {
@@ -384,7 +404,13 @@ class LineChart @JvmOverloads constructor(
     //绘制坐标轴
     private fun drawCoordinate(canvas: Canvas) {
         //绘制X轴
-        canvas.drawLine(mXPoint - axisWidth / 2f, mYPoint, mXPoint + mXLength + axisWidth / 2f, mYPoint, mAxisPaint)
+        canvas.drawLine(
+            mXPoint - axisWidth / 2f,
+            mYPoint,
+            mXPoint + mXLength + axisWidth / 2f,
+            mYPoint,
+            mAxisPaint
+        )
         //绘制网格线：竖刻线
         if (showGrid) {
             //绘制首尾的竖刻线
@@ -393,7 +419,13 @@ class LineChart @JvmOverloads constructor(
                 canvas.drawLine(mXPoint, mYPoint - scaleLength, mXPoint, topMargin, mGridPaint)
             }
             if (mClickIndex != xLabelCount) {
-                canvas.drawLine(mXPoint + mXLength, mYPoint - scaleLength, mXPoint + mXLength, topMargin, mGridPaint)
+                canvas.drawLine(
+                    mXPoint + mXLength,
+                    mYPoint - scaleLength,
+                    mXPoint + mXLength,
+                    topMargin,
+                    mGridPaint
+                )
             }
         }
         //绘制X轴首尾的刻度值
@@ -422,9 +454,10 @@ class LineChart @JvmOverloads constructor(
                     )
                 }
                 //绘制X轴上的其余刻度值
-                if (i != xLabelCount - 1) {
+                if (i != xLabelCount - 1 && i != xLabelCount) {
                     mTextPaint.textAlign = Paint.Align.CENTER
-                    val text = DateUtil.getDistanceDateByDay(-xLabelCount + i + 1, BOTTOM_DATE_FORMAT)
+                    val text =
+                        DateUtil.getDistanceDateByDay(-xLabelCount + i + 1, BOTTOM_DATE_FORMAT)
                     canvas.drawText(text, mXPoint + (i + 1) * mXScale, yOffset, mTextPaint)
                 }
             }
@@ -433,8 +466,20 @@ class LineChart @JvmOverloads constructor(
             canvas.drawLine(mXPoint, mYPoint, mXPoint, mYPoint - scaleLength, mAxisPaint)
             val center = Math.round((xLabelCount / 2f).toDouble())
             val centerOffset = center * mXScale
-            canvas.drawLine(mXPoint + centerOffset, mYPoint, mXPoint + centerOffset, mYPoint - scaleLength, mAxisPaint)
-            canvas.drawLine(mXPoint + mXLength, mYPoint, mXPoint + mXLength, mYPoint - scaleLength, mAxisPaint)
+            canvas.drawLine(
+                mXPoint + centerOffset,
+                mYPoint,
+                mXPoint + centerOffset,
+                mYPoint - scaleLength,
+                mAxisPaint
+            )
+            canvas.drawLine(
+                mXPoint + mXLength,
+                mYPoint,
+                mXPoint + mXLength,
+                mYPoint - scaleLength,
+                mAxisPaint
+            )
             //绘制X轴上的其余刻度值
             mTextPaint.textAlign = Paint.Align.CENTER
             val text = DateUtil.getDistanceDateByDay(-(xLabelCount / 2), BOTTOM_DATE_FORMAT)
@@ -490,7 +535,11 @@ class LineChart @JvmOverloads constructor(
     }
 
     //获取曲线的路径，isClose:是否闭合
-    private fun getCurvePath(pointList: MutableList<PointF>, isClose: Boolean, yPoint: Float): Path {
+    private fun getCurvePath(
+        pointList: MutableList<PointF>,
+        isClose: Boolean,
+        yPoint: Float
+    ): Path {
         val path = Path()
         return path.apply {
             for (i in 0..pointList.size - 1) {
@@ -566,7 +615,8 @@ class LineChart @JvmOverloads constructor(
                 textSize = labelTextSize
                 textAlign = Paint.Align.LEFT
             }
-            var dateText = DateUtil.getDistanceDateByDay(-xLabelCount + mClickIndex, TOP_DATE_FORMAT)
+            var dateText =
+                DateUtil.getDistanceDateByDay(-xLabelCount + mClickIndex, TOP_DATE_FORMAT)
             if (dateText.startsWith("0")) {
                 dateText = dateText.substring(1)
             }

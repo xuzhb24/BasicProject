@@ -123,6 +123,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="SD卡工具" />
 
+            <TextView
+                android:id="@+id/screen_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="屏幕工具" />
+
         </LinearLayout>
     </ScrollView>
 

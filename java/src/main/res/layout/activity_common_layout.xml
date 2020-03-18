@@ -35,67 +35,72 @@
 
     </ScrollView>
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ScrollView
+        style="@style/ScrollViewStyle"
         android:layout_below="@+id/title_bar"
-        android:layout_marginTop="50dp"
-        android:gravity="center"
-        android:orientation="vertical">
+        android:layout_marginTop="50dp">
 
-        <Button
-            android:id="@+id/btn1"
-            style="@style/ButtonStyle"
-            android:text="按钮一" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/btn2"
-            style="@style/ButtonStyle"
-            android:layout_marginTop="30dp"
-            android:text="按钮二" />
+            <Button
+                android:id="@+id/btn1"
+                style="@style/ButtonStyle"
+                android:text="按钮一" />
 
-        <Button
-            android:id="@+id/btn3"
-            style="@style/ButtonStyle"
-            android:layout_marginTop="30dp"
-            android:text="按钮三" />
+            <Button
+                android:id="@+id/btn2"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
+                android:text="按钮二" />
 
-        <Button
-            android:id="@+id/btn4"
-            style="@style/ButtonStyle"
-            android:layout_marginTop="30dp"
-            android:text="按钮四" />
+            <Button
+                android:id="@+id/btn3"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
+                android:text="按钮三" />
 
-        <Button
-            android:id="@+id/btn5"
-            style="@style/ButtonStyle"
-            android:layout_marginTop="30dp"
-            android:text="按钮五" />
+            <Button
+                android:id="@+id/btn4"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
+                android:text="按钮四" />
 
-        <Button
-            android:id="@+id/btn6"
-            style="@style/ButtonStyle"
-            android:layout_marginTop="30dp"
-            android:text="按钮六" />
+            <Button
+                android:id="@+id/btn5"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
+                android:text="按钮五" />
 
-        <Button
-            android:id="@+id/btn7"
-            style="@style/ButtonStyle"
-            android:layout_marginTop="30dp"
-            android:text="按钮七" />
+            <Button
+                android:id="@+id/btn6"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
+                android:text="按钮六" />
 
-        <Button
-            android:id="@+id/btn8"
-            style="@style/ButtonStyle"
-            android:layout_marginTop="30dp"
-            android:text="按钮八" />
+            <Button
+                android:id="@+id/btn7"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
+                android:text="按钮七" />
 
-        <Button
-            android:id="@+id/btn9"
-            style="@style/ButtonStyle"
-            android:layout_marginTop="30dp"
-            android:text="按钮九" />
+            <Button
+                android:id="@+id/btn8"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
+                android:text="按钮八" />
 
-    </LinearLayout>
+            <Button
+                android:id="@+id/btn9"
+                style="@style/ButtonStyle"
+                android:layout_marginTop="30dp"
+                android:text="按钮九" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </RelativeLayout>
