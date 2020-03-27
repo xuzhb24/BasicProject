@@ -1,13 +1,14 @@
 package com.android.base
 
 import android.os.Bundle
-import com.android.universal.TestSystemWidgetActivity
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseFragment
+import com.android.universal.TestSystemWidgetActivity
 import com.android.widget.LineChart.TestLineChartActivity
 import com.android.widget.PicGetterDialog.AATest.TestPicGetterDialogActivity
 import com.android.widget.PieChart.TestPieChartActivity
 import com.android.widget.PopupWindow.AATest.TestPopupWindowActivity
+import com.android.widget.ProgressBar.TestProgressBarActivity
 import com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity
 import com.android.widget.TestSingleWidgetActivity
 import com.android.widget.dialog.TestDialogActivity
@@ -35,6 +36,10 @@ class WidgetFragment : BaseFragment() {
         //曲线图/折线图
         linechart_tv.setOnClickListener {
             startActivity(TestLineChartActivity::class.java)
+        }
+        //进度条
+        progress_tv.setOnClickListener {
+            startActivity(TestProgressBarActivity::class.java)
         }
         //对话框
         dialog_tv.setOnClickListener {

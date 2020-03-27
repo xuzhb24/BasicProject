@@ -6,6 +6,7 @@ import android.content.Intent
 import android.text.TextUtils
 import android.view.View
 import android.widget.Button
+import android.widget.ScrollView
 import android.widget.TextView
 import com.android.basicproject.R
 import com.android.widget.InputLayout
@@ -21,7 +22,13 @@ fun initCommonLayout(
     showInputLayout: Boolean = false,
     showTextView: Boolean = false
 ) {
-    initCommonLayout(activity, title, "", showInputLayout = showInputLayout, showTextView = showTextView)
+    initCommonLayout(
+        activity,
+        title,
+        "",
+        showInputLayout = showInputLayout,
+        showTextView = showTextView
+    )
 }
 
 fun initCommonLayout(
@@ -34,6 +41,7 @@ fun initCommonLayout(
     val titleBar: TitleBar = activity.findViewById(R.id.title_bar)
     val il: InputLayout = activity.findViewById(R.id.il)
     val tv: TextView = activity.findViewById(R.id.tv)
+    val buttonSv: ScrollView = activity.findViewById(R.id.button_sv)
     val btn1: Button = activity.findViewById(R.id.btn1)
     val btn2: Button = activity.findViewById(R.id.btn2)
     val btn3: Button = activity.findViewById(R.id.btn3)
@@ -67,6 +75,7 @@ fun initCommonLayout(
         tv.visibility = View.VISIBLE
     }
     if (TextUtils.isEmpty(text[0]) && text.size == 1) {
+        buttonSv.visibility = View.GONE
         return
     }
     if (text.size >= 1) {

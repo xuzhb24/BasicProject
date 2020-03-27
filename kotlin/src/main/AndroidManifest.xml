@@ -70,6 +70,7 @@
         <activity android:name="com.android.widget.PopupWindow.AATest.TestPopupWindowActivity" />
         <activity android:name="com.android.widget.PieChart.TestPieChartActivity" />
         <activity android:name="com.android.widget.LineChart.TestLineChartActivity" />
+        <activity android:name="com.android.widget.ProgressBar.TestProgressBarActivity" />
         <activity android:name="com.android.widget.dialog.TestDialogActivity" />
         <!--RecyclerView-->
         <activity android:name="com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity" />

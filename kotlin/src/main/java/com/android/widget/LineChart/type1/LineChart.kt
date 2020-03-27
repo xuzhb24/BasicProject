@@ -210,55 +210,38 @@ class LineChart @JvmOverloads constructor(
         valueUnit = ta.getString(R.styleable.LineChart_valueUnit) ?: DEFAULT_VALUE_UNIT
         xLabelCount = ta.getInt(R.styleable.LineChart_xLabelCount, DEFAULT_XLABEL_COUNT)
         yLabelCount = ta.getInt(R.styleable.LineChart_yLabelCount, DEFAULT_YLABEL_COUNT)
-        xLabelTextSize =
-            ta.getDimension(R.styleable.LineChart_xLabelTextSize, DEFAULT_XLABEL_TEXT_SIZE)
-        xLabelTextColor =
-            ta.getColor(R.styleable.LineChart_xLabelTextColor, DEFAULT_XLABEL_TEXT_COLOR)
-        xLabelTextMargin =
-            ta.getDimension(R.styleable.LineChart_xLabelTextMargin, DEFAULT_XLABEL_TEXT_MARGIN)
-        yLabelTextSize =
-            ta.getDimension(R.styleable.LineChart_yLabelTextSize, DEFAULT_YLABEL_TEXT_SIZE)
-        yLabelTextColor =
-            ta.getColor(R.styleable.LineChart_yLabelTextColor, DEFAULT_YLABEL_TEXT_COLOR)
-        yLabelTextMargin =
-            ta.getDimension(R.styleable.LineChart_yLabelTextMargin, DEFAULT_YLABEL_TEXT_MARGIN)
+        xLabelTextSize = ta.getDimension(R.styleable.LineChart_xLabelTextSize, DEFAULT_XLABEL_TEXT_SIZE)
+        xLabelTextColor = ta.getColor(R.styleable.LineChart_xLabelTextColor, DEFAULT_XLABEL_TEXT_COLOR)
+        xLabelTextMargin = ta.getDimension(R.styleable.LineChart_xLabelTextMargin, DEFAULT_XLABEL_TEXT_MARGIN)
+        yLabelTextSize = ta.getDimension(R.styleable.LineChart_yLabelTextSize, DEFAULT_YLABEL_TEXT_SIZE)
+        yLabelTextColor = ta.getColor(R.styleable.LineChart_yLabelTextColor, DEFAULT_YLABEL_TEXT_COLOR)
+        yLabelTextMargin = ta.getDimension(R.styleable.LineChart_yLabelTextMargin, DEFAULT_YLABEL_TEXT_MARGIN)
         axisWidth = ta.getDimension(R.styleable.LineChart_axisWidth, DEFAULT_AXIS_WIDTH)
         axisColor = ta.getColor(R.styleable.LineChart_axisColor, DEFAULT_AXIS_COLOR)
         showScale = ta.getBoolean(R.styleable.LineChart_showScale, DEFAULT_SHOW_SCALE)
         scaleLength = ta.getDimension(R.styleable.LineChart_scaleLength, DEFAULT_SCALE_LENGTH)
         showGrid = ta.getBoolean(R.styleable.LineChart_showGrid, DEFAULT_SHOW_GRID)
         gridWidth = ta.getDimension(R.styleable.LineChart_gridWidth, DEFAULT_GRID_WIDTH)
-        gridDashInterval =
-            ta.getDimension(R.styleable.LineChart_gridDashInterval, DEFAULT_GRID_DASH_INTERVAL)
-        gridDashLength =
-            ta.getDimension(R.styleable.LineChart_gridDashLength, DEFAULT_GRID_DASH_LENGTH)
+        gridDashInterval = ta.getDimension(R.styleable.LineChart_gridDashInterval, DEFAULT_GRID_DASH_INTERVAL)
+        gridDashLength = ta.getDimension(R.styleable.LineChart_gridDashLength, DEFAULT_GRID_DASH_LENGTH)
         gridColor = ta.getColor(R.styleable.LineChart_gridColor, DEFAULT_GRID_COLOR)
         lineWidth = ta.getDimension(R.styleable.LineChart_lineWidth, DEFAULT_LINE_WIDTH)
         lineStartColor = ta.getColor(R.styleable.LineChart_lineStartColor, DEFAULT_LINE_START_COLOR)
         lineEndColor = ta.getColor(R.styleable.LineChart_lineEndColor, DEFAULT_LINE_END_COLOR)
-        bottomStartColor =
-            ta.getColor(R.styleable.LineChart_bottomStartColor, DEFAULT_BOTTOM_START_COLOR)
+        bottomStartColor = ta.getColor(R.styleable.LineChart_bottomStartColor, DEFAULT_BOTTOM_START_COLOR)
         bottomEndColor = ta.getColor(R.styleable.LineChart_bottomEndColor, DEFAULT_BOTTOM_END_COLOR)
         labelColor = ta.getColor(R.styleable.LineChart_labelColor, DEFAULT_LABEL_COLOR)
         labelRadius = ta.getDimension(R.styleable.LineChart_labelRadius, DEFAULT_LABEL_RADIUS)
         showLabelDate = ta.getBoolean(R.styleable.LineChart_showLabelDate, DEFAULT_SHOW_LABEL_DATE)
-        labelTextSize =
-            ta.getDimension(R.styleable.LineChart_labelTextSize, DEFAULT_LABEL_TEXT_SIZE)
+        labelTextSize = ta.getDimension(R.styleable.LineChart_labelTextSize, DEFAULT_LABEL_TEXT_SIZE)
         labelTextColor = ta.getColor(R.styleable.LineChart_labelTextColor, DEFAULT_LABEL_TEXT_COLOR)
-        labelTextMargin =
-            ta.getDimension(R.styleable.LineChart_labelTextMargin, DEFAULT_LABEL_TEXT_MARGIN)
-        labelTextLineSpacingExtra = ta.getDimension(
-            R.styleable.LineChart_labelTextLineSpacingExtra,
-            DEFAULT_LABEL_TEXT_LINE_SPACING_EXTRA
-        )
-        labelArrowWidth =
-            ta.getDimension(R.styleable.LineChart_labelArrowWidth, DEFAULT_LABEL_ARROW_WIDTH)
-        labelArrowHeight =
-            ta.getDimension(R.styleable.LineChart_labelArrowHeight, DEFAULT_LABEL_ARROW_HEIGHT)
-        labelArrowOffset =
-            ta.getDimension(R.styleable.LineChart_labelArrowMargin, DEFAULT_LABEL_ARROW_OFFSET)
-        labelArrowMargin =
-            ta.getDimension(R.styleable.LineChart_labelArrowMargin, DEFAULT_LABEL_ARROW_MARGIN)
+        labelTextMargin = ta.getDimension(R.styleable.LineChart_labelTextMargin, DEFAULT_LABEL_TEXT_MARGIN)
+        labelTextLineSpacingExtra =
+            ta.getDimension(R.styleable.LineChart_labelTextLineSpacingExtra, DEFAULT_LABEL_TEXT_LINE_SPACING_EXTRA)
+        labelArrowWidth = ta.getDimension(R.styleable.LineChart_labelArrowWidth, DEFAULT_LABEL_ARROW_WIDTH)
+        labelArrowHeight = ta.getDimension(R.styleable.LineChart_labelArrowHeight, DEFAULT_LABEL_ARROW_HEIGHT)
+        labelArrowOffset = ta.getDimension(R.styleable.LineChart_labelArrowMargin, DEFAULT_LABEL_ARROW_OFFSET)
+        labelArrowMargin = ta.getDimension(R.styleable.LineChart_labelArrowMargin, DEFAULT_LABEL_ARROW_MARGIN)
         clickAble = ta.getBoolean(R.styleable.LineChart_clickAble, DEFAULT_CLICKABLE)
         leftMargin = ta.getDimension(R.styleable.LineChart_leftMargin, DEFAULT_LEFT_MARGIN)
         topMargin = ta.getDimension(R.styleable.LineChart_topMargin, DEFAULT_TOP_MARGIN)
