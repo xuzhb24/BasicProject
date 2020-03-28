@@ -28,10 +28,10 @@ class LineChart @JvmOverloads constructor(
         private val DEFAULT_YLABEL_COUNT = 5
         private val DEFAULT_XLABEL_TEXT_SIZE = SizeUtil.sp2px(10f)
         private val DEFAULT_XLABEL_TEXT_COLOR = Color.parseColor("#7F7F7F")
-        private val DEFAULT_XLABEL_TEXT_MARGIN = SizeUtil.dp2px(7f)
+        private val DEFAULT_XLABEL_TEXT_MARGIN_TOP = SizeUtil.dp2px(7f)
         private val DEFAULT_YLABEL_TEXT_SIZE = SizeUtil.sp2px(11f)
         private val DEFAULT_YLABEL_TEXT_COLOR = Color.BLACK
-        private val DEFAULT_YLABEL_TEXT_MARGIN = SizeUtil.dp2px(20f)
+        private val DEFAULT_YLABEL_TEXT_MARGIN_LEFT = SizeUtil.dp2px(20f)
         private val DEFAULT_AXIS_WIDTH = SizeUtil.dp2px(1f)
         private val DEFAULT_AXIS_COLOR = Color.parseColor("#DCDCDC")
         private val DEFAULT_SHOW_SCALE = true
@@ -77,14 +77,14 @@ class LineChart @JvmOverloads constructor(
     var xLabelTextSize: Float = DEFAULT_XLABEL_TEXT_SIZE
     //X轴刻度值文本字体颜色
     var xLabelTextColor: Int = DEFAULT_XLABEL_TEXT_COLOR
-    //X轴刻度值文本到屏幕左侧的左边距
-    var xLabelTextMargin: Float = DEFAULT_XLABEL_TEXT_MARGIN
+    //X轴刻度值文本到X轴的上边距
+    var xLabelTextMarginTop: Float = DEFAULT_XLABEL_TEXT_MARGIN_TOP
     //Y轴刻度值文本字体大小
     var yLabelTextSize: Float = DEFAULT_YLABEL_TEXT_SIZE
     //Y轴刻度值文本字体颜色
     var yLabelTextColor: Int = DEFAULT_YLABEL_TEXT_COLOR
-    //Y轴刻度值文本到X轴的上边距
-    var yLabelTextMargin: Float = DEFAULT_YLABEL_TEXT_MARGIN
+    //Y轴刻度值文本到屏幕左侧的左边距
+    var yLabelTextMarginLeft: Float = DEFAULT_YLABEL_TEXT_MARGIN_LEFT
     //X轴宽度
     var axisWidth: Float = DEFAULT_AXIS_WIDTH
     //X轴颜色
@@ -212,10 +212,10 @@ class LineChart @JvmOverloads constructor(
         yLabelCount = ta.getInt(R.styleable.LineChart_yLabelCount, DEFAULT_YLABEL_COUNT)
         xLabelTextSize = ta.getDimension(R.styleable.LineChart_xLabelTextSize, DEFAULT_XLABEL_TEXT_SIZE)
         xLabelTextColor = ta.getColor(R.styleable.LineChart_xLabelTextColor, DEFAULT_XLABEL_TEXT_COLOR)
-        xLabelTextMargin = ta.getDimension(R.styleable.LineChart_xLabelTextMargin, DEFAULT_XLABEL_TEXT_MARGIN)
+        xLabelTextMarginTop = ta.getDimension(R.styleable.LineChart_xLabelTextMarginTop, DEFAULT_XLABEL_TEXT_MARGIN_TOP)
         yLabelTextSize = ta.getDimension(R.styleable.LineChart_yLabelTextSize, DEFAULT_YLABEL_TEXT_SIZE)
         yLabelTextColor = ta.getColor(R.styleable.LineChart_yLabelTextColor, DEFAULT_YLABEL_TEXT_COLOR)
-        yLabelTextMargin = ta.getDimension(R.styleable.LineChart_yLabelTextMargin, DEFAULT_YLABEL_TEXT_MARGIN)
+        yLabelTextMarginLeft = ta.getDimension(R.styleable.LineChart_yLabelTextMarginLeft, DEFAULT_YLABEL_TEXT_MARGIN_LEFT)
         axisWidth = ta.getDimension(R.styleable.LineChart_axisWidth, DEFAULT_AXIS_WIDTH)
         axisColor = ta.getColor(R.styleable.LineChart_axisColor, DEFAULT_AXIS_COLOR)
         showScale = ta.getBoolean(R.styleable.LineChart_showScale, DEFAULT_SHOW_SCALE)
@@ -263,12 +263,7 @@ class LineChart @JvmOverloads constructor(
             isAntiAlias = true
             color = gridColor
             strokeWidth = gridWidth
-            setPathEffect(
-                DashPathEffect(
-                    floatArrayOf(gridDashLength, gridDashInterval),
-                    0f
-                )
-            )  //设置虚线效果
+            setPathEffect(DashPathEffect(floatArrayOf(gridDashLength, gridDashInterval), 0f))  //设置虚线效果
         }
         mLinePaint = Paint()
         with(mLinePaint) {
@@ -320,7 +315,7 @@ class LineChart @JvmOverloads constructor(
             var beginX = centerX - mXScale / 2f
             var endX = centerX + mXScale / 2f
             if (i == 0) {
-                beginX = yLabelTextMargin
+                beginX = yLabelTextMarginLeft
             }
             if (i == xLabelCount) {
                 endX = mWidth.toFloat()
@@ -417,7 +412,7 @@ class LineChart @JvmOverloads constructor(
             color = xLabelTextColor
         }
         val fm = mTextPaint.getFontMetrics()
-        val yOffset = mYPoint + xLabelTextMargin - fm.ascent
+        val yOffset = mYPoint + xLabelTextMarginTop - fm.ascent
         mTextPaint.textAlign = Paint.Align.LEFT
         val beginDate = DateUtil.getDistanceDateByDay(-xLabelCount, BOTTOM_DATE_FORMAT)
         canvas.drawText(beginDate, mXPoint, yOffset, mTextPaint)
@@ -439,8 +434,7 @@ class LineChart @JvmOverloads constructor(
                 //绘制X轴上的其余刻度值
                 if (i != xLabelCount - 1 && i != xLabelCount) {
                     mTextPaint.textAlign = Paint.Align.CENTER
-                    val text =
-                        DateUtil.getDistanceDateByDay(-xLabelCount + i + 1, BOTTOM_DATE_FORMAT)
+                    val text = DateUtil.getDistanceDateByDay(-xLabelCount + i + 1, BOTTOM_DATE_FORMAT)
                     canvas.drawText(text, mXPoint + (i + 1) * mXScale, yOffset, mTextPaint)
                 }
             }
@@ -487,12 +481,11 @@ class LineChart @JvmOverloads constructor(
                 textAlign = Paint.Align.LEFT
             }
             if (i == 0) {
-                canvas.drawText(mYLabelList[i], yLabelTextMargin, mYPoint, mTextPaint)
+                canvas.drawText(mYLabelList[i], yLabelTextMarginLeft, mYPoint, mTextPaint)
             }
             val yLabelFm = mTextPaint.getFontMetrics()
-            val yLabelYOffset =
-                mYPoint + (yLabelFm.descent - yLabelFm.ascent) / 2f - yLabelFm.descent - (i + 1) * mYScale
-            canvas.drawText(mYLabelList[i + 1], yLabelTextMargin, yLabelYOffset, mTextPaint)
+            val yLabelYOffset = mYPoint + (yLabelFm.descent - yLabelFm.ascent) / 2f - yLabelFm.descent - (i + 1) * mYScale
+            canvas.drawText(mYLabelList[i + 1], yLabelTextMarginLeft, yLabelYOffset, mTextPaint)
         }
     }
 
@@ -550,8 +543,7 @@ class LineChart @JvmOverloads constructor(
     }
 
     //计算数值对应的Y坐标
-    private fun calculateYPosition(data: Float): Float =
-        mYPoint - data / maxYValue * mYLength
+    private fun calculateYPosition(data: Float): Float = mYPoint - data / maxYValue * mYLength
 
     //绘制点击后的详情展示
     private fun drawLabel(canvas: Canvas) {
@@ -598,8 +590,7 @@ class LineChart @JvmOverloads constructor(
                 textSize = labelTextSize
                 textAlign = Paint.Align.LEFT
             }
-            var dateText =
-                DateUtil.getDistanceDateByDay(-xLabelCount + mClickIndex, TOP_DATE_FORMAT)
+            var dateText = DateUtil.getDistanceDateByDay(-xLabelCount + mClickIndex, TOP_DATE_FORMAT)
             if (dateText.startsWith("0")) {
                 dateText = dateText.substring(1)
             }
@@ -617,8 +608,7 @@ class LineChart @JvmOverloads constructor(
             with(mLabelRectF) {
                 bottom = topMargin - labelArrowMargin - labelArrowHeight
                 if (showLabelDate) {
-                    top =
-                        bottom - labelTextMargin * 2 - labelTextLineSpacingExtra - dateRect.height() - valueRect.height()
+                    top = bottom - labelTextMargin * 2 - labelTextLineSpacingExtra - dateRect.height() - valueRect.height()
                 } else {
                     top = bottom - labelTextMargin * 2 - valueRect.height()
                 }
@@ -684,9 +674,11 @@ class LineChart @JvmOverloads constructor(
                 maxValue = item
             }
         }
+        //少于1万元不绘制
         if (valueUnit.equals("万元") && maxValue < 1) {
             return
         }
+        //少于10元不绘制
         if (valueUnit.equals("元") && maxValue < 10) {
             return
         }
@@ -701,7 +693,9 @@ class LineChart @JvmOverloads constructor(
         val valueStr = value.toLong().toString()
         val length = valueStr.length  //整数的位数
         val unit = Math.pow(10.0, (length - 1).toDouble()).toInt()
-        if (value % unit == 0f) {
+        if (value == 0f) {
+            return DEFAULT_MAX_YVALUE  //如果最大值是0，即所有数据都是0，取默认的最大值
+        } else if (value % unit == 0f) {
             return value.toInt()
         } else {
             return ((value / unit).toInt() + 1) * unit

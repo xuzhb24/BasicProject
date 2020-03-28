@@ -30,7 +30,7 @@
 
     <!--饼状图-->
     <declare-styleable name="PieChart">
-        <!--带延长线-->
+        <!--type1.PieChart(带延长线)-->
         <attr name="beginAngle" format="float" />
         <attr name="showInside" format="boolean" />
         <attr name="insideRatio" format="float" />
@@ -53,7 +53,7 @@
         <attr name="emptyTextSize" format="dimension" />
         <attr name="emptyTextColor" format="color" />
 
-        <!--带下方标签-->
+        <!--type2.PieChart(带下方标签)-->
         <!--<attr name="beginAngle" format="float" />-->
         <!--<attr name="showInside" format="boolean" />-->
         <!--<attr name="insideRatio" format="float" />-->
@@ -79,17 +79,17 @@
     </declare-styleable>
 
     <declare-styleable name="LineChart">
-        <!--曲线图-->
+        <!--type1.LineChart(曲线图)-->
         <attr name="maxYValue" format="integer" />
         <attr name="valueUnit" format="string" />
         <attr name="xLabelCount" format="integer" />
         <attr name="yLabelCount" format="integer" />
         <attr name="xLabelTextSize" format="dimension" />
         <attr name="xLabelTextColor" format="color" />
-        <attr name="xLabelTextMargin" format="dimension" />
+        <attr name="xLabelTextMarginTop" format="dimension" />
         <attr name="yLabelTextSize" format="dimension" />
         <attr name="yLabelTextColor" format="color" />
-        <attr name="yLabelTextMargin" format="dimension" />
+        <attr name="yLabelTextMarginLeft" format="dimension" />
         <attr name="axisWidth" format="dimension" />
         <attr name="axisColor" format="color" />
         <attr name="showScale" format="boolean" />
@@ -120,6 +120,44 @@
         <attr name="topMargin" format="dimension" />
         <attr name="rightMargin" format="dimension" />
         <attr name="bottomMargin" format="dimension" />
+
+        <!--type2.LineChart(双折线图)-->
+        <!--        <attr name="maxYValue" format="integer" />-->
+        <!--        <attr name="yLabelCount" format="integer" />-->
+        <!--        <attr name="xLabelTextSize" format="dimension" />-->
+        <!--        <attr name="xLabelTextColor" format="color" />-->
+        <!--        <attr name="xLabelTextMarginTop" format="dimension" />-->
+        <attr name="showYLabelText" format="boolean" />
+        <!--        <attr name="yLabelTextSize" format="dimension" />-->
+        <!--        <attr name="yLabelTextColor" format="color" />-->
+        <!--        <attr name="yLabelTextMarginLeft" format="dimension" />-->
+        <!--        <attr name="axisWidth" format="dimension" />-->
+        <!--        <attr name="axisColor" format="color" />-->
+        <!--        <attr name="showScale" format="boolean" />-->
+        <!--        <attr name="scaleLength" format="dimension" />-->
+        <!--        <attr name="showGrid" format="boolean" />-->
+        <!--        <attr name="gridWidth" format="dimension" />-->
+        <!--        <attr name="gridDashInterval" format="dimension" />-->
+        <!--        <attr name="gridDashLength" format="dimension" />-->
+        <!--        <attr name="gridColor" format="color" />-->
+        <!--        <attr name="lineWidth" format="dimension" />-->
+        <attr name="lineColor1" format="color" />
+        <attr name="lineColor2" format="color" />
+        <attr name="labelWidth" format="dimension" />
+        <attr name="labelHeight" format="dimension" />
+        <attr name="labelBackgroundColor" format="color" />
+        <!--        <attr name="labelRadius" format="dimension" />-->
+        <!--        <attr name="labelTextSize" format="dimension" />-->
+        <!--        <attr name="labelTextColor" format="color" />-->
+        <!--        <attr name="labelArrowWidth" format="dimension" />-->
+        <!--        <attr name="labelArrowHeight" format="dimension" />-->
+        <!--        <attr name="labelArrowOffset" format="dimension" />-->
+        <!--        <attr name="labelArrowMargin" format="dimension" />-->
+        <!--        <attr name="clickAble" format="boolean" />-->
+        <!--        <attr name="leftMargin" format="dimension" />-->
+        <!--        <attr name="topMargin" format="dimension" />-->
+        <!--        <attr name="rightMargin" format="dimension" />-->
+        <!--        <attr name="bottomMargin" format="dimension" />-->
     </declare-styleable>
 
     <!--搜索框-->

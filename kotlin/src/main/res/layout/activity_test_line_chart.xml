@@ -11,13 +11,86 @@
         style="@style/TitleBarStyle"
         app:titleText="曲线图/折线图" />
 
-    <com.android.widget.LineChart.type1.LineChart
-        android:id="@+id/type1_lc"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        app:maxYValue="500"
-        app:valueUnit="元"
-        app:xLabelCount="6" />
+    <ScrollView style="@style/ScrollViewStyle">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/interval_margin"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/type1_btn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="近7天" />
+
+                <Button
+                    android:id="@+id/type1_btn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="近15天" />
+
+                <Button
+                    android:id="@+id/type1_btn3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="近30天" />
+
+            </LinearLayout>
+
+            <com.android.widget.LineChart.type1.LineChart
+                android:id="@+id/type1_lc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:maxYValue="500"
+                app:valueUnit="元"
+                app:xLabelCount="6" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/interval_margin"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/type2_btn1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="一条数据" />
+
+                <Button
+                    android:id="@+id/type2_btn2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="多条数据" />
+
+                <Button
+                    android:id="@+id/type2_btn3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="显示Y轴" />
+
+                <Button
+                    android:id="@+id/type2_btn4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="动画展开" />
+
+            </LinearLayout>
+
+            <com.android.widget.LineChart.type2.LineChart
+                android:id="@+id/type2_lc"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>
