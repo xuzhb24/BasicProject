@@ -1,56 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-    <com.android.widget.TitleBar
-        android:id="@+id/title_bar"
-        style="@style/TitleBarStyle"
-        app:rightText="相册"
-        app:titleText="扫码识别" />
+    <SurfaceView
+        android:id="@+id/surfaceView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <com.android.frame.camera.zxing.view.ViewfinderView
+        android:id="@+id/viewfinderView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:corner_color="#0071FF"
+        app:corner_position="outside"
+        app:corner_size="28dp"
+        app:corner_stroke_width="4dp"
+        app:frame_centerY="335dp"
+        app:frame_height="220dp"
+        app:frame_width="220dp"
+        app:label_text="扫码识别二维码和条形码"
+        app:label_text_color="#ffffff"
+        app:label_text_margin="20dp"
+        app:label_text_size="14sp"
+        app:line_height="0dp"
+        app:mask_color="#4d000000" />
+
+    <FrameLayout
+        android:layout_width="220dp"
+        android:layout_height="225dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="225dp">
+
+        <ImageView
+            android:id="@+id/grid_iv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_scan_grid" />
+    </FrameLayout>
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="38dp">
 
-        <SurfaceView
-            android:id="@+id/surfaceView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+        <ImageView
+            android:id="@+id/back_Iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/default_margin"
+            android:background="@drawable/shape_oval_size_34_solid_66000000"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_back" />
 
-        <com.android.frame.camera.zxing.view.ViewfinderView
-            android:id="@+id/viewfinderView"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:corner_color="#0071FF"
-            app:corner_position="outside"
-            app:corner_size="28dp"
-            app:corner_stroke_width="4dp"
-            app:frame_centerY="235dp"
-            app:frame_height="220dp"
-            app:frame_width="220dp"
-            app:label_text="扫码识别二维码和条形码"
-            app:label_text_color="#ffffff"
-            app:label_text_margin="20dp"
-            app:label_text_size="14sp"
-            app:line_height="0dp"
-            app:mask_color="#80000000" />
-
-        <FrameLayout
-            android:layout_width="220dp"
-            android:layout_height="225dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_marginTop="125dp">
-
-            <ImageView
-                android:id="@+id/grid_iv"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/ic_scan_grid" />
-        </FrameLayout>
+        <TextView
+            android:id="@+id/album_tv"
+            android:layout_width="55dp"
+            android:layout_height="34dp"
+            android:layout_gravity="right"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/shape_corners_17_solid_66000000"
+            android:gravity="center"
+            android:text="相册"
+            android:textColor="@color/white"
+            android:textSize="15sp" />
 
     </FrameLayout>
 
-</LinearLayout>
+</FrameLayout>
