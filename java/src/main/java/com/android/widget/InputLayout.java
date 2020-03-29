@@ -11,27 +11,41 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
+
 import com.android.java.R;
+import com.android.util.LayoutParamsUtil;
 import com.android.util.SizeUtil;
 
 /**
  * Created by xuzhb on 2019/11/22
  * Desc:带删除按钮的输入框
  */
-public class InputLayout extends RelativeLayout {
+public class InputLayout extends LinearLayout {
 
-    private String inputText;         //EditText输入文本
-    private int inputTextType;       //EditText输入类型
-    private String inputTextHint;    //EditText未输入时的hint文本
-    private float inputTextSize;     //EditText字体大小
-    private int inputTextColor;      //EditText字体颜色
-    private int inputTextColorHint;  //EditText的hint文本字体颜色
-    private float clearMarginRight;  //右侧删除图标的右边距
-    private boolean showBottomLine;  //是否显示下划线
+    private static final int DEFAULT_TEXT_TYPE = InputType.TYPE_CLASS_TEXT;
+    private static final float DEFAULT_TEXT_SIZE = SizeUtil.sp2px(15f);
+    private static final int DEFAULT_TEXT_COLOR = Color.BLACK;
+    private static final int DEFAULT_TEXT_COLOR_HINT = Color.parseColor("#a3a3a3");
+    private static final boolean DEFAULT_MULTI_LINE = true;
+    private static final boolean DEFAULT_EDITABLE = true;
+    private static final boolean DEFAULT_SHOW_DIVIDER = true;
+    private static final int DEFAULT_DIVIDER_COLOR = Color.parseColor("#dbdbdb");
+    private static final float DEFAULT_DIVIDER_HEIGHT = SizeUtil.dp2px(1);
+
+    private String inputText = "";                             //EditText输入文本
+    private String inputTextHint = "";                         //EditText未输入时的hint文本
+    private int inputTextType = DEFAULT_TEXT_TYPE;             //EditText输入类型
+    private float inputTextSize = DEFAULT_TEXT_SIZE;           //EditText字体大小
+    private int inputTextColor = DEFAULT_TEXT_COLOR;           //EditText字体颜色
+    private int inputTextColorHint = DEFAULT_TEXT_COLOR_HINT;  //EditText的hint文本字体颜色
+    private boolean multiLine = DEFAULT_MULTI_LINE;            //是否支持输入多行文本，默认支持
+    private boolean editable = DEFAULT_EDITABLE;               //是否可编辑，默认可以
+    private boolean showDivider = DEFAULT_SHOW_DIVIDER;        //是否显示下划线，默认显示
+    private int dividerColor = DEFAULT_DIVIDER_COLOR;          //下划线颜色
+    private float dividerHeight = DEFAULT_DIVIDER_HEIGHT;      //下划线高度
 
     public void setInputText(String inputText) {
         this.inputText = inputText;
@@ -42,14 +56,14 @@ public class InputLayout extends RelativeLayout {
         return mInputEt.getText().toString();
     }
 
-    public void setInputTextType(int inputTextType) {
-        this.inputTextType = inputTextType;
-        mInputEt.setInputType(inputTextType);
-    }
-
     public void setInputTextHint(String inputTextHint) {
         this.inputTextHint = inputTextHint;
         mInputEt.setHint(inputTextHint);
+    }
+
+    public void setInputTextType(int inputTextType) {
+        this.inputTextType = inputTextType;
+        setInputType(multiLine, inputTextType);
     }
 
     public void setInputTextSize(float inputTextSize) {
@@ -67,34 +81,30 @@ public class InputLayout extends RelativeLayout {
         mInputEt.setHintTextColor(inputTextColorHint);
     }
 
-    public void setClearMarginRight(float clearMarginRight) {
-        this.clearMarginRight = clearMarginRight;
-        if (clearMarginRight != 0) {
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mClearIv.getLayoutParams();
-            params.rightMargin += clearMarginRight;
-            mClearIv.requestLayout();
-        }
+    public void setMultiLine(boolean multiLine) {
+        this.multiLine = multiLine;
+        setInputType(multiLine, inputTextType);
     }
 
-    public void setShowBottomLine(boolean showBottomLine) {
-        this.showBottomLine = showBottomLine;
-        if (showBottomLine) {
-            mDivierLine.setVisibility(View.VISIBLE);
-        } else {
-            mDivierLine.setVisibility(View.GONE);
-        }
-    }
-
-    //设置是否可编辑
     public void setEditable(boolean editable) {
+        this.editable = editable;
         mInputEt.setEnabled(editable);
-        if (editable) {
-            if (!TextUtils.isEmpty(mInputEt.getText().toString())) {
-                mClearIv.setVisibility(View.VISIBLE);
-            }
-        } else {
-            mClearIv.setVisibility(View.GONE);
-        }
+        mClearIv.setVisibility(editable && !TextUtils.isEmpty(inputText) ? View.VISIBLE : View.GONE);
+    }
+
+    public void setShowDivider(boolean showDivider) {
+        this.showDivider = showDivider;
+        mDivierLine.setVisibility(showDivider ? View.VISIBLE : View.GONE);
+    }
+
+    public void setDividerColor(int dividerColor) {
+        this.dividerColor = dividerColor;
+        mDivierLine.setBackgroundColor(dividerColor);
+    }
+
+    public void setDividerHeight(float dividerHeight) {
+        this.dividerHeight = dividerHeight;
+        LayoutParamsUtil.setHeight(mDivierLine, (int) dividerHeight);
     }
 
     //获取输入框对应的EditText
@@ -116,30 +126,27 @@ public class InputLayout extends RelativeLayout {
 
     public InputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-
         View layout = LayoutInflater.from(context).inflate(R.layout.layout_input, this);
         mInputEt = layout.findViewById(R.id.input_et);
         mClearIv = layout.findViewById(R.id.clear_iv);
         mDivierLine = layout.findViewById(R.id.divider_line);
-        mClearIv.setVisibility(View.GONE);
-
         if (attrs != null) {
             TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.InputLayout);
             inputText = ta.getString(R.styleable.InputLayout_inputText);
-            inputTextType = ta.getInt(R.styleable.InputLayout_inputTextType, InputType.TYPE_CLASS_TEXT);
             inputTextHint = ta.getString(R.styleable.InputLayout_inputTextHint);
-            inputTextSize = ta.getDimension(R.styleable.InputLayout_inputTextSize, SizeUtil.sp2px(15));
-            inputTextColor = ta.getColor(R.styleable.InputLayout_inputTextColor, Color.BLACK);
-            inputTextColorHint = ta.getColor(R.styleable.InputLayout_inputTextColorHint, Color.parseColor("#E6E6E6"));
-            clearMarginRight = ta.getDimension(R.styleable.InputLayout_clearMarginRight, 0);
-            showBottomLine = ta.getBoolean(R.styleable.InputLayout_showBottomLine, true);
+            inputTextType = ta.getInt(R.styleable.InputLayout_inputTextType, DEFAULT_TEXT_TYPE);
+            inputTextSize = ta.getDimension(R.styleable.InputLayout_inputTextSize, DEFAULT_TEXT_SIZE);
+            inputTextColor = ta.getColor(R.styleable.InputLayout_inputTextColor, DEFAULT_TEXT_COLOR);
+            inputTextColorHint = ta.getColor(R.styleable.InputLayout_inputTextColorHint, DEFAULT_TEXT_COLOR_HINT);
+            multiLine = ta.getBoolean(R.styleable.InputLayout_multiLine, DEFAULT_MULTI_LINE);
+            editable = ta.getBoolean(R.styleable.InputLayout_editable, DEFAULT_EDITABLE);
+            showDivider = ta.getBoolean(R.styleable.InputLayout_showDivider, DEFAULT_SHOW_DIVIDER);
+            dividerColor = ta.getColor(R.styleable.InputLayout_dividerColor, DEFAULT_DIVIDER_COLOR);
+            dividerHeight = ta.getDimension(R.styleable.InputLayout_dividerHeight, DEFAULT_DIVIDER_HEIGHT);
             ta.recycle();
         }
 
-        if (!TextUtils.isEmpty(inputText)) {
-            mInputEt.setText(inputText);
-            mClearIv.setVisibility(View.VISIBLE);
-        }
+        mInputEt.setText(inputText);
         mInputEt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -148,13 +155,9 @@ public class InputLayout extends RelativeLayout {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (onTextChangedListener != null) {
-                    onTextChangedListener.onTextChanged(s, start, before, count);
-                }
-                if (TextUtils.isEmpty(s)) {
-                    mClearIv.setVisibility(View.GONE);
-                } else {
-                    mClearIv.setVisibility(View.VISIBLE);
+                mClearIv.setVisibility(editable && !TextUtils.isEmpty(s) ? View.VISIBLE : View.GONE);
+                if (mOnTextChangedListener != null) {
+                    mOnTextChangedListener.onTextChanged(s, start, before, count);
                 }
             }
 
@@ -163,34 +166,34 @@ public class InputLayout extends RelativeLayout {
 
             }
         });
-        mInputEt.setInputType(inputTextType);
         mInputEt.setHint(inputTextHint);
+        setInputType(multiLine, inputTextType);
         mInputEt.setTextSize(TypedValue.COMPLEX_UNIT_PX, inputTextSize);
         mInputEt.setTextColor(inputTextColor);
         mInputEt.setHintTextColor(inputTextColorHint);
-        if (clearMarginRight != 0) {
-            ViewGroup.MarginLayoutParams params = (ViewGroup.MarginLayoutParams) mClearIv.getLayoutParams();
-            params.rightMargin += clearMarginRight;
-            mClearIv.requestLayout();
-        }
-        if (showBottomLine) {
-            mDivierLine.setVisibility(View.VISIBLE);
-        } else {
-            mDivierLine.setVisibility(View.GONE);
-        }
-        mClearIv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mInputEt.setText("");
-                mInputEt.requestFocus();
-                if (onTextClearListener != null) {
-                    onTextClearListener.onTextClear();
-                }
+        mInputEt.setEnabled(editable);
+
+        mClearIv.setVisibility(editable && !TextUtils.isEmpty(inputText) ? View.VISIBLE : View.GONE);
+        mClearIv.setOnClickListener(v -> {
+            mInputEt.setText("");
+            mInputEt.requestFocus();
+            if (mOnTextClearListener != null) {
+                mOnTextClearListener.onTextClear();
             }
         });
+
+        mDivierLine.setVisibility(showDivider ? View.VISIBLE : View.GONE);
+        mDivierLine.setBackgroundColor(dividerColor);
+        LayoutParamsUtil.setHeight(mDivierLine, (int) dividerHeight);
     }
 
-    private OnTextChangedListener onTextChangedListener;
+    //支持输入多行文本
+    private void setInputType(boolean multiLine, int inputType) {
+        mInputEt.setInputType(multiLine && inputType == InputType.TYPE_CLASS_TEXT
+                ? inputType | InputType.TYPE_TEXT_FLAG_MULTI_LINE : inputType);
+    }
+
+    private OnTextChangedListener mOnTextChangedListener;
 
     public interface OnTextChangedListener {
         void onTextChanged(CharSequence s, int start, int before, int count);
@@ -198,10 +201,10 @@ public class InputLayout extends RelativeLayout {
 
     //输入文字变化时回调
     public void setOnTextChangedListener(OnTextChangedListener listener) {
-        this.onTextChangedListener = listener;
+        this.mOnTextChangedListener = listener;
     }
 
-    private OnTextClearListener onTextClearListener;
+    private OnTextClearListener mOnTextClearListener;
 
     public interface OnTextClearListener {
         void onTextClear();
@@ -209,7 +212,7 @@ public class InputLayout extends RelativeLayout {
 
     //清空文本时回调
     public void setOnTextClearListener(OnTextClearListener listener) {
-        this.onTextClearListener = listener;
+        this.mOnTextClearListener = listener;
     }
 
 }

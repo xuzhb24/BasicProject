@@ -6,10 +6,12 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
+
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by xuzhb on 2019/10/20
@@ -55,18 +57,8 @@ public class TestSingleWidgetActivity extends BaseActivity {
             }
         });
         //带删除按钮的输入框
-        inputLayout.setOnTextChangedListener(new InputLayout.OnTextChangedListener() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                inputlayoutTv.setText(s);
-            }
-        });
-        inputLayout.setOnTextClearListener(new InputLayout.OnTextClearListener() {
-            @Override
-            public void onTextClear() {
-                showToast("文本被清空了");
-            }
-        });
+        inputLayout.setOnTextChangedListener((s, start, before, count) -> inputlayoutTv.setText(s));
+        inputLayout.setOnTextClearListener(() -> showToast("文本被清空了"));
         //密码输入框
         passwordEdittext.setOnTextChangeListener(text -> {
             petTv.setText(text);
