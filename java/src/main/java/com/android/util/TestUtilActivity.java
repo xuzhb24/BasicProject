@@ -17,7 +17,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
-import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -25,12 +24,9 @@ import android.text.method.LinkMovementMethod;
 import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -80,6 +76,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_CLEAN = "TEST_CLEAN";
     public static final String TEST_SDCARD = "TEST_SDCARD";
     public static final String TEST_SCREEN = "TEST_SCREEN";
+    public static final String TEST_CACHE = "TEST_CACHE";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -161,10 +158,15 @@ public class TestUtilActivity extends BaseActivity {
                 testClean();
                 break;
             case TEST_SDCARD:
-                testSdcard();
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    testSdcard();
+                }
                 break;
             case TEST_SCREEN:
                 testScreen();
+                break;
+            case TEST_CACHE:
+                testCache();
                 break;
         }
     }
@@ -331,6 +333,7 @@ public class TestUtilActivity extends BaseActivity {
     private void testKeyBoardUtil() {
         CommonLayoutUtil.initCommonLayout(this, "测试键盘工具", true, true,
                 "弹出软键盘", "收起软键盘", "复制到剪切板", "获取剪切板的内容");
+        il.setInputTextHint("请输入要复制到剪切板的内容");
         btn1.setOnClickListener(v -> {
             KeyboardUtil.showSoftInput(getApplicationContext(), v);
         });
@@ -431,14 +434,7 @@ public class TestUtilActivity extends BaseActivity {
     private void testNotification() {
         String extraCpntent = getIntent().getStringExtra("content");
         tv.setText(extraCpntent);  //传递过来的参数
-        InputLayout titleIl = new InputLayout(this);
-        titleIl.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, (int) SizeUtil.dp2px(40)));
-        titleIl.setInputTextHint("请输入标题");
-        titleIl.setInputTextType(InputType.TYPE_CLASS_TEXT);
-        titleIl.setInputTextSize(SizeUtil.sp2px(15));
-        titleIl.setInputTextColor(Color.BLACK);
-        titleIl.setInputTextColorHint(Color.parseColor("#E6E6E6"));
-        titleIl.setShowBottomLine(true);
+        InputLayout titleIl = CommonLayoutUtil.createInputLayout(this, "请输入标题");
         ll.addView(titleIl, 0);
         il.setInputTextHint("请输入内容");
         CommonLayoutUtil.initCommonLayout(this, "通知管理", true, true,
@@ -846,14 +842,11 @@ public class TestUtilActivity extends BaseActivity {
     private void testShell() {
         String command1 = "getprop ro.product.model";
         String command2 = "cd sdcard/AATest\ncat test.txt";
-        CommonLayoutUtil.initCommonLayout(this, "Shell工具", false, true,
+        CommonLayoutUtil.initCommonLayout(this, "Shell工具", true, true,
                 "运行命令", command1, command2);
-        EditText et = new EditText(this);
-        et.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-        ll.addView(et, 0);
-        et.setHint("请输入要执行的Shell命令，多条的话换行输入");
+        il.setInputTextHint("请输入要执行的Shell命令，多条的话换行输入");
         btn1.setOnClickListener(v -> {
-            String content = et.getText().toString().trim();
+            String content = il.getInputText().trim();
             if (TextUtils.isEmpty(content)) {
                 showToast("请先输入命令");
             } else {
@@ -1135,6 +1128,55 @@ public class TestUtilActivity extends BaseActivity {
                     .append("\n是否锁屏：").append(ScreenUtil.isScreenLock(this))
                     .append("\n旋转角度：").append(ScreenUtil.getScreenRotation(this));
             ExtraUtil.alert(this, sb.toString());
+        });
+    }
+
+    //磁盘缓存工具
+    private void testCache() {
+        CommonLayoutUtil.initCommonLayout(this, "磁盘缓存工具", true, true,
+                "保存/读取字符串", "保存/读取Serializable数据", "保存/读取Bitmap", "保存/读取Drawable",
+                "移除指定key", "清除所有缓存内容");
+        InputLayout keyIl = CommonLayoutUtil.createInputLayout(this, "请输入保存的Key名");
+        InputLayout valueIl = CommonLayoutUtil.createInputLayout(this, "请输入保存的Value值");
+        ll.addView(keyIl, 0);
+        ll.addView(valueIl, 1);
+        il.setInputTextHint("请输入保存的时长");
+        tv.setText("1、未输入内容时读取数据；\n2、对于字符串，输入要保存的内容，保存时效性的字符串输入保存时长");
+        CacheUtil cacheUtil = CacheUtil.get(this);
+        btn1.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(il.getInputText())) {  //读取数据
+
+            } else {  //保存数据
+
+            }
+        });
+        btn2.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(il.getInputText())) {  //读取数据
+
+            } else {  //保存数据
+
+            }
+        });
+        btn3.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(il.getInputText())) {  //读取数据
+
+            } else {  //保存数据
+
+            }
+        });
+        btn4.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(il.getInputText())) {  //读取数据
+
+            } else {  //保存数据
+
+            }
+        });
+        btn5.setOnClickListener(v -> {
+            String key = il.getInputText().trim();
+            cacheUtil.remove(key);
+        });
+        btn6.setOnClickListener(v -> {
+            cacheUtil.delete();
         });
     }
 

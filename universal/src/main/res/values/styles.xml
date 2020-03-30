@@ -272,4 +272,13 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="InputLayoutStyle">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">@dimen/default_margin</item>
+        <item name="android:layout_marginRight">@dimen/default_margin</item>
+        <item name="dividerColor">@color/colorPrimary</item>
+        <item name="dividerHeight">2dp</item>
+    </style>
+
 </resources>

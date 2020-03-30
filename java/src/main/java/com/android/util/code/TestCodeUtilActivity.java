@@ -6,40 +6,40 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageView;
-import butterknife.BindView;
-import butterknife.OnClick;
+
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.util.BitmapUtil;
 import com.android.util.SizeUtil;
+import com.android.widget.InputLayout;
 import com.android.widget.TitleBar;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by xuzhb on 2019/11/18
  * Desc:
  */
 public class TestCodeUtilActivity extends BaseActivity {
+
     @BindView(R.id.title_bar)
     TitleBar titleBar;
-    @BindView(R.id.et)
-    EditText et;
+    @BindView(R.id.il)
+    InputLayout il;
     @BindView(R.id.iv)
     ImageView iv;
 
     @Override
     public void handleView(Bundle savedInstanceState) {
-        et.setText("1234567890abcdefg");
+        il.setInputText("1234567890abcdefg");
     }
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(new TitleBar.OnLeftClickListener() {
-            @Override
-            public void onLeftClick(View v) {
-                finish();
-            }
+        titleBar.setOnLeftClickListener(v -> {
+            finish();
         });
     }
 
@@ -48,9 +48,9 @@ public class TestCodeUtilActivity extends BaseActivity {
         return R.layout.activity_test_code_util;
     }
 
-    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5})
+    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4})
     public void onViewClicked(View view) {
-        String content = et.getText().toString().trim();
+        String content = il.getInputText().trim();
         if (TextUtils.isEmpty(content) && view.getId() != R.id.btn4) {
             showToast("输入内容不能为空！");
             return;
@@ -78,6 +78,10 @@ public class TestCodeUtilActivity extends BaseActivity {
                 }
                 break;
             case R.id.btn4:
+                if (iv.getDrawable() == null) {
+                    showToast("请先生成二维码");
+                    return;
+                }
                 boolean flag = BitmapUtil.saveImageToGallery(this,
                         ((BitmapDrawable) iv.getDrawable()).getBitmap(),
                         System.currentTimeMillis() + "");
@@ -86,9 +90,6 @@ public class TestCodeUtilActivity extends BaseActivity {
                 } else {
                     showToast("保存失败！");
                 }
-                break;
-            case R.id.btn5:
-                et.setText("");
                 break;
         }
     }

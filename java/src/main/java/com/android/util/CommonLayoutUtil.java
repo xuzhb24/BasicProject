@@ -4,8 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import com.android.java.R;
 import com.android.widget.InputLayout;
 import com.android.widget.TitleBar;
@@ -53,6 +56,12 @@ public class CommonLayoutUtil {
         }
         if (showTextView) {
             tv.setVisibility(View.VISIBLE);
+        } else {
+            if (text.length > 0) {
+                float topMargin = (ScreenUtil.getScreenHeight(activity) - titleBar.getHeight()
+                        - text.length * SizeUtil.dp2px(70) - SizeUtil.dp2px(60)) / 2f;
+                LayoutParamsUtil.setMarginTop(btn1, topMargin > 0 ? (int) topMargin : (int) SizeUtil.dp2px(10));
+            }
         }
         if (text.length >= 1) {
             btn1.setVisibility(View.VISIBLE);
@@ -99,6 +108,16 @@ public class CommonLayoutUtil {
         intent.setClass(context, TestUtilActivity.class);
         intent.putExtra(MODULE_NAME, moduleName);
         context.startActivity(intent);
+    }
+
+    public static InputLayout createInputLayout(Activity activity, String hint) {
+        InputLayout il = new InputLayout(activity);
+        il.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT));
+        il.setInputTextHint(hint);
+        il.setDividerHeight(SizeUtil.dp2px(2));
+        il.setDividerColor(activity.getResources().getColor(R.color.colorPrimary));
+        LayoutParamsUtil.setMargin(il, (int) SizeUtil.dp2px(20), 0, (int) SizeUtil.dp2px(20), (int) SizeUtil.dp2px(15));
+        return il;
     }
 
 }
