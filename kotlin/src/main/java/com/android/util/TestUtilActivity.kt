@@ -8,7 +8,6 @@ import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.View
-import android.widget.LinearLayout
 import com.android.basicproject.R
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant
@@ -19,7 +18,6 @@ import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.mvc.BaseActivity
 import com.android.util.StatusBar.TestStatusBarUtilActivity
-import com.android.widget.InputLayout
 import com.bumptech.glide.Glide
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -326,10 +324,7 @@ class TestUtilActivity : BaseActivity() {
 
     private fun testNotification() {
         tv.text = intent.getStringExtra("content")
-        val titleIl = InputLayout(this)
-        titleIl.layoutParams =
-            LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, SizeUtil.dp2px(40f).toInt())
-        titleIl.inputTextHint = "请输入标题"
+        val titleIl = createInputLayout(this, "请输入标题")
         ll.addView(titleIl, 0)
         il.inputTextHint = "请输入内容"
         initCommonLayout(

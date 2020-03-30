@@ -14,12 +14,8 @@
 
     <com.android.widget.InputLayout
         android:id="@+id/area_il"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="20dp"
+        style="@style/InputLayoutStyle"
         android:layout_marginTop="20dp"
-        android:layout_marginRight="20dp"
-        app:inputTextColorHint="#a3a3a3"
         app:inputTextHint="请输入要查询的地区，如“北京”"
         app:inputTextSize="16sp" />
 

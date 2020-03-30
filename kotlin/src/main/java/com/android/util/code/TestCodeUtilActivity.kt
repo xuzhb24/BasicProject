@@ -17,7 +17,7 @@ import kotlinx.android.synthetic.main.activity_test_code_util.*
 class TestCodeUtilActivity : BaseActivity() {
 
     override fun handleView(savedInstanceState: Bundle?) {
-        et.setText("1234567890abcdefg")
+        il.inputText = "1234567890abcdefg"
     }
 
     override fun initListener() {
@@ -27,7 +27,7 @@ class TestCodeUtilActivity : BaseActivity() {
             finish()
         }
         btn1.setOnClickListener {
-            val content = et.text.toString().trim()
+            val content = il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 showToast("输入内容不能为空！")
                 return@setOnClickListener
@@ -36,7 +36,7 @@ class TestCodeUtilActivity : BaseActivity() {
             iv.setImageBitmap(bitmap)
         }
         btn2.setOnClickListener {
-            val content = et.text.toString().trim()
+            val content = il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 showToast("输入内容不能为空！")
                 return@setOnClickListener
@@ -46,7 +46,7 @@ class TestCodeUtilActivity : BaseActivity() {
             iv.setImageBitmap(bitmap)
         }
         btn3.setOnClickListener {
-            val content = et.text.toString().trim()
+            val content = il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 showToast("输入内容不能为空！")
                 return@setOnClickListener
@@ -55,6 +55,10 @@ class TestCodeUtilActivity : BaseActivity() {
             iv.setImageBitmap(bitmap)
         }
         btn4.setOnClickListener {
+            if (iv.drawable == null) {
+                showToast("请先生成二维码")
+                return@setOnClickListener
+            }
             val flag = BitmapUtil.saveImageToGallery(
                 this,
                 (iv.drawable as BitmapDrawable).bitmap,
@@ -65,9 +69,6 @@ class TestCodeUtilActivity : BaseActivity() {
             } else {
                 showToast("保存失败！")
             }
-        }
-        btn5.setOnClickListener {
-            et.setText("")
         }
     }
 

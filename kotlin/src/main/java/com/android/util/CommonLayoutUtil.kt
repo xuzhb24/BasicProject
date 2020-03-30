@@ -5,8 +5,9 @@ import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Button
-import android.widget.ScrollView
+import android.widget.LinearLayout
 import android.widget.TextView
 import com.android.basicproject.R
 import com.android.widget.InputLayout
@@ -41,7 +42,6 @@ fun initCommonLayout(
     val titleBar: TitleBar = activity.findViewById(R.id.title_bar)
     val il: InputLayout = activity.findViewById(R.id.il)
     val tv: TextView = activity.findViewById(R.id.tv)
-    val buttonSv: ScrollView = activity.findViewById(R.id.button_sv)
     val btn1: Button = activity.findViewById(R.id.btn1)
     val btn2: Button = activity.findViewById(R.id.btn2)
     val btn3: Button = activity.findViewById(R.id.btn3)
@@ -73,12 +73,14 @@ fun initCommonLayout(
     }
     if (showTextView) {
         tv.visibility = View.VISIBLE
+    } else {
+        if (text.size > 0) {
+            val topMargin = (ScreenUtil.getScreenHeight(activity) - titleBar.height
+                    - text.size * SizeUtil.dp2px(70f) - SizeUtil.dp2px(60f)) / 2f
+            LayoutParamsUtil.setMarginTop(btn1, if (topMargin > 0) topMargin.toInt() else SizeUtil.dp2px(10f).toInt())
+        }
     }
-    if (TextUtils.isEmpty(text[0]) && text.size == 1) {
-        buttonSv.visibility = View.GONE
-        return
-    }
-    if (text.size >= 1) {
+    if (text.size >= 1 && !TextUtils.isEmpty(text[0])) {
         btn1.visibility = View.VISIBLE
         btn1.text = text[0]
     }
@@ -122,4 +124,15 @@ fun jumpToTestUtilActivity(context: Context, moduleName: String) {
     intent.setClass(context, TestUtilActivity::class.java)
     intent.putExtra(MODULE_NAME, moduleName)
     context.startActivity(intent)
+}
+
+fun createInputLayout(activity: Activity, hint: String): InputLayout {
+    val il = InputLayout(activity)
+    return il.apply {
+        layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT)
+        inputTextHint = hint
+        dividerHeight = SizeUtil.dp2px(2f)
+        dividerColor = activity.resources.getColor(R.color.colorPrimary)
+        LayoutParamsUtil.setMargin(il, SizeUtil.dp2px(20f).toInt(), 0, SizeUtil.dp2px(20f).toInt(), SizeUtil.dp2px(15f).toInt())
+    }
 }
