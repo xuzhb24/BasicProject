@@ -159,7 +159,7 @@ public class DateUtil {
     public static String getDistanceDateByYear(int distance, String formatStr, String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
         try {
-            Date date = TextUtils.isEmpty(dateTime) ? new Date() : df.parse(dateTime);
+            Date date = TextUtils.isEmpty(dateTime) ? df.parse(getCurrentDateTime(formatStr)) : df.parse(dateTime);
             Calendar calender = Calendar.getInstance();
             calender.setTime(date);
             calender.set(Calendar.YEAR, calender.get(Calendar.YEAR) + distance);
@@ -179,7 +179,7 @@ public class DateUtil {
     public static String getDistanceDateByMonth(int distance, String formatStr, String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
         try {
-            Date date = TextUtils.isEmpty(dateTime) ? new Date() : df.parse(dateTime);
+            Date date = TextUtils.isEmpty(dateTime) ? df.parse(getCurrentDateTime(formatStr)) : df.parse(dateTime);
             Calendar calender = Calendar.getInstance();
             calender.setTime(date);
             calender.set(Calendar.MONTH, calender.get(Calendar.MONTH) + distance);
@@ -199,7 +199,7 @@ public class DateUtil {
     public static String getDistanceDateByWeek(int distance, String formatStr, String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
         try {
-            Date date = TextUtils.isEmpty(dateTime) ? new Date() : df.parse(dateTime);
+            Date date = TextUtils.isEmpty(dateTime) ? df.parse(getCurrentDateTime(formatStr)) : df.parse(dateTime);
             Calendar calender = Calendar.getInstance();
             calender.setTime(date);
             calender.set(Calendar.WEEK_OF_YEAR, calender.get(Calendar.WEEK_OF_YEAR) + distance);
@@ -219,7 +219,7 @@ public class DateUtil {
     public static String getDistanceDateByDay(int distance, String formatStr, String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
         try {
-            Date date = TextUtils.isEmpty(dateTime) ? new Date() : df.parse(dateTime);
+            Date date = TextUtils.isEmpty(dateTime) ? df.parse(getCurrentDateTime(formatStr)) : df.parse(dateTime);
             Calendar calender = Calendar.getInstance();
             calender.setTime(date);
             calender.set(Calendar.DATE, calender.get(Calendar.DATE) + distance);
@@ -285,7 +285,7 @@ public class DateUtil {
     public static boolean isInThePeriod(String startDate, String endDate, String formatStr, String dateTime) {
         SimpleDateFormat df = new SimpleDateFormat(formatStr, Locale.getDefault());
         try {
-            long key = TextUtils.isEmpty(dateTime) ? new Date().getTime() : df.parse(dateTime).getTime();
+            long key = TextUtils.isEmpty(dateTime) ? df.parse(getCurrentDateTime(formatStr)).getTime() : df.parse(dateTime).getTime();
             long start = df.parse(startDate).getTime();
             long end = df.parse(endDate).getTime();
             return start <= key && key <= end;
