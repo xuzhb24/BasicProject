@@ -144,7 +144,7 @@ object DateUtil {
     fun getDistanceDateByYear(distance: Int, formatStr: String, dateTime: String = ""): String {
         val df = SimpleDateFormat(formatStr, Locale.getDefault())
         try {
-            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
+            val date = if (TextUtils.isEmpty(dateTime)) df.parse(getCurrentDateTime(formatStr)) else df.parse(dateTime)
             val calendar = Calendar.getInstance()
             calendar.time = date
             calendar.set(Calendar.YEAR, calendar.get(Calendar.YEAR) + distance)
@@ -159,7 +159,7 @@ object DateUtil {
     fun getDistanceDateByMonth(distance: Int, formatStr: String, dateTime: String = ""): String {
         val df = SimpleDateFormat(formatStr, Locale.getDefault())
         try {
-            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
+            val date = if (TextUtils.isEmpty(dateTime)) df.parse(getCurrentDateTime(formatStr)) else df.parse(dateTime)
             val calendar = Calendar.getInstance()
             calendar.time = date
             calendar.set(Calendar.MONTH, calendar.get(Calendar.MONTH) + distance)
@@ -174,7 +174,7 @@ object DateUtil {
     fun getDistanceDateByWeek(distance: Int, formatStr: String, dateTime: String = ""): String {
         val df = SimpleDateFormat(formatStr, Locale.getDefault())
         try {
-            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
+            val date = if (TextUtils.isEmpty(dateTime)) df.parse(getCurrentDateTime(formatStr)) else df.parse(dateTime)
             val calendar = Calendar.getInstance()
             calendar.time = date
             calendar.set(Calendar.WEEK_OF_YEAR, calendar.get(Calendar.WEEK_OF_YEAR) + distance)
@@ -189,7 +189,7 @@ object DateUtil {
     fun getDistanceDateByDay(distance: Int, formatStr: String, dateTime: String = ""): String {
         val df = SimpleDateFormat(formatStr, Locale.getDefault())
         try {
-            val date = if (TextUtils.isEmpty(dateTime)) Date() else df.parse(dateTime)
+            val date = if (TextUtils.isEmpty(dateTime)) df.parse(getCurrentDateTime(formatStr)) else df.parse(dateTime)
             val calendar = Calendar.getInstance()
             calendar.time = date
             calendar.set(Calendar.DATE, calendar.get(Calendar.DATE) + distance)
@@ -249,7 +249,7 @@ object DateUtil {
     fun isInThePeriod(startDate: String, endDate: String, formatStr: String, dateTime: String = ""): Boolean {
         val df = SimpleDateFormat(formatStr, Locale.getDefault())
         try {
-            val key = if (TextUtils.isEmpty(dateTime)) Date().time else df.parse(dateTime).time
+            val key = if (TextUtils.isEmpty(dateTime)) df.parse(getCurrentDateTime(formatStr)).time else df.parse(dateTime).time
             val start = df.parse(startDate).time
             val end = df.parse(endDate).time
             return key in start..end
