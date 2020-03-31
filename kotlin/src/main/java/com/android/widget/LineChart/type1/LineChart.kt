@@ -682,7 +682,9 @@ class LineChart @JvmOverloads constructor(
         if (valueUnit.equals("元") && maxValue < 10) {
             return
         }
-        this.mDataList = list
+        mMaxYPositionIndex = 0
+        mClickIndex = 0
+        mDataList = list
         maxYValue = calculateMaxValue(maxValue)
         setYLable()  //重新设置Y轴刻度值
         invalidate()
