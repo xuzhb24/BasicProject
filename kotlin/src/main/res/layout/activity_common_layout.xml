@@ -17,12 +17,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:paddingTop="20dp">
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
 
             <com.android.widget.InputLayout
                 android:id="@+id/il"
                 style="@style/InputLayoutStyle"
-                android:layout_marginBottom="5dp" />
+                android:layout_marginBottom="8dp" />
 
             <TextView
                 android:id="@+id/tv"
@@ -32,7 +33,8 @@
                 android:minHeight="100dp"
                 android:paddingLeft="20dp"
                 android:paddingRight="20dp"
-                android:paddingBottom="10dp" />
+                android:paddingBottom="10dp"
+                android:textIsSelectable="true" />
 
             <Button
                 android:id="@+id/btn1"

@@ -128,6 +128,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="屏幕工具" />
 
+            <TextView
+                android:id="@+id/cache_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="磁盘缓存工具" />
+
         </LinearLayout>
     </ScrollView>
 

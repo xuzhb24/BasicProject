@@ -39,7 +39,7 @@ public class UtilFragment extends BaseFragment {
     @OnClick({R.id.statusbar_tv, R.id.time_tv, R.id.keyboard_tv, R.id.drawable_tv, R.id.string_tv, R.id.code_tv,
             R.id.notification_tv, R.id.traffic_tv, R.id.network_stats_tv, R.id.continuous_click_tv,
             R.id.pinyin_tv, R.id.activity_tv, R.id.app_tv, R.id.device_tv, R.id.shell_tv, R.id.picker_tv,
-            R.id.crash_tv, R.id.clean_tv, R.id.sdcard_tv, R.id.screen_tv})
+            R.id.crash_tv, R.id.clean_tv, R.id.sdcard_tv, R.id.screen_tv, R.id.cache_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.statusbar_tv:  //实现沉浸式状态栏
@@ -101,6 +101,9 @@ public class UtilFragment extends BaseFragment {
                 break;
             case R.id.screen_tv:  //屏幕工具
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_SCREEN);
+                break;
+            case R.id.cache_tv:  //磁盘缓存工具
+                CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_CACHE);
                 break;
         }
     }

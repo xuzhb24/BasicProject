@@ -6,16 +6,22 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Matrix;
+import android.graphics.PixelFormat;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.annotation.IntRange;
 import android.util.Log;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -89,35 +95,101 @@ public class BitmapUtil {
         return true;
     }
 
-    //byte数组转换成Bitmap
-    public static Bitmap bytesToBitmap(byte[] bytes) {
-        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-    }
-
-    //Bitmap转换成byte数组
-    public static byte[] bitmapToBytes(Bitmap bitmap) {
+    //Bitmap转化byte数组
+    public static byte[] bitmap2Bytes(Bitmap bitmap) {
+        if (bitmap == null) {
+            return null;
+        }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, baos);
         return baos.toByteArray();
     }
 
-    //bitmap保存为file
-    public static void bitmapToFile(String filePath, Bitmap bitmap, int quality) throws IOException {
-        if (bitmap != null) {
-            File file = new File(filePath.substring(0,
-                    filePath.lastIndexOf(File.separator)));
-            if (!file.exists()) {
-                file.mkdirs();
-            }
-            BufferedOutputStream bos = new BufferedOutputStream(
-                    new FileOutputStream(filePath));
-            bitmap.compress(Bitmap.CompressFormat.PNG, quality, bos);
-            bos.flush();
-            bos.close();
+    //byte数组转化Bitmap
+    public static Bitmap bytesToBitmap(byte[] bytes) {
+        if (bytes == null || bytes.length == 0) {
+            return null;
         }
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
     }
 
-    //file转换为bitmap
+    //Bitmap转化Drawable
+    public static Drawable bitmap2Drawable(Bitmap bitmap) {
+        if (bitmap == null) {
+            return null;
+        }
+        return new BitmapDrawable(bitmap);
+    }
+
+    //Drawable转化Bitmap
+    public static Bitmap drawable2Bitmap(Drawable drawable) {
+        if (drawable == null) {
+            return null;
+        }
+        //取Drawable的长宽
+        int width = drawable.getIntrinsicWidth();
+        int height = drawable.getIntrinsicHeight();
+        //取Drawable的颜色格式
+        Bitmap.Config config = drawable.getOpacity() != PixelFormat.OPAQUE
+                ? Bitmap.Config.ARGB_8888 : Bitmap.Config.RGB_565;
+        //建立对应Bitmap
+        Bitmap bitmap = Bitmap.createBitmap(width, height, config);
+        //建立对应Bitmap的画布
+        Canvas canvas = new Canvas(bitmap);
+        drawable.setBounds(0, 0, width, height);
+        //把Dawable内容画到画布中
+        drawable.draw(canvas);
+        return bitmap;
+    }
+
+    /**
+     * 保存Bitmap到文件中
+     *
+     * @param bitmap   保存的图片
+     * @param filePath 保存的文件路径，如sdcard/AAAA/test.png
+     * @param quality  图片压缩质量，取值范围0-100
+     */
+    public static boolean saveBitmapToFile(Bitmap bitmap, String filePath, @IntRange(from = 0, to = 100) int quality) {
+        if (bitmap == null) {
+            return false;
+        }
+        String dirPath = filePath.substring(0, filePath.lastIndexOf(File.separator));
+        try {
+            if (FileUtil.createOrExistsDirectory(dirPath)) {
+                BufferedOutputStream bos = new BufferedOutputStream(new FileOutputStream(filePath));
+                bitmap.compress(Bitmap.CompressFormat.PNG, quality, bos);
+                bos.flush();
+                bos.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    //通过BitmapFactory.decodeFile从文件中获取Bitmap
+    public static Bitmap getBitmapByDecodeFile(String filePath) {
+        if (!FileUtil.isFileExists(filePath)) {
+            return null;
+        }
+        return BitmapFactory.decodeFile(filePath);
+    }
+
+    //通过BitmapFactory.decodeStream从文件中获取Bitmap
+    public static Bitmap getBitmapByDecodeStream(String filePath) {
+        try {
+            FileInputStream fis = new FileInputStream(filePath);
+            return BitmapFactory.decodeStream(fis);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    //通过BitmapFactory.decodeResource从资源文件中获取Bitmap
+    public static Bitmap getBitmapByDecodeResource(Resources res, int resId) {
+        return BitmapFactory.decodeResource(res, resId);
+    }
 
     /**
      * 图片按比例大小压缩方法

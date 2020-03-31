@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -17,6 +18,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.annotation.RequiresApi;
+import android.text.InputType;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.TextUtils;
@@ -41,6 +43,7 @@ import com.android.util.traffic.NetworkStatsHelper;
 import com.android.util.traffic.TrafficInfo;
 import com.android.util.traffic.TrafficStatsUtil;
 import com.android.widget.InputLayout;
+import com.android.widget.RecyclerView.AATest.entity.MonthBean;
 import com.google.gson.Gson;
 
 import java.io.File;
@@ -1134,50 +1137,153 @@ public class TestUtilActivity extends BaseActivity {
     //磁盘缓存工具
     private void testCache() {
         CommonLayoutUtil.initCommonLayout(this, "磁盘缓存工具", true, true,
-                "保存/读取字符串", "保存/读取Serializable数据", "保存/读取Bitmap", "保存/读取Drawable",
+                "读取", "保存字符串", "保存Serializable数据", "保存Bitmap", "保存Drawable",
                 "移除指定key", "清除所有缓存内容");
-        InputLayout keyIl = CommonLayoutUtil.createInputLayout(this, "请输入保存的Key名");
+        il.setInputTextHint("请输入保存的Key名");
         InputLayout valueIl = CommonLayoutUtil.createInputLayout(this, "请输入保存的Value值");
-        ll.addView(keyIl, 0);
+        InputLayout durationIl = CommonLayoutUtil.createInputLayout(this, "请输入保存的时长");
+        durationIl.setInputTextType(InputType.TYPE_CLASS_NUMBER);
         ll.addView(valueIl, 1);
-        il.setInputTextHint("请输入保存的时长");
-        tv.setText("1、未输入内容时读取数据；\n2、对于字符串，输入要保存的内容，保存时效性的字符串输入保存时长");
+        ll.addView(durationIl, 2);
+        String tip = "默认Key名：\n字符串：String\t\t\t\t\tSerializable：Serializable\nBitmap：Bitmap\t\t\tDrawable：Drawable\n";
+        tv.setText(tip);
         CacheUtil cacheUtil = CacheUtil.get(this);
         btn1.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(il.getInputText())) {  //读取数据
-
-            } else {  //保存数据
-
-            }
+            tv.setText(tip);
+            switchCacheState(!isSaveCache, valueIl, durationIl);
+            isSaveCache = !isSaveCache;
         });
         btn2.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(il.getInputText())) {  //读取数据
-
-            } else {  //保存数据
-
+            tv.setText(tip);
+            String key = getKey(il, "String");
+            if (isSaveCache) {
+                String value = valueIl.getInputText().trim();
+                if (TextUtils.isEmpty(value)) {
+                    showToast("请输入保存的字符串");
+                    return;
+                }
+                int saveTime = getSaveTime(durationIl);
+                if (saveTime == 0) {
+                    showToast("请输入大于0秒的时长");
+                } else if (saveTime == -1) {
+                    cacheUtil.putString(key, value);
+                    showToast("保存成功");
+                } else {
+                    cacheUtil.putString(key, value, saveTime);
+                    showToast("保存成功，数据将缓存" + saveTime + "秒");
+                }
+            } else {
+                String result = cacheUtil.getString(key);
+                tv.setText(TextUtils.isEmpty(result) ? "数据为空" : result);
             }
         });
         btn3.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(il.getInputText())) {  //读取数据
-
-            } else {  //保存数据
-
+            tv.setText(tip);
+            String key = getKey(il, "Serializable");
+            MonthBean bean = new MonthBean("2020-02", key);
+            if (isSaveCache) {
+                int saveTime = getSaveTime(durationIl);
+                if (saveTime == 0) {
+                    showToast("请输入大于0秒的时长");
+                } else if (saveTime == -1) {
+                    cacheUtil.putObject(key, bean);
+                    showToast("保存成功");
+                } else {
+                    cacheUtil.putObject(key, bean, saveTime);
+                    showToast("保存成功，数据将缓存" + saveTime + "秒");
+                }
+            } else {
+                MonthBean result = (MonthBean) cacheUtil.getObject(key);
+                tv.setText(result == null ? "数据为空" : new Gson().toJson(result));
             }
         });
         btn4.setOnClickListener(v -> {
-            if (TextUtils.isEmpty(il.getInputText())) {  //读取数据
-
-            } else {  //保存数据
-
+            tv.setText(tip);
+            String key = getKey(il, "Bitmap");
+            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_coupon_header);
+            if (isSaveCache) {
+                int saveTime = getSaveTime(durationIl);
+                if (saveTime == 0) {
+                    showToast("请输入大于0秒的时长");
+                } else if (saveTime == -1) {
+                    cacheUtil.putBitmap(key, bitmap);
+                    showToast("保存成功");
+                } else {
+                    cacheUtil.putBitmap(key, bitmap, saveTime);
+                    showToast("保存成功，数据将缓存" + saveTime + "秒");
+                }
+            } else {
+                Bitmap result = cacheUtil.getBitmap(key);
+                if (result != null) {
+                    ExtraUtil.showImage(this, result);
+                } else {
+                    showToast("数据为空");
+                }
             }
         });
         btn5.setOnClickListener(v -> {
-            String key = il.getInputText().trim();
-            cacheUtil.remove(key);
+            tv.setText(tip);
+            String key = getKey(il, "Drawable");
+            Drawable drawable = getResources().getDrawable(R.drawable.shape_oval_size_34_solid_db4b3c);
+            if (isSaveCache) {
+                int saveTime = getSaveTime(durationIl);
+                if (saveTime == 0) {
+                    showToast("请输入大于0秒的时长");
+                } else if (saveTime == -1) {
+                    cacheUtil.putDrawable(key, drawable);
+                    showToast("保存成功");
+                } else {
+                    cacheUtil.putDrawable(key, drawable, saveTime);
+                    showToast("保存成功，数据将缓存" + saveTime + "秒");
+                }
+            } else {
+                Drawable result = cacheUtil.getDrawable(key);
+                if (result != null) {
+                    ExtraUtil.showImage(this, result);
+                } else {
+                    showToast("数据为空");
+                }
+            }
         });
         btn6.setOnClickListener(v -> {
-            cacheUtil.delete();
+            String key = il.getInputText().trim();
+            if (TextUtils.isEmpty(key)) {
+                showToast("请先输入要删除的Key名");
+                return;
+            }
+            cacheUtil.remove(key);
+            showToast("已删除");
         });
+        btn7.setOnClickListener(v -> {
+            cacheUtil.delete();
+            showToast("已删除");
+        });
+    }
+
+    private boolean isSaveCache = true;
+
+    private void switchCacheState(boolean save, InputLayout... inputLayouts) {
+        for (InputLayout il : inputLayouts) {
+            il.setVisibility(save ? View.VISIBLE : View.GONE);
+            il.setInputText("");
+        }
+        il.setInputText("");
+        il.setInputTextHint(save ? "请输入保存的Key名" : "请输入读取的Key名");
+        btn1.setText(save ? "读取" : "保存");
+        btn2.setText(save ? "保存字符串" : "读取字符串");
+        btn3.setText(save ? "保存Serializable数据" : "读取Serializable数据");
+        btn4.setText(save ? "保存Bitmap" : "读取Bitmap");
+        btn5.setText(save ? "保存Drawable" : "读取Drawable");
+    }
+
+    private String getKey(InputLayout il, String defaultKey) {
+        String key = il.getInputText().trim();
+        return TextUtils.isEmpty(key) ? defaultKey : key;
+    }
+
+    private int getSaveTime(InputLayout il) {
+        String saveTime = il.getInputText().trim();
+        return TextUtils.isEmpty(saveTime) ? -1 : Integer.parseInt(saveTime);
     }
 
 }

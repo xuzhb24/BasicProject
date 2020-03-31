@@ -4,10 +4,17 @@ import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+
 import com.android.java.BuildConfig;
 import com.android.java.R;
+import com.android.widget.PopupWindow.CommonPopupWindow;
 import com.android.widget.TitleBar;
 
 import java.util.Random;
@@ -59,6 +66,43 @@ public class ExtraUtil {
                 .setMessage(msg)
                 .show();
     }
+
+    public static void showImage(Activity activity, int resId) {
+        new CommonPopupWindow.Builder(activity)
+                .setContentView(R.layout.layout_image)
+                .setViewParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setBackGroundAlpha(0.5f)
+                .setOnViewListener((holder, popupWindow) -> {
+                    holder.setImageResource(R.id.iv, resId);
+                })
+                .build()
+                .showAtLocation(activity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+    }
+
+    public static void showImage(Activity activity, Bitmap bitmap) {
+        new CommonPopupWindow.Builder(activity)
+                .setContentView(R.layout.layout_image)
+                .setViewParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setBackGroundAlpha(0.5f)
+                .setOnViewListener((holder, popupWindow) -> {
+                    ((ImageView) holder.getView(R.id.iv)).setImageBitmap(bitmap);
+                })
+                .build()
+                .showAtLocation(activity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+    }
+
+    public static void showImage(Activity activity, Drawable drawable) {
+        new CommonPopupWindow.Builder(activity)
+                .setContentView(R.layout.layout_image)
+                .setViewParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+                .setBackGroundAlpha(0.5f)
+                .setOnViewListener((holder, popupWindow) -> {
+                    ((ImageView) holder.getView(R.id.iv)).setBackground(drawable);
+                })
+                .build()
+                .showAtLocation(activity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
+    }
+
 
     //双击标题栏获取当前页面的Activity名称，只是调试用
     public static void getTopActivityName(Activity activity) {

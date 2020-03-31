@@ -133,6 +133,6 @@ fun createInputLayout(activity: Activity, hint: String): InputLayout {
         inputTextHint = hint
         dividerHeight = SizeUtil.dp2px(2f)
         dividerColor = activity.resources.getColor(R.color.colorPrimary)
-        LayoutParamsUtil.setMargin(il, SizeUtil.dp2px(20f).toInt(), 0, SizeUtil.dp2px(20f).toInt(), SizeUtil.dp2px(15f).toInt())
+        LayoutParamsUtil.setMargin(il, SizeUtil.dp2px(20f).toInt(), 0, SizeUtil.dp2px(20f).toInt(), SizeUtil.dp2px(8f).toInt())
     }
 }
