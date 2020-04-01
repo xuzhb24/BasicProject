@@ -8,6 +8,7 @@ import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
 import android.view.View
+import android.widget.LinearLayout
 import com.android.basicproject.R
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant
@@ -42,6 +43,7 @@ class TestUtilActivity : BaseActivity() {
         const val TEST_NOTIFICATION = "TEST_NOTIFICATION"
         const val TEST_CONTINUOUS_CLICK = "TEST_CONTINUOUS_CLICK"
         const val TEST_PINYIN = "TEST_PINYIN"
+        const val TEST_LAYOUT_PARAMS = "TEST_LAYOUT_PARAMS"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -55,6 +57,7 @@ class TestUtilActivity : BaseActivity() {
             TEST_NOTIFICATION -> testNotification()
             TEST_CONTINUOUS_CLICK -> testContinuousClick()
             TEST_PINYIN -> testPinyin()
+            TEST_LAYOUT_PARAMS -> testLayoutParams()
         }
     }
 
@@ -500,6 +503,84 @@ class TestUtilActivity : BaseActivity() {
         }
         il.setOnTextClearListener {
             tv.text = ""
+        }
+    }
+
+    //布局参数工具
+    private fun testLayoutParams() {
+        initCommonLayout(
+            this, "布局参数工具", "设置上下左右Margin为10dp", "设置上下左右Padding为10dp",
+            "增加上下左右Margin为5dp", "减少上下左右Margin为5dp",
+            "增加上下左右Padding为5dp", "减少上下左右Padding为5dp", "还原"
+        )
+        LayoutParamsUtil.setMarginTop(btn1, SizeUtil.dp2px(10f).toInt())
+        val rootLl = LinearLayout(this)
+        val param1 = LinearLayout.LayoutParams(SizeUtil.dp2px(300f).toInt(), SizeUtil.dp2px(200f).toInt())
+        param1.gravity = Gravity.CENTER_HORIZONTAL
+        rootLl.layoutParams = param1
+        rootLl.setBackgroundColor(Color.BLACK)
+        val targetLl = LinearLayout(this)
+        val params2 = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        targetLl.layoutParams = params2
+        targetLl.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+        val dp20 = SizeUtil.dp2px(20f).toInt()
+        val dp40 = SizeUtil.dp2px(40f).toInt()
+        LayoutParamsUtil.setMargin(targetLl, dp20, dp20, dp20, dp20)
+        LayoutParamsUtil.setPadding(targetLl, dp40, dp40, dp40, dp40)
+        val view = View(this)
+        val param3 = LinearLayout.LayoutParams(SizeUtil.dp2px(300f).toInt(), SizeUtil.dp2px(200f).toInt())
+        view.layoutParams = param3
+        view.setBackgroundColor(Color.WHITE)
+        targetLl.addView(view)
+        rootLl.addView(targetLl)
+        ll.addView(rootLl, 0)
+        btn1.setOnClickListener {
+            val margin = SizeUtil.dp2px(10f).toInt()
+            LayoutParamsUtil.setMarginLeft(targetLl, margin)
+            LayoutParamsUtil.setMarginRight(targetLl, margin)
+            LayoutParamsUtil.setMarginTop(targetLl, margin)
+            LayoutParamsUtil.setMarginBottom(targetLl, margin)
+        }
+        btn2.setOnClickListener {
+            val padding = SizeUtil.dp2px(10f).toInt()
+            LayoutParamsUtil.setPaddingLeft(targetLl, padding)
+            LayoutParamsUtil.setPaddingRight(targetLl, padding)
+            LayoutParamsUtil.setPaddingTop(targetLl, padding)
+            LayoutParamsUtil.setPaddingBottom(targetLl, padding)
+        }
+        btn3.setOnClickListener {
+            val margin = SizeUtil.dp2px(5f).toInt()
+            LayoutParamsUtil.addMarginLeft(targetLl, margin)
+            LayoutParamsUtil.addMarginRight(targetLl, margin)
+            LayoutParamsUtil.addMarginTop(targetLl, margin)
+            LayoutParamsUtil.addMarginBottom(targetLl, margin)
+        }
+        btn4.setOnClickListener {
+            val margin = -SizeUtil.dp2px(5f).toInt()
+            LayoutParamsUtil.addMarginLeft(targetLl, margin)
+            LayoutParamsUtil.addMarginRight(targetLl, margin)
+            LayoutParamsUtil.addMarginTop(targetLl, margin)
+            LayoutParamsUtil.addMarginBottom(targetLl, margin)
+        }
+        btn5.setOnClickListener {
+            val padding = SizeUtil.dp2px(5f).toInt()
+            LayoutParamsUtil.addPaddingLeft(targetLl, padding)
+            LayoutParamsUtil.addPaddingRight(targetLl, padding)
+            LayoutParamsUtil.addPaddingTop(targetLl, padding)
+            LayoutParamsUtil.addPaddingBottom(targetLl, padding)
+        }
+        btn6.setOnClickListener {
+            val padding = -SizeUtil.dp2px(5f).toInt()
+            LayoutParamsUtil.addPaddingLeft(targetLl, padding)
+            LayoutParamsUtil.addPaddingRight(targetLl, padding)
+            LayoutParamsUtil.addPaddingTop(targetLl, padding)
+            LayoutParamsUtil.addPaddingBottom(targetLl, padding)
+        }
+        btn7.setOnClickListener {
+            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            targetLl.layoutParams = params
+            LayoutParamsUtil.setMargin(targetLl, dp20, dp20, dp20, dp20)
+            LayoutParamsUtil.setPadding(targetLl, dp40, dp40, dp40, dp40)
         }
     }
 

@@ -68,6 +68,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="拼音工具" />
 
+            <TextView
+                android:id="@+id/layout_params_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="布局参数工具" />
+
         </LinearLayout>
     </ScrollView>
 

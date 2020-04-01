@@ -1393,7 +1393,7 @@ public class TestUtilActivity extends BaseActivity {
                 (int) SizeUtil.dp2px(300), (int) SizeUtil.dp2px(200));
         params1.gravity = Gravity.CENTER_HORIZONTAL;
         rootLL.setLayoutParams(params1);
-        rootLL.setBackgroundColor(getResources().getColor(R.color.black));
+        rootLL.setBackgroundColor(Color.BLACK);
         LinearLayout targetLl = new LinearLayout(this);
         LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
@@ -1407,7 +1407,7 @@ public class TestUtilActivity extends BaseActivity {
         LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
         view.setLayoutParams(params3);
-        view.setBackgroundColor(getResources().getColor(R.color.lightBlue));
+        view.setBackgroundColor(Color.WHITE);
         targetLl.addView(view);
         rootLL.addView(targetLl);
         ll.addView(rootLL, 0);

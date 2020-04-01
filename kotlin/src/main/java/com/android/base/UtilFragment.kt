@@ -59,6 +59,10 @@ class UtilFragment : BaseFragment() {
         pinyin_tv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_PINYIN)
         }
+        //布局参数工具
+        layout_params_tv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_LAYOUT_PARAMS)
+        }
     }
 
     override fun initListener() {
