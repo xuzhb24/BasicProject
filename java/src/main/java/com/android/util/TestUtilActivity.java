@@ -39,6 +39,7 @@ import com.android.util.activity.ActivityUtil;
 import com.android.util.activity.TestJumpActivity;
 import com.android.util.app.AATest.TestAppListActivity;
 import com.android.util.app.AppUtil;
+import com.android.util.sharedPreferences.withoutContext.SPUtil;
 import com.android.util.traffic.NetworkStatsHelper;
 import com.android.util.traffic.TrafficInfo;
 import com.android.util.traffic.TrafficStatsUtil;
@@ -49,6 +50,8 @@ import com.google.gson.Gson;
 import java.io.File;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
+import java.util.Random;
 
 import butterknife.BindView;
 
@@ -80,6 +83,8 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_SDCARD = "TEST_SDCARD";
     public static final String TEST_SCREEN = "TEST_SCREEN";
     public static final String TEST_CACHE = "TEST_CACHE";
+    public static final String TEST_SP = "TEST_SP";
+    public static final String TEST_LAYOUT_PARAMS = "TEST_LAYOUT_PARAMS";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -170,6 +175,12 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_CACHE:
                 testCache();
+                break;
+            case TEST_SP:
+                testSP();
+                break;
+            case TEST_LAYOUT_PARAMS:
+                testLayoutParams();
                 break;
         }
     }
@@ -1139,8 +1150,8 @@ public class TestUtilActivity extends BaseActivity {
         CommonLayoutUtil.initCommonLayout(this, "磁盘缓存工具", true, true,
                 "读取", "保存字符串", "保存Serializable数据", "保存Bitmap", "保存Drawable",
                 "移除指定key", "清除所有缓存内容");
-        il.setInputTextHint("请输入保存的Key名");
-        InputLayout valueIl = CommonLayoutUtil.createInputLayout(this, "请输入保存的Value值");
+        il.setInputTextHint("请输入Key名");
+        InputLayout valueIl = CommonLayoutUtil.createInputLayout(this, "请输入要保存的字符串");
         InputLayout durationIl = CommonLayoutUtil.createInputLayout(this, "请输入保存的时长");
         durationIl.setInputTextType(InputType.TYPE_CLASS_NUMBER);
         ll.addView(valueIl, 1);
@@ -1256,7 +1267,7 @@ public class TestUtilActivity extends BaseActivity {
         });
         btn7.setOnClickListener(v -> {
             cacheUtil.delete();
-            showToast("已删除");
+            showToast("已清除");
         });
     }
 
@@ -1268,12 +1279,96 @@ public class TestUtilActivity extends BaseActivity {
             il.setInputText("");
         }
         il.setInputText("");
-        il.setInputTextHint(save ? "请输入保存的Key名" : "请输入读取的Key名");
         btn1.setText(save ? "读取" : "保存");
         btn2.setText(save ? "保存字符串" : "读取字符串");
         btn3.setText(save ? "保存Serializable数据" : "读取Serializable数据");
         btn4.setText(save ? "保存Bitmap" : "读取Bitmap");
         btn5.setText(save ? "保存Drawable" : "读取Drawable");
+    }
+
+    //SharedPreferences工具
+    private void testSP() {
+        CommonLayoutUtil.initCommonLayout(this, "SharedPreferences工具", true, true,
+                "保存字符串", "读取字符串", "保存Int、Long、Boolean、Float类型数据",
+                "读取Int、Long、Boolean、Float类型数据", "遍历所有的Key", "移除指定key", "清除所有数据");
+        il.setInputTextHint("请输入Key名");
+        InputLayout valueIl = CommonLayoutUtil.createInputLayout(this, "请输入要保存的字符串");
+        InputLayout durationIl = CommonLayoutUtil.createInputLayout(this, "请输入保存的时长");
+        durationIl.setInputTextType(InputType.TYPE_CLASS_NUMBER);
+        ll.addView(valueIl, 1);
+        ll.addView(durationIl, 2);
+        String tip = "默认Key名：String\n";
+        tv.setText(tip);
+        btn1.setOnClickListener(v -> {
+            tv.setText(tip);
+            String key = getKey(il, "String");
+            String value = valueIl.getInputText().trim();
+            if (TextUtils.isEmpty(value)) {
+                showToast("请输入保存的字符串");
+                return;
+            }
+            int saveTime = getSaveTime(durationIl);
+            if (saveTime == 0) {
+                showToast("请输入大于0秒的时长");
+            } else if (saveTime == -1) {
+                SPUtil.putString(key, value);
+                showToast("保存成功");
+            } else {
+                SPUtil.putString(key, value, saveTime);
+                showToast("保存成功，数据将缓存" + saveTime + "秒");
+            }
+        });
+        btn2.setOnClickListener(v -> {
+            String key = getKey(il, "String");
+            String result = SPUtil.getString(key, "");
+            tv.setText(TextUtils.isEmpty(result) ? "数据为空" : result);
+        });
+        btn3.setOnClickListener(v -> {
+            SPUtil.putInt("Int", new Random().nextInt());
+            SPUtil.putLong("Long", new Random().nextLong());
+            SPUtil.putBoolean("Boolean", new Random().nextBoolean());
+            SPUtil.putFloat("Float", new Random().nextFloat());
+            showToast("保存成功");
+        });
+        btn4.setOnClickListener(v -> {
+            StringBuilder sb = new StringBuilder();
+            sb.append("Key：值(缺省值)\n")
+                    .append("Int：").append(SPUtil.getInt("Int", -1)).append("(-1)\n")
+                    .append("Long：").append(SPUtil.getLong("Long", -1)).append("(-1)\n")
+                    .append("Boolean：").append(SPUtil.getBoolean("Boolean", false)).append("(false)\n")
+                    .append("Float：").append(SPUtil.getFloat("Float", -1.1f)).append("(-1.1)");
+            tv.setText(sb.toString());
+        });
+        btn5.setOnClickListener(v -> {
+            Map<String, ?> map = SPUtil.getAll();
+            StringBuilder sb = new StringBuilder();
+            for (String key : map.keySet()) {
+                sb.append(key).append("\t\t");
+            }
+            if (TextUtils.isEmpty(sb.toString())) {
+                tv.setText("当前没有包含任何数据");
+            } else {
+                tv.setText("所有Key名如下：\n");
+                tv.append(sb.toString());
+            }
+        });
+        btn6.setOnClickListener(v -> {
+            String key = il.getInputText().trim();
+            if (TextUtils.isEmpty(key)) {
+                showToast("请先输入要删除的Key名");
+                return;
+            }
+            if (SPUtil.contains(key)) {
+                SPUtil.remove(key);
+                showToast("已删除");
+            } else {
+                showToast("未找到该Key对应的数据");
+            }
+        });
+        btn7.setOnClickListener(v -> {
+            SPUtil.clear();
+            showToast("已清除");
+        });
     }
 
     private String getKey(InputLayout il, String defaultKey) {
@@ -1284,6 +1379,87 @@ public class TestUtilActivity extends BaseActivity {
     private int getSaveTime(InputLayout il) {
         String saveTime = il.getInputText().trim();
         return TextUtils.isEmpty(saveTime) ? -1 : Integer.parseInt(saveTime);
+    }
+
+    //布局参数工具
+    private void testLayoutParams() {
+        CommonLayoutUtil.initCommonLayout(this, "布局参数工具", false, false,
+                "设置上下左右Margin为10dp", "设置上下左右Padding为10dp",
+                "增加上下左右Margin为5dp", "减少上下左右Margin为5dp",
+                "增加上下左右Padding为5dp", "减少上下左右Padding为5dp", "还原");
+        LayoutParamsUtil.setMarginTop(btn1, (int) SizeUtil.dp2px(10));
+        LinearLayout rootLL = new LinearLayout(this);
+        LinearLayout.LayoutParams params1 = new LinearLayout.LayoutParams(
+                (int) SizeUtil.dp2px(300), (int) SizeUtil.dp2px(200));
+        params1.gravity = Gravity.CENTER_HORIZONTAL;
+        rootLL.setLayoutParams(params1);
+        rootLL.setBackgroundColor(getResources().getColor(R.color.black));
+        LinearLayout targetLl = new LinearLayout(this);
+        LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        targetLl.setLayoutParams(params2);
+        targetLl.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+        int dp20 = (int) SizeUtil.dp2px(20);
+        int dp40 = (int) SizeUtil.dp2px(40);
+        LayoutParamsUtil.setMargin(targetLl, dp20, dp20, dp20, dp20);
+        LayoutParamsUtil.setPadding(targetLl, dp40, dp40, dp40, dp40);
+        View view = new View(this);
+        LinearLayout.LayoutParams params3 = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+        view.setLayoutParams(params3);
+        view.setBackgroundColor(getResources().getColor(R.color.lightBlue));
+        targetLl.addView(view);
+        rootLL.addView(targetLl);
+        ll.addView(rootLL, 0);
+        btn1.setOnClickListener(v -> {
+            int margin = (int) SizeUtil.dp2px(10);
+            LayoutParamsUtil.setMarginLeft(targetLl, margin);
+            LayoutParamsUtil.setMarginRight(targetLl, margin);
+            LayoutParamsUtil.setMarginTop(targetLl, margin);
+            LayoutParamsUtil.setMarginBottom(targetLl, margin);
+        });
+        btn2.setOnClickListener(v -> {
+            int padding = (int) SizeUtil.dp2px(10);
+            LayoutParamsUtil.setPaddingLeft(targetLl, padding);
+            LayoutParamsUtil.setPaddingRight(targetLl, padding);
+            LayoutParamsUtil.setPaddingTop(targetLl, padding);
+            LayoutParamsUtil.setPaddingBottom(targetLl, padding);
+        });
+        btn3.setOnClickListener(v -> {
+            int margin = (int) SizeUtil.dp2px(5);
+            LayoutParamsUtil.addMarginLeft(targetLl, margin);
+            LayoutParamsUtil.addMarginRight(targetLl, margin);
+            LayoutParamsUtil.addMarginTop(targetLl, margin);
+            LayoutParamsUtil.addMarginBottom(targetLl, margin);
+        });
+        btn4.setOnClickListener(v -> {
+            int margin = -(int) SizeUtil.dp2px(5);
+            LayoutParamsUtil.addMarginLeft(targetLl, margin);
+            LayoutParamsUtil.addMarginRight(targetLl, margin);
+            LayoutParamsUtil.addMarginTop(targetLl, margin);
+            LayoutParamsUtil.addMarginBottom(targetLl, margin);
+        });
+        btn5.setOnClickListener(v -> {
+            int padding = (int) SizeUtil.dp2px(5);
+            LayoutParamsUtil.addPaddingLeft(targetLl, padding);
+            LayoutParamsUtil.addPaddingRight(targetLl, padding);
+            LayoutParamsUtil.addPaddingTop(targetLl, padding);
+            LayoutParamsUtil.addPaddingBottom(targetLl, padding);
+        });
+        btn6.setOnClickListener(v -> {
+            int padding = -(int) SizeUtil.dp2px(5);
+            LayoutParamsUtil.addPaddingLeft(targetLl, padding);
+            LayoutParamsUtil.addPaddingRight(targetLl, padding);
+            LayoutParamsUtil.addPaddingTop(targetLl, padding);
+            LayoutParamsUtil.addPaddingBottom(targetLl, padding);
+        });
+        btn7.setOnClickListener(v -> {
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                    LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT);
+            targetLl.setLayoutParams(params);
+            LayoutParamsUtil.setMargin(targetLl, dp20, dp20, dp20, dp20);
+            LayoutParamsUtil.setPadding(targetLl, dp40, dp40, dp40, dp40);
+        });
     }
 
 }
