@@ -22,6 +22,13 @@ class TestStatusBarUtilActivity : BaseActivity() {
 
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+//        root_rl.setBackgroundResource(R.drawable.ic_status_bar)
+//        title_bar.visibility = View.GONE
+        StatusBarUtil.setNavigationBarStatusBarTranslucent(this)
+        super.onCreate(savedInstanceState)
+    }
+
     override fun handleView(savedInstanceState: Bundle?) {
         initCommonLayout(this, "标题", showTextView = true)
         tv.text = intent.getStringExtra(EXTRA_TEXT)
@@ -48,6 +55,16 @@ class TestStatusBarUtilActivity : BaseActivity() {
                     this, title_bar,
                     resources.getColor(R.color.black), 0.5f, false
                 )
+            }
+            5 -> {
+                root_rl.setBackgroundResource(R.drawable.ic_status_bar)
+                title_bar.visibility = View.GONE
+                StatusBarUtil.hideNavigationBar(this)
+            }
+            6 -> {
+                root_rl.setBackgroundResource(R.drawable.ic_status_bar)
+                title_bar.visibility = View.GONE
+                StatusBarUtil.setNavigationBarStatusBarTranslucent(this)
             }
         }
     }

@@ -112,6 +112,21 @@ object StatusBarUtil {
         }
     }
 
+    //设置状态栏字体及图标颜色为黑色，只支持MIUI6以上、Flyme4以上以及Android M以上
+    fun darkIconAndText(window: Window) {
+        when {
+            isFlyme4Later -> {
+                darkModeForFlyme4(window, true)
+            }
+            isMIUI6Later -> {
+                darkModeForMIUI6(window, true)
+            }
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.M -> {
+                darkModeForM(window, true)
+            }
+        }
+    }
+
     //Flyme4以上设置状态栏字体和图标颜色，dark为true时为黑色，false为白色
     private fun darkModeForFlyme4(window: Window?, dark: Boolean): Boolean {
         var result = false
@@ -290,6 +305,33 @@ object StatusBarUtil {
             ).toInt()
         }
         return result
+    }
+
+    //隐藏导航栏，并且全屏
+    //SystemUI Flag介绍：https://www.jianshu.com/p/e6656707f56c
+    fun hideNavigationBar(activity: Activity) {
+        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) {
+            activity.window.decorView.systemUiVisibility = View.GONE
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            val options = (View.SYSTEM_UI_FLAG_HIDE_NAVIGATION  //隐藏导航栏
+                    or View.SYSTEM_UI_FLAG_FULLSCREEN  //隐藏状态栏且全屏展示
+                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+            activity.window.decorView.systemUiVisibility = options
+        }
+    }
+
+    //设置导航栏和状态栏透明
+    fun setNavigationBarStatusBarTranslucent(activity: Activity) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            val options = (View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_LAYOUT_STABLE)
+            with(activity.window) {
+                decorView.systemUiVisibility = options
+                navigationBarColor = Color.TRANSPARENT
+                statusBarColor = Color.TRANSPARENT
+            }
+        }
     }
 
 }
