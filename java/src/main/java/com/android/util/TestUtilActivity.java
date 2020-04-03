@@ -200,8 +200,10 @@ public class TestUtilActivity extends BaseActivity {
         String text2 = "状态栏白色，字体和图片黑色";
         String text3 = "状态栏黑色，字体和图片白色";
         String text4 = "状态栏黑色半透明，字体和图片白色";
-        String text5 = "透明度和十六进制对应表";
-        CommonLayoutUtil.initCommonLayout(this, "实现沉浸式状态栏", text1, text2, text3, text4, text5);
+        String text5 = "隐藏导航栏";
+        String text6 = "导航栏和状态栏透明";
+        String text7 = "透明度和十六进制对应表";
+        CommonLayoutUtil.initCommonLayout(this, "实现沉浸式状态栏", text1, text2, text3, text4, text5, text6, text7);
         btn1.setOnClickListener(v -> {
             jumpToTestStatusBarActivity(1, text1);
         });
@@ -215,6 +217,12 @@ public class TestUtilActivity extends BaseActivity {
             jumpToTestStatusBarActivity(4, text4);
         });
         btn5.setOnClickListener(v -> {
+            jumpToTestStatusBarActivity(5, text5);
+        });
+        btn6.setOnClickListener(v -> {
+            jumpToTestStatusBarActivity(6, text6);
+        });
+        btn7.setOnClickListener(v -> {
             String content = IOUtil.readInputStreameToString(getResources().openRawResource(R.raw.hex_alpha_table));
             ExtraUtil.alert(this, content);
         });

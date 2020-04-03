@@ -5,11 +5,13 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import butterknife.BindView;
+
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.util.CommonLayoutUtil;
 import com.android.widget.TitleBar;
+
+import butterknife.BindView;
 
 /**
  * Created by xuzhb on 2020/1/8
@@ -46,6 +48,16 @@ public class TestStatusBarUtilActivity extends BaseActivity {
             case 4:
                 StatusBarUtil.darkModeAndPadding(this, titleBar,
                         getResources().getColor(R.color.black), 0.5f, false);
+                break;
+            case 5:
+                rootRl.setBackgroundResource(R.drawable.ic_status_bar);
+                titleBar.setVisibility(View.GONE);
+                StatusBarUtil.hideNavigationBar(this);
+                break;
+            case 6:
+                rootRl.setBackgroundResource(R.drawable.ic_status_bar);
+                titleBar.setVisibility(View.GONE);
+                StatusBarUtil.setNavigationBarStatusBarTranslucent(this);
                 break;
         }
     }

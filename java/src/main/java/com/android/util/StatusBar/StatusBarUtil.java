@@ -296,4 +296,29 @@ public class StatusBarUtil {
         return result;
     }
 
+    //隐藏导航栏，并且全屏
+    //SystemUI Flag介绍：https://www.jianshu.com/p/e6656707f56c
+    public static void hideNavigationBar(Activity activity) {
+        if (Build.VERSION.SDK_INT > 11 && Build.VERSION.SDK_INT < 19) {
+            activity.getWindow().getDecorView().setSystemUiVisibility(View.GONE);
+        } else if (Build.VERSION.SDK_INT >= 19) {
+            int options = View.SYSTEM_UI_FLAG_HIDE_NAVIGATION  //隐藏导航栏
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN  //隐藏状态栏且全屏展示
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            activity.getWindow().getDecorView().setSystemUiVisibility(options);
+        }
+    }
+
+    //设置导航栏和状态栏透明
+    public static void setNavigationBarStatusBarTranslucent(Activity activity) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            int options = View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+            activity.getWindow().getDecorView().setSystemUiVisibility(options);
+            activity.getWindow().setNavigationBarColor(Color.TRANSPARENT);
+            activity.getWindow().setStatusBarColor(Color.TRANSPARENT);
+        }
+    }
+
 }
