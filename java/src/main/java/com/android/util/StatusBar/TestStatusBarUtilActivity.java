@@ -3,7 +3,7 @@ package com.android.util.StatusBar;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.frame.mvc.BaseActivity;
@@ -26,14 +26,14 @@ public class TestStatusBarUtilActivity extends BaseActivity {
     TitleBar titleBar;
     @BindView(R.id.tv)
     TextView tv;
-    @BindView(R.id.root_rl)
-    RelativeLayout rootRl;
+    @BindView(R.id.root_ll)
+    LinearLayout rootLl;
 
     @Override
     protected void initBar() {
         switch (getIntent().getIntExtra(EXTRA_TYPE, 1)) {
             case 1:
-                rootRl.setBackgroundResource(R.drawable.ic_status_bar);
+                rootLl.setBackgroundResource(R.drawable.ic_status_bar);
                 titleBar.setVisibility(View.GONE);
                 StatusBarUtil.darkMode(this, Color.BLACK, 0, false);
                 break;
@@ -50,12 +50,12 @@ public class TestStatusBarUtilActivity extends BaseActivity {
                         getResources().getColor(R.color.black), 0.5f, false);
                 break;
             case 5:
-                rootRl.setBackgroundResource(R.drawable.ic_status_bar);
+                rootLl.setBackgroundResource(R.drawable.ic_status_bar);
                 titleBar.setVisibility(View.GONE);
                 StatusBarUtil.hideNavigationBar(this);
                 break;
             case 6:
-                rootRl.setBackgroundResource(R.drawable.ic_status_bar);
+                rootLl.setBackgroundResource(R.drawable.ic_status_bar);
                 titleBar.setVisibility(View.GONE);
                 StatusBarUtil.setNavigationBarStatusBarTranslucent(this);
                 break;
