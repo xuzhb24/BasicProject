@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:lineSpacingExtra="2dp"
-            android:minHeight="60dp"
+            android:minHeight="100dp"
             android:paddingLeft="20dp"
             android:paddingRight="20dp"
             android:scrollbars="none"
