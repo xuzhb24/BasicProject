@@ -11,6 +11,7 @@ import com.android.util.DateUtil;
 import com.android.util.LogUtil;
 import com.android.util.threadPool.ThreadPoolManager;
 
+import java.lang.ref.WeakReference;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
@@ -25,9 +26,9 @@ import butterknife.OnClick;
  */
 public class TestThreadPoolUtilActivity extends CommonBaseActivity {
 
-    private static final String TAG = "TestThreadPoolUtilActivity";
+    private static final String TAG = "ThreadPoolLog";
 
-    private boolean hasDestroy = false;  //加这个是为了避免Activity销毁后还有线程指向它
+    private WeakReference<TestThreadPoolUtilActivity> mWeakReference;
 
     @BindView(R.id.tv)
     TextView tv;
@@ -39,6 +40,7 @@ public class TestThreadPoolUtilActivity extends CommonBaseActivity {
                 "通过submit执行Callable任务抛出异常", "通过submit执行自定义Callable任务返回结果",
                 "通过submit执行自定义Callable任务抛出异常", "等待5秒后执行任务", "等待2秒后开始每5秒执行任务",
                 "等待提交的任务执行后关闭线程池", "立即关闭线程池");
+        mWeakReference = new WeakReference<>(this);
     }
 
     @Override
@@ -162,24 +164,26 @@ public class TestThreadPoolUtilActivity extends CommonBaseActivity {
 
     private void setResult(String result) {
         LogUtil.i(TAG, "setResult:" + result);
-        String text = DateUtil.getCurrentDateTime(DateUtil.H_M_S_S) + "  " + result
-                + "(" + Thread.currentThread().getId() + ")\n";
-        runOnUiThread(() -> {
-            if (!hasDestroy) {
-                tv.setText(text);
-            }
-        });
+        TestThreadPoolUtilActivity activity = mWeakReference.get();
+        if (activity != null) {
+            String text = DateUtil.getCurrentDateTime(DateUtil.H_M_S_S) + "  " + result
+                    + "(" + Thread.currentThread().getId() + ")\n";
+            activity.runOnUiThread(() -> ((TextView) activity.findViewById(R.id.tv)).setText(text));
+        } else {
+            LogUtil.i(TAG, "activity is null");
+        }
     }
 
     private void appendResult(String result) {
         LogUtil.i(TAG, "appendResult:" + result);
-        String text = DateUtil.getCurrentDateTime(DateUtil.H_M_S_S) + "  " + result
-                + "(" + Thread.currentThread().getId() + ")\n";
-        runOnUiThread(() -> {
-            if (!hasDestroy) {
-                tv.append(text);
-            }
-        });
+        TestThreadPoolUtilActivity activity = mWeakReference.get();
+        if (activity != null) {
+            String text = DateUtil.getCurrentDateTime(DateUtil.H_M_S_S) + "  " + result
+                    + "(" + Thread.currentThread().getId() + ")\n";
+            activity.runOnUiThread(() -> ((TextView) activity.findViewById(R.id.tv)).append(text));
+        } else {
+            LogUtil.i(TAG, "activity is null");
+        }
     }
 
     private void sleep(long second) {
@@ -192,7 +196,9 @@ public class TestThreadPoolUtilActivity extends CommonBaseActivity {
 
     @Override
     protected void onDestroy() {
-        hasDestroy = true;
+        mWeakReference.clear();
+        ThreadPoolManager.getInstance().getFixedThreadPool().shutdownNow();
+        ThreadPoolManager.getInstance().getScheduledThreadPool().shutdownNow();
         super.onDestroy();
     }
 }
