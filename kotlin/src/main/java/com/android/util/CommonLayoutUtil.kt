@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.text.TextUtils
+import android.text.method.ScrollingMovementMethod
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
@@ -51,6 +52,9 @@ fun initCommonLayout(
     val btn7: Button = activity.findViewById(R.id.btn7)
     val btn8: Button = activity.findViewById(R.id.btn8)
     val btn9: Button = activity.findViewById(R.id.btn9)
+    val btn10: Button = activity.findViewById(R.id.btn10)
+    val btn11: Button = activity.findViewById(R.id.btn11)
+    val btn12: Button = activity.findViewById(R.id.btn12)
     with(titleBar) {
         titleText = title
         setOnLeftClickListener {
@@ -68,19 +72,18 @@ fun initCommonLayout(
     btn7.visibility = View.GONE
     btn8.visibility = View.GONE
     btn9.visibility = View.GONE
+    btn10.visibility = View.GONE
+    btn11.visibility = View.GONE
+    btn12.visibility = View.GONE
     if (showInputLayout) {
         il.visibility = View.VISIBLE
     }
     if (showTextView) {
         tv.visibility = View.VISIBLE
-    } else {
-        if (text.size > 0) {
-            val topMargin = (ScreenUtil.getScreenHeight(activity) - titleBar.height
-                    - text.size * SizeUtil.dp2px(70f) - SizeUtil.dp2px(60f)) / 2f
-            LayoutParamsUtil.setMarginTop(btn1, if (topMargin > 0) topMargin.toInt() else SizeUtil.dp2px(10f).toInt())
-        }
     }
     if (text.size >= 1 && !TextUtils.isEmpty(text[0])) {
+        tv.maxHeight = SizeUtil.dp2px(200f).toInt()
+        tv.movementMethod = ScrollingMovementMethod.getInstance()
         btn1.visibility = View.VISIBLE
         btn1.text = text[0]
     }
@@ -115,6 +118,18 @@ fun initCommonLayout(
     if (text.size >= 9) {
         btn9.visibility = View.VISIBLE
         btn9.text = text[8]
+    }
+    if (text.size >= 10) {
+        btn10.visibility = View.VISIBLE
+        btn10.text = text[9]
+    }
+    if (text.size >= 11) {
+        btn11.visibility = View.VISIBLE
+        btn11.text = text[10]
+    }
+    if (text.size >= 12) {
+        btn12.visibility = View.VISIBLE
+        btn12.text = text[11]
     }
 }
 

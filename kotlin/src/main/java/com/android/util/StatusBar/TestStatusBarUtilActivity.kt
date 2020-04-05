@@ -19,22 +19,9 @@ class TestStatusBarUtilActivity : BaseActivity() {
     }
 
     override fun initBar() {
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-//        root_rl.setBackgroundResource(R.drawable.ic_status_bar)
-//        title_bar.visibility = View.GONE
-        StatusBarUtil.setNavigationBarStatusBarTranslucent(this)
-        super.onCreate(savedInstanceState)
-    }
-
-    override fun handleView(savedInstanceState: Bundle?) {
-        initCommonLayout(this, "标题", showTextView = true)
-        tv.text = intent.getStringExtra(EXTRA_TEXT)
         when (intent.getIntExtra(EXTRA_TYPE, 1)) {
             1 -> {
-                root_rl.setBackgroundResource(R.drawable.ic_status_bar)
+                root_ll.setBackgroundResource(R.drawable.ic_status_bar)
                 title_bar.visibility = View.GONE
                 StatusBarUtil.darkMode(this, dark = false)
             }
@@ -57,16 +44,21 @@ class TestStatusBarUtilActivity : BaseActivity() {
                 )
             }
             5 -> {
-                root_rl.setBackgroundResource(R.drawable.ic_status_bar)
+                root_ll.setBackgroundResource(R.drawable.ic_status_bar)
                 title_bar.visibility = View.GONE
                 StatusBarUtil.hideNavigationBar(this)
             }
             6 -> {
-                root_rl.setBackgroundResource(R.drawable.ic_status_bar)
+                root_ll.setBackgroundResource(R.drawable.ic_status_bar)
                 title_bar.visibility = View.GONE
                 StatusBarUtil.setNavigationBarStatusBarTranslucent(this)
             }
         }
+    }
+
+    override fun handleView(savedInstanceState: Bundle?) {
+        initCommonLayout(this, "标题", showTextView = true)
+        tv.text = intent.getStringExtra(EXTRA_TEXT)
     }
 
     override fun initListener() {

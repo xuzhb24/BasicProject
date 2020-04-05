@@ -33,7 +33,7 @@ task clean(type: Delete) {
 //统一控制外部依赖库的版本号
 ext {
     min_sdk_version = 16
-    target_sdk_version = 26
+    target_sdk_version = 28
     compile_sdk_version = 28
     build_tools_version = "29.0.1"
 

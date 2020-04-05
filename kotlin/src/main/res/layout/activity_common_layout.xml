@@ -1,97 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/root_rl"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/root_ll"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="10dp">
 
     <com.android.widget.TitleBar
         android:id="@+id/title_bar"
-        style="@style/TitleBarStyle" />
+        style="@style/TitleBarStyle"
+        android:layout_marginBottom="20dp" />
 
-    <ScrollView
-        style="@style/ScrollViewStyle"
-        android:layout_below="@+id/title_bar">
+    <LinearLayout
+        android:id="@+id/ll"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
 
-        <LinearLayout
-            android:id="@+id/ll"
+        <com.android.widget.InputLayout
+            android:id="@+id/il"
+            style="@style/InputLayoutStyle"
+            android:layout_marginBottom="8dp" />
+
+        <TextView
+            android:id="@+id/tv"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:paddingTop="20dp"
-            android:paddingBottom="20dp">
+            android:lineSpacingExtra="2dp"
+            android:minHeight="60dp"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:scrollbars="none"
+            android:textIsSelectable="true" />
+    </LinearLayout>
 
-            <com.android.widget.InputLayout
-                android:id="@+id/il"
-                style="@style/InputLayoutStyle"
-                android:layout_marginBottom="8dp" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv"
+        <ScrollView
+            android:id="@+id/sv"
+            style="@style/ScrollViewStyle"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:lineSpacingExtra="3dp"
-                android:minHeight="100dp"
-                android:paddingLeft="20dp"
-                android:paddingRight="20dp"
-                android:paddingBottom="10dp"
-                android:textIsSelectable="true" />
+                android:orientation="vertical"
+                android:paddingTop="20dp"
+                android:paddingBottom="20dp">
 
-            <Button
-                android:id="@+id/btn1"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="30dp"
-                android:text="按钮一" />
+                <Button
+                    android:id="@+id/btn1"
+                    style="@style/ButtonStyle"
+                    android:text="按钮一" />
 
-            <Button
-                android:id="@+id/btn2"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="30dp"
-                android:text="按钮二" />
+                <Button
+                    android:id="@+id/btn2"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮二" />
 
-            <Button
-                android:id="@+id/btn3"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="30dp"
-                android:text="按钮三" />
+                <Button
+                    android:id="@+id/btn3"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮三" />
 
-            <Button
-                android:id="@+id/btn4"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="30dp"
-                android:text="按钮四" />
+                <Button
+                    android:id="@+id/btn4"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮四" />
 
-            <Button
-                android:id="@+id/btn5"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="30dp"
-                android:text="按钮五" />
+                <Button
+                    android:id="@+id/btn5"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮五" />
 
-            <Button
-                android:id="@+id/btn6"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="30dp"
-                android:text="按钮六" />
+                <Button
+                    android:id="@+id/btn6"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮六" />
 
-            <Button
-                android:id="@+id/btn7"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="30dp"
-                android:text="按钮七" />
+                <Button
+                    android:id="@+id/btn7"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮七" />
 
-            <Button
-                android:id="@+id/btn8"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="30dp"
-                android:text="按钮八" />
+                <Button
+                    android:id="@+id/btn8"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮八" />
 
-            <Button
-                android:id="@+id/btn9"
-                style="@style/ButtonStyle"
-                android:layout_marginTop="30dp"
-                android:text="按钮九" />
+                <Button
+                    android:id="@+id/btn9"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮九" />
 
-        </LinearLayout>
+                <Button
+                    android:id="@+id/btn10"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮十" />
 
-    </ScrollView>
+                <Button
+                    android:id="@+id/btn11"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮十一" />
 
-</RelativeLayout>
+                <Button
+                    android:id="@+id/btn12"
+                    style="@style/ButtonStyle"
+                    android:layout_marginTop="30dp"
+                    android:text="按钮十二" />
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</LinearLayout>
