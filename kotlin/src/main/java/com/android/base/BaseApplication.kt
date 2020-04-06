@@ -4,10 +4,8 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.support.multidex.MultiDex
-import com.android.basicproject.BuildConfig
 import com.squareup.leakcanary.LeakCanary
 import com.squareup.leakcanary.RefWatcher
-import com.tencent.bugly.crashreport.CrashReport
 import java.util.*
 
 /**
@@ -35,10 +33,6 @@ class BaseApplication : Application() {
         instance = this
         refWatcher = initRefWatcher()
         mActivityStack = LinkedList()
-
-        /* Bugly start*/
-        CrashReport.initCrashReport(applicationContext, "4728a77b29", BuildConfig.DEBUG)
-        /* Bugly end*/
     }
 
     override fun attachBaseContext(base: Context?) {

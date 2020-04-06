@@ -31,14 +31,6 @@ public class BaseApplication extends Application {
         mRefWatcher = initRefWatcher();
         mActivityStack = new LinkedList<>();
 
-        /* 极光start */
-//        JPushManager.getInstance().init(this);
-        /* 极光end */
-
-        /* Bugly start*/
-//        BuglyUtil.init(getApplicationContext());
-        /* Bugly end*/
-
         CrashHandler.getInstance().init(this);
 
         NetworkStatsHelper.init(this);  //流量统计

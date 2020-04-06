@@ -22,21 +22,6 @@ android {
         versionCode 100002
         versionName "1.0.0(002)"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-
-        /* 极光start */
-        ndk {
-            //选择要添加的对应 cpu 类型的 .so 库。
-            abiFilters 'armeabi', 'armeabi-v7a', 'arm64-v8a'
-            // 还可以添加 'x86', 'x86_64', 'mips', 'mips64'
-        }
-
-        manifestPlaceholders = [
-                JPUSH_PKGNAME: "com.android.java",  //应用包名
-                JPUSH_APPKEY : "d6ff5ca64d8911604c30557e", //JPush上注册的包名对应的Appkey
-                JPUSH_CHANNEL: "developer-default", //暂时填写默认值即可.
-        ]
-        /* 极光end */
-
     }
 
     buildTypes {
@@ -99,7 +84,4 @@ dependencies {
     //butterknife
     implementation 'com.jakewharton:butterknife:8.8.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
-    //极光推送
-    implementation 'cn.jiguang.sdk:jpush:3.4.0'  // 此处以JPush 3.4.0 版本为例
-    implementation 'cn.jiguang.sdk:jcore:2.2.2'  // 此处以JCore 2.2.2 版本为例
 }

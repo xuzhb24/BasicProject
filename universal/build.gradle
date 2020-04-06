@@ -60,10 +60,6 @@ dependencies {
     api 'com.github.bumptech.glide:glide:4.9.0'
     //zxing扫码
     api 'com.google.zxing:core:3.3.3'
-    //Bugly SDK
-    api 'com.tencent.bugly:crashreport:3.1.0'
-    //Bugly NDK
-    api 'com.tencent.bugly:nativecrashreport:3.7.1'
     //图片裁剪框架uCrop
     api 'com.yalantis:ucrop:2.2.0'
     //底部选择器

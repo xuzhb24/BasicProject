@@ -9,14 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-//import butterknife.BindView;
-import butterknife.BindView;
+
 import com.android.frame.mvc.BaseActivity;
-import com.android.frame.push.jpush.JPushManager;
 import com.android.java.R;
 import com.android.widget.CustomViewPager;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+
 
 /**
  * Created by xuzhb on 2019/10/19
@@ -47,10 +48,6 @@ public class MainActivity extends BaseActivity {
         mTitleList.add("控件");
         mTitleList.add("工具");
         initBottomNavigationBar();
-
-        /* 极光start */
-        JPushManager.getInstance().registerToken(this);
-        /* 极光end */
     }
 
     //初始化底部导航栏

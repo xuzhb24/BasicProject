@@ -127,23 +127,12 @@
 -dontwarn javax.annotation.**
 #---------------------------------retrofit end---------------------------------
 
-#---------------------------------UtilCode start---------------------------------
--keep class com.blankj.utilcode.** { *; }
--keepclassmembers class com.blankj.utilcode.** { *; }
--dontwarn com.blankj.utilcode.**
-#---------------------------------UtilCode end---------------------------------
-
 #---------------------------------okhttp3 start---------------------------------
 -dontwarn okhttp3.**
 -dontwarn okio.**
 -dontwarn javax.annotation.**
 -dontwarn org.conscrypt.**
 #---------------------------------okhttp3 end---------------------------------
-
-#---------------------------------bugly start---------------------------------
--dontwarn com.tencent.bugly.**
--keep public class com.tencent.bugly.**{*;}
-#---------------------------------bugly end---------------------------------
 
 #---------------------------------glide start---------------------------------
 -keep public class * implements com.bumptech.glide.module.GlideModule
@@ -165,10 +154,10 @@
 -keep interface com.yalantis.ucrop** { *; }
 #---------------------------------uCrop end---------------------------------
 
-#---------------------------------项目本身---------------------------------
+#---------------------------------项目本身 start---------------------------------
 -keep class com.android.frame.http.model.** { *; }
 -keep class com.android.frame.http.AATest.bean.**{*;}
 -keep class com.android.frame.mvp.AATest.bean.**{*;}
 -keep class com.android.widget.RecyclerView.AATest.entity.**{*;}
-#---------------------------------end---------------------------------
+#---------------------------------项目本身 end---------------------------------
 
