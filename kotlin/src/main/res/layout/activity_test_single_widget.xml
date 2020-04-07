@@ -78,4 +78,23 @@
 
     <View style="@style/SingleWidgetDividerLineStyle" />
 
+    <com.youth.banner.Banner
+        android:id="@+id/banner"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginBottom="10dp"
+        app:image_scale_type="fit_xy" />
+
+    <com.android.widget.IndicatorLayout
+        android:id="@+id/idicatorLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="10dp"
+        android:gravity="center_horizontal" />
+
+    <View style="@style/SingleWidgetDividerLineStyle" />
+
 </LinearLayout>

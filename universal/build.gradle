@@ -64,4 +64,6 @@ dependencies {
     api 'com.yalantis:ucrop:2.2.0'
     //底部选择器
     api 'com.contrarywind:Android-PickerView:4.1.8'
+    //Banner轮播，https://github.com/youth5201314/banner
+    api 'com.youth.banner:banner:1.4.10'
 }
