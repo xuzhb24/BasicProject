@@ -35,9 +35,9 @@ class ViewHolder(private var mView: View) {
     }
 
     //设置文本
-    fun setText(@IdRes viewId: Int, text: CharSequence): ViewHolder {
+    fun setText(@IdRes viewId: Int, text: CharSequence?): ViewHolder {
         val view = getView<TextView>(viewId)
-        view?.text = text
+        view?.text = text ?: ""
         return this //链式调用
     }
 

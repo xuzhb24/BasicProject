@@ -88,7 +88,8 @@ abstract class LoadMoreAdapter<T>(
                 ViewHolder(view)
             }
             TYPE_FOOTER_VIEW -> {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.layout_refresh_footer, parent, false)
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.layout_refresh_footer, parent, false)
                 FootViewHolder(view)
             }
             else -> {
@@ -232,13 +233,15 @@ abstract class LoadMoreAdapter<T>(
     }
 
     //设置新数据
-    fun setData(dataList: MutableList<T>) {
-        mDataList = dataList
+    fun setData(dataList: MutableList<T>?) {
+        mDataList = dataList ?: ArrayList()
     }
 
     //添加数据
-    fun addData(dataList: MutableList<T>) {
-        mDataList.addAll(dataList)
+    fun addData(dataList: MutableList<T>?) {
+        dataList?.let {
+            mDataList.addAll(it)
+        }
     }
 
     //Item点击事件

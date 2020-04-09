@@ -35,9 +35,9 @@ open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     }
 
     //设置文本
-    fun setText(viewId: Int, text: CharSequence): ViewHolder {
+    fun setText(viewId: Int, text: CharSequence?): ViewHolder {
         val tv = getView<TextView>(viewId)
-        tv?.text = text
+        tv?.text = text ?: ""
         return this  //链式调用
     }
 

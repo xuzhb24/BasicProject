@@ -87,19 +87,21 @@ abstract class BaseAdapter<T>(
     protected abstract fun bindData(holder: ViewHolder, data: T, position: Int)
 
     //设置新数据
-    fun setData(dataList: MutableList<T>) {
-        mDataList = dataList
+    fun setData(dataList: MutableList<T>?) {
+        mDataList = dataList ?: ArrayList()
         notifyDataSetChanged()
     }
 
     //添加数据
-    fun addData(dataList: MutableList<T>) {
-        mDataList.addAll(dataList)
-//        notifyDataSetChanged()  //全局刷新
-        if (dataList.size == 0 || mDataList.size == dataList.size) {
-            notifyDataSetChanged()
-        } else {
-            notifyItemRangeInserted(mDataList.size - dataList.size, dataList.size)
+    fun addData(dataList: MutableList<T>?) {
+        dataList?.let {
+            mDataList.addAll(it)
+//            notifyDataSetChanged()  //全局刷新
+            if (it.size == 0 || mDataList.size == it.size) {
+                notifyDataSetChanged()
+            } else {
+                notifyItemRangeInserted(mDataList.size - it.size, it.size)
+            }
         }
     }
 
