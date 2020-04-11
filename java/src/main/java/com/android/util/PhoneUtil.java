@@ -30,13 +30,15 @@ public class PhoneUtil {
 
     /**
      * 判断手机号是否合法
-     * 移动：134、135、136、137、138、139、150、151、152、157(TD)、158、159、178(新)、182、184、187、188
-     * 联通：130、131、132、152、155、156、185、186
-     * 电信：133、153、170、173、177、180、181、189、（1349卫通）
+     * 移动：134(0-8)、135、136、137、138、139、147、150、151、152、157、158、159、178、182、183、184、187、188
+     * 联通：130、131、132、145、155、156、175、176、185、186
+     * 电信：133、153、173、177、180、181、189
+     * 全球星：1349
+     * 虚拟运营商：170
      */
     public static boolean isPhoneNumberValid(String phoneNumber) {
-        //[1]表示第1位为数字1，[34578]表示第二位可以为3、4、5、7、8中的一个，\\d{9}表示后面是可以是0～9的数字，有9位
-        return !TextUtils.isEmpty(phoneNumber) && phoneNumber.matches("[1][34578]\\d{9}");
+        String regex = "^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3,5-8])|(18[0-9])|(147))\\d{8}$";
+        return !TextUtils.isEmpty(phoneNumber) && phoneNumber.matches(regex);
     }
 
     //获取IMEI码，需要添加权限<uses-permission android:name="android.permission.READ_PHONE_STATE" />
