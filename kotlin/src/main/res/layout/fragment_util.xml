@@ -73,6 +73,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="布局参数工具" />
 
+            <TextView
+                android:id="@+id/regex_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="正则表达式工具" />
+
         </LinearLayout>
     </ScrollView>
 

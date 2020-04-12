@@ -5,7 +5,7 @@ import android.text.TextUtils
 import com.android.basicproject.R
 import com.android.frame.mvp.AATest.bean.WeatherBeanMvp
 import com.android.frame.mvp.BaseCompatActivity
-import com.android.util.RegexUtil
+import com.android.util.regex.RegexUtil
 import kotlinx.android.synthetic.main.activity_weather.*
 
 /**
@@ -42,7 +42,8 @@ class WeatherActivity : BaseCompatActivity<WeatherView, WeatherPresenter>(), Wea
             val sb = StringBuilder()
             val today = list.get(0)
             sb.append(bean.city).append("天气\n今天：").append(today.date).append("  ")
-                .append(getWenduRange(today.high, today.low)).append("  ").append(today.type).append("\n当前温度：")
+                .append(getWenduRange(today.high, today.low)).append("  ").append(today.type)
+                .append("\n当前温度：")
                 .append(bean.wendu).append("℃\n感冒指数：").append(bean.ganmao).append("\n")
             if (list.size > 1) {
                 sb.append("未来").append(list.size - 1).append("天天气：\n")
@@ -51,7 +52,8 @@ class WeatherActivity : BaseCompatActivity<WeatherView, WeatherPresenter>(), Wea
                         continue
                     }
                     val forecast = list.get(i)
-                    sb.append(forecast.date).append("  ").append(getWenduRange(forecast.high, forecast.low))
+                    sb.append(forecast.date).append("  ")
+                        .append(getWenduRange(forecast.high, forecast.low))
                         .append("  ").append(forecast.type).append("\n")
                 }
             }
@@ -62,5 +64,5 @@ class WeatherActivity : BaseCompatActivity<WeatherView, WeatherPresenter>(), Wea
     }
 
     private fun getWenduRange(high: String, low: String): String =
-        "${RegexUtil.extractNumber(low)}℃ 至 ${RegexUtil.extractNumber(high)}℃"
+        "${RegexUtil.extractDigit(low).trim()}℃ 至 ${RegexUtil.extractDigit(high).trim()}℃"
 }

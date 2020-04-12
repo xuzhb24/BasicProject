@@ -63,6 +63,10 @@ class UtilFragment : BaseFragment() {
         layout_params_tv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_LAYOUT_PARAMS)
         }
+        //正则表达式工具
+        regex_tv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_REGEX)
+        }
     }
 
     override fun initListener() {

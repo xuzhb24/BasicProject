@@ -19,6 +19,7 @@ import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.mvc.BaseActivity
 import com.android.util.StatusBar.TestStatusBarUtilActivity
+import com.android.util.regex.RegexUtil
 import com.bumptech.glide.Glide
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
@@ -44,6 +45,7 @@ class TestUtilActivity : BaseActivity() {
         const val TEST_CONTINUOUS_CLICK = "TEST_CONTINUOUS_CLICK"
         const val TEST_PINYIN = "TEST_PINYIN"
         const val TEST_LAYOUT_PARAMS = "TEST_LAYOUT_PARAMS"
+        const val TEST_REGEX = "TEST_REGEX"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -58,6 +60,7 @@ class TestUtilActivity : BaseActivity() {
             TEST_CONTINUOUS_CLICK -> testContinuousClick()
             TEST_PINYIN -> testPinyin()
             TEST_LAYOUT_PARAMS -> testLayoutParams()
+            TEST_REGEX -> testRegex()
         }
     }
 
@@ -93,7 +96,8 @@ class TestUtilActivity : BaseActivity() {
             jumpToTestStatusBarActivity(6, text6)
         }
         btn7.setOnClickListener {
-            val content = IOUtil.readInputStreameToString(resources.openRawResource(R.raw.hex_alpha_table))
+            val content =
+                IOUtil.readInputStreameToString(resources.openRawResource(R.raw.hex_alpha_table))
             alert(this, content ?: "")
         }
     }
@@ -112,14 +116,25 @@ class TestUtilActivity : BaseActivity() {
         sb.append("当前时间\n").append(DateUtil.getCurrentDateTime())
             .append("\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D_H_M_S_S))
         //测试date2String和string2Date
-        sb.append("\n\nDate <--> String\n").append(DateUtil.date2String(Date(), DateUtil.Y_M_D_H_M_S))
+        sb.append("\n\nDate <--> String\n")
+            .append(DateUtil.date2String(Date(), DateUtil.Y_M_D_H_M_S))
             .append("\n")
-            .append(DateUtil.date2String(DateUtil.string2Date("20200202", DateUtil.YMD)!!, DateUtil.Y_M_D_H_M_S_S))
+            .append(
+                DateUtil.date2String(
+                    DateUtil.string2Date("20200202", DateUtil.YMD)!!,
+                    DateUtil.Y_M_D_H_M_S_S
+                )
+            )
         //测试long2String和string2Long
         sb.append("\n\nLong <--> String\n")
             .append(DateUtil.long2String(System.currentTimeMillis(), DateUtil.Y_M_D_H_M_S_S))
             .append("\n")
-            .append(DateUtil.long2String(DateUtil.string2Long("20200202", DateUtil.YMD)!!, DateUtil.Y_M_D_H_M_S_S))
+            .append(
+                DateUtil.long2String(
+                    DateUtil.string2Long("20200202", DateUtil.YMD)!!,
+                    DateUtil.Y_M_D_H_M_S_S
+                )
+            )
         //测试date2Long和long2Date
         val dateLong = Date()
         sb.append("\n\nDate <--> Long\n").append(DateUtil.date2Long(dateLong))
@@ -131,7 +146,13 @@ class TestUtilActivity : BaseActivity() {
         //测试convertOtherFormat
         val convertTime = DateUtil.getCurrentDateTime()
         sb.append("\n\n转换时间格式\n").append(convertTime).append(" -> ")
-            .append(DateUtil.convertOtherFormat(convertTime, DateUtil.Y_M_D_H_M_S, "yyyyMMddHHmmssSSS"))
+            .append(
+                DateUtil.convertOtherFormat(
+                    convertTime,
+                    DateUtil.Y_M_D_H_M_S,
+                    "yyyyMMddHHmmssSSS"
+                )
+            )
         //测试compareDate
         val compareTime1 = "2019-02-28"
         val compareTime2 = "2019-02-28"
@@ -150,29 +171,37 @@ class TestUtilActivity : BaseActivity() {
             .append("\n1年前：").append(DateUtil.getDistanceDateByYear(-1, DateUtil.Y_M_D))
             .append("\n2年后：").append(DateUtil.getDistanceDateByYear(2, DateUtil.Y_M_D))
             .append("\n").append(distanceDate)
-            .append("\n3年前：").append(DateUtil.getDistanceDateByYear(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
-            .append("\n4年后：").append(DateUtil.getDistanceDateByYear(4, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+            .append("\n3年前：")
+            .append(DateUtil.getDistanceDateByYear(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+            .append("\n4年后：")
+            .append(DateUtil.getDistanceDateByYear(4, DateUtil.Y_M_D_H_M_S_S, distanceDate))
         //测试getDistanceDateByMonth
         sb.append("\n\nN月前/后的日期\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D))
             .append("\n1月前：").append(DateUtil.getDistanceDateByMonth(-1, DateUtil.Y_M_D))
             .append("\n2月后：").append(DateUtil.getDistanceDateByMonth(2, DateUtil.Y_M_D))
             .append("\n").append(distanceDate)
-            .append("\n3月前：").append(DateUtil.getDistanceDateByMonth(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
-            .append("\n4月后：").append(DateUtil.getDistanceDateByMonth(4, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+            .append("\n3月前：")
+            .append(DateUtil.getDistanceDateByMonth(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+            .append("\n4月后：")
+            .append(DateUtil.getDistanceDateByMonth(4, DateUtil.Y_M_D_H_M_S_S, distanceDate))
         //测试getDistanceDateByWeek
         sb.append("\n\nN周前/后的日期\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D))
             .append("\n1周前：").append(DateUtil.getDistanceDateByWeek(-1, DateUtil.Y_M_D))
             .append("\n2周后：").append(DateUtil.getDistanceDateByWeek(2, DateUtil.Y_M_D))
             .append("\n").append(distanceDate)
-            .append("\n3周前：").append(DateUtil.getDistanceDateByWeek(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
-            .append("\n4周后：").append(DateUtil.getDistanceDateByWeek(4, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+            .append("\n3周前：")
+            .append(DateUtil.getDistanceDateByWeek(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+            .append("\n4周后：")
+            .append(DateUtil.getDistanceDateByWeek(4, DateUtil.Y_M_D_H_M_S_S, distanceDate))
         //测试getDistanceDateByDay
         sb.append("\n\nN天前/后的日期\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D))
             .append("\n1天前：").append(DateUtil.getDistanceDateByDay(-1, DateUtil.Y_M_D))
             .append("\n2天后：").append(DateUtil.getDistanceDateByDay(2, DateUtil.Y_M_D))
             .append("\n").append(distanceDate)
-            .append("\n3天前：").append(DateUtil.getDistanceDateByDay(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
-            .append("\n4天后：").append(DateUtil.getDistanceDateByDay(4, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+            .append("\n3天前：")
+            .append(DateUtil.getDistanceDateByDay(-3, DateUtil.Y_M_D_H_M_S_S, distanceDate))
+            .append("\n4天后：")
+            .append(DateUtil.getDistanceDateByDay(4, DateUtil.Y_M_D_H_M_S_S, distanceDate))
         //测试getDistanceDay
         val distanceDay1 = "2020-02-02"
         val distanceDay2 = "2020-01-31"
@@ -181,30 +210,58 @@ class TestUtilActivity : BaseActivity() {
         //测试getDistanceSecond
         val distanceSecond1 = "12:11:56.786"
         val distanceSecond2 = "12:12:03.123"
-        sb.append("\n\n间隔秒数\n").append(distanceSecond1).append(" ").append(distanceSecond2).append("：")
+        sb.append("\n\n间隔秒数\n").append(distanceSecond1).append(" ").append(distanceSecond2)
+            .append("：")
             .append(DateUtil.getDistanceSecond(distanceSecond1, distanceSecond2, DateUtil.H_M_S_S))
         //测试isInThePeriod
         val startDate = "2020-02-02 12:23:45.004"
         val endDate = "2020-12-02 12:23:45.004"
         val dateTimeInThePeriod1 = "2020-02-02 12:23:45.002"
         val dateTimeInThePeriod2 = "2020-12-02 12:23:46.002"
-        sb.append("\n\n是否在某个时间段\n").append("[").append(startDate).append(" - ").append(endDate).append("]\n")
+        sb.append("\n\n是否在某个时间段\n").append("[").append(startDate).append(" - ").append(endDate)
+            .append("]\n")
             .append(DateUtil.getCurrentDateTime()).append("：")
             .append(DateUtil.isInThePeriod(startDate, endDate, DateUtil.Y_M_D_H_M_S))
             .append("\n").append(dateTimeInThePeriod1).append("：")
-            .append(DateUtil.isInThePeriod(startDate, endDate, DateUtil.Y_M_D_H_M_S, dateTimeInThePeriod1))
+            .append(
+                DateUtil.isInThePeriod(
+                    startDate,
+                    endDate,
+                    DateUtil.Y_M_D_H_M_S,
+                    dateTimeInThePeriod1
+                )
+            )
             .append("\n").append(dateTimeInThePeriod2).append("：")
-            .append(DateUtil.isInThePeriod(startDate, endDate, DateUtil.Y_M_D_H_M_S, dateTimeInThePeriod2))
+            .append(
+                DateUtil.isInThePeriod(
+                    startDate,
+                    endDate,
+                    DateUtil.Y_M_D_H_M_S,
+                    dateTimeInThePeriod2
+                )
+            )
         //测试getStartTimeOfToday和getStartTimeOfDay
         val startTime = "2020-02-02"
         sb.append("\n\n某天零点时间\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D)).append("：")
             .append(DateUtil.long2String(DateUtil.getStartTimeOfToday(), DateUtil.Y_M_D_H_M_S_S))
             .append("\n").append(startTime).append("：")
-            .append(DateUtil.long2String(DateUtil.getStartTimeOfDay(startTime, DateUtil.Y_M_D), DateUtil.Y_M_D_H_M_S_S))
+            .append(
+                DateUtil.long2String(
+                    DateUtil.getStartTimeOfDay(startTime, DateUtil.Y_M_D),
+                    DateUtil.Y_M_D_H_M_S_S
+                )
+            )
         //测试getStartTimeOfCurrentMonth和getStartTimeOfMonth
         sb.append("\n\n某月零点时间\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M)).append("：")
-            .append(DateUtil.long2String(DateUtil.getStartTimeOfCurrentMonth(), DateUtil.Y_M_D_H_M_S_S))
-            .append("\n").append(DateUtil.convertOtherFormat(startTime, DateUtil.Y_M_D, DateUtil.Y_M)).append("：")
+            .append(
+                DateUtil.long2String(
+                    DateUtil.getStartTimeOfCurrentMonth(),
+                    DateUtil.Y_M_D_H_M_S_S
+                )
+            )
+            .append("\n")
+            .append(DateUtil.convertOtherFormat(startTime, DateUtil.Y_M_D, DateUtil.Y_M))
+            .append("：")
             .append(
                 DateUtil.long2String(
                     DateUtil.getStartTimeOfMonth(startTime, DateUtil.Y_M_D),
@@ -216,12 +273,29 @@ class TestUtilActivity : BaseActivity() {
         sb.append("\n\n某天最后时间\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M_D)).append("：")
             .append(DateUtil.long2String(DateUtil.getEndTimeOfToday(), DateUtil.Y_M_D_H_M_S_S))
             .append("\n").append(endTime).append("：")
-            .append(DateUtil.long2String(DateUtil.getEndTimeOfDay(startTime, DateUtil.Y_M_D), DateUtil.Y_M_D_H_M_S_S))
+            .append(
+                DateUtil.long2String(
+                    DateUtil.getEndTimeOfDay(startTime, DateUtil.Y_M_D),
+                    DateUtil.Y_M_D_H_M_S_S
+                )
+            )
         //测试getEndTimeOfCurrentMonth和getEndTimeOfMonth
         sb.append("\n\n某月最后时间\n").append(DateUtil.getCurrentDateTime(DateUtil.Y_M)).append("：")
-            .append(DateUtil.long2String(DateUtil.getEndTimeOfCurrentMonth(), DateUtil.Y_M_D_H_M_S_S))
-            .append("\n").append(DateUtil.convertOtherFormat(startTime, DateUtil.Y_M_D, DateUtil.Y_M)).append("：")
-            .append(DateUtil.long2String(DateUtil.getEndTimeOfMonth(startTime, DateUtil.Y_M_D), DateUtil.Y_M_D_H_M_S_S))
+            .append(
+                DateUtil.long2String(
+                    DateUtil.getEndTimeOfCurrentMonth(),
+                    DateUtil.Y_M_D_H_M_S_S
+                )
+            )
+            .append("\n")
+            .append(DateUtil.convertOtherFormat(startTime, DateUtil.Y_M_D, DateUtil.Y_M))
+            .append("：")
+            .append(
+                DateUtil.long2String(
+                    DateUtil.getEndTimeOfMonth(startTime, DateUtil.Y_M_D),
+                    DateUtil.Y_M_D_H_M_S_S
+                )
+            )
         //测试getCurrentDayOfWeekCH和getDayOfWeekCH
         val weekTime = "2020-02-02"
         sb.append("\n\n判断周几\n").append(DateUtil.getCurrentDateTime()).append("：")
@@ -286,7 +360,14 @@ class TestUtilActivity : BaseActivity() {
     }
 
     private fun testSPUtil() {
-        initCommonLayout(this, "SharePreferences工具类", "保存", "读取", showInputLayout = true, showTextView = true)
+        initCommonLayout(
+            this,
+            "SharePreferences工具类",
+            "保存",
+            "读取",
+            showInputLayout = true,
+            showTextView = true
+        )
         il.inputTextHint = "请输入名字"
         var name by SPUtil(applicationContext, "default", "name", "")
         btn1.setOnClickListener {
@@ -389,7 +470,8 @@ class TestUtilActivity : BaseActivity() {
             requestNews()
         }
         btn5.setOnClickListener {
-            tv.text = if (NotificationUtil.isNotificationEnabled(applicationContext)) "通知权限已打开" else "通知权限被关闭"
+            tv.text =
+                if (NotificationUtil.isNotificationEnabled(applicationContext)) "通知权限已打开" else "通知权限被关闭"
         }
         btn6.setOnClickListener {
             NotificationUtil.gotoNotificationSetting(this)
@@ -415,11 +497,16 @@ class TestUtilActivity : BaseActivity() {
                             val result = bean.result.get(Random.nextInt(count))
                             val title = "网易新闻"
                             val content = result.title
-                            val target = Glide.with(this@TestUtilActivity).asBitmap().load(result.image).submit()
+                            val target =
+                                Glide.with(this@TestUtilActivity).asBitmap().load(result.image)
+                                    .submit()
                             try {
                                 thread(start = true) {
                                     val bitmap = target.get()
-                                    val intent = Intent(this@TestUtilActivity, WangYiNewsWebviewActivity::class.java)
+                                    val intent = Intent(
+                                        this@TestUtilActivity,
+                                        WangYiNewsWebviewActivity::class.java
+                                    )
                                     with(intent) {
                                         putExtra("EXTRA_TITLE", title)
                                         putExtra("EXTRA_URL", result.path)
@@ -523,12 +610,16 @@ class TestUtilActivity : BaseActivity() {
         )
         LayoutParamsUtil.setMarginTop(btn1, SizeUtil.dp2px(10f).toInt())
         val rootLl = LinearLayout(this)
-        val param1 = LinearLayout.LayoutParams(SizeUtil.dp2px(300f).toInt(), SizeUtil.dp2px(200f).toInt())
+        val param1 =
+            LinearLayout.LayoutParams(SizeUtil.dp2px(300f).toInt(), SizeUtil.dp2px(200f).toInt())
         param1.gravity = Gravity.CENTER_HORIZONTAL
         rootLl.layoutParams = param1
         rootLl.setBackgroundColor(Color.BLACK)
         val targetLl = LinearLayout(this)
-        val params2 = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+        val params2 = LinearLayout.LayoutParams(
+            LinearLayout.LayoutParams.MATCH_PARENT,
+            LinearLayout.LayoutParams.MATCH_PARENT
+        )
         targetLl.layoutParams = params2
         targetLl.setBackgroundColor(resources.getColor(R.color.colorPrimary))
         val dp20 = SizeUtil.dp2px(20f).toInt()
@@ -536,7 +627,8 @@ class TestUtilActivity : BaseActivity() {
         LayoutParamsUtil.setMargin(targetLl, dp20, dp20, dp20, dp20)
         LayoutParamsUtil.setPadding(targetLl, dp40, dp40, dp40, dp40)
         val view = View(this)
-        val param3 = LinearLayout.LayoutParams(SizeUtil.dp2px(300f).toInt(), SizeUtil.dp2px(200f).toInt())
+        val param3 =
+            LinearLayout.LayoutParams(SizeUtil.dp2px(300f).toInt(), SizeUtil.dp2px(200f).toInt())
         view.layoutParams = param3
         view.setBackgroundColor(Color.WHITE)
         targetLl.addView(view)
@@ -585,11 +677,87 @@ class TestUtilActivity : BaseActivity() {
             LayoutParamsUtil.addPaddingBottom(targetLl, padding)
         }
         btn7.setOnClickListener {
-            val params = LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.MATCH_PARENT)
+            val params = LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT
+            )
             targetLl.layoutParams = params
             LayoutParamsUtil.setMargin(targetLl, dp20, dp20, dp20, dp20)
             LayoutParamsUtil.setPadding(targetLl, dp40, dp40, dp40, dp40)
         }
+    }
+
+    //正则表达式工具
+    private fun testRegex() {
+        initCommonLayout(
+            this, "正则表达式工具", true, true,
+            "匹配数字", "匹配整数", "匹配浮点数", "匹配汉字", "匹配英文字母或数字", "匹配英文字母和数字",
+            "匹配手机号", "匹配身份证号", "匹配\"yyyy-MM-dd\"的日期格式", "匹配输入的正则表达式",
+            "提取文本中数字", "根据给定的正则表达式提取内容"
+        )
+        val regexIl = createInputLayout(this, "请输入正则表达式")
+        ll.addView(regexIl, 1)
+        il.inputTextHint = "请输入要匹配的内容"
+        btn1.setOnClickListener {
+            setRegexResult(RegexUtil.isDigit(il.inputText))
+        }
+        btn2.setOnClickListener {
+            setRegexResult(RegexUtil.isInteger(il.inputText))
+        }
+        btn3.setOnClickListener {
+            setRegexResult(RegexUtil.isFloat(il.inputText))
+        }
+        btn4.setOnClickListener {
+            setRegexResult(RegexUtil.isChinese(il.inputText))
+        }
+        btn5.setOnClickListener {
+            setRegexResult(RegexUtil.isLetterOrDigit(il.inputText))
+        }
+        btn6.setOnClickListener {
+            setRegexResult(RegexUtil.isLetterAndDigit(il.inputText))
+        }
+        btn7.setOnClickListener {
+            setRegexResult(RegexUtil.isMobile(il.inputText))
+        }
+        btn8.setOnClickListener {
+            setRegexResult(RegexUtil.isIdCard(il.inputText))
+        }
+        btn9.setOnClickListener {
+            setRegexResult(RegexUtil.isyyyyMMdd(il.inputText))
+        }
+        btn10.setOnClickListener {
+            val regex = regexIl.inputText.trim()
+            if (TextUtils.isEmpty(regex)) {
+                showToast("请先输入正则表达式")
+                return@setOnClickListener
+            }
+            setRegexResult(RegexUtil.isMatch(regex, il.inputText))
+        }
+        btn11.setOnClickListener {
+            val content = il.inputText.trim()
+            if (TextUtils.isEmpty(content)) {
+                showToast("请先输入要匹配的内容")
+                return@setOnClickListener
+            }
+            tv.text = RegexUtil.extractDigit(content, "|")
+        }
+        btn12.setOnClickListener {
+            val content = il.inputText.trim()
+            if (TextUtils.isEmpty(content)) {
+                showToast("请先输入要匹配的内容")
+                return@setOnClickListener
+            }
+            val regex = regexIl.inputText.trim()
+            if (TextUtils.isEmpty(regex)) {
+                showToast("请先输入正则表达式")
+                return@setOnClickListener
+            }
+            tv.text = RegexUtil.extractDigit(content, "|")
+        }
+    }
+
+    private fun setRegexResult(isCorrect: Boolean) {
+        tv.text = "\"" + il.inputText + "\"：" + isCorrect
     }
 
 }

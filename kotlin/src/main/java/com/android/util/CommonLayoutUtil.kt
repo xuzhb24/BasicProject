@@ -36,6 +36,22 @@ fun initCommonLayout(
 fun initCommonLayout(
     activity: Activity,
     title: String,
+    showInputLayout: Boolean,
+    showTextView: Boolean,
+    vararg text: String
+) {
+    initCommonLayout(
+        activity,
+        title,
+        *text,
+        showInputLayout = showInputLayout,
+        showTextView = showTextView
+    )
+}
+
+fun initCommonLayout(
+    activity: Activity,
+    title: String,
     vararg text: String,
     showInputLayout: Boolean = false,
     showTextView: Boolean = false
@@ -144,10 +160,19 @@ fun jumpToTestUtilActivity(context: Context, moduleName: String) {
 fun createInputLayout(activity: Activity, hint: String): InputLayout {
     val il = InputLayout(activity)
     return il.apply {
-        layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT)
+        layoutParams = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.MATCH_PARENT,
+            ViewGroup.MarginLayoutParams.WRAP_CONTENT
+        )
         inputTextHint = hint
         dividerHeight = SizeUtil.dp2px(2f)
         dividerColor = activity.resources.getColor(R.color.colorPrimary)
-        LayoutParamsUtil.setMargin(il, SizeUtil.dp2px(20f).toInt(), 0, SizeUtil.dp2px(20f).toInt(), SizeUtil.dp2px(8f).toInt())
+        LayoutParamsUtil.setMargin(
+            il,
+            SizeUtil.dp2px(20f).toInt(),
+            0,
+            SizeUtil.dp2px(20f).toInt(),
+            SizeUtil.dp2px(8f).toInt()
+        )
     }
 }
