@@ -3,12 +3,14 @@ package com.android.frame.mvp.AATest.activity.weather;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.TextView;
+
 import butterknife.BindView;
 import butterknife.OnClick;
+
 import com.android.frame.mvp.AATest.bean.WeatherBeanMvp;
 import com.android.frame.mvp.BaseCompatActivity;
 import com.android.java.R;
-import com.android.util.RegexUtil;
+import com.android.util.regex.RegexUtil;
 import com.android.widget.InputLayout;
 import com.android.widget.TitleBar;
 
@@ -75,8 +77,8 @@ public class WeatherActivity extends BaseCompatActivity<WeatherView, WeatherPres
     }
 
     private String getWenduRange(String high, String low) {
-        return RegexUtil.extractNumber(low, " ") + "℃ 至 " +
-                RegexUtil.extractNumber(high, " ") + "℃";
+        return RegexUtil.extractDigit(low, " ") + "℃ 至 " +
+                RegexUtil.extractDigit(high, " ") + "℃";
     }
 
     @OnClick(R.id.query_btn)

@@ -39,6 +39,7 @@ import com.android.util.activity.ActivityUtil;
 import com.android.util.activity.TestJumpActivity;
 import com.android.util.app.AATest.TestAppListActivity;
 import com.android.util.app.AppUtil;
+import com.android.util.regex.RegexUtil;
 import com.android.util.sharedPreferences.withoutContext.SPUtil;
 import com.android.util.threadPool.ThreadPoolManager;
 import com.android.util.traffic.NetworkStatsHelper;
@@ -87,6 +88,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_SP = "TEST_SP";
     public static final String TEST_LAYOUT_PARAMS = "TEST_LAYOUT_PARAMS";
     public static final String TEST_PHONE = "TEST_PHONE";
+    public static final String TEST_REGEX = "TEST_REGEX";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -112,6 +114,12 @@ public class TestUtilActivity extends BaseActivity {
     Button btn8;
     @BindView(R.id.btn9)
     Button btn9;
+    @BindView(R.id.btn10)
+    Button btn10;
+    @BindView(R.id.btn11)
+    Button btn11;
+    @BindView(R.id.btn12)
+    Button btn12;
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -186,6 +194,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_PHONE:
                 testPhone();
+                break;
+            case TEST_REGEX:
+                testRegex();
                 break;
         }
     }
@@ -1570,6 +1581,80 @@ public class TestUtilActivity extends BaseActivity {
                 runOnUiThread(() -> ExtraUtil.alert(this, JsonUtil.formatJson(info)));
             });
         });
+    }
+
+    //正则表达式工具
+    private void testRegex() {
+        CommonLayoutUtil.initCommonLayout(this, "正则表达式工具", true, true,
+                "匹配数字", "匹配整数", "匹配浮点数", "匹配汉字", "匹配英文字母或数字", "匹配英文字母和数字",
+                "匹配手机号", "匹配身份证号", "匹配\"yyyy-MM-dd\"的日期格式", "匹配输入的正则表达式",
+                "提取文本中数字", "根据给定的正则表达式提取内容");
+        InputLayout regexIl = CommonLayoutUtil.createInputLayout(this, "请输入正则表达式");
+        ll.addView(regexIl, 1);
+        il.setInputTextHint("请输入要匹配的内容");
+        btn1.setOnClickListener(v -> {
+            setRegexResult(RegexUtil.isDigit(il.getInputText()));
+        });
+        btn2.setOnClickListener(v -> {
+            setRegexResult(RegexUtil.isInteger(il.getInputText()));
+        });
+        btn3.setOnClickListener(v -> {
+            setRegexResult(RegexUtil.isFloat(il.getInputText()));
+        });
+        btn4.setOnClickListener(v -> {
+            setRegexResult(RegexUtil.isChinese(il.getInputText()));
+        });
+        btn5.setOnClickListener(v -> {
+            setRegexResult(RegexUtil.isLetterOrDigit(il.getInputText()));
+        });
+        btn6.setOnClickListener(v -> {
+            setRegexResult(RegexUtil.isLetterAndDigit(il.getInputText()));
+        });
+        btn7.setOnClickListener(v -> {
+            setRegexResult(RegexUtil.isMobile(il.getInputText()));
+        });
+        btn8.setOnClickListener(v -> {
+            setRegexResult(RegexUtil.isIdCard(il.getInputText()));
+        });
+        btn9.setOnClickListener(v -> {
+            setRegexResult(RegexUtil.isyyyyMMdd(il.getInputText()));
+        });
+        btn10.setOnClickListener(v -> {
+            String regex = regexIl.getInputText().trim();
+            if (TextUtils.isEmpty(regex)) {
+                showToast("请先输入正则表达式");
+                return;
+            }
+            setRegexResult(RegexUtil.isMatch(regex, il.getInputText()));
+        });
+        btn11.setOnClickListener(v -> {
+            String content = il.getInputText().trim();
+            if (TextUtils.isEmpty(content)) {
+                showToast("请先输入要匹配的内容");
+                return;
+            }
+            String result = RegexUtil.extractDigit(content, "|");
+            tv.setText(result);
+        });
+        btn12.setOnClickListener(v -> {
+            String content = il.getInputText().trim();
+            if (TextUtils.isEmpty(content)) {
+                showToast("请先输入要匹配的内容");
+                return;
+            }
+            String regex = regexIl.getInputText().trim();
+            if (TextUtils.isEmpty(regex)) {
+                showToast("请先输入正则表达式");
+                return;
+            }
+            String result = RegexUtil.extract(regex, content, "|");
+            tv.setText(result);
+        });
+    }
+
+    private void setRegexResult(boolean isCorrect) {
+        String result = "\"" + il.getInputText() + "\"：" + isCorrect;
+        tv.setText(result);
     }
 
 }
