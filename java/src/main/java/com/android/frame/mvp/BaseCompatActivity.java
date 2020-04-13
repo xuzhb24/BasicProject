@@ -7,10 +7,11 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import butterknife.ButterKnife;
+
 import com.android.base.BaseApplication;
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
 import com.android.frame.mvp.extra.NetReceiver;
@@ -19,6 +20,8 @@ import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.widget.TitleBar;
 import com.google.gson.Gson;
+
+import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -37,8 +40,12 @@ public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePres
 
     //加载框
     private LoadingDialog mLoadingDialog;
-    //通用的下拉刷新组件
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    //标题栏，需在布局文件中固定id名为title_bar
+    protected TitleBar mTitleBar;
+    //通用的下拉刷新组件，需在布局文件中固定id名为swipe_refresh_layout
+    protected SwipeRefreshLayout mSwipeRefreshLayout;
+    //通用的RecyclerView组件，需在布局文件中固定id名为R.id.recycler_view
+    protected RecyclerView mRecyclerView;
 
     //网路异常的布局
     private FrameLayout mNetErrorFl;
@@ -61,19 +68,28 @@ public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePres
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
     protected void initBar() {
-        TitleBar titleBar = findViewById(R.id.title_bar);
-        if (titleBar != null) {
-            StatusBarUtil.darkModeAndPadding(this, titleBar);
+        mTitleBar = findViewById(R.id.title_bar);
+        if (mTitleBar != null) {
+            StatusBarUtil.darkModeAndPadding(this, mTitleBar);
+            if (isBarBack()) {
+                mTitleBar.setOnLeftClickListener(v -> finish());
+            }
         } else {
             ViewGroup content = findViewById(android.R.id.content);
             StatusBarUtil.darkModeAndPadding(this, content);
         }
     }
 
+    //点击标题栏左侧图标是否退出Activity，默认true
+    protected boolean isBarBack() {
+        return true;
+    }
+
     //初始化一些通用控件，如加载框、SwipeRefreshLayout、网络错误提示布局
     protected void initBaseView() {
         mLoadingDialog = new LoadingDialog(this, R.style.LoadingDialogStyle);
-        //当布局文件中包含SwipeRefreshLayout组件，id命名为swipe_refresh_layout即可重用BaseCompatActivity的下拉刷新逻辑
+        //获取布局中的SwipeRefreshLayout组件，重用BaseCompatActivity的下拉刷新逻辑
+        //注意布局中SwipeRefreshLayout的id命名为swipe_refresh_layout，否则mSwipeRefreshLayout为null
         //如果SwipeRefreshLayout里面只包含RecyclerView，可引用<include layout="@layout/layout_recycler_view" />
         mSwipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
         //如果当前布局文件不包含id为swipe_refresh_layout的组件则不执行下面的逻辑
@@ -81,6 +97,8 @@ public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePres
             mSwipeRefreshLayout.setOnRefreshListener(this);
             mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
         }
+        //获取布局中的RecyclerView组件，注意布局中RecyclerView的id命名为recycler_view，否则mRecyclerView为null
+        mRecyclerView = findViewById(R.id.recycler_view);
         //在当前布局的合适位置引用<include layout="@layout/layout_net_error" />，则当网络出现错误时会进行相应的提示
         mNetErrorFl = findViewById(R.id.net_error_fl);
 
@@ -213,6 +231,7 @@ public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePres
         startActivity(clazz, null);
     }
 
+    //携带数据启动指定的Activity
     protected void startActivity(Class clazz, Bundle extras) {
         Intent intent = new Intent();
         if (extras != null) {
@@ -220,6 +239,21 @@ public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePres
         }
         intent.setClass(this, clazz);
         startActivity(intent);
+    }
+
+    //启动指定的Activity并接收返回的结果
+    protected void startActivityForResult(Class clazz, int requestCode) {
+        startActivityForResult(clazz, null, requestCode);
+    }
+
+    //携带数据启动指定的Activity并接受返回的结果
+    protected void startActivityForResult(Class clazz, Bundle extras, int requestCode) {
+        Intent intent = new Intent();
+        if (extras != null) {
+            intent.putExtras(extras);
+        }
+        intent.setClass(this, clazz);
+        startActivityForResult(intent, requestCode);
     }
 
     //注册广播动态监听网络变化

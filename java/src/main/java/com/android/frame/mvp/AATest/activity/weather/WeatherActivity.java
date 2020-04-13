@@ -4,17 +4,16 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import butterknife.BindView;
-import butterknife.OnClick;
-
 import com.android.frame.mvp.AATest.bean.WeatherBeanMvp;
 import com.android.frame.mvp.BaseCompatActivity;
 import com.android.java.R;
 import com.android.util.regex.RegexUtil;
 import com.android.widget.InputLayout;
-import com.android.widget.TitleBar;
 
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by xuzhb on 2020/1/8
@@ -22,9 +21,6 @@ import java.util.List;
  */
 public class WeatherActivity extends BaseCompatActivity<WeatherView, WeatherPresenter> implements WeatherView {
 
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
     @BindView(R.id.area_il)
     InputLayout areaIl;
     @BindView(R.id.result_tv)
@@ -37,9 +33,7 @@ public class WeatherActivity extends BaseCompatActivity<WeatherView, WeatherPres
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(v -> {
-            finish();
-        });
+
     }
 
     @Override
