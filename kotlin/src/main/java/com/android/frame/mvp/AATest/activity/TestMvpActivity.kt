@@ -4,7 +4,6 @@ import android.os.Bundle
 import com.android.basicproject.R
 import com.android.frame.mvp.AATest.activity.newslist.NewsListActivity
 import com.android.frame.mvp.AATest.activity.weather.WeatherActivity
-import com.android.frame.mvp.BaseCompatActivity
 import com.android.frame.mvp.CommonBaseActivity
 import com.android.util.initCommonLayout
 import kotlinx.android.synthetic.main.activity_common_layout.*

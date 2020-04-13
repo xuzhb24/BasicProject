@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v4.widget.SwipeRefreshLayout
+import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -36,8 +37,10 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
 
     //加载框
     private var mLoadingDialog: LoadingDialog? = null
-    //通用的下拉刷新组件
+    //通用的下拉刷新组件，需在布局文件中固定id名为swipe_refresh_layout
     protected var mSwipeRefreshLayout: SwipeRefreshLayout? = null
+    //通用的RecyclerView组件，需在布局文件中固定id名为R.id.recycler_view
+    protected var mRecyclerView: RecyclerView? = null
 
     //网路异常的布局
     private var mNetErrorFl: FrameLayout? = null
@@ -47,16 +50,35 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
     protected var mContext: Context? = null
     protected var mRootView: View? = null
 
+    override fun setUserVisibleHint(isVisibleToUser: Boolean) {
+        super.setUserVisibleHint(isVisibleToUser)
+        //第一次加载时，setUserVisibleHint会比onAttach先回调，此时布局为null;
+        //之后切换Fragment时，当Fragment变得可见或可见时都会回调setUserVisibleHint，此时布局不为null
+        mRootView?.let {
+            if (isVisibleToUser) {
+                onVisible()
+            } else {
+                onInvisible()
+            }
+        }
+    }
+
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         mActivity = this.activity
         mContext = context
-    }
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        mRootView = inflater.inflate(getLayoutId(), container, false)
         mPresenter = getPresenter()
         mPresenter?.attachView(this as V)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        if (mRootView == null) {
+            mRootView = inflater.inflate(getLayoutId(), container, false)
+        }
         initBaseView()
         initNetReceiver()
         return mRootView
@@ -65,12 +87,17 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
     //初始化一些通用控件，如加载框、SwipeRefreshLayout、网络错误提示布局
     protected open fun initBaseView() {
         mLoadingDialog = LoadingDialog(context!!, R.style.LoadingDialogStyle)
-        //当布局文件中包含SwipeRefreshLayout组件，id命名为swipe_refresh_layout即可重用BaseCompatActivity的下拉刷新逻辑
+        //获取布局中的SwipeRefreshLayout组件，重用BaseCompatActivity的下拉刷新逻辑
+        //注意布局中SwipeRefreshLayout的id命名为swipe_refresh_layout，否则mSwipeRefreshLayout为null
         //如果SwipeRefreshLayout里面只包含RecyclerView，可引用<include layout="@layout/layout_recycler_view" />
         mSwipeRefreshLayout = mRootView?.findViewById(R.id.swipe_refresh_layout)
         //如果当前布局文件不包含id为swipe_refresh_layout的组件则不执行下面的逻辑
-        mSwipeRefreshLayout?.setOnRefreshListener(this)
-        mSwipeRefreshLayout?.setColorSchemeColors(resources.getColor(R.color.colorAccent))
+        mSwipeRefreshLayout?.let {
+            it.setOnRefreshListener(this)
+            it.setColorSchemeColors(resources.getColor(R.color.colorAccent))
+        }
+        //获取布局中的RecyclerView组件，注意布局中RecyclerView的id命名为recycler_view，否则mRecyclerView为null
+        mRecyclerView = mRootView?.findViewById(R.id.recycler_view)
         //在当前布局的合适位置引用<include layout="@layout/layout_net_error" />，则当网络出现错误时会进行相应的提示
         mNetErrorFl = mRootView?.findViewById(R.id.net_error_fl)
 
@@ -89,6 +116,7 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        onVisible()
         handleView(savedInstanceState)
         initListener()
     }
@@ -104,6 +132,16 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
 
     //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
     abstract fun getPresenter(): P
+
+    //页面可见时回调，且此时布局不为null
+    protected open fun onVisible() {
+
+    }
+
+    //页面不可见时回调，且此时布局不为null
+    protected open fun onInvisible() {
+
+    }
 
     override fun onDestroyView() {
         super.onDestroyView()
@@ -186,11 +224,30 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
     }
 
     //启动指定的Activity
-    protected fun startActivity(clazz: Class<*>) {
+    protected fun startActivity(clazz: Class<*>, extras: Bundle? = null) {
         activity?.let {
             val intent = Intent()
+            extras?.let {
+                intent.putExtras(it)
+            }
             intent.setClass(it, clazz)
             startActivity(intent)
+        }
+    }
+
+    //启动指定的Activity并接收返回的结果
+    protected fun startActivityForResult(
+        clazz: Class<*>,
+        requestCode: Int,
+        extras: Bundle? = null
+    ) {
+        activity?.let {
+            val intent = Intent()
+            extras?.let {
+                intent.putExtras(it)
+            }
+            intent.setClass(it, clazz)
+            startActivityForResult(clazz, requestCode)
         }
     }
 

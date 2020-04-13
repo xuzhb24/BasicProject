@@ -1,7 +1,6 @@
 package com.android.frame.mvp.AATest.activity.newslist
 
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
 import com.android.basicproject.R
 import com.android.frame.http.AATest.WangYiNewsWebviewActivity
 import com.android.frame.mvp.AATest.UrlConstantMvp
@@ -20,22 +19,17 @@ class NewsListActivity : BaseCompatActivity<NewsListView, NewsListPresenter>(), 
     private var mList: MutableList<NewsListBeanMvp> = mutableListOf()
     //实现上拉加载更多
     private val mLoadMoreAdapter by lazy { LoadMoreWrapper(NewsListAdapter(this, mList)) }
-    private lateinit var mRecyclerView: RecyclerView
     private var mCurrentPage: Int = 1  //记录当前页面
 
     override fun handleView(savedInstanceState: Bundle?) {
         title_bar.titleText = "新闻列表"
-        mRecyclerView = findViewById(R.id.recycler_view)
-        mRecyclerView.adapter = mLoadMoreAdapter
+        mRecyclerView!!.adapter = mLoadMoreAdapter
         mPresenter?.getNews(mCurrentPage, showLoading = true)
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
         //上拉加载更多
-        mLoadMoreAdapter.setOnLoadMoreListener(mRecyclerView) {
+        mLoadMoreAdapter.setOnLoadMoreListener(mRecyclerView!!) {
             mPresenter?.getNews(mCurrentPage)
         }
         //设置加载异常监听，如网络异常导致无法加载数据

@@ -19,9 +19,6 @@ class WeatherActivity : BaseCompatActivity<WeatherView, WeatherPresenter>(), Wea
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
         query_btn.setOnClickListener {
             result_tv.text = ""
             if (TextUtils.isEmpty(area_il.inputText.trim())) {
