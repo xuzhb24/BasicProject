@@ -752,12 +752,13 @@ class TestUtilActivity : BaseActivity() {
                 showToast("请先输入正则表达式")
                 return@setOnClickListener
             }
-            tv.text = RegexUtil.extractDigit(content, "|")
+            tv.text = RegexUtil.extract(regex, content, "|")
         }
     }
 
     private fun setRegexResult(isCorrect: Boolean) {
-        tv.text = "\"" + il.inputText + "\"：" + isCorrect
+        val result = "\"${il.inputText}\"：$isCorrect"
+        tv.text = result
     }
 
 }

@@ -63,7 +63,8 @@ object RegexUtil {
         while (matcher.find()) {
             sb.append(matcher.group()).append(delimiter)
         }
-        return sb.toString()
+        val result = sb.toString()
+        return result.substring(0, result.length - delimiter.length)
     }
 
 }
