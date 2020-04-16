@@ -126,7 +126,6 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        onVisible();
         handleView(savedInstanceState);
         initListener();
     }
@@ -143,12 +142,12 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
     //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
     public abstract P getPresenter();
 
-    //页面可见时回调，且此时布局不为null
+    //页面可见且布局不为null时回调
     protected void onVisible() {
 
     }
 
-    //页面不可见时回调，且此时布局不为null
+    //页面不可见且布局不为null时回调
     protected void onInvisible() {
 
     }

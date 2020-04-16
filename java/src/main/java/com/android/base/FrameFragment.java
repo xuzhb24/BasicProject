@@ -1,20 +1,18 @@
 package com.android.base;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import butterknife.OnClick;
-import butterknife.Unbinder;
+
 import com.android.frame.TestLeakActivity;
 import com.android.frame.http.AATest.TestRetrofitActivity;
 import com.android.frame.mvc.BaseFragment;
+import com.android.frame.mvc.viewBinding.AATest.TestViewBindingActivity;
 import com.android.frame.mvp.AATest.activity.TestMvpActivity;
 import com.android.java.R;
 import com.android.widget.TitleBar;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Created by xuzhb on 2019/10/19
@@ -45,7 +43,7 @@ public class FrameFragment extends BaseFragment {
     }
 
     @OnClick({R.id.leak_tv, R.id.orignal_permission_tv, R.id.easy_permission_tv, R.id.retrofit_tv,
-            R.id.mvp_tv})
+            R.id.mvp_tv, R.id.viewbinding_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.leak_tv:
@@ -60,7 +58,10 @@ public class FrameFragment extends BaseFragment {
                 break;
             case R.id.mvp_tv:
                 startActivity(TestMvpActivity.class);
-                return;
+                break;
+            case R.id.viewbinding_tv:
+                startActivity(TestViewBindingActivity.class);
+                break;
         }
     }
 }

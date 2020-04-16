@@ -56,6 +56,12 @@
                 android:layout_marginTop="10dp"
                 android:text="MVP框架" />
 
+            <TextView
+                android:id="@+id/viewbinding_tv"
+                style="@style/ItemSingleTextStyle"
+                android:layout_marginTop="10dp"
+                android:text="ViewBinding" />
+
         </LinearLayout>
     </ScrollView>
 

@@ -62,6 +62,8 @@
         <activity android:name="com.android.frame.mvp.AATest.activity.newslist.NewsListActivity" />
         <!--通用WebView-->
         <activity android:name="com.android.frame.WebView.CommonWebviewActivity" />
+        <!--测试ViewBinding-->
+        <activity android:name="com.android.frame.mvc.viewBinding.AATest.TestViewBindingActivity" />
 
         <!--控件篇-->
         <!--记录一些系统自带控件的使用-->
