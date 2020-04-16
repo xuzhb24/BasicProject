@@ -68,6 +68,11 @@ android {
             }
         }
     }
+
+    //视图绑定
+    viewBinding {
+        enabled = true
+    }
 }
 
 static def releaseTime() {

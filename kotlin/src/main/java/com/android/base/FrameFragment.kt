@@ -4,9 +4,9 @@ import android.os.Bundle
 import com.android.basicproject.R
 import com.android.frame.TestLeakActivity
 import com.android.frame.camera.zxing.AATest.TestZXingActivity
-import com.android.frame.camera.zxing.ui.CaptureActivity
 import com.android.frame.http.AATest.TestRetrofitActivity
 import com.android.frame.mvc.BaseFragment
+import com.android.frame.mvc.viewBinding.AATest.TestViewBindingActivity
 import com.android.frame.mvp.AATest.activity.TestMvpActivity
 import com.android.frame.permission.PermissionFrameActivity
 import com.android.frame.permission.PermissionRequestActivity
@@ -47,6 +47,10 @@ class FrameFragment : BaseFragment() {
         //MVP框架
         mvp_tv.setOnClickListener {
             startActivity(TestMvpActivity::class.java)
+        }
+        //ViewBinding
+        viewbinding_tv.setOnClickListener {
+            startActivity(TestViewBindingActivity::class.java)
         }
         //zxing扫码
         zxing_tv.setOnClickListener {

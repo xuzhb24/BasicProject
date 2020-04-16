@@ -116,7 +116,6 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        onVisible()
         handleView(savedInstanceState)
         initListener()
     }
@@ -133,12 +132,12 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
     //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
     abstract fun getPresenter(): P
 
-    //页面可见时回调，且此时布局不为null
+    //页面可见且布局不为null时回调
     protected open fun onVisible() {
 
     }
 
-    //页面不可见时回调，且此时布局不为null
+    //页面不可见且布局不为null时回调
     protected open fun onInvisible() {
 
     }
