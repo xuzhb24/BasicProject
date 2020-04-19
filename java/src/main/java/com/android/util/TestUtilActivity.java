@@ -89,6 +89,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_LAYOUT_PARAMS = "TEST_LAYOUT_PARAMS";
     public static final String TEST_PHONE = "TEST_PHONE";
     public static final String TEST_REGEX = "TEST_REGEX";
+    public static final String TEST_ENCODE = "TEST_ENCODE";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -197,6 +198,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_REGEX:
                 testRegex();
+                break;
+            case TEST_ENCODE:
+                testEncode();
                 break;
         }
     }
@@ -1655,6 +1659,43 @@ public class TestUtilActivity extends BaseActivity {
     private void setRegexResult(boolean isCorrect) {
         String result = "\"" + il.getInputText() + "\"：" + isCorrect;
         tv.setText(result);
+    }
+
+    //编码解码工具
+    private void testEncode() {
+        CommonLayoutUtil.initCommonLayout(this, "编码解码工具", false, true);
+        StringBuilder sb = new StringBuilder();
+        String url = "https://www.google.com/imghp?hl=zh-CN&tab=wi&ogbl";
+        String urlEncode = EncodeUtil.urlEncode(url);
+        String urlDecode = EncodeUtil.urlDecode(urlEncode);
+        LogUtil.w(TAG, "URL编码：" + urlEncode);
+        LogUtil.w(TAG, "URL解码：" + urlDecode);
+        sb.append(url).append("\nURL编码：\n").append(urlEncode)
+                .append("\nURL解码：\n").append(urlDecode);
+        String content = "https://www.google.com/imghp?hl=zh-CN&tab=wi&content=测试Base64编码和解码";
+        byte[] base64EncodeBytes = EncodeUtil.base64Encode(content);
+        byte[] base64DecodeBytes = EncodeUtil.base64Decode(base64EncodeBytes);
+        String base64EncodeStr = new String(base64EncodeBytes);
+        String base64DecodeStr = new String(base64DecodeBytes);
+        LogUtil.w(TAG, "Base64编码：" + base64EncodeStr);
+        LogUtil.w(TAG, "Base64解码：" + base64DecodeStr);
+        LogUtil.w(TAG, "Base64编码成字符串：" + EncodeUtil.base64EncodeToString(content.getBytes()));
+        LogUtil.w(TAG, "Base64 URL安全编码：" + new String(EncodeUtil.base64UrlSafeEncode(content)));
+        sb.append("\n\n").append(content).append("\nBase64编码：\n").append(base64EncodeStr)
+                .append("\nBase64解码：\n").append(base64DecodeStr);
+        String htmlContent = "<!Doctype html>\n" +
+                "<html lang=\"zh_cn\">\n" +
+                "<head>\n" +
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n" +
+                "<title>测试Html编码和解码</title>\n" +
+                "</head>";
+        String htmlEncode = EncodeUtil.htmlEncode(htmlContent);
+        String htmlDecode = EncodeUtil.htmlDecode(htmlEncode).toString();
+        LogUtil.w(TAG, "Html编码：\n" + htmlEncode);
+        LogUtil.w(TAG, "Html解码：\n" + htmlDecode);
+        sb.append("\n\n").append(htmlContent).append("\nHtml编码：\n").append(htmlEncode)
+                .append("\nHtml解码：\n").append(htmlDecode);
+        tv.setText(sb.toString());
     }
 
 }

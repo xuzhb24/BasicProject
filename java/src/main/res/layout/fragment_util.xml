@@ -158,6 +158,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="正则表达式工具" />
 
+            <TextView
+                android:id="@+id/encode_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="编码解码工具" />
+
         </LinearLayout>
     </ScrollView>
 
