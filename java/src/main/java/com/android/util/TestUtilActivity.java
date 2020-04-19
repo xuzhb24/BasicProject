@@ -438,7 +438,7 @@ public class TestUtilActivity extends BaseActivity {
 
     private void testStringUtil() {
         CommonLayoutUtil.initCommonLayout(this, "字符串工具类", false, true,
-                "显示不同颜色", "带下划线", "带点击事件");
+                "显示不同颜色", "带下划线", "带点击事件", "反转字符串", "转化为半角字符", "转化为全角字符");
         String content = "欢迎拨打热线电话";
         tv.setTextColor(Color.BLACK);
         tv.setTextSize(15);
@@ -469,6 +469,20 @@ public class TestUtilActivity extends BaseActivity {
                         showToast("热线电话：10086");
                     }
             ));
+        });
+        btn4.setOnClickListener(v -> {
+            String result = content + "\n" + StringUtil.reverse(content);
+            tv.setText(result);
+        });
+        btn5.setOnClickListener(v -> {
+            String s = "123ABCabc";
+            String result = s + "\n" + StringUtil.toDBC(s);
+            tv.setText(result);
+        });
+        btn6.setOnClickListener(v -> {
+            String s = "123ABCabc";
+            String result = s + "\n" + StringUtil.toSBC(s);
+            tv.setText(result);
         });
     }
 

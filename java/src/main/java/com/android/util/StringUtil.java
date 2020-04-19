@@ -4,7 +4,11 @@ import android.graphics.Typeface;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
-import android.text.style.*;
+import android.text.style.AbsoluteSizeSpan;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
+import android.text.style.StyleSpan;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 
 /**
@@ -81,6 +85,60 @@ public class StringUtil {
             }, startIndex, endIndex, Spanned.SPAN_INCLUSIVE_EXCLUSIVE);
         }
         return spannableString;
+    }
+
+    //反转字符串
+    public static String reverse(String s) {
+        if (isEmpty(s)) {
+            return s;
+        }
+        int len = s.length();
+        if (len <= 1) return s;
+        int mid = len >> 1;
+        char[] chars = s.toCharArray();
+        char c;
+        for (int i = 0; i < mid; ++i) {
+            c = chars[i];
+            chars[i] = chars[len - i - 1];
+            chars[len - i - 1] = c;
+        }
+        return new String(chars);
+    }
+
+    //转化为半角字符
+    public static String toDBC(String s) {
+        if (isEmpty(s)) {
+            return s;
+        }
+        char[] chars = s.toCharArray();
+        for (int i = 0, len = chars.length; i < len; i++) {
+            if (chars[i] == 12288) {
+                chars[i] = ' ';
+            } else if (65281 <= chars[i] && chars[i] <= 65374) {
+                chars[i] = (char) (chars[i] - 65248);
+            } else {
+                chars[i] = chars[i];
+            }
+        }
+        return new String(chars);
+    }
+
+    //转化为全角字符
+    public static String toSBC(String s) {
+        if (isEmpty(s)) {
+            return s;
+        }
+        char[] chars = s.toCharArray();
+        for (int i = 0, len = chars.length; i < len; i++) {
+            if (chars[i] == ' ') {
+                chars[i] = (char) 12288;
+            } else if (33 <= chars[i] && chars[i] <= 126) {
+                chars[i] = (char) (chars[i] + 65248);
+            } else {
+                chars[i] = chars[i];
+            }
+        }
+        return new String(chars);
     }
 
 }
