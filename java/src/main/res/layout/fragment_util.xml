@@ -163,6 +163,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="编码解码工具" />
 
+            <TextView
+                android:id="@+id/service_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="Service工具" />
+
         </LinearLayout>
     </ScrollView>
 

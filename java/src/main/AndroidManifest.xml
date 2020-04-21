@@ -99,6 +99,8 @@
         <activity android:name="com.android.util.app.AATest.TestAppListActivity" />
         <activity android:name="com.android.util.threadPool.AATest.TestThreadPoolUtilActivity" />
 
+        <service android:name="com.android.util.service.TestService" />
+
         <!--Android 7.0以后通过FileProvider实现应用间文件共享，涉及到拍照，应用安装等-->
         <!--参考https://www.jianshu.com/p/47fcd7873f39-->
         <provider

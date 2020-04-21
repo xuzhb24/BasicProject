@@ -2,8 +2,11 @@ package com.android.util;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
@@ -17,6 +20,7 @@ import android.net.TrafficStats;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.IBinder;
 import android.support.annotation.RequiresApi;
 import android.text.InputType;
 import android.text.Spannable;
@@ -40,6 +44,8 @@ import com.android.util.activity.TestJumpActivity;
 import com.android.util.app.AATest.TestAppListActivity;
 import com.android.util.app.AppUtil;
 import com.android.util.regex.RegexUtil;
+import com.android.util.service.ServiceUtil;
+import com.android.util.service.TestService;
 import com.android.util.sharedPreferences.withoutContext.SPUtil;
 import com.android.util.threadPool.ThreadPoolManager;
 import com.android.util.traffic.NetworkStatsHelper;
@@ -90,6 +96,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_PHONE = "TEST_PHONE";
     public static final String TEST_REGEX = "TEST_REGEX";
     public static final String TEST_ENCODE = "TEST_ENCODE";
+    public static final String TEST_SERVICE = "TEST_SERVICE";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -201,6 +208,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_ENCODE:
                 testEncode();
+                break;
+            case TEST_SERVICE:
+                testService();
                 break;
         }
     }
@@ -1711,5 +1721,57 @@ public class TestUtilActivity extends BaseActivity {
                 .append("\nHtml解码：\n").append(htmlDecode);
         tv.setText(sb.toString());
     }
+
+    //Service工具
+    private void testService() {
+        CommonLayoutUtil.initCommonLayout(this, "Service工具", false, true,
+                "获取所有运行的服务", "服务是否在运行", "开启服务", "停止服务", "绑定服务", "解绑服务");
+        btn1.setOnClickListener(v -> {
+            List<ActivityManager.RunningServiceInfo> list = ServiceUtil.getAllRunningServiceInfo(this);
+            StringBuilder sb = new StringBuilder();
+            for (ActivityManager.RunningServiceInfo info : list) {
+                sb.append(info.service.getClassName()).append("\n");
+            }
+            if (TextUtils.isEmpty(sb.toString())) {
+                tv.setText("目前没有正在运行的服务");
+            } else {
+                tv.setText(sb.toString());
+            }
+        });
+        btn2.setOnClickListener(v -> {
+            tv.setText(ServiceUtil.isServiceRunning(this, TestService.class)
+                    ? "TestService正在运行" : "TestService未运行");
+        });
+        btn3.setOnClickListener(v -> {
+            ServiceUtil.startService(this, TestService.class);
+        });
+        btn4.setOnClickListener(v -> {
+            ServiceUtil.stopService(this, TestService.class);
+        });
+        btn5.setOnClickListener(v -> {
+            ServiceUtil.bindService(this, TestService.class, mConn);
+        });
+        btn6.setOnClickListener(v -> {
+            if (ServiceUtil.isServiceRunning(this, TestService.class)) {
+                ServiceUtil.unbindService(this, mConn);
+            } else {
+                showToast("服务尚未绑定");
+            }
+        });
+    }
+
+    private ServiceConnection mConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            TestService.LocalBinder binder = (TestService.LocalBinder) service;
+            showToast(binder.getService().getBindState());
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            //onServiceDisconnected在连接正常关闭的情况下是不会被调用的
+            //该方法只在Service被破坏了或者被杀死的时候调用，例如系统资源不足时
+        }
+    };
 
 }
