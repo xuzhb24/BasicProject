@@ -51,9 +51,9 @@ open class CaptureActivity : BaseActivity(), SurfaceHolder.Callback {
     private var mInactivityTimer: InactivityTimer? = null
     private var hasSurface: Boolean = false
     private var isLightOn: Boolean = false  //是否打开闪光灯
-    private var mPlayBeep: Boolean = true  //是否部分扫描后的滴滴声
-    private var mVibrate: Boolean = true  //是否震动
-    private var mPhotoPath: String = ""  //选中的图片路径
+    private var isPlayBeep: Boolean = true  //是否开启扫描后的滴滴声
+    private var isVibrate: Boolean = true   //是否震动
+    private var mPhotoPath: String = ""     //选中的图片路径
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +79,28 @@ open class CaptureActivity : BaseActivity(), SurfaceHolder.Callback {
         }
         light_ll?.setOnClickListener {
             switchLight()  //打开或关闭闪光灯
+        }
+    }
+
+    //打开相册
+    protected fun openAlbum() {
+        val intent = Intent(Intent.ACTION_PICK, null)
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
+        startActivityForResult(intent, IMAGE_PICKER)
+    }
+
+    //开启/关闭闪光灯
+    private fun switchLight() {
+        if (CameraManager.get() != null) {
+            if (isLightOn) {
+                light_tv.text = "轻触点亮"
+                CameraManager.get().turnLightOffFlashLight()
+            } else {
+                light_tv.text = "轻触关闭"
+                CameraManager.get().turnOnFlashLight()
+            }
+            isLightOn = !isLightOn
+            light_iv.isSelected = isLightOn
         }
     }
 
@@ -167,10 +189,10 @@ open class CaptureActivity : BaseActivity(), SurfaceHolder.Callback {
     }
 
     private fun playBeepSoundAndVibrate() {
-        if (mPlayBeep) {
+        if (isPlayBeep) {
             mBeepManager?.startRing()  //播放扫码的滴滴声
         }
-        if (mVibrate) {
+        if (isVibrate) {
             val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
             vibrator.vibrate(200L)  //震动200毫秒
         }
@@ -182,28 +204,6 @@ open class CaptureActivity : BaseActivity(), SurfaceHolder.Callback {
         intent.putExtra(QRConstant.SCAN_QRCODE_RESULT, result)
         setResult(Activity.RESULT_OK, intent)
         finish()
-    }
-
-    //打开相册
-    protected fun openAlbum() {
-        val intent = Intent(Intent.ACTION_PICK, null)
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*")
-        startActivityForResult(intent, IMAGE_PICKER);
-    }
-
-    //开启/关闭闪光灯
-    private fun switchLight() {
-        if (CameraManager.get() != null) {
-            if (isLightOn) {
-                light_tv.text = "轻触点亮"
-                CameraManager.get().turnLightOffFlashLight()
-            } else {
-                light_tv.text = "轻触关闭"
-                CameraManager.get().turnOnFlashLight()
-            }
-            isLightOn = !isLightOn
-        }
-        light_iv.isSelected = isLightOn
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
