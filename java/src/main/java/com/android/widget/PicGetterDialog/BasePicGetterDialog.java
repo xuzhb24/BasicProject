@@ -14,15 +14,25 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.annotation.*;
+import android.support.annotation.FloatRange;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
-import android.view.*;
+import android.view.Gravity;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
+
 import com.android.java.R;
-import com.android.util.BitmapUtil;
+import com.android.util.bitmap.BitmapUtil;
 import com.android.widget.ViewHolder;
 import com.yalantis.ucrop.UCrop;
 
@@ -372,7 +382,7 @@ public abstract class BasePicGetterDialog extends DialogFragment {
                 return;
             }
             if (mOnPicGetterListener != null) {
-                Bitmap bitmap = BitmapUtil.bytesToBitmap(BitmapUtil.compressImage(BitmapFactory.decodeFile(uri.getPath()), 500));
+                Bitmap bitmap = BitmapUtil.bytes2Bitmap(BitmapUtil.compressByQuality(BitmapFactory.decodeFile(uri.getPath()), 500, true));
                 mOnPicGetterListener.onSuccess(bitmap, uri.getPath());
                 dismiss();
             }

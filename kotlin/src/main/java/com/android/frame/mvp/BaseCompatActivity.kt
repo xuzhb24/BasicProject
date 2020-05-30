@@ -221,7 +221,7 @@ abstract class BaseCompatActivity<V : IBaseView, P : BasePresenter<V>> : AppComp
             intent.putExtras(it)
         }
         intent.setClass(this, clazz)
-        startActivityForResult(clazz, requestCode)
+        startActivityForResult(intent, requestCode)
     }
 
     //注册广播动态监听网络变化

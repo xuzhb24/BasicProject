@@ -10,7 +10,7 @@ import android.widget.ImageView;
 
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
-import com.android.util.BitmapUtil;
+import com.android.util.bitmap.BitmapUtil;
 import com.android.util.SizeUtil;
 import com.android.widget.InputLayout;
 import com.android.widget.TitleBar;

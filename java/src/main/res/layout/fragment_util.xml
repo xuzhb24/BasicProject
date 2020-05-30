@@ -168,6 +168,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="Service工具" />
 
+            <TextView
+                android:id="@+id/bitmap_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="图片工具" />
+
         </LinearLayout>
     </ScrollView>
 

@@ -7,6 +7,7 @@ import com.android.frame.mvc.BaseFragment;
 import com.android.java.R;
 import com.android.util.CommonLayoutUtil;
 import com.android.util.TestUtilActivity;
+import com.android.util.bitmap.TestBitmapActivity;
 import com.android.util.code.TestCodeUtilActivity;
 import com.android.util.threadPool.AATest.TestThreadPoolUtilActivity;
 
@@ -42,7 +43,7 @@ public class UtilFragment extends BaseFragment {
             R.id.pinyin_tv, R.id.activity_tv, R.id.app_tv, R.id.device_tv, R.id.shell_tv, R.id.picker_tv,
             R.id.crash_tv, R.id.clean_tv, R.id.sdcard_tv, R.id.screen_tv, R.id.cache_tv, R.id.sp_tv,
             R.id.layout_params_tv, R.id.thread_pool_tv, R.id.phone_tv, R.id.regex_tv, R.id.encode_tv,
-            R.id.service_tv})
+            R.id.service_tv, R.id.bitmap_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.statusbar_tv:  //实现沉浸式状态栏
@@ -128,6 +129,9 @@ public class UtilFragment extends BaseFragment {
                 break;
             case R.id.service_tv:  //Service工具
                 CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_SERVICE);
+                break;
+            case R.id.bitmap_tv:  //图片工具
+                startActivity(TestBitmapActivity.class);
                 break;
         }
     }

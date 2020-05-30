@@ -4,6 +4,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 
+import com.android.util.bitmap.BitmapUtil;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -331,7 +333,7 @@ public class CacheUtil {
 
     //读取Bitmap数据
     public Bitmap getBitmap(String key) {
-        return BitmapUtil.bytesToBitmap(getBytes(key));
+        return BitmapUtil.bytes2Bitmap(getBytes(key));
     }
 
     //保存Drawable到缓存中
@@ -346,7 +348,7 @@ public class CacheUtil {
 
     //读取Drawable数据
     public Drawable getDrawable(String key) {
-        return BitmapUtil.bitmap2Drawable(BitmapUtil.bytesToBitmap(getBytes(key)));
+        return BitmapUtil.bitmap2Drawable(BitmapUtil.bytes2Bitmap(getBytes(key)));
     }
 
     //读取缓存文件

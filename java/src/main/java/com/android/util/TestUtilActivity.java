@@ -43,6 +43,7 @@ import com.android.util.activity.ActivityUtil;
 import com.android.util.activity.TestJumpActivity;
 import com.android.util.app.AATest.TestAppListActivity;
 import com.android.util.app.AppUtil;
+import com.android.util.bitmap.BitmapUtil;
 import com.android.util.regex.RegexUtil;
 import com.android.util.service.ServiceUtil;
 import com.android.util.service.TestService;
