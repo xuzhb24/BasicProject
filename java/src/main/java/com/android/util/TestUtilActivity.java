@@ -101,6 +101,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_ENCODE = "TEST_ENCODE";
     public static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String TEST_LOCATION = "TEST_LOCATION";
+    public static final String TEST_NETWORK = "TEST_NETWORK";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -218,6 +219,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_LOCATION:
                 testLocation();
+                break;
+            case TEST_NETWORK:
+                testNetwork();
                 break;
         }
     }
@@ -1848,6 +1852,34 @@ public class TestUtilActivity extends BaseActivity {
         }
     };
 
+    //网络工具
+    private void testNetwork() {
+        CommonLayoutUtil.initCommonLayout(this, "网络工具", false, false,
+                "获取网络信息", "打开网络设置页面", "打开WiFi", "关闭WiFi");
+        btn1.setOnClickListener(v -> {
+            StringBuilder sb = new StringBuilder();
+            sb.append("网络是否连接：").append(NetworkUtil.isConnected(this))
+                    .append("\n网络是否可用：").append(NetworkUtil.isAvailable())
+                    .append("\n移动数据是否打开：").append(NetworkUtil.getDataEnabled(this))
+                    .append("\n网络是否是4G：").append(NetworkUtil.is4G(this))
+                    .append("\nwifi是否打开：").append(NetworkUtil.isWifiEnabled(this))
+                    .append("\nwifi是否连接：").append(NetworkUtil.isWifiConnected(this))
+                    .append("\nwifi是否可用：").append(NetworkUtil.isWifiAvailable(this))
+                    .append("\n当前网络类型：").append(NetworkUtil.getNetworkType(this))
+                    .append("\nIP地址：").append(NetworkUtil.getIPAddress(true))
+                    .append("\nbaidu.com对应的IP地址：").append(NetworkUtil.getDomainAddress("baidu.com"));
+            ExtraUtil.alert(this, sb.toString());
+        });
+        btn2.setOnClickListener(v -> {
+            NetworkUtil.openWirelessSettings(this);
+        });
+        btn3.setOnClickListener(v -> {
+            NetworkUtil.setWifiEnabled(this, true);
+        });
+        btn4.setOnClickListener(v -> {
+            NetworkUtil.setWifiEnabled(this, false);
+        });
+    }
 
     @Override
     protected void onDestroy() {
