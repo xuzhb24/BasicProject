@@ -44,6 +44,8 @@ import com.android.util.activity.TestJumpActivity;
 import com.android.util.app.AATest.TestAppListActivity;
 import com.android.util.app.AppUtil;
 import com.android.util.bitmap.BitmapUtil;
+import com.android.util.location.LocationService;
+import com.android.util.location.LocationUtil;
 import com.android.util.regex.RegexUtil;
 import com.android.util.service.ServiceUtil;
 import com.android.util.service.TestService;
@@ -98,6 +100,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_REGEX = "TEST_REGEX";
     public static final String TEST_ENCODE = "TEST_ENCODE";
     public static final String TEST_SERVICE = "TEST_SERVICE";
+    public static final String TEST_LOCATION = "TEST_LOCATION";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -212,6 +215,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_SERVICE:
                 testService();
+                break;
+            case TEST_LOCATION:
+                testLocation();
                 break;
         }
     }
@@ -1775,4 +1781,77 @@ public class TestUtilActivity extends BaseActivity {
         }
     };
 
+    //位置工具
+    private void testLocation() {
+        CommonLayoutUtil.initCommonLayout(this, "位置工具", false, true,
+                "开启位置监听服务", "打开设置界面", "申请位置权限");
+        bindService(new Intent(this, LocationService.class), mLocationConn, Context.BIND_AUTO_CREATE);
+        btn1.setOnClickListener(v -> {
+            if (ServiceUtil.isServiceRunning(this, LocationService.class)) {
+                showToast("服务正在运行");
+            } else {
+                bindService(new Intent(this, LocationService.class), mLocationConn, Context.BIND_AUTO_CREATE);
+            }
+        });
+        btn2.setOnClickListener(v -> {
+            LocationUtil.openGPSSettings(this);
+        });
+        btn3.setOnClickListener(v -> {
+            if (PermissionUtil.requestPermissions(this, 1,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                showToast("已申请权限！");
+            }
+        });
+    }
+
+    ServiceConnection mLocationConn = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            LocationService locationService = ((LocationService.LocationBinder) service).getService();
+            locationService.setOnLocationListener(new LocationService.OnLocationListener() {
+                @Override
+                public void initState(boolean isSuccess) {
+                    if (isSuccess) {
+                        showToast("位置监听初始化成功");
+                    } else {
+                        if (PermissionUtil.isAllPermissionGranted(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                            if (!LocationUtil.isGPSEnable(getApplicationContext())) {
+                                showToast("请打开GPS");
+                            } else if (!LocationUtil.isLocationEnable(getApplicationContext())) {
+                                showToast("定位不可用");
+                            }
+                        } else {
+                            showToast("请先允许权限");
+                        }
+                        unbindService(mLocationConn);
+                    }
+                }
+
+                @Override
+                public void getLocation(String lastLatitude, String lastLongitude, String latitude, String longitude, String country, String locality, String street) {
+                    runOnUiThread(() -> {
+                        StringBuilder sb = new StringBuilder();
+                        sb.append("lastLatitude：").append(lastLatitude).append("\nlastLongitude：").append(lastLongitude)
+                                .append("\nlatitude：").append(latitude).append("\nlongitude：").append(longitude)
+                                .append("\ncountryName：").append(country).append("\nlocality：").append(locality)
+                                .append("\nstreet：").append(street);
+                        tv.setText(sb.toString());
+                    });
+                }
+            });
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+
+        }
+    };
+
+
+    @Override
+    protected void onDestroy() {
+        unbindService(mLocationConn);
+        super.onDestroy();
+    }
 }
