@@ -499,6 +499,15 @@ public class FileUtil {
         return -1;
     }
 
+    //获取文件名
+    public static String getFileName(String filePath) {
+        if (StringUtil.isEmpty(filePath)) {
+            return filePath;
+        }
+        int lastSep = filePath.lastIndexOf(File.separator);
+        return lastSep == -1 ? filePath : filePath.substring(lastSep + 1);
+    }
+
     //获取文件大小，以byte为单位
     public static long getFileSize(String filePath) {
         return getFileSize(getFileByPath(filePath));
