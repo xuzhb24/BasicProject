@@ -12,7 +12,7 @@ import android.location.LocationListener;
 import android.location.LocationManager;
 import android.provider.Settings;
 
-import com.android.util.PermissionUtil;
+import com.android.util.permission.PermissionUtil;
 
 import java.io.IOException;
 import java.util.List;
@@ -110,7 +110,7 @@ public class LocationUtil {
      */
     @SuppressLint("MissingPermission")
     public static boolean register(Context context, long minTime, long minDistance, OnLocationUpdateListener listener) {
-        if (listener == null || !isLocationEnable(context) || !PermissionUtil.isAllPermissionGranted(context,
+        if (listener == null || !isLocationEnable(context) || !PermissionUtil.isPermissionGranted(context,
                 Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION)) {
             return false;
         }

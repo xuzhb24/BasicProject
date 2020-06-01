@@ -183,6 +183,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="网络工具" />
 
+            <TextView
+                android:id="@+id/permission_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="权限工具" />
+
         </LinearLayout>
     </ScrollView>
 

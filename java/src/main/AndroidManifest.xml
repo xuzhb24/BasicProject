@@ -99,6 +99,7 @@
         <activity android:name="com.android.util.app.AATest.TestAppListActivity" />
         <activity android:name="com.android.util.threadPool.AATest.TestThreadPoolUtilActivity" />
         <activity android:name="com.android.util.bitmap.TestBitmapActivity" />
+        <activity android:name="com.android.util.permission.TestPermissionActivity" />
 
         <service android:name="com.android.util.service.TestService" />
         <service android:name="com.android.util.location.LocationService" />

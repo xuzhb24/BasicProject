@@ -46,6 +46,7 @@ import com.android.util.app.AppUtil;
 import com.android.util.bitmap.BitmapUtil;
 import com.android.util.location.LocationService;
 import com.android.util.location.LocationUtil;
+import com.android.util.permission.PermissionUtil;
 import com.android.util.regex.RegexUtil;
 import com.android.util.service.ServiceUtil;
 import com.android.util.service.TestService;
@@ -1819,7 +1820,7 @@ public class TestUtilActivity extends BaseActivity {
                     if (isSuccess) {
                         showToast("位置监听初始化成功");
                     } else {
-                        if (PermissionUtil.isAllPermissionGranted(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) {
+                        if (PermissionUtil.isPermissionGranted(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)) {
                             if (!LocationUtil.isGPSEnable(getApplicationContext())) {
                                 showToast("请打开GPS");
                             } else if (!LocationUtil.isLocationEnable(getApplicationContext())) {
@@ -1883,7 +1884,9 @@ public class TestUtilActivity extends BaseActivity {
 
     @Override
     protected void onDestroy() {
-        unbindService(mLocationConn);
+        if (ServiceUtil.isServiceRunning(this, LocationService.class)) {
+            unbindService(mLocationConn);
+        }
         super.onDestroy();
     }
 }
