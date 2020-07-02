@@ -9,6 +9,12 @@
     <attr name="lineWidth" format="dimension" />
     <attr name="labelTextMargin" format="dimension" />
 
+    <attr name="startAngle" format="float" />
+    <attr name="roundCap" format="boolean" />
+    <attr name="ringWidth" format="dimension" />
+    <attr name="ringColor" format="color" />
+    <attr name="ringBackgroungColor" format="color" />
+
     <!--标题栏属性-->
     <declare-styleable name="TitleBar">
         <attr name="leftIcon" format="reference" />
@@ -256,18 +262,50 @@
     <declare-styleable name="CircleProgressBar">
         <attr name="max" format="integer" />
         <attr name="progress" format="integer" />
-        <attr name="startAngle" format="float" />
+        <!--        <attr name="startAngle" format="float" />-->
         <attr name="reverse" format="boolean" />
-        <attr name="roundCap" format="boolean" />
-        <attr name="ringWidth" format="dimension" />
-        <attr name="ringColor" format="color" />
-        <attr name="ringBackgroungColor" format="color" />
+        <!--        <attr name="roundCap" format="boolean" />-->
+        <!--        <attr name="ringWidth" format="dimension" />-->
+        <!--        <attr name="ringColor" format="color" />-->
+        <!--        <attr name="ringBackgroungColor" format="color" />-->
         <attr name="innerBackgroundColor" format="color" />
         <attr name="descText" format="string" />
         <attr name="descTextSize" format="dimension" />
         <attr name="descTextColor" format="color" />
         <attr name="percentTextSize" format="dimension" />
         <attr name="percentTextColor" format="color" />
+
+        <attr name="startAngle" />
+        <attr name="roundCap" />
+        <attr name="ringWidth" />
+        <attr name="ringColor" />
+        <attr name="ringBackgroungColor" />
+    </declare-styleable>
+
+    <!--圆弧-->
+    <declare-styleable name="ArcView">
+        <!--        <attr name="startAngle" format="float" />-->
+        <attr name="sweepAngle" format="float" />
+        <!--        <attr name="reverse" format="boolean" />-->
+        <!--        <attr name="roundCap" format="boolean" />-->
+        <!--        <attr name="ringWidth" format="dimension" />-->
+        <!--        <attr name="ringColor" format="color" />-->
+        <!--        <attr name="ringBackgroungColor" format="color" />-->
+
+        <attr name="startAngle" />
+        <attr name="roundCap" />
+        <attr name="ringWidth" />
+        <attr name="ringColor" />
+        <attr name="ringBackgroungColor" />
+    </declare-styleable>
+
+    <declare-styleable name="ShadowLayout">
+        <attr name="shadowRadius" format="dimension" />
+        <attr name="shadowOffsetX" format="dimension" />
+        <attr name="shadowOffsetY" format="dimension" />
+        <attr name="shadowColor" format="color" />
+        <attr name="rectRadiusX" format="dimension" />
+        <attr name="rectRadiusY" format="dimension" />
     </declare-styleable>
 
 </resources>

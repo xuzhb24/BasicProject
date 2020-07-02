@@ -41,6 +41,22 @@
                 app:percentTextSize="25sp"
                 app:ringWidth="12dp" />
 
+            <com.android.widget.ArcView
+                android:id="@+id/arc_av1"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="15dp"
+                app:ringColor="@color/colorPrimary"
+                app:roundCap="false" />
+
+            <com.android.widget.ArcView
+                android:id="@+id/arc_av2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                app:ringWidth="12dp"
+                app:sweepAngle="-300" />
+
         </LinearLayout>
 
     </ScrollView>
