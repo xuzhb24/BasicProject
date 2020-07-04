@@ -47,12 +47,6 @@ abstract class BaseActivity : AppCompatActivity() {
     //获取布局
     abstract fun getLayoutId(): Int
 
-    override fun onDestroy() {
-        super.onDestroy()
-        //监控内存泄漏
-        BaseApplication.getRefWatcher().watch(this)
-    }
-
     fun startActivity(clazz: Class<*>) {
         val intent = Intent()
         intent.setClass(this, clazz)

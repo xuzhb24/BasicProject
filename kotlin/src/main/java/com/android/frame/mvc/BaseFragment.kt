@@ -67,12 +67,6 @@ abstract class BaseFragment : Fragment() {
     //获取布局
     abstract fun getLayoutId(): Int
 
-    override fun onDestroy() {
-        //监控内存泄漏
-        activity?.let { BaseApplication.getRefWatcher().watch(it) }
-        super.onDestroy()
-    }
-
     fun startActivity(clazz: Class<*>) {
         val intent = Intent()
         intent.setClass(activity, clazz)

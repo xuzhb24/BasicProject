@@ -84,13 +84,6 @@ public abstract class BaseFragment_VB<VB extends ViewBinding> extends Fragment {
 
     }
 
-    @Override
-    public void onDestroy() {
-        //监控内存泄漏
-        BaseApplication.getRefWatcher().watch(mActivity);
-        super.onDestroy();
-    }
-
     //显示Toast
     public void showToast(CharSequence text) {
         showToast(text, true, false);

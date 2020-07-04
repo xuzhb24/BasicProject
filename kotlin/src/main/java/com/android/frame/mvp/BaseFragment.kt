@@ -158,8 +158,6 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
         super.onDetach()
         //取消所有正在执行的订阅
         mCompositeDisposable.clear()
-        //监控内存泄漏
-        activity?.let { BaseApplication.getRefWatcher().watch(it) }
     }
 
     //显示加载框

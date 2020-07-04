@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
+
 import butterknife.ButterKnife;
+
 import com.android.base.BaseApplication;
 import com.android.java.R;
 import com.android.util.ExtraUtil;
@@ -49,13 +51,6 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     //获取布局
     public abstract int getLayoutId();
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        //监控内存泄漏
-        BaseApplication.getRefWatcher().watch(this);
-    }
 
     public void startActivity(Class clazz) {
         Intent intent = new Intent();

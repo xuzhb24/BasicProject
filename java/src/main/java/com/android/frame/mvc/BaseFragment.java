@@ -70,8 +70,6 @@ public abstract class BaseFragment extends Fragment {
     @Override
     public void onDestroy() {
         mUnbinder.unbind();  //解绑ButterKnife
-        //监控内存泄漏
-        BaseApplication.getRefWatcher().watch(mActivity);
         super.onDestroy();
     }
 

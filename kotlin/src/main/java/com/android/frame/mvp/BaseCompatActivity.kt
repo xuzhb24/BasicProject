@@ -136,8 +136,6 @@ abstract class BaseCompatActivity<V : IBaseView, P : BasePresenter<V>> : AppComp
         mCompositeDisposable.clear()
 
         BaseApplication.instance.removeActivity(this)
-        //监控内存泄漏
-        BaseApplication.getRefWatcher().watch(this)
     }
 
     //显示加载框

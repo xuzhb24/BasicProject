@@ -80,12 +80,6 @@ abstract class BaseFragment_VB<VB : ViewBinding> : Fragment() {
 
     }
 
-    override fun onDestroy() {
-        //监控内存泄漏
-        activity?.let { BaseApplication.getRefWatcher().watch(it) }
-        super.onDestroy()
-    }
-
     //显示Toast
     fun showToast(text: CharSequence, isCenter: Boolean = true, longToast: Boolean = false) {
         activity?.runOnUiThread {

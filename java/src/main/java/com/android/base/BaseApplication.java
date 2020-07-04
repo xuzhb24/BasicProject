@@ -7,8 +7,6 @@ import android.support.multidex.MultiDex;
 
 import com.android.util.CrashHandler;
 import com.android.util.traffic.NetworkStatsHelper;
-import com.squareup.leakcanary.LeakCanary;
-import com.squareup.leakcanary.RefWatcher;
 
 import java.util.LinkedList;
 
@@ -18,7 +16,6 @@ import java.util.LinkedList;
  */
 public class BaseApplication extends Application {
 
-    private RefWatcher mRefWatcher;
     private LinkedList<Activity> mActivityStack;
 
     private static BaseApplication mInstance;
@@ -28,7 +25,6 @@ public class BaseApplication extends Application {
         super.onCreate();
         mInstance = this;
 
-        mRefWatcher = initRefWatcher();
         mActivityStack = new LinkedList<>();
 
         CrashHandler.getInstance().init(this);
@@ -45,18 +41,6 @@ public class BaseApplication extends Application {
     //获取Application单例
     public static BaseApplication getInstance() {
         return mInstance;
-    }
-
-    //监控内存泄漏
-    public static RefWatcher getRefWatcher() {
-        return mInstance.mRefWatcher;
-    }
-
-    private RefWatcher initRefWatcher() {
-        if (LeakCanary.isInAnalyzerProcess(this)) {
-            return RefWatcher.DISABLED;
-        }
-        return LeakCanary.install(this);
     }
 
     public void addActivity(Activity activity) {

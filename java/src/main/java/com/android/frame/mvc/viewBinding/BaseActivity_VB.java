@@ -86,8 +86,6 @@ public abstract class BaseActivity_VB<VB extends ViewBinding> extends AppCompatA
     protected void onDestroy() {
         super.onDestroy();
         BaseApplication.getInstance().removeActivity(this);
-        //监控内存泄漏
-        BaseApplication.getRefWatcher().watch(this);
     }
 
     //显示Toast

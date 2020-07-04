@@ -171,8 +171,6 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
         //取消所有正在执行的订阅
         mCompositeDisposable.clear();
         mUnbinder.unbind();  //解绑ButterKnife
-        //监控内存泄漏
-        BaseApplication.getRefWatcher().watch(this);
     }
 
     @Override

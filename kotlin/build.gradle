@@ -86,9 +86,7 @@ dependencies {
     androidTestImplementation "com.android.support.test:runner:$test_runner_version"
     androidTestImplementation "com.android.support.test.espresso:espresso-core:$test_espresso_version"
     //leakcanary检测内存泄漏
-    debugImplementation "com.squareup.leakcanary:leakcanary-android:$leakcanary_version"
-    releaseImplementation "com.squareup.leakcanary:leakcanary-android-no-op:$leakcanary_version"
-    debugImplementation "com.squareup.leakcanary:leakcanary-support-fragment:$leakcanary_version"
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"

@@ -75,8 +75,6 @@ abstract class BaseActivity_VB<VB : ViewBinding> : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         BaseApplication.instance.removeActivity(this)
-        //监控内存泄漏
-        BaseApplication.getRefWatcher().watch(this)
     }
 
     //显示Toast

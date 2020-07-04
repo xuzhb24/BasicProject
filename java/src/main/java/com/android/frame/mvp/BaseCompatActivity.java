@@ -143,8 +143,6 @@ public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePres
         mCompositeDisposable.clear();
 
         BaseApplication.getInstance().removeActivity(this);
-        //监控内存泄漏
-        BaseApplication.getRefWatcher().watch(this);
     }
 
     //显示加载框

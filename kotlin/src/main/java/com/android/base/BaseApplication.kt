@@ -4,8 +4,6 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import android.support.multidex.MultiDex
-import com.squareup.leakcanary.LeakCanary
-import com.squareup.leakcanary.RefWatcher
 import java.util.*
 
 /**
@@ -14,24 +12,16 @@ import java.util.*
  */
 class BaseApplication : Application() {
 
-    private lateinit var refWatcher: RefWatcher  //lateinit：声明一个不需要初始化的非空类型的属性
-
     private lateinit var mActivityStack: LinkedList<Activity>
 
     //获取Application单例
     companion object {
         lateinit var instance: BaseApplication
-
-        //监控内存泄漏
-        fun getRefWatcher(): RefWatcher {
-            return instance.refWatcher
-        }
     }
 
     override fun onCreate() {
         super.onCreate()
         instance = this
-        refWatcher = initRefWatcher()
         mActivityStack = LinkedList()
     }
 
@@ -39,10 +29,6 @@ class BaseApplication : Application() {
         super.attachBaseContext(base)
         MultiDex.install(this)
     }
-
-    private fun initRefWatcher(): RefWatcher =
-        if (LeakCanary.isInAnalyzerProcess(this)) RefWatcher.DISABLED
-        else LeakCanary.install(this)
 
     fun addActivity(activity: Activity) {
         mActivityStack.add(activity)
