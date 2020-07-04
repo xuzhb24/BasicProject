@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/tv_text1"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="20dp"
+        android:src="@drawable/ic_guide_one" />
+
+    <TextView
+        android:id="@+id/tv_text1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_text2"
+        android:layout_centerHorizontal="true"
+        android:text="全面升级"
+        android:textColor="#253051"
+        android:textSize="35sp" />
+
+    <TextView
+        android:id="@+id/tv_text2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/tv_text3"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="多角色管理"
+        android:textColor="#35353f"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/tv_text3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="9dp"
+        android:text="代理进件，商户收银两不误"
+        android:textColor="#35353f"
+        android:textSize="16sp" />
+
+</RelativeLayout>

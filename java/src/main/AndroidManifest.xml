@@ -41,7 +41,8 @@
         tools:ignore="GoogleAppIndexingWarning">
         <activity
             android:name="com.android.base.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -64,6 +65,8 @@
         <activity android:name="com.android.frame.WebView.CommonWebviewActivity" />
         <!--测试ViewBinding-->
         <activity android:name="com.android.frame.mvc.viewBinding.AATest.TestViewBindingActivity" />
+        <!--引导页-->
+        <activity android:name="com.android.frame.guide.GuideActivity" />
 
         <!--控件篇-->
         <!--记录一些系统自带控件的使用-->
