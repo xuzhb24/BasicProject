@@ -299,6 +299,7 @@
         <attr name="ringBackgroungColor" />
     </declare-styleable>
 
+    <!--阴影布局-->
     <declare-styleable name="ShadowLayout">
         <attr name="shadowRadius" format="dimension" />
         <attr name="shadowOffsetX" format="dimension" />

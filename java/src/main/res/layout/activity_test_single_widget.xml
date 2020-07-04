@@ -87,4 +87,18 @@
 
     <View style="@style/SingleWidgetDividerLineStyle" />
 
+    <com.android.widget.ShadowLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:layout_margin="20dp"
+        android:background="@color/white"
+        app:rectRadiusX="10dp"
+        app:rectRadiusY="10dp"
+        app:shadowColor="#C7C7C7"
+        app:shadowOffsetX="2.5dp"
+        app:shadowOffsetY="1.5dp"
+        app:shadowRadius="12dp" />
+
+    <View style="@style/SingleWidgetDividerLineStyle" />
+
 </LinearLayout>
