@@ -1,6 +1,5 @@
 package com.android.widget;
 
-import android.app.AlertDialog;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -9,6 +8,7 @@ import android.widget.TextView;
 
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.util.ExtraUtil;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -51,9 +51,7 @@ public class TestSingleWidgetActivity extends BaseActivity {
         titleBar.setOnRightClickListener(new TitleBar.OnRightClickListener() {
             @Override
             public void onRightClick(View v) {
-                new AlertDialog.Builder(TestSingleWidgetActivity.this)
-                        .setMessage("本页面主要是查看编写的一些单一控件的样式")
-                        .show();
+                ExtraUtil.alert(TestSingleWidgetActivity.this, "本页面主要是查看编写的一些单一控件的样式");
             }
         });
         //带删除按钮的输入框

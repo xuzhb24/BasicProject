@@ -10,6 +10,7 @@ import android.view.View;
 
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.util.AlertDialogUtil;
 import com.android.util.CommonLayoutUtil;
 import com.android.util.LogUtil;
 
@@ -81,15 +82,11 @@ public class TestPermissionActivity extends BaseActivity {
                 LogUtil.e(TAG, "onPermissionDenied：" + Arrays.toString(deniedPermissions));
                 LogUtil.e(TAG, "isPermissionDenied：" + PermissionUtil.isPermissionDenied(TestPermissionActivity.this, REQUEST_PERMISSION));
                 LogUtil.e(TAG, "isPermissionDeniedForever：" + PermissionUtil.isPermissionDeniedForever(TestPermissionActivity.this, REQUEST_PERMISSION));
-                new AlertDialog.Builder(TestPermissionActivity.this)
-                        .setTitle("权限申请")
-                        .setMessage("请授予应用相应的权限，否则app可能无法正常工作")
-                        .setCancelable(false)
-                        .setPositiveButton("确定", (dialog, which) ->
-                                PermissionUtil.requestPermissions(TestPermissionActivity.this,
-                                        REQUEST_PERMISSION_CODE, REQUEST_PERMISSION))
-                        .setNegativeButton("取消", (dialog, which) -> showToast("权限申请失败！"))
-                        .show();
+                AlertDialogUtil.showDialog(TestPermissionActivity.this, "权限申请",
+                        "请授予应用相应的权限，否则app可能无法正常工作", false, (dialog, which) -> {
+                            PermissionUtil.requestPermissions(TestPermissionActivity.this,
+                                    REQUEST_PERMISSION_CODE, REQUEST_PERMISSION);
+                        }, (dialog, which) -> showToast("权限申请失败！"));
 
             }
 
@@ -98,14 +95,11 @@ public class TestPermissionActivity extends BaseActivity {
                 LogUtil.e(TAG, "onPermissionDeniedForever：" + Arrays.toString(deniedForeverPermissions));
                 LogUtil.e(TAG, "isPermissionDenied：" + PermissionUtil.isPermissionDenied(TestPermissionActivity.this, REQUEST_PERMISSION));
                 LogUtil.e(TAG, "isPermissionDeniedForever：" + PermissionUtil.isPermissionDeniedForever(TestPermissionActivity.this, REQUEST_PERMISSION));
-                new AlertDialog.Builder(TestPermissionActivity.this)
-                        .setTitle("权限申请")
-                        .setMessage("请到应用设置页面-权限中开启相应权限，保证app的正常使用")
-                        .setCancelable(false)
-                        .setPositiveButton("去设置", (dialog, which) ->
-                                PermissionUtil.openSettings(TestPermissionActivity.this, getPackageName(), REQUEST_SETTINGS_CODE))
-                        .setNegativeButton("取消", (dialog, which) -> showToast("权限申请失败！"))
-                        .show();
+                AlertDialogUtil.showDialog(TestPermissionActivity.this, "权限申请",
+                        "请到应用设置页面-权限中开启相应权限，保证app的正常使用", false, "去设置", "取消",
+                        (dialog, which) -> {
+                            PermissionUtil.openSettings(TestPermissionActivity.this, getPackageName(), REQUEST_SETTINGS_CODE);
+                        }, (dialog, which) -> showToast("权限申请失败！"));
             }
         });
     }

@@ -2,7 +2,6 @@ package com.android.util;
 
 import android.app.Activity;
 import android.app.ActivityManager;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
@@ -56,15 +55,11 @@ public class ExtraUtil {
     }
 
     public static void alert(Context context, String msg) {
-        new AlertDialog.Builder(context)
-                .setMessage(msg)
-                .show();
+        AlertDialogUtil.showDialog(context, msg);
     }
 
     public static void alert(Context context, SpannableStringBuilder msg) {
-        new AlertDialog.Builder(context)
-                .setMessage(msg)
-                .show();
+        AlertDialogUtil.showDialog(context, msg);
     }
 
     public static void showImage(Activity activity, int resId) {
