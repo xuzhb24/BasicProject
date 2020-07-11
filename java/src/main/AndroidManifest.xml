@@ -76,6 +76,7 @@
         <!--CommonPopupWindow使用例子-->
         <activity android:name="com.android.widget.PopupWindow.AATest.TestPopupWindowActivity" />
         <activity android:name="com.android.widget.Dialog.TestDialogActivity" />
+        <activity android:name="com.android.widget.ProgressBar.TestProgressBarActivity" />
         <!--RecyclerView-->
         <activity android:name="com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestSingleAdapterActivity" />

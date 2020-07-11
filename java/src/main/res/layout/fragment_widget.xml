@@ -34,6 +34,11 @@
                 android:text="曲线图/折线图" />
 
             <TextView
+                android:id="@+id/progress_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="进度条" />
+
+            <TextView
                 android:id="@+id/dialog_tv"
                 style="@style/ItemSingleTextStyle"
                 android:text="对话框Dialog" />

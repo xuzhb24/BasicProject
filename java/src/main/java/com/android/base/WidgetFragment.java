@@ -2,13 +2,16 @@ package com.android.base;
 
 import android.os.Bundle;
 import android.view.View;
+
 import butterknife.OnClick;
+
 import com.android.universal.TestSystemWidgetActivity;
 import com.android.frame.mvc.BaseFragment;
 import com.android.java.R;
 import com.android.widget.Dialog.TestDialogActivity;
 import com.android.widget.PicGetterDialog.AATest.TestPicGetterDialogActivity;
 import com.android.widget.PopupWindow.AATest.TestPopupWindowActivity;
+import com.android.widget.ProgressBar.TestProgressBarActivity;
 import com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity;
 import com.android.widget.TestSingleWidgetActivity;
 
@@ -37,7 +40,7 @@ public class WidgetFragment extends BaseFragment {
         return R.layout.fragment_widget;
     }
 
-    @OnClick({R.id.popup_tv, R.id.piechart_tv, R.id.linechart_tv, R.id.dialog_tv, R.id.pic_dialog_tv,
+    @OnClick({R.id.popup_tv, R.id.piechart_tv, R.id.linechart_tv, R.id.progress_tv, R.id.dialog_tv, R.id.pic_dialog_tv,
             R.id.recyclerview_tv, R.id.single_tv, R.id.system_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -47,6 +50,9 @@ public class WidgetFragment extends BaseFragment {
             case R.id.piechart_tv:  //饼状图
                 break;
             case R.id.linechart_tv:  //曲线图/折线图
+                break;
+            case R.id.progress_tv:  //进度条
+                startActivity(TestProgressBarActivity.class);
                 break;
             case R.id.dialog_tv:  //对话框
                 startActivity(TestDialogActivity.class);
