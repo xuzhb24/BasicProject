@@ -88,16 +88,30 @@
     <View style="@style/SingleWidgetDividerLineStyle" />
 
     <com.android.widget.ShadowLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:layout_margin="20dp"
-        android:background="@color/white"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:rectBackgroundColor="@color/white"
         app:rectRadiusX="10dp"
         app:rectRadiusY="10dp"
-        app:shadowColor="#C7C7C7"
-        app:shadowOffsetX="2.5dp"
-        app:shadowOffsetY="1.5dp"
-        app:shadowRadius="12dp" />
+        app:shadowColor="@color/colorPrimary"
+        app:shadowOffsetX="0dp"
+        app:shadowOffsetY="0dp"
+        app:shadowRadius="20dp">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="30dp"
+            android:layout_marginRight="40dp"
+            android:layout_marginBottom="30dp"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:text="自定义阴影布局"
+            android:textColor="#333333"
+            android:textSize="15sp" />
+
+    </com.android.widget.ShadowLayout>
 
     <View style="@style/SingleWidgetDividerLineStyle" />
 

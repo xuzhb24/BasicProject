@@ -307,6 +307,7 @@
         <attr name="shadowColor" format="color" />
         <attr name="rectRadiusX" format="dimension" />
         <attr name="rectRadiusY" format="dimension" />
+        <attr name="rectBackgroundColor" format="color" />
     </declare-styleable>
 
 </resources>
