@@ -188,6 +188,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="权限工具" />
 
+            <TextView
+                android:id="@+id/download_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="应用下载" />
+
         </LinearLayout>
     </ScrollView>
 

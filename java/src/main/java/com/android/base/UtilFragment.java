@@ -44,7 +44,8 @@ public class UtilFragment extends BaseFragment {
             R.id.pinyin_tv, R.id.activity_tv, R.id.app_tv, R.id.device_tv, R.id.shell_tv, R.id.picker_tv,
             R.id.crash_tv, R.id.clean_tv, R.id.sdcard_tv, R.id.screen_tv, R.id.cache_tv, R.id.sp_tv,
             R.id.layout_params_tv, R.id.thread_pool_tv, R.id.phone_tv, R.id.regex_tv, R.id.encode_tv,
-            R.id.service_tv, R.id.bitmap_tv, R.id.location_tv, R.id.network_tv, R.id.permission_tv})
+            R.id.service_tv, R.id.bitmap_tv, R.id.location_tv, R.id.network_tv, R.id.permission_tv,
+            R.id.download_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.statusbar_tv:  //实现沉浸式状态栏
@@ -142,6 +143,9 @@ public class UtilFragment extends BaseFragment {
                 break;
             case R.id.permission_tv:  //权限工具
                 startActivity(TestPermissionActivity.class);
+                break;
+            case R.id.download_tv:
+                CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_APK_DOWNLOAD);
                 break;
         }
     }

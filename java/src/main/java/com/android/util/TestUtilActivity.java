@@ -103,6 +103,7 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_SERVICE = "TEST_SERVICE";
     public static final String TEST_LOCATION = "TEST_LOCATION";
     public static final String TEST_NETWORK = "TEST_NETWORK";
+    public static final String TEST_APK_DOWNLOAD = "TEST_APK_DOWNLOAD";
 
     @BindView(R.id.ll)
     LinearLayout ll;
@@ -223,6 +224,9 @@ public class TestUtilActivity extends BaseActivity {
                 break;
             case TEST_NETWORK:
                 testNetwork();
+                break;
+            case TEST_APK_DOWNLOAD:
+                testApkDownload();
                 break;
         }
     }
@@ -1879,6 +1883,19 @@ public class TestUtilActivity extends BaseActivity {
         });
         btn4.setOnClickListener(v -> {
             NetworkUtil.setWifiEnabled(this, false);
+        });
+    }
+
+    //版本升级
+    private void testApkDownload() {
+        CommonLayoutUtil.initCommonLayout(this, "应用下载",
+                "下载QQ邮箱", "版本更新");
+        ApkDownloadUtil apkDownloadUtil = new ApkDownloadUtil(this);
+        btn1.setOnClickListener(v -> {
+            apkDownloadUtil.downLoadApk("http://app.mail.qq.com/cgi-bin/mailapp?latest=y&from=2");
+        });
+        btn2.setOnClickListener(v -> {
+            apkDownloadUtil.downLoadApk("https://ugc-download-2.imfir.cn/92d9763a68537b42d156507779b3a63635cf3909.apk?auth_key=1594538420-0-0-abce665cfe38f8e444a000dd9411587c");
         });
     }
 
