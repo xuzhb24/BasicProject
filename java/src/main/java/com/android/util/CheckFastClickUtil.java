@@ -12,9 +12,9 @@ public class CheckFastClickUtil {
         return isFastClick(400);
     }
 
-    public static boolean isFastClick(long timeInterval) {
+    public static boolean isFastClick(long interval) {
         long currentTime = System.currentTimeMillis();
-        if (currentTime - mLastClickTime > timeInterval) {
+        if (currentTime - mLastClickTime > interval) {
             mLastClickTime = currentTime;
             return false;
         } else {
