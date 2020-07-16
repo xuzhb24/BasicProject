@@ -10,10 +10,8 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.support.v4.content.FileProvider;
 import android.widget.Toast;
 
-import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -125,21 +123,8 @@ public class ApkDownloadUtil {
             }
             mExecutorService.shutdown();
             mContext.unregisterReceiver(mReceiver);
-            File file = new File(path);
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            Uri data;
-            String type = "application/vnd.android.package-archive";
-            if (Build.VERSION.SDK_INT < Build.VERSION_CODES.N) {
-                data = Uri.fromFile(file);
-            } else {
-                intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                //注意8.0后使用FileProvider，需要在AndroidManifest中声明
-                String authority = mContext.getApplicationInfo().packageName + ".provider";  //对应android:authorities属性值
-                data = FileProvider.getUriForFile(mContext.getApplicationContext(), authority, file);
-            }
-            intent.setDataAndType(data, type);
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            mContext.startActivity(intent);
+            String authority = mContext.getApplicationInfo().packageName + ".provider";  //对应android:authorities属性值
+            mContext.startActivity(IntentUtil.getInstallAppIntent(mContext, path, authority));
         } catch (Exception e) {
             e.printStackTrace();
         }
