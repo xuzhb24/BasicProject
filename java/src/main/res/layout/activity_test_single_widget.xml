@@ -13,7 +13,6 @@
         app:rightText="说明"
         app:titleText="单一控件" />
 
-
     <View style="@style/SingleWidgetDividerLineStyle" />
 
     <LinearLayout

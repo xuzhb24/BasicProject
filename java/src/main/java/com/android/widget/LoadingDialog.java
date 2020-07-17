@@ -5,7 +5,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.android.java.R;
@@ -49,11 +48,6 @@ public class LoadingDialog extends Dialog {
         setCanceledOnTouchOutside(mCancelable);
         //点击或按返回键时是否消失
         setCancelable(mCancelable);
-        //设置对话框居中
-        WindowManager.LayoutParams params = getWindow().getAttributes();
-        params.width = WindowManager.LayoutParams.WRAP_CONTENT;
-        params.height = WindowManager.LayoutParams.WRAP_CONTENT;
-        getWindow().setAttributes(params);
     }
 
 }

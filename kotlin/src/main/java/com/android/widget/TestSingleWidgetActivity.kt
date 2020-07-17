@@ -4,8 +4,6 @@ import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.support.v4.view.ViewPager
-import android.text.TextUtils
-import android.view.Gravity
 import android.widget.ImageView
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
@@ -38,6 +36,16 @@ class TestSingleWidgetActivity : BaseActivity() {
                     .setMessage("本页面主要是查看编写的一些单一控件的样式")
                     .show()
             }
+        }
+        //加载框
+        loading_btn1.setOnClickListener {
+            LoadingDialog(this).show()
+        }
+        loading_btn2.setOnClickListener {
+            LoadingDialog(this, "加载中...").show()
+        }
+        loading_btn3.setOnClickListener {
+            LoadingDialog(this, "", false).show()
         }
         //密码输入框
         with(password_edittext) {
@@ -108,7 +116,13 @@ class TestSingleWidgetActivity : BaseActivity() {
     private inner class GlideImageLoader : ImageLoader() {
         override fun displayImage(context: Context?, path: Any, imageView: ImageView) {
             Glide.with(this@TestSingleWidgetActivity).load(path as String)
-                .apply(RequestOptions.bitmapTransform(RoundedCorners(SizeUtil.dp2px(10f).toInt())))  //转换成圆角图片
+                .apply(
+                    RequestOptions.bitmapTransform(
+                        RoundedCorners(
+                            SizeUtil.dp2px(10f).toInt()
+                        )
+                    )
+                )  //转换成圆角图片
                 .into(imageView)
         }
     }
