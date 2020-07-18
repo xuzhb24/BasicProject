@@ -95,6 +95,7 @@
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name="com.android.widget.LoadingLayout.TestLoadingLayoutActivity" />
 
         <!--工具篇-->
         <!--实现沉浸式状态栏-->

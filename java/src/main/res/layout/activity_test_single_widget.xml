@@ -13,8 +13,6 @@
         app:rightText="说明"
         app:titleText="单一控件" />
 
-    <View style="@style/SingleWidgetDividerLineStyle" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

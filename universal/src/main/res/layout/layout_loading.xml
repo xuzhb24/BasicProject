@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/loading_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tool:src="@drawable/ic_loading" />
+
+    <ImageView
+        android:id="@+id/empty_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tool:src="@drawable/ic_empty_data" />
+
+    <ImageView
+        android:id="@+id/fail_iv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tool:src="@drawable/ic_fail" />
+
+    <TextView
+        android:id="@+id/desc_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="30dp"
+        android:includeFontPadding="false"
+        android:textColor="#a3a3a3"
+        android:textSize="12sp"
+        tool:text="网络不给力，请刷新重试" />
+
+    <TextView
+        android:id="@+id/retry_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_corners_5_stroke_1_a3a3a3"
+        android:includeFontPadding="false"
+        android:paddingLeft="20dp"
+        android:paddingTop="8dp"
+        android:paddingRight="20dp"
+        android:paddingBottom="8dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="15sp"
+        tool:text="刷新" />
+
+</LinearLayout>
