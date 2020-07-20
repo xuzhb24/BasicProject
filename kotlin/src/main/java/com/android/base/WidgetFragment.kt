@@ -5,6 +5,7 @@ import com.android.basicproject.R
 import com.android.frame.mvc.BaseFragment
 import com.android.universal.TestSystemWidgetActivity
 import com.android.widget.LineChart.TestLineChartActivity
+import com.android.widget.LoadingLayout.TestLoadingLayoutActivity
 import com.android.widget.PicGetterDialog.AATest.TestPicGetterDialogActivity
 import com.android.widget.PieChart.TestPieChartActivity
 import com.android.widget.PopupWindow.AATest.TestPopupWindowActivity
@@ -52,6 +53,10 @@ class WidgetFragment : BaseFragment() {
         //RecyclerView组件
         recyclerview_tv.setOnClickListener {
             startActivity(TestRecyclerViewActivity::class.java)
+        }
+        //加载状态布局
+        loading_tv.setOnClickListener {
+            startActivity(TestLoadingLayoutActivity::class.java)
         }
         //单一控件
         single_tv.setOnClickListener {
