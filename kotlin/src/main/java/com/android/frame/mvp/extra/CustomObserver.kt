@@ -1,11 +1,9 @@
 package com.android.frame.mvp.extra
 
-import com.android.base.BaseApplication
 import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.model.BaseListResponse
 import com.android.frame.http.model.BaseResponse
 import com.android.frame.mvp.IBaseView
-import com.android.util.NetworkUtil
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import java.lang.ref.WeakReference
@@ -21,11 +19,7 @@ abstract class CustomObserver<T>(
     private val mCancelable: Boolean = false
 ) : Observer<T> {
 
-    private var mWeakReference: WeakReference<IBaseView>
-
-    init {
-        mWeakReference = WeakReference(mView)
-    }
+    private var mWeakReference: WeakReference<IBaseView> = WeakReference(mView)
 
     override fun onSubscribe(d: Disposable) {
         val view = mWeakReference.get()
@@ -44,20 +38,20 @@ abstract class CustomObserver<T>(
                 if (t.isSuccess()) {
                     onSuccess(t)
                 } else {
-                    if (t.code == -1001) {  //登录失效（假设code是-1001）
+                    if (t.isTokenOut()) {  //登录失效
                         view?.gotoLogin()
                     }
-                    onFailure(view, t.msg, false, t)
+                    onFailure(view, t.getMessage(), false, t)
                 }
             }
             is BaseListResponse<*> -> {
                 if (t.isSuccess()) {
                     onSuccess(t)
                 } else {
-                    if (t.code == -1001) {  //登录失效（假设code是-1001）
+                    if (t.isTokenOut()) {  //登录失效
                         view?.gotoLogin()
                     }
-                    onFailure(view, t.msg, false, t)
+                    onFailure(view, t.getMessage(), false, t)
                 }
             }
         }
@@ -65,23 +59,25 @@ abstract class CustomObserver<T>(
 
     override fun onError(e: Throwable) {
         e.printStackTrace()
-        observerEnd()
+        observerEnd(true)
         val view = mWeakReference.get()
         val msg = ExceptionUtil.convertExceptopn(e)
         onFailure(view, msg, true, null)
     }
 
     override fun onComplete() {
-        observerEnd()
+        observerEnd(false)
     }
 
-    private fun observerEnd() {
+    private fun observerEnd(isError: Boolean) {
         val view = mWeakReference.get()
         view?.let {
             if (showLoading) {
                 it.dismissLoading()
             }
-            it.showNetErrorLayout(!NetworkUtil.isConnected(BaseApplication.instance))
+            if (isError) {
+                it.loadFail()
+            }
             it.loadFinish()  //结束数据加载，收起SwipeRefreshLayout的刷新头部
         }
     }
@@ -89,7 +85,12 @@ abstract class CustomObserver<T>(
     abstract fun onSuccess(response: T)
 
     //isError表示onNext中的错误还是onError中的错误
-    protected open fun onFailure(view: IBaseView?, message: String, isError: Boolean, response: T? = null) {
+    protected open fun onFailure(
+        view: IBaseView?,
+        message: String,
+        isError: Boolean,
+        response: T? = null
+    ) {
         view?.showToast(message)
     }
 

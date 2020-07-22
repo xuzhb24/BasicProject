@@ -6,7 +6,7 @@ package com.android.frame.mvp
  */
 open class BasePresenter<V : IBaseView> {
 
-    private var mView: V? = null
+    protected var mView: V? = null
 
     //绑定View
     fun attachView(view: V) {

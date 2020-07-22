@@ -12,4 +12,6 @@ class BaseListResponse<T>(
     val data: MutableList<T>?
 ) : Serializable {
     fun isSuccess(): Boolean = code == 200
+    fun isTokenOut(): Boolean = code == -111  //登录失效，假设code是-111
+    fun getMessage(): String = msg
 }

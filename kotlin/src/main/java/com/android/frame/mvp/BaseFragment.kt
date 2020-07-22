@@ -17,6 +17,7 @@ import com.android.base.BaseApplication
 import com.android.basicproject.R
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog
 import com.android.frame.mvp.extra.NetReceiver
+import com.android.util.NetworkUtil
 import com.android.util.ToastUtil
 import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
@@ -37,8 +38,10 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
 
     //加载框
     private var mLoadingDialog: LoadingDialog? = null
+
     //通用的下拉刷新组件，需在布局文件中固定id名为swipe_refresh_layout
     protected var mSwipeRefreshLayout: SwipeRefreshLayout? = null
+
     //通用的RecyclerView组件，需在布局文件中固定id名为R.id.recycler_view
     protected var mRecyclerView: RecyclerView? = null
 
@@ -181,15 +184,12 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
         }
     }
 
-    //显示网络错误提示布局
-    override fun showNetErrorLayout(isShow: Boolean) {
-        //如果当前布局文件中不包含layout_net_error则netErrorFl为null，此时不执行下面的逻辑
-        activity?.runOnUiThread {
-            mNetErrorFl?.visibility = if (isShow) View.VISIBLE else View.GONE
-        }
+    //数据加载失败
+    override fun loadFail() {
+        showNetErrorLayout()
     }
 
-    //完成数据加载，收起下拉刷新组件SwipeRefreshLayout的刷新头部
+    //数据加载完成，收起下拉刷新组件SwipeRefreshLayout的刷新头部
     override fun loadFinish() {
         //如果布局文件中不包含id为swipe_refresh_layout的控件，则swipeRefreshLayout为null
         activity?.runOnUiThread {
@@ -218,6 +218,15 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
     override fun onRefresh() {
         mPresenter?.loadData()  //重新加载数据
         dismissLoading()  //下拉时就不显示加载框了
+    }
+
+    //网络断开连接提示
+    fun showNetErrorLayout() {
+        //如果当前布局文件中不包含layout_net_error则netErrorFl为null，此时不执行下面的逻辑
+        activity?.runOnUiThread {
+            mNetErrorFl?.visibility =
+                if (NetworkUtil.isConnected(activity!!)) View.GONE else View.VISIBLE
+        }
     }
 
     //启动指定的Activity
@@ -259,8 +268,8 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
         mNetReceiver = NetReceiver()
         context?.registerReceiver(mNetReceiver, filter)
-        mNetReceiver!!.setOnNetChangeListener { isConnected ->
-            showNetErrorLayout(!isConnected)
+        mNetReceiver!!.setOnNetChangeListener {
+            showNetErrorLayout()
         }
     }
 

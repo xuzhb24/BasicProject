@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import com.android.basicproject.R
 import com.android.frame.mvp.AATest.bean.WeatherBeanMvp
-import com.android.frame.mvp.BaseCompatActivity
+import com.android.frame.mvp.BaseActivity
 import com.android.util.regex.RegexUtil
 import kotlinx.android.synthetic.main.activity_weather.*
 
@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_weather.*
  * Created by xuzhb on 2020/1/4
  * Desc:
  */
-class WeatherActivity : BaseCompatActivity<WeatherView, WeatherPresenter>(), WeatherView {
+class WeatherActivity : BaseActivity<WeatherView, WeatherPresenter>(), WeatherView {
 
     override fun handleView(savedInstanceState: Bundle?) {
         mPresenter?.getWeatherInfo("深圳")
@@ -31,7 +31,7 @@ class WeatherActivity : BaseCompatActivity<WeatherView, WeatherPresenter>(), Wea
 
     override fun getLayoutId(): Int = R.layout.activity_weather
 
-    override fun getPresenter(): WeatherPresenter = WeatherPresenter(this)
+    override fun getPresenter(): WeatherPresenter = WeatherPresenter()
 
     override fun showData(bean: WeatherBeanMvp) {
         val list = bean.forecast

@@ -5,7 +5,7 @@ import android.widget.ImageView
 import com.android.base.BaseApplication
 import com.android.basicproject.R
 import com.android.frame.mvp.AATest.bean.NewsListBeanMvp
-import com.android.widget.RecyclerView.BaseAdapter
+import com.android.widget.RecyclerView.LoadMoreAdapter
 import com.android.widget.RecyclerView.ViewHolder
 import com.bumptech.glide.Glide
 
@@ -14,7 +14,7 @@ import com.bumptech.glide.Glide
  * Desc:
  */
 class NewsListAdapter(context: Context, list: MutableList<NewsListBeanMvp>) :
-    BaseAdapter<NewsListBeanMvp>(context, list, R.layout.item_test_load_more) {
+    LoadMoreAdapter<NewsListBeanMvp>(context, list, R.layout.item_test_load_more) {
     override fun bindData(holder: ViewHolder, data: NewsListBeanMvp, position: Int) {
         val imageIv: ImageView = holder.getView(R.id.image_iv)!!
         Glide.with(BaseApplication.instance).load(data.image).into(imageIv)

@@ -22,10 +22,10 @@ interface IBaseView {
      */
     fun showToast(text: CharSequence, isCenter: Boolean = true, longToast: Boolean = false)
 
-    //显示网络错误提示布局，isShow为true表示显示，false表示隐藏
-    fun showNetErrorLayout(isShow: Boolean)
+    //数据加载失败
+    fun loadFail()
 
-    //完成数据加载，收起下拉刷新组件SwipeRefreshLayout的刷新头部
+    //数据加载完成，收起下拉刷新组件SwipeRefreshLayout的刷新头部
     fun loadFinish()
 
     //跳转到登录界面
