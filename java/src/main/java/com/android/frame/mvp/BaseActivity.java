@@ -16,10 +16,10 @@ import com.android.base.BaseApplication;
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
 import com.android.frame.mvp.extra.NetReceiver;
 import com.android.java.R;
+import com.android.util.NetworkUtil;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.widget.TitleBar;
-import com.google.gson.Gson;
 
 import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
@@ -27,12 +27,11 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * Created by xuzhb on 2020/1/5
- * Desc:基类Activity(MVP)
+ * Desc:基类Activity
  */
-public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePresenter<V>> extends AppCompatActivity
+public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<V>> extends AppCompatActivity
         implements IBaseView, SwipeRefreshLayout.OnRefreshListener {
 
-    protected Gson mGson = new Gson();
     protected P mPresenter;
 
     //防止RxJava内存泄漏
@@ -181,17 +180,13 @@ public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePres
         });
     }
 
-    //显示网络错误提示布局
+    //数据加载失败
     @Override
-    public void showNetErrorLayout(boolean isShow) {
-        runOnUiThread(() -> {
-            if (mNetErrorFl != null) {
-                mNetErrorFl.setVisibility(isShow ? View.VISIBLE : View.GONE);
-            }
-        });
+    public void loadFail() {
+        showNetErrorLayout();
     }
 
-    //完成数据加载，收起下拉刷新组件SwipeRefreshLayout的刷新头部
+    //数据加载完成，收起下拉刷新组件SwipeRefreshLayout的刷新头部
     @Override
     public void loadFinish() {
         //如果布局文件中不包含id为swipe_refresh_layout的控件，则swipeRefreshLayout为null
@@ -222,6 +217,15 @@ public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePres
     public void onRefresh() {
         mPresenter.loadData();  //重新加载数据
         dismissLoading();  //下拉时就不显示加载框了
+    }
+
+    //网络断开连接提示
+    public void showNetErrorLayout() {
+        runOnUiThread(() -> {
+            if (mNetErrorFl != null) {
+                mNetErrorFl.setVisibility(NetworkUtil.isConnected(getApplicationContext()) ? View.GONE : View.VISIBLE);
+            }
+        });
     }
 
     //启动指定的Activity
@@ -266,7 +270,7 @@ public abstract class BaseCompatActivity<V extends IBaseView, P extends BasePres
         mNetReceiver = new NetReceiver();
         registerReceiver(mNetReceiver, filter);
         mNetReceiver.setOnNetChangeListener(isConnected -> {
-            showNetErrorLayout(!isConnected);
+            showNetErrorLayout();
         });
     }
 

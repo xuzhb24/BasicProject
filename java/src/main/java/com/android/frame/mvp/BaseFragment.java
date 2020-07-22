@@ -20,6 +20,7 @@ import com.android.base.BaseApplication;
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
 import com.android.frame.mvp.extra.NetReceiver;
 import com.android.java.R;
+import com.android.util.NetworkUtil;
 import com.android.util.ToastUtil;
 import com.google.gson.Gson;
 
@@ -30,7 +31,7 @@ import io.reactivex.disposables.Disposable;
 
 /**
  * Created by xuzhb on 2020/1/5
- * Desc:基类Fragment(MVP)
+ * Desc:基类Fragment
  */
 public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<V>> extends Fragment
         implements IBaseView, SwipeRefreshLayout.OnRefreshListener {
@@ -214,16 +215,10 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
         }
     }
 
-    //显示网络错误提示布局
+    //数据加载失败
     @Override
-    public void showNetErrorLayout(boolean isShow) {
-        if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> {
-                if (mNetErrorFl != null) {
-                    mNetErrorFl.setVisibility(isShow ? View.VISIBLE : View.GONE);
-                }
-            });
-        }
+    public void loadFail() {
+        showNetErrorLayout();
     }
 
     //完成数据加载，收起下拉刷新组件SwipeRefreshLayout的刷新头部
@@ -259,6 +254,17 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
     public void onRefresh() {
         mPresenter.loadData();  //重新加载数据
         dismissLoading();  //下拉时就不显示加载框了
+    }
+
+    //网络断开连接提示
+    public void showNetErrorLayout() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (mNetErrorFl != null) {
+                    mNetErrorFl.setVisibility(NetworkUtil.isConnected(getActivity()) ? View.GONE : View.VISIBLE);
+                }
+            });
+        }
     }
 
     //启动指定的Activity
@@ -309,7 +315,7 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
             getContext().registerReceiver(mNetReceiver, filter);
         }
         mNetReceiver.setOnNetChangeListener(isConnected -> {
-            showNetErrorLayout(!isConnected);
+            showNetErrorLayout();
         });
     }
 

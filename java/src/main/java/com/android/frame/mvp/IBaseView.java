@@ -14,7 +14,7 @@ public interface IBaseView {
     //显示加载框，表示正在加载数据，cancelable表示是否可由用户取消，默认不可以
     void showLoading(String message, boolean cancelable);
 
-    ////取消加载框
+    //取消加载框
     void dismissLoading();
 
     //显示Toast
@@ -28,10 +28,10 @@ public interface IBaseView {
      */
     void showToast(CharSequence text, boolean isCenter, boolean longToast);
 
-    //显示网络错误提示布局，isShow为true表示显示，false表示隐藏
-    void showNetErrorLayout(boolean isShow);
+    //数据加载失败
+    void loadFail();
 
-    //完成数据加载，收起下拉刷新组件SwipeRefreshLayout的刷新头部
+    //数据加载完成，收起下拉刷新组件SwipeRefreshLayout的刷新头部
     void loadFinish();
 
     //跳转到登录界面

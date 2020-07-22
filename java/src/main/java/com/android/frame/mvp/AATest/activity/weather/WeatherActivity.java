@@ -5,7 +5,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.android.frame.mvp.AATest.bean.WeatherBeanMvp;
-import com.android.frame.mvp.BaseCompatActivity;
+import com.android.frame.mvp.BaseActivity;
 import com.android.java.R;
 import com.android.util.regex.RegexUtil;
 import com.android.widget.InputLayout;
@@ -19,7 +19,7 @@ import butterknife.OnClick;
  * Created by xuzhb on 2020/1/8
  * Desc:
  */
-public class WeatherActivity extends BaseCompatActivity<WeatherView, WeatherPresenter> implements WeatherView {
+public class WeatherActivity extends BaseActivity<WeatherView, WeatherPresenter> implements WeatherView {
 
     @BindView(R.id.area_il)
     InputLayout areaIl;

@@ -6,7 +6,7 @@ package com.android.frame.mvp;
  */
 public class BasePresenter<V extends IBaseView> {
 
-    private V mView;
+    protected V mView;
 
     //绑定View
     public void attachView(V view) {

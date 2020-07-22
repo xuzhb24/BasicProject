@@ -40,4 +40,12 @@ public class BaseResponse<T> implements Serializable {
         return this.code == 200;
     }
 
+    public boolean isTokenOut() {  //登录失效
+        return this.code == -111;  //这里假设code是-111
+    }
+
+    public String getMessage() {
+        return msg;
+    }
+
 }

@@ -1,15 +1,14 @@
 package com.android.frame.mvp.extra;
 
-import com.android.base.BaseApplication;
 import com.android.frame.http.ExceptionUtil;
 import com.android.frame.http.model.BaseListResponse;
 import com.android.frame.http.model.BaseResponse;
 import com.android.frame.mvp.IBaseView;
-import com.android.util.NetworkUtil;
-import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 
 import java.lang.ref.WeakReference;
+
+import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by xuzhb on 2020/1/5
@@ -65,20 +64,20 @@ public abstract class CustomObserver<T> implements Observer<T> {
             if (response.isSuccess()) {
                 onSuccess(t);
             } else {
-                if (response.getCode() == -1001) {  //登录失效（假设code是-1001）
+                if (response.isTokenOut()) {  //登录失效
                     view.gotoLogin();
                 }
-                onFailure(view, response.getMsg(), false, t);
+                onFailure(view, response.getMessage(), false, t);
             }
         } else if (t instanceof BaseListResponse) {
             BaseListResponse response = (BaseListResponse) t;
             if (response.isSuccess()) {
                 onSuccess(t);
             } else {
-                if (response.getCode() == -1001) {  //登录失效（假设code是-1001）
+                if (response.isTokenOut()) {  //登录失效（假设code是-1001）
                     view.gotoLogin();
                 }
-                onFailure(view, response.getMsg(), false, t);
+                onFailure(view, response.getMessage(), false, t);
             }
         }
     }
@@ -86,7 +85,7 @@ public abstract class CustomObserver<T> implements Observer<T> {
     @Override
     public void onError(Throwable e) {
         e.printStackTrace();
-        observerEnd();
+        observerEnd(true);
         IBaseView view = mWeakReference.get();
         String msg = ExceptionUtil.convertExceptopn(e);
         onFailure(view, msg, true, null);
@@ -94,16 +93,18 @@ public abstract class CustomObserver<T> implements Observer<T> {
 
     @Override
     public void onComplete() {
-        observerEnd();
+        observerEnd(false);
     }
 
-    private void observerEnd() {
+    private void observerEnd(boolean isError) {
         IBaseView view = mWeakReference.get();
         if (view != null) {
             if (mShowLoading) {
                 view.dismissLoading();
             }
-            view.showNetErrorLayout(!NetworkUtil.isConnected(BaseApplication.getInstance()));
+            if (isError) {
+                view.loadFail();
+            }
             view.loadFinish();  //结束数据加载，收起SwipeRefreshLayout的刷新头部
         }
     }
