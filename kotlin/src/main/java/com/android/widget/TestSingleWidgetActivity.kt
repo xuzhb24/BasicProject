@@ -42,10 +42,10 @@ class TestSingleWidgetActivity : BaseActivity() {
             LoadingDialog(this).show()
         }
         loading_btn2.setOnClickListener {
-            LoadingDialog(this, "加载中...").show()
+            LoadingDialog(this).show("加载中...")
         }
         loading_btn3.setOnClickListener {
-            LoadingDialog(this, "", false).show()
+            LoadingDialog(this).show("", false)
         }
         //密码输入框
         with(password_edittext) {

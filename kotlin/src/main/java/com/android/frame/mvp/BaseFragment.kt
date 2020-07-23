@@ -16,10 +16,9 @@ import android.widget.FrameLayout
 import com.android.base.BaseApplication
 import com.android.basicproject.R
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog
-import com.android.frame.mvp.extra.NetReceiver
+import com.android.util.NetReceiver
 import com.android.util.NetworkUtil
 import com.android.util.ToastUtil
-import com.google.gson.Gson
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
@@ -30,7 +29,6 @@ import io.reactivex.disposables.Disposable
 abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), IBaseView,
     SwipeRefreshLayout.OnRefreshListener {
 
-    protected val mGson = Gson()
     protected var mPresenter: P? = null
 
     //防止RxJava内存泄漏
@@ -38,10 +36,8 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
 
     //加载框
     private var mLoadingDialog: LoadingDialog? = null
-
     //通用的下拉刷新组件，需在布局文件中固定id名为swipe_refresh_layout
     protected var mSwipeRefreshLayout: SwipeRefreshLayout? = null
-
     //通用的RecyclerView组件，需在布局文件中固定id名为R.id.recycler_view
     protected var mRecyclerView: RecyclerView? = null
 

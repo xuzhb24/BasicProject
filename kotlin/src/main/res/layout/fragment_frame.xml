@@ -57,10 +57,10 @@
                 android:text="MVP框架" />
 
             <TextView
-                android:id="@+id/viewbinding_tv"
+                android:id="@+id/mvc_tv"
                 style="@style/ItemSingleTextStyle"
                 android:layout_marginTop="10dp"
-                android:text="ViewBinding" />
+                android:text="MVC框架" />
 
             <TextView
                 style="@style/ItemTitleTextStyle"

@@ -12,25 +12,28 @@ import com.android.basicproject.R
  * Desc:加载框
  */
 class LoadingDialog @JvmOverloads constructor(
-    context: Context,
-    private val mMessage: String? = null,
-    private val mCancelable: Boolean = true
-) : Dialog(context, R.style.LoadingDialogStyle) {
+    context: Context, themeStyle: Int = R.style.LoadingDialogStyle
+) : Dialog(context, themeStyle) {
 
     init {
         setContentView(R.layout.dialog_loading)
+    }
+
+    //显示加载框，默认可取消
+    fun show(message: CharSequence, cancelable: Boolean = true) {
         with(findViewById<TextView>(R.id.loading_tv)) {
-            if (TextUtils.isEmpty(mMessage)) {
+            if (TextUtils.isEmpty(message)) {
                 visibility = View.GONE
             } else {
                 visibility = View.VISIBLE
-                text = mMessage
+                text = message
             }
         }
         //点击对话框外的部分不消失
-        setCanceledOnTouchOutside(mCancelable)
+        setCanceledOnTouchOutside(cancelable)
         //点击或按返回键时是否消失
-        setCancelable(mCancelable)
+        setCancelable(cancelable)
+        show()
     }
 
 }
