@@ -2,28 +2,53 @@ package com.android.frame.mvc.viewBinding;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.viewbinding.ViewBinding;
+import android.widget.FrameLayout;
 
 import com.android.base.BaseApplication;
+import com.android.java.R;
+import com.android.util.NetReceiver;
+import com.android.util.NetworkUtil;
 import com.android.util.ToastUtil;
-import com.google.gson.Gson;
+import com.android.widget.LoadingDialog;
+
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by xuzhb on 2020/4/13
  * Desc:基类Fragment(MVC结合ViewBinding)
  */
-public abstract class BaseFragment_VB<VB extends ViewBinding> extends Fragment {
+public abstract class BaseFragment_VB<VB extends ViewBinding> extends Fragment
+        implements IBaseView, SwipeRefreshLayout.OnRefreshListener {
 
-    protected Gson gson = new Gson();
     protected VB binding;
+
+    //防止RxJava内存泄漏
+    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+
+    //加载框
+    private LoadingDialog mLoadingDialog;
+    //通用的下拉刷新组件，需在布局文件中固定id名为swipe_refresh_layout
+    private SwipeRefreshLayout mSwipeRefreshLayout;
+    //通用的RecyclerView组件，需在布局文件中固定id名为R.id.recycler_view
+    protected RecyclerView mRecyclerView;
+
+    //网路异常的布局
+    private FrameLayout mNetErrorFl;
+    private NetReceiver mNetReceiver;
 
     protected FragmentActivity mActivity;
     protected Context mContext;
@@ -55,7 +80,27 @@ public abstract class BaseFragment_VB<VB extends ViewBinding> extends Fragment {
         if (binding == null) {
             binding = getViewBinding(inflater, container);
         }
+        initBaseView();
+        initNetReceiver();
         return binding.getRoot();
+    }
+
+    //初始化一些通用控件，如加载框、SwipeRefreshLayout、网络错误提示布局
+    protected void initBaseView() {
+        mLoadingDialog = new LoadingDialog(getContext(), R.style.LoadingDialogStyle);
+        //获取布局中的SwipeRefreshLayout组件，重用BaseCompatActivity的下拉刷新逻辑
+        //注意布局中SwipeRefreshLayout的id命名为swipe_refresh_layout，否则mSwipeRefreshLayout为null
+        //如果SwipeRefreshLayout里面只包含RecyclerView，可引用<include layout="@layout/layout_recycler_view" />
+        mSwipeRefreshLayout = binding.getRoot().findViewById(R.id.swipe_refresh_layout);
+        //如果当前布局文件不包含id为swipe_refresh_layout的组件则不执行下面的逻辑
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setOnRefreshListener(this);
+            mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        }
+        //获取布局中的RecyclerView组件，注意布局中RecyclerView的id命名为recycler_view，否则mRecyclerView为null
+        mRecyclerView = mRecyclerView.findViewById(R.id.recycler_view);
+        //在当前布局的合适位置引用<include layout="@layout/layout_net_error" />，则当网络出现错误时会进行相应的提示
+        mNetErrorFl = binding.getRoot().findViewById(R.id.net_error_fl);
     }
 
     @Override
@@ -74,6 +119,11 @@ public abstract class BaseFragment_VB<VB extends ViewBinding> extends Fragment {
     //获取ViewBinding
     public abstract VB getViewBinding(LayoutInflater inflater, ViewGroup container);
 
+    //下拉刷新
+    public void refreshData() {
+
+    }
+
     //页面可见且布局不为null时回调
     protected void onVisible() {
 
@@ -84,16 +134,105 @@ public abstract class BaseFragment_VB<VB extends ViewBinding> extends Fragment {
 
     }
 
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unregisterNetReceiver();
+        //销毁加载框
+        mLoadingDialog.dismiss();
+        mLoadingDialog = null;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        //取消所有正在执行的订阅
+        mCompositeDisposable.clear();
+    }
+
+    @Override
+    public void showLoading() {
+        showLoading("", false);
+    }
+
+    //显示加载框
+    @Override
+    public void showLoading(String message, boolean cancelable) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> mLoadingDialog.show(message, cancelable));
+        }
+    }
+
+    //取消加载框
+    @Override
+    public void dismissLoading() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> mLoadingDialog.dismiss());
+        }
+    }
+
     //显示Toast
+    @Override
     public void showToast(CharSequence text) {
         showToast(text, true, false);
     }
 
     //显示Toast
+    @Override
     public void showToast(CharSequence text, boolean isCenter, boolean longToast) {
         if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> ToastUtil.showToast(text, getActivity().getApplicationContext(), isCenter, longToast));
+        }
+    }
+
+    //数据加载失败
+    @Override
+    public void loadFail() {
+        showNetErrorLayout();
+    }
+
+    //完成数据加载，收起下拉刷新组件SwipeRefreshLayout的刷新头部
+    @Override
+    public void loadFinish() {
+        if (getActivity() != null) {
+            //如果布局文件中不包含id为swipe_refresh_layout的控件，则swipeRefreshLayout为null
             getActivity().runOnUiThread(() -> {
-                ToastUtil.showToast(text, getActivity().getApplicationContext(), isCenter, longToast);
+                if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+            });
+        }
+    }
+
+    //跳转到登录界面
+    @Override
+    public void gotoLogin() {
+        BaseApplication.getInstance().finishAllActivities();
+        Intent intent = new Intent();
+        intent.setAction("登录页的action");
+        startActivity(intent);
+    }
+
+    //RxJava建立订阅关系，方便Activity销毁时取消订阅关系防止内存泄漏
+    @Override
+    public void addDisposable(Disposable d) {
+        mCompositeDisposable.add(d);
+    }
+
+    //下拉刷新
+    @Override
+    public void onRefresh() {
+        refreshData();     //重新加载数据
+        dismissLoading();  //下拉时就不显示加载框了
+    }
+
+    //网络断开连接提示
+    public void showNetErrorLayout() {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (mNetErrorFl != null) {
+                    mNetErrorFl.setVisibility(NetworkUtil.isConnected(getActivity()) ? View.GONE : View.VISIBLE);
+                }
             });
         }
     }
@@ -132,12 +271,33 @@ public abstract class BaseFragment_VB<VB extends ViewBinding> extends Fragment {
         }
     }
 
-    //跳转到登录界面
-    protected void gotoLogin() {
-        BaseApplication.getInstance().finishAllActivities();
-        Intent intent = new Intent();
-        intent.setAction("登录页的action");
-        startActivity(intent);
+    //注册广播动态监听网络变化
+    private void initNetReceiver() {
+        //如果不含有layout_net_error，则不注册广播
+        if (mNetErrorFl == null) {
+            return;
+        }
+        //动态注册，Android 7.0之后取消了静态注册方式
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION);
+        mNetReceiver = new NetReceiver();
+        if (getContext() != null) {
+            getContext().registerReceiver(mNetReceiver, filter);
+        }
+        mNetReceiver.setOnNetChangeListener(isConnected -> {
+            showNetErrorLayout();
+        });
+    }
+
+    //注销广播
+    private void unregisterNetReceiver() {
+        if (mNetErrorFl == null) {
+            return;
+        }
+        if (getContext() != null) {
+            getContext().unregisterReceiver(mNetReceiver);
+        }
+        mNetReceiver = null;
     }
 
 }

@@ -18,11 +18,10 @@ import android.widget.FrameLayout;
 
 import com.android.base.BaseApplication;
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
-import com.android.frame.mvp.extra.NetReceiver;
+import com.android.util.NetReceiver;
 import com.android.java.R;
 import com.android.util.NetworkUtil;
 import com.android.util.ToastUtil;
-import com.google.gson.Gson;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
@@ -36,7 +35,6 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<V>> extends Fragment
         implements IBaseView, SwipeRefreshLayout.OnRefreshListener {
 
-    protected Gson mGson = new Gson();
     protected P mPresenter;
 
     //防止RxJava内存泄漏
@@ -183,9 +181,7 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
     @Override
     public void showLoading(String message, boolean cancelable) {
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> {
-                mLoadingDialog.show(message, cancelable);
-            });
+            getActivity().runOnUiThread(() -> mLoadingDialog.show(message, cancelable));
         }
     }
 
@@ -193,9 +189,7 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
     @Override
     public void dismissLoading() {
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> {
-                mLoadingDialog.dismiss();
-            });
+            getActivity().runOnUiThread(() -> mLoadingDialog.dismiss());
         }
     }
 
@@ -209,9 +203,7 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
     @Override
     public void showToast(CharSequence text, boolean isCenter, boolean longToast) {
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> {
-                ToastUtil.showToast(text, getActivity().getApplicationContext(), isCenter, longToast);
-            });
+            getActivity().runOnUiThread(() -> ToastUtil.showToast(text, getActivity().getApplicationContext(), isCenter, longToast));
         }
     }
 

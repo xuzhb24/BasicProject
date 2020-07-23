@@ -29,12 +29,12 @@ public class TestSingleWidgetActivity extends BaseActivity_VB<ActivityTestSingle
             dialog.show();
         });
         binding.loadingBtn2.setOnClickListener(v -> {
-            LoadingDialog dialog = new LoadingDialog(this, "加载中...");
-            dialog.show();
+            LoadingDialog dialog = new LoadingDialog(this);
+            dialog.show("加载中...");
         });
         binding.loadingBtn3.setOnClickListener(v -> {
-            LoadingDialog dialog = new LoadingDialog(this, null, false);
-            dialog.show();
+            LoadingDialog dialog = new LoadingDialog(this);
+            dialog.show(null, false);
         });
         //密码输入框
         binding.passwordEdittext.setOnTextChangeListener(text -> binding.petTv.setText(text));

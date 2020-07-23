@@ -7,7 +7,7 @@ import com.android.frame.TestLeakActivity;
 import com.android.frame.guide.GuideActivity;
 import com.android.frame.http.AATest.TestRetrofitActivity;
 import com.android.frame.mvc.BaseFragment;
-import com.android.frame.mvc.viewBinding.AATest.TestViewBindingActivity;
+import com.android.frame.mvc.viewBinding.AATest.TestMvcActivity;
 import com.android.frame.mvp.AATest.activity.TestMvpActivity;
 import com.android.java.R;
 import com.android.widget.TitleBar;
@@ -44,7 +44,7 @@ public class FrameFragment extends BaseFragment {
     }
 
     @OnClick({R.id.leak_tv, R.id.orignal_permission_tv, R.id.easy_permission_tv, R.id.retrofit_tv,
-            R.id.mvp_tv, R.id.viewbinding_tv, R.id.guide_tv})
+            R.id.mvp_tv, R.id.mvc_tv, R.id.guide_tv})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.leak_tv:
@@ -60,8 +60,8 @@ public class FrameFragment extends BaseFragment {
             case R.id.mvp_tv:
                 startActivity(TestMvpActivity.class);
                 break;
-            case R.id.viewbinding_tv:
-                startActivity(TestViewBindingActivity.class);
+            case R.id.mvc_tv:
+                startActivity(TestMvcActivity.class);
                 break;
             case R.id.guide_tv:
                 startActivity(GuideActivity.class);

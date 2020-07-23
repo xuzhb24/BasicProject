@@ -2,7 +2,6 @@ package com.android.widget;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
@@ -15,39 +14,36 @@ import com.android.java.R;
  */
 public class LoadingDialog extends Dialog {
 
-    private String mMessage;
-    private boolean mCancelable;
-
     private TextView mLoadingTv;
 
-    public LoadingDialog(@NonNull Context context) {
-        this(context, null);
+    public LoadingDialog(Context context) {
+        this(context, R.style.LoadingDialogStyle);
     }
 
-    public LoadingDialog(@NonNull Context context, String message) {
-        this(context, message, true);
-    }
-
-    public LoadingDialog(@NonNull Context context, String message, boolean cancelable) {
-        super(context, R.style.LoadingDialogStyle);
-        this.mMessage = message;
-        this.mCancelable = cancelable;
-        initView();
-    }
-
-    private void initView() {
+    public LoadingDialog(Context context, int themeResId) {
+        super(context, themeResId);
         setContentView(R.layout.dialog_loading);
         mLoadingTv = findViewById(R.id.loading_tv);
-        if (TextUtils.isEmpty(mMessage)) {
+    }
+
+    //显示加载框，默认可取消
+    public void show(CharSequence message) {
+        show(message, true);
+    }
+
+    //显示加载框
+    public void show(CharSequence message, boolean cancelable) {
+        if (TextUtils.isEmpty(message)) {
             mLoadingTv.setVisibility(View.GONE);
         } else {
             mLoadingTv.setVisibility(View.VISIBLE);
-            mLoadingTv.setText(mMessage);
+            mLoadingTv.setText(message);
         }
         //点击对话框外的部分不消失
-        setCanceledOnTouchOutside(mCancelable);
+        setCanceledOnTouchOutside(cancelable);
         //点击或按返回键时是否消失
-        setCancelable(mCancelable);
+        setCancelable(cancelable);
+        show();
     }
 
 }

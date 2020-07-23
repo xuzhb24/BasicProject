@@ -14,7 +14,7 @@ import android.widget.FrameLayout;
 
 import com.android.base.BaseApplication;
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
-import com.android.frame.mvp.extra.NetReceiver;
+import com.android.util.NetReceiver;
 import com.android.java.R;
 import com.android.util.NetworkUtil;
 import com.android.util.StatusBar.StatusBarUtil;
@@ -153,17 +153,13 @@ public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<
     //显示加载框
     @Override
     public void showLoading(String message, boolean cancelable) {
-        runOnUiThread(() -> {
-            mLoadingDialog.show(message, cancelable);
-        });
+        runOnUiThread(() -> mLoadingDialog.show(message, cancelable));
     }
 
     //取消加载框
     @Override
     public void dismissLoading() {
-        runOnUiThread(() -> {
-            mLoadingDialog.dismiss();
-        });
+        runOnUiThread(() -> mLoadingDialog.dismiss());
     }
 
     //显示Toast
@@ -175,9 +171,7 @@ public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<
     //显示Toast
     @Override
     public void showToast(CharSequence text, boolean isCenter, boolean longToast) {
-        runOnUiThread(() -> {
-            ToastUtil.showToast(text, getApplicationContext(), isCenter, longToast);
-        });
+        runOnUiThread(() -> ToastUtil.showToast(text, getApplicationContext(), isCenter, longToast));
     }
 
     //数据加载失败

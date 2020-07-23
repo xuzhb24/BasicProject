@@ -1,10 +1,9 @@
-package com.android.frame.mvp.extra;
+package com.android.util;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
-import com.android.util.NetworkUtil;
 
 /**
  * Created by xuzhb on 2020/1/5

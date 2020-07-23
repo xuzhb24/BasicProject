@@ -63,10 +63,12 @@
         <activity android:name="com.android.frame.mvp.AATest.activity.TestMvpActivity" />
         <activity android:name="com.android.frame.mvp.AATest.activity.weather.WeatherActivity" />
         <activity android:name="com.android.frame.mvp.AATest.activity.newslist.NewsListActivity" />
+        <!--MVC框架-->
+        <activity android:name="com.android.frame.mvc.viewBinding.AATest.TestMvcActivity" />
+        <activity android:name="com.android.frame.mvc.viewBinding.AATest.WeatherActivity" />
+        <activity android:name="com.android.frame.mvc.viewBinding.AATest.NewsListActivity" />
         <!--通用WebView-->
         <activity android:name="com.android.frame.WebView.CommonWebviewActivity" />
-        <!--测试ViewBinding-->
-        <activity android:name="com.android.frame.mvc.viewBinding.AATest.TestViewBindingActivity" />
         <!--引导页-->
         <activity android:name="com.android.frame.guide.GuideActivity" />
 
