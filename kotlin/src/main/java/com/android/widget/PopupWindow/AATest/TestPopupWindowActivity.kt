@@ -1,10 +1,10 @@
 package com.android.widget.PopupWindow.AATest
 
 import android.os.Bundle
-import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.RecyclerView
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil

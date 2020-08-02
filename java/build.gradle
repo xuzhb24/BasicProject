@@ -21,7 +21,7 @@ android {
         multiDexEnabled true
         versionCode 100002
         versionName "1.0.0(002)"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
     }
 
     buildTypes {
@@ -65,21 +65,21 @@ android {
         targetCompatibility JavaVersion.VERSION_1_8
     }
 
-    //视图绑定
-    viewBinding {
-        enabled = true
+    buildFeatures{
+        viewBinding = true  //视图绑定
     }
+
 }
 
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':universal')
     testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "com.android.support.test:runner:$test_runner_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$test_espresso_version"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     //leakcanary检测内存泄漏
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
     //butterknife
-    implementation 'com.jakewharton:butterknife:8.8.1'
-    annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
+    implementation 'com.jakewharton:butterknife:10.0.0'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
 }

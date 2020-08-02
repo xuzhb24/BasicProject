@@ -3,17 +3,17 @@ package com.android.frame.mvc;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
-import com.android.base.BaseApplication;
-import com.android.util.ExtraUtil;
 
 /**
  * Created by xuzhb on 2019/10/19
@@ -50,7 +50,6 @@ public abstract class BaseFragment extends Fragment {
         initBar();
         handleView(savedInstanceState);
         initListener();
-        ExtraUtil.getTopActivityName(mActivity);
     }
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等

@@ -3,8 +3,8 @@ package com.android.widget
 import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
-import android.support.v4.view.ViewPager
 import android.widget.ImageView
+import androidx.viewpager.widget.ViewPager
 import com.android.basicproject.R
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil

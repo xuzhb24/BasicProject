@@ -4,20 +4,19 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
-import android.viewbinding.ViewBinding
 import android.widget.FrameLayout
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewbinding.ViewBinding
 import com.android.base.BaseApplication
+import com.android.basicproject.BuildConfig
 import com.android.basicproject.R
-import com.android.util.NetReceiver
-import com.android.util.NetworkUtil
+import com.android.util.*
 import com.android.util.StatusBar.StatusBarUtil
-import com.android.util.ToastUtil
-import com.android.util.getTopActivityName
 import com.android.widget.LoadingDialog
 import com.android.widget.TitleBar
 import io.reactivex.disposables.CompositeDisposable
@@ -37,10 +36,13 @@ abstract class BaseActivity_VB<VB : ViewBinding> : AppCompatActivity(),
 
     //加载框
     private var mLoadingDialog: LoadingDialog? = null
+
     //标题栏，需在布局文件中固定id名为title_bar
     protected var mTitleBar: TitleBar? = null;
+
     //通用的下拉刷新组件，需在布局文件中固定id名为swipe_refresh_layout
     protected var mSwipeRefreshLayout: SwipeRefreshLayout? = null
+
     //通用的RecyclerView组件，需在布局文件中固定id名为R.id.recycler_view
     protected var mRecyclerView: RecyclerView? = null
 
@@ -58,7 +60,6 @@ abstract class BaseActivity_VB<VB : ViewBinding> : AppCompatActivity(),
         initNetReceiver()
         handleView(savedInstanceState)
         initListener()
-        getTopActivityName(this)
     }
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
@@ -240,4 +241,20 @@ abstract class BaseActivity_VB<VB : ViewBinding> : AppCompatActivity(),
         mNetReceiver = null
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        ev?.let {
+            //屏幕顶部中间区域连续点击2次获取当前Activity包名和类名，只在debug环境下有效
+            if (BuildConfig.DEBUG && it.action == MotionEvent.ACTION_DOWN &&
+                it.rawY < SizeUtil.dp2px(50f) && it.rawX > SizeUtil.dp2px(80f) &&
+                it.rawX < ScreenUtil.getScreenWidth(this) - SizeUtil.dp2px(80f)
+            ) {
+                CheckFastClickUtil.setOnMultiClickListener {
+                    if (it == 2) {
+                        getTopActivityName(this)
+                    }
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
 }

@@ -3,13 +3,14 @@ package com.android.frame.mvc
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v7.app.AppCompatActivity
+import android.view.MotionEvent
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import com.android.base.BaseApplication
+import com.android.basicproject.BuildConfig
 import com.android.basicproject.R
+import com.android.util.*
 import com.android.util.StatusBar.StatusBarUtil
-import com.android.util.ToastUtil
-import com.android.util.getTopActivityName
 import com.android.widget.TitleBar
 
 /**
@@ -24,7 +25,6 @@ abstract class BaseActivity : AppCompatActivity() {
         initBar()
         handleView(savedInstanceState)
         initListener()
-        getTopActivityName(this)
     }
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
@@ -65,4 +65,20 @@ abstract class BaseActivity : AppCompatActivity() {
         }
     }
 
+    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
+        ev?.let {
+            //屏幕顶部中间区域连续点击2次获取当前Activity包名和类名，只在debug环境下有效
+            if (BuildConfig.DEBUG && it.action == MotionEvent.ACTION_DOWN &&
+                it.rawY < SizeUtil.dp2px(50f) && it.rawX > SizeUtil.dp2px(80f) &&
+                it.rawX < ScreenUtil.getScreenWidth(this) - SizeUtil.dp2px(80f)
+            ) {
+                CheckFastClickUtil.setOnMultiClickListener {
+                    if (it == 2) {
+                        getTopActivityName(this)
+                    }
+                }
+            }
+        }
+        return super.dispatchTouchEvent(ev)
+    }
 }

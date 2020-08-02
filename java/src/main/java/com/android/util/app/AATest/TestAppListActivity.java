@@ -2,16 +2,15 @@ package com.android.util.app.AATest;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.widget.RecyclerView;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.view.ViewGroup;
-import butterknife.BindView;
-import com.android.frame.mvc.BaseActivity;
+
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.android.frame.mvp.CommonBaseActivity;
-import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
 import com.android.java.R;
 import com.android.util.ExtraUtil;
 import com.android.util.IntentUtil;
@@ -24,6 +23,8 @@ import com.android.widget.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
 
 /**
  * Created by xuzhb on 2020/2/5

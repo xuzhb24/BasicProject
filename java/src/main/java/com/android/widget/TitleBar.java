@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import com.android.java.R;
 import com.android.util.SizeUtil;
 
@@ -29,23 +30,23 @@ public class TitleBar extends FrameLayout {
     private static final int DEFAULT_TEXT_COLOR = Color.WHITE;                         //默认中间标题文本的字体颜色
 
     private Drawable leftIcon;        //左侧图标
-    private float leftIconMargin;    //左侧图标的左边距
-    private boolean showLeftIcon;    //是否显示左侧图标，默认显示
+    private float leftIconMargin;     //左侧图标的左边距
+    private boolean showLeftIcon;     //是否显示左侧图标，默认显示
     private Drawable rightIcon;       //右侧图标
-    private float rightIconMargin;   //右侧图标的右边距
-    private boolean showRightIcon;   //是否显示右侧图标，默认不显示
+    private float rightIconMargin;    //右侧图标的右边距
+    private boolean showRightIcon;    //是否显示右侧图标，默认不显示
     private String leftText;          //左侧文本
-    private float leftTextSize;      //左侧文本的字体大小
-    private int leftTextColor;       //左侧文本的字体颜色
-    private float leftTextMargin;    //左侧文本的左边距
-    private String titleText;        //标题文本
-    private float titleTextSize;    //标题文本的字体大小
-    private int titleTextColor;     //标题文本的字体颜色
-    private String rightText;        //右侧文本
-    private float rightTextSize;    //右侧文本的字体大小
-    private int rightTextColor;     //右侧文本的字体颜色
-    private float rightTextMargin;  //右侧文本的右边距
-    private boolean showDivider;    //是否显示底部分割线
+    private float leftTextSize;       //左侧文本的字体大小
+    private int leftTextColor;        //左侧文本的字体颜色
+    private float leftTextMargin;     //左侧文本的左边距
+    private String titleText;         //标题文本
+    private float titleTextSize;      //标题文本的字体大小
+    private int titleTextColor;       //标题文本的字体颜色
+    private String rightText;         //右侧文本
+    private float rightTextSize;      //右侧文本的字体大小
+    private int rightTextColor;       //右侧文本的字体颜色
+    private float rightTextMargin;    //右侧文本的右边距
+    private boolean showDividerLine;  //是否显示底部分割线
 
     public void setLeftIcon(Drawable leftIcon) {
         this.leftIcon = leftIcon;
@@ -140,9 +141,9 @@ public class TitleBar extends FrameLayout {
         setViewHorizontalMargin(mRightTv, rightTextMargin, false);
     }
 
-    public void showDivider(boolean showDivider) {
-        this.showDivider = showDivider;
-        if (showDivider) {
+    public void showDividerLine(boolean showDividerLine) {
+        this.showDividerLine = showDividerLine;
+        if (showDividerLine) {
             mDividerLine.setVisibility(View.VISIBLE);
         } else {
             mDividerLine.setVisibility(View.GONE);
@@ -201,7 +202,7 @@ public class TitleBar extends FrameLayout {
         rightTextSize = ta.getDimension(R.styleable.TitleBar_rightTextSize, DEFAULT_SIDE_TEXT_SIZE);
         rightTextColor = ta.getColor(R.styleable.TitleBar_rightTextColor, DEFAULT_SIDE_TEXT_COLOR);
         rightTextMargin = ta.getDimension(R.styleable.TitleBar_rightTextMargin, DEFAULT_TEXT_MARGIN);
-        showDivider = ta.getBoolean(R.styleable.TitleBar_showDivider, false);
+        showDividerLine = ta.getBoolean(R.styleable.TitleBar_showDividerLine, false);
         ta.recycle();
     }
 
@@ -247,7 +248,7 @@ public class TitleBar extends FrameLayout {
         mRightTv.setTextColor(rightTextColor);
         setViewHorizontalMargin(mRightTv, rightTextMargin, false);
 
-        if (showDivider) {
+        if (showDividerLine) {
             mDividerLine.setVisibility(View.VISIBLE);
         } else {
             mDividerLine.setVisibility(View.GONE);

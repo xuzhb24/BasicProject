@@ -2,18 +2,24 @@ package com.android.frame.mvc;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 
-import butterknife.ButterKnife;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.base.BaseApplication;
+import com.android.java.BuildConfig;
 import com.android.java.R;
+import com.android.util.CheckFastClickUtil;
 import com.android.util.ExtraUtil;
+import com.android.util.ScreenUtil;
+import com.android.util.SizeUtil;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.widget.TitleBar;
+
+import butterknife.ButterKnife;
 
 /**
  * Created by xuzhb on 2019/10/19
@@ -29,7 +35,6 @@ public abstract class BaseActivity extends AppCompatActivity {
         initBar();
         handleView(savedInstanceState);
         initListener();
-        ExtraUtil.getTopActivityName(this);
     }
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
@@ -70,4 +75,17 @@ public abstract class BaseActivity extends AppCompatActivity {
         });
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (BuildConfig.DEBUG && ev.getAction() == MotionEvent.ACTION_DOWN &&
+                ev.getRawY() < SizeUtil.dp2px(50f) && ev.getRawX() > SizeUtil.dp2px(80f) &&
+                ev.getRawX() < ScreenUtil.getScreenWidth(this) - SizeUtil.dp2px(80f)) {
+            CheckFastClickUtil.setOnMultiClickListener(400, clickCount -> {
+                if (clickCount == 2) {
+                    ExtraUtil.getTopActivityName(this);
+                }
+            });
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 }

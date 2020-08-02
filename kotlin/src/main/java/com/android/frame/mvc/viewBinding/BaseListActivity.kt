@@ -1,6 +1,6 @@
 package com.android.frame.mvc.viewBinding
 
-import android.viewbinding.ViewBinding
+import androidx.viewbinding.ViewBinding
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.http.model.BaseListResponse
 import com.android.frame.mvc.viewBinding.extra.CustomObserver

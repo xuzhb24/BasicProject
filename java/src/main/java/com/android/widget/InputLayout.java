@@ -31,21 +31,21 @@ public class InputLayout extends LinearLayout {
     private static final int DEFAULT_TEXT_COLOR_HINT = Color.parseColor("#a3a3a3");
     private static final boolean DEFAULT_MULTI_LINE = true;
     private static final boolean DEFAULT_EDITABLE = true;
-    private static final boolean DEFAULT_SHOW_DIVIDER = true;
+    private static final boolean DEFAULT_SHOW_DIVIDER_LINE = true;
     private static final int DEFAULT_DIVIDER_COLOR = Color.parseColor("#dbdbdb");
     private static final float DEFAULT_DIVIDER_HEIGHT = SizeUtil.dp2px(1);
 
-    private String inputText = "";                             //EditText输入文本
-    private String inputTextHint = "";                         //EditText未输入时的hint文本
-    private int inputTextType = DEFAULT_TEXT_TYPE;             //EditText输入类型
-    private float inputTextSize = DEFAULT_TEXT_SIZE;           //EditText字体大小
-    private int inputTextColor = DEFAULT_TEXT_COLOR;           //EditText字体颜色
-    private int inputTextColorHint = DEFAULT_TEXT_COLOR_HINT;  //EditText的hint文本字体颜色
-    private boolean multiLine = DEFAULT_MULTI_LINE;            //是否支持输入多行文本，默认支持
-    private boolean editable = DEFAULT_EDITABLE;               //是否可编辑，默认可以
-    private boolean showDivider = DEFAULT_SHOW_DIVIDER;        //是否显示下划线，默认显示
-    private int dividerColor = DEFAULT_DIVIDER_COLOR;          //下划线颜色
-    private float dividerHeight = DEFAULT_DIVIDER_HEIGHT;      //下划线高度
+    private String inputText = "";                                //EditText输入文本
+    private String inputTextHint = "";                            //EditText未输入时的hint文本
+    private int inputTextType = DEFAULT_TEXT_TYPE;                //EditText输入类型
+    private float inputTextSize = DEFAULT_TEXT_SIZE;              //EditText字体大小
+    private int inputTextColor = DEFAULT_TEXT_COLOR;              //EditText字体颜色
+    private int inputTextColorHint = DEFAULT_TEXT_COLOR_HINT;     //EditText的hint文本字体颜色
+    private boolean multiLine = DEFAULT_MULTI_LINE;               //是否支持输入多行文本，默认支持
+    private boolean editable = DEFAULT_EDITABLE;                  //是否可编辑，默认可以
+    private boolean showDividerLine = DEFAULT_SHOW_DIVIDER_LINE;  //是否显示下划线，默认显示
+    private int dividerColor = DEFAULT_DIVIDER_COLOR;             //下划线颜色
+    private float dividerHeight = DEFAULT_DIVIDER_HEIGHT;         //下划线高度
 
     public void setInputText(String inputText) {
         this.inputText = inputText;
@@ -92,9 +92,9 @@ public class InputLayout extends LinearLayout {
         mClearIv.setVisibility(editable && !TextUtils.isEmpty(inputText) ? View.VISIBLE : View.GONE);
     }
 
-    public void setShowDivider(boolean showDivider) {
-        this.showDivider = showDivider;
-        mDivierLine.setVisibility(showDivider ? View.VISIBLE : View.GONE);
+    public void setShowDividerLine(boolean showDividerLine) {
+        this.showDividerLine = showDividerLine;
+        mDivierLine.setVisibility(showDividerLine ? View.VISIBLE : View.GONE);
     }
 
     public void setDividerColor(int dividerColor) {
@@ -140,7 +140,7 @@ public class InputLayout extends LinearLayout {
             inputTextColorHint = ta.getColor(R.styleable.InputLayout_inputTextColorHint, DEFAULT_TEXT_COLOR_HINT);
             multiLine = ta.getBoolean(R.styleable.InputLayout_multiLine, DEFAULT_MULTI_LINE);
             editable = ta.getBoolean(R.styleable.InputLayout_editable, DEFAULT_EDITABLE);
-            showDivider = ta.getBoolean(R.styleable.InputLayout_showDivider, DEFAULT_SHOW_DIVIDER);
+            showDividerLine = ta.getBoolean(R.styleable.InputLayout_showDividerLine, DEFAULT_SHOW_DIVIDER_LINE);
             dividerColor = ta.getColor(R.styleable.InputLayout_dividerColor, DEFAULT_DIVIDER_COLOR);
             dividerHeight = ta.getDimension(R.styleable.InputLayout_dividerHeight, DEFAULT_DIVIDER_HEIGHT);
             ta.recycle();
@@ -182,7 +182,7 @@ public class InputLayout extends LinearLayout {
             }
         });
 
-        mDivierLine.setVisibility(showDivider ? View.VISIBLE : View.GONE);
+        mDivierLine.setVisibility(showDividerLine ? View.VISIBLE : View.GONE);
         mDivierLine.setBackgroundColor(dividerColor);
         LayoutParamsUtil.setHeight(mDivierLine, (int) dividerHeight);
     }

@@ -1,8 +1,8 @@
 package com.android.widget.RecyclerView.AATest
 
 import android.os.Bundle
-import android.support.v4.widget.SwipeRefreshLayout
 import android.text.TextUtils
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.basicproject.R
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant

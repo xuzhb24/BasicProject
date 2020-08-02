@@ -3,9 +3,9 @@ package com.android.widget.ProgressBar
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.View
+import androidx.annotation.AttrRes
 import com.android.basicproject.R
 import com.android.util.SizeUtil
 
@@ -36,6 +36,7 @@ class CircleProgressBar @JvmOverloads constructor(
 
     //进度最大值
     var max = DEFAULT_MAX
+
     //当前进度
     var progress = DEFAULT_PROGRESS
         get() = field
@@ -43,30 +44,43 @@ class CircleProgressBar @JvmOverloads constructor(
             field = correctProgress(value)
             invalidate()
         }
+
     //绘制开始的角度
     var startAngle = DEFAULT_START_ANGLE
+
     //进度条是否逆时针滚动，默认为false，即顺时针滚动
     var reverse = DEFAULT_REVERSE
+
     //是否设置画笔帽为Paint.Cap.ROUND，即圆形样式，默认为true
     var roundCap = DEFAULT_ROUND_CAP
+
     //圆环宽度
     var ringWidth = DEFAULT_RING_WIDTH
+
     //圆环颜色，若在代码中设置了rindColorArray则无效果
     var ringColor = DEFAULT_RING_COLOR
+
     //圆环渐变色，通过代码设置，实现渐变效果，优先级比ringColor高
     var rindColorArray: IntArray? = null
+
     //圆环背景色
     var ringBackgroungColor = DEFAULT_RING_BACKGROUND_COLOR
+
     //内部圆圈背景色
     var innerBackgroundColor = DEFAULT_INNER_BACKGROUND_COLOR
+
     //描述文本
     var descText = DEFAULT_DESC_TEXT
+
     //描述文本字体大小
     var descTextSize = DEFAULT_DESC_TEXT_SIZE
+
     //描述文本字体颜色
     var descTextColor = DEFAULT_DESC_TEXT_COLOR
+
     //进度文本字体大小
     var percentTextSize = DEFAULT_PERCENT_TEXT_SIZE
+
     //进度文本字体颜色
     var percentTextColor = DEFAULT_PERCENT_TEXT_COLOR
 

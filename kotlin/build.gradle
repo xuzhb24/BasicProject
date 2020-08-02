@@ -24,7 +24,7 @@ android {
         multiDexEnabled true
         versionCode 100001
         versionName "1.0.0(001)"
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunner 'androidx.test.runner.AndroidJUnitRunner'
 
         ndk {
             //选择要添加的对应 cpu 类型的 .so 库。
@@ -69,10 +69,10 @@ android {
         }
     }
 
-    //视图绑定
-    viewBinding {
-        enabled = true
+    buildFeatures{
+        viewBinding = true  //视图绑定
     }
+
 }
 
 static def releaseTime() {
@@ -83,8 +83,8 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':universal')
     testImplementation "junit:junit:$junit_version"
-    androidTestImplementation "com.android.support.test:runner:$test_runner_version"
-    androidTestImplementation "com.android.support.test.espresso:espresso-core:$test_espresso_version"
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     //leakcanary检测内存泄漏
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 

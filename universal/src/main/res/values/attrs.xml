@@ -2,7 +2,7 @@
 <resources>
 
     <!--放在外层解决属性命名重复导致无法编译问题-->
-    <attr name="showDivider" format="boolean" />
+    <attr name="showDividerLine" format="boolean" />
     <attr name="dividerColor" format="color" />
     <attr name="dividerWidth" format="dimension" />
     <attr name="dividerHeight" format="dimension" />
@@ -34,7 +34,7 @@
         <attr name="rightTextSize" format="dimension" />
         <attr name="rightTextColor" format="color" />
         <attr name="rightTextMargin" format="dimension" />
-        <attr name="showDivider" />
+        <attr name="showDividerLine" />
     </declare-styleable>
 
     <!--饼状图-->
@@ -44,7 +44,7 @@
         <attr name="showInside" format="boolean" />
         <attr name="insideRatio" format="float" />
         <attr name="insideColor" format="color" />
-        <attr name="showDivider" />
+        <attr name="showDividerLine" />
         <attr name="dividerColor" />
         <attr name="dividerWidth" />
         <attr name="pointRadius" format="dimension" />
@@ -67,7 +67,7 @@
         <!--<attr name="showInside" format="boolean" />-->
         <!--<attr name="insideRatio" format="float" />-->
         <!--<attr name="insideColor" format="color" />-->
-        <!--<attr name="showDivider" format="boolean" />-->
+        <!--<attr name="showDividerLine" format="boolean" />-->
         <!--<attr name="dividerColor" format="color" />-->
         <!--<attr name="dividerWidth" format="dimension" />-->
         <attr name="itemMarginTop" format="dimension" />
@@ -240,7 +240,7 @@
         <attr name="inputTextColorHint" format="color" />
         <attr name="multiLine" format="boolean" />
         <attr name="editable" format="boolean" />
-        <attr name="showDivider" />
+        <attr name="showDividerLine" />
         <attr name="dividerColor" />
         <attr name="dividerHeight" />
     </declare-styleable>

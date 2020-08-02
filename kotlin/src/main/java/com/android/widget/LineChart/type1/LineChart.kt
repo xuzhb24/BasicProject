@@ -2,11 +2,11 @@ package com.android.widget.LineChart.type1
 
 import android.content.Context
 import android.graphics.*
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
+import androidx.annotation.AttrRes
 import com.android.basicproject.R
 import com.android.util.DateUtil
 import com.android.util.SizeUtil
@@ -67,84 +67,124 @@ class LineChart @JvmOverloads constructor(
 
     //Y轴最大值
     var maxYValue: Int = DEFAULT_MAX_YVALUE
+
     //数值单位：元|万元
     var valueUnit: String = DEFAULT_VALUE_UNIT
+
     //X轴上的刻度值个数：值为6表示近7天、值为14表示近15天、值为29表示近30天
     var xLabelCount: Int = DEFAULT_XLABEL_COUNT
+
     //Y轴上的刻度值个数，默认为5
     var yLabelCount: Int = DEFAULT_YLABEL_COUNT
+
     //X轴刻度值文本字体大小
     var xLabelTextSize: Float = DEFAULT_XLABEL_TEXT_SIZE
+
     //X轴刻度值文本字体颜色
     var xLabelTextColor: Int = DEFAULT_XLABEL_TEXT_COLOR
+
     //X轴刻度值文本到X轴的上边距
     var xLabelTextMarginTop: Float = DEFAULT_XLABEL_TEXT_MARGIN_TOP
+
     //Y轴刻度值文本字体大小
     var yLabelTextSize: Float = DEFAULT_YLABEL_TEXT_SIZE
+
     //Y轴刻度值文本字体颜色
     var yLabelTextColor: Int = DEFAULT_YLABEL_TEXT_COLOR
+
     //Y轴刻度值文本到屏幕左侧的左边距
     var yLabelTextMarginLeft: Float = DEFAULT_YLABEL_TEXT_MARGIN_LEFT
+
     //X轴宽度
     var axisWidth: Float = DEFAULT_AXIS_WIDTH
+
     //X轴颜色
     var axisColor: Int = DEFAULT_AXIS_COLOR
+
     //是否显示轴线上的小刻度线，默认显示
     var showScale: Boolean = DEFAULT_SHOW_SCALE
+
     //X轴上的小刻度线长度
     var scaleLength: Float = DEFAULT_SCALE_LENGTH
+
     //是否显示网格，默认显示
     var showGrid: Boolean = DEFAULT_SHOW_GRID
+
     //网格线宽度
     var gridWidth: Float = DEFAULT_GRID_WIDTH
+
     //网格线组成虚线的线段之间的间隔
     var gridDashInterval: Float = DEFAULT_GRID_DASH_INTERVAL
+
     //网格线组成虚线的线段长度
     var gridDashLength: Float = DEFAULT_GRID_DASH_LENGTH
+
     //网格线颜色
     var gridColor: Int = DEFAULT_GRID_COLOR
+
     //曲线宽度
     var lineWidth: Float = DEFAULT_LINE_WIDTH
+
     //曲线颜色渐变起始色
     var lineStartColor: Int = DEFAULT_LINE_START_COLOR
+
     //曲线颜色渐变结束色
     var lineEndColor: Int = DEFAULT_LINE_END_COLOR
+
     //曲线下方背景渐变起始色
     var bottomStartColor: Int = DEFAULT_BOTTOM_START_COLOR
+
     //曲线下方背景渐变结束色
     var bottomEndColor: Int = DEFAULT_BOTTOM_END_COLOR
+
     //标签颜色
     var labelColor: Int = DEFAULT_LABEL_COLOR
+
     //标签的矩形圆角
     var labelRadius: Float = DEFAULT_LABEL_RADIUS
+
     //标签内是否显示日期
     var showLabelDate: Boolean = DEFAULT_SHOW_LABEL_DATE
+
     //标签内文本字体大小
     var labelTextSize: Float = DEFAULT_LABEL_TEXT_SIZE
+
     //标签内文本字体颜色
     var labelTextColor: Int = DEFAULT_LABEL_TEXT_COLOR
+
     //标签内文本四周的边距
     var labelTextMargin: Float = DEFAULT_LABEL_TEXT_MARGIN
+
     //标签内文本的行间距
     var labelTextLineSpacingExtra: Float = DEFAULT_LABEL_TEXT_LINE_SPACING_EXTRA
+
     //标签的箭头宽度
     var labelArrowWidth: Float = DEFAULT_LABEL_ARROW_WIDTH
+
     //标签的箭头高度
     var labelArrowHeight: Float = DEFAULT_LABEL_ARROW_HEIGHT
+
     //标签的箭头到标签左侧或右侧的偏移量
     var labelArrowOffset: Float = DEFAULT_LABEL_ARROW_OFFSET
+
     //标签的箭头到坐标轴最上方的下边距
     var labelArrowMargin: Float = DEFAULT_LABEL_ARROW_MARGIN
+
     //标签的箭头相对于标签矩形底部的位置
     private var labelArrowGravity: Int = DEFAULT_LABEL_ARROW_GRAVITY
+
     //是否可点击
     var clickAble: Boolean = DEFAULT_CLICKABLE
+
     //坐标轴到View左侧的边距
     private var leftMargin: Float = DEFAULT_LEFT_MARGIN
+
     //坐标轴到View顶部的边距
     private var topMargin: Float = DEFAULT_TOP_MARGIN
+
     //坐标轴到View右侧的边距
     private var rightMargin: Float = DEFAULT_RIGHT_MARGIN
+
     //坐标轴到View底部的边距
     private var bottomMargin: Float = DEFAULT_BOTTOM_MARGIN
 
@@ -171,6 +211,7 @@ class LineChart @JvmOverloads constructor(
 
     private var mDataList: MutableList<Float> = mutableListOf()     //数据
     private var mYLabelList: MutableList<String> = mutableListOf()  //Y轴刻度值
+
     //记录每个数据点的X、Y坐标
     private var mDataPointList: MutableList<PointF> = mutableListOf()
 

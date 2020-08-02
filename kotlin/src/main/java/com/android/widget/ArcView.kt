@@ -2,13 +2,13 @@ package com.android.widget
 
 import android.content.Context
 import android.graphics.*
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
+import androidx.annotation.AttrRes
 import com.android.basicproject.R
 import com.android.util.SizeUtil
 

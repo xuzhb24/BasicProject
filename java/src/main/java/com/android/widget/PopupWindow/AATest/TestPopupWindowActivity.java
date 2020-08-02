@@ -1,12 +1,12 @@
 package com.android.widget.PopupWindow.AATest;
 
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import butterknife.BindView;
-import butterknife.OnClick;
+
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.util.SizeUtil;
@@ -15,6 +15,9 @@ import com.android.widget.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindView;
+import butterknife.OnClick;
 
 /**
  * Create by xuzhb on 2020/1/21

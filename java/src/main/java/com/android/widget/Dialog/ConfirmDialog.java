@@ -2,7 +2,9 @@ package com.android.widget.Dialog;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+
+import androidx.annotation.Nullable;
+
 import com.android.java.R;
 import com.android.widget.ViewHolder;
 

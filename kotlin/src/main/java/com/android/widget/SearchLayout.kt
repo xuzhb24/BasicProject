@@ -2,7 +2,6 @@ package com.android.widget
 
 import android.content.Context
 import android.graphics.Color
-import android.support.annotation.AttrRes
 import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
@@ -14,6 +13,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.annotation.AttrRes
 import com.android.basicproject.R
 import com.android.util.SizeUtil
 

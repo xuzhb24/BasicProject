@@ -14,14 +14,20 @@ import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.RemoteException;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.android.util.ByteUnit;
 import com.android.util.LogUtil;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Locale;
 
 /**
  * Created by xuzhb on 2019/12/8

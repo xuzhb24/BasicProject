@@ -1,7 +1,9 @@
 package com.android.widget.Dialog;
 
 import android.app.Dialog;
-import android.support.annotation.LayoutRes;
+
+import androidx.annotation.LayoutRes;
+
 import com.android.widget.ViewHolder;
 
 /**

@@ -2,12 +2,12 @@ package com.android.widget.RecyclerView
 
 import android.content.Context
 import android.os.Handler
-import android.support.annotation.LayoutRes
-import android.support.v7.widget.GridLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.LayoutRes
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.android.basicproject.R
 
 /**
@@ -24,6 +24,7 @@ abstract class LoadMoreAdapter<T>(
     companion object {
         private const val TYPE_EMPTY_VIEW = -1;   //数据为空时的布局
         private const val TYPE_FOOTER_VIEW = -2;  //脚布局
+
         //加载状态
         private const val STATE_DEFAULT = 0   //默认状态
         private const val STATE_LOADING = 1;  //加载中

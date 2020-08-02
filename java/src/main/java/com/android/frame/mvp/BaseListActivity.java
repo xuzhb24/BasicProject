@@ -1,7 +1,8 @@
 package com.android.frame.mvp;
 
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.View;
+
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.widget.RecyclerView.LoadMoreAdapter;
 

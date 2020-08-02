@@ -7,10 +7,6 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
-import android.view.View
-import com.android.basicproject.BuildConfig
-import com.android.basicproject.R
-import com.android.widget.TitleBar
 import com.google.gson.Gson
 import java.util.*
 
@@ -62,16 +58,7 @@ fun isEntity(text: String, obj: Any): Boolean {
 
 //双击标题栏获取当前页面的Activity名称，只是调试用
 fun getTopActivityName(activity: Activity) {
-    if (BuildConfig.DEBUG) {
-        val titleBar: TitleBar? = activity.findViewById(R.id.title_bar)
-        titleBar?.setOnClickListener(object : OnMultiClickListener() {
-            override fun onMultiClick(v: View?, clickCount: Int) {
-                if (clickCount == 2) {
-                    val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-                    val info = manager.getRunningTasks(1).get(0)
-                    alert(activity, "${info.topActivity.packageName}(包名)\n${info.topActivity.className}(类名)")
-                }
-            }
-        })
-    }
+    val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+    val info = manager.getRunningTasks(1).get(0)
+    alert(activity, "包名：${info.topActivity.packageName}\n类名：${info.topActivity.className}")
 }

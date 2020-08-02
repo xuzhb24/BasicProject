@@ -4,15 +4,13 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.android.base.BaseApplication
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import com.android.basicproject.R
 import com.android.util.StatusBar.StatusBarUtil
-import com.android.util.getTopActivityName
 import com.android.widget.TitleBar
 
 /**
@@ -31,7 +29,11 @@ abstract class BaseFragment : Fragment() {
         mContext = context
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         if (mRootView == null) {
             mRootView = inflater.inflate(getLayoutId(), container, false)
         }
@@ -43,7 +45,6 @@ abstract class BaseFragment : Fragment() {
         initBar()
         handleView(savedInstanceState)
         initListener()
-        getTopActivityName(mActivity!!)
     }
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等

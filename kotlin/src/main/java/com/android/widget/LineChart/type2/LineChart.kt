@@ -3,11 +3,11 @@ package com.android.widget.LineChart.type2
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
+import androidx.annotation.AttrRes
 import com.android.basicproject.R
 import com.android.util.SizeUtil
 
@@ -60,74 +60,109 @@ class LineChart @JvmOverloads constructor(
 
     //Y轴最大值
     var maxYValue: Int = DEFAULT_MAX_YVALUE
+
     //Y轴上的刻度值个数
     var yLabelCount: Int = DEFAULT_YLABEL_COUNT
+
     //X轴刻度值文本字体大小
     var xLabelTextSize: Float = DEFAULT_XLABEL_TEXT_SIZE
+
     //X轴刻度值文本字体颜色
     var xLabelTextColor: Int = DEFAULT_XLABEL_TEXT_COLOR
+
     //X轴刻度值文本到X轴的上边距
     var xLabelTextMarginTop: Float = DEFAULT_XLABEL_TEXT_MARGIN_TOP
+
     //是否显示Y轴刻度值文本
     var showYLabelText: Boolean = DEFAULT_SHOW_YLABEL_TEXT
+
     //Y轴刻度值文本字体大小
     var yLabelTextSize: Float = DEFAULT_YLABEL_TEXT_SIZE
+
     //Y轴刻度值文本字体颜色
     var yLabelTextColor: Int = DEFAULT_YLABEL_TEXT_COLOR
+
     //Y轴刻度值文本到屏幕左侧的左边距
     var yLabelTextMarginLeft: Float = DEFAULT_YLABEL_TEXT_MARGIN_LEFT
+
     //X轴宽度
     var axisWidth: Float = DEFAULT_AXIS_WIDTH
+
     //X轴颜色
     var axisColor: Int = DEFAULT_AXIS_COLOR
+
     //是否显示轴线上的小刻度线，默认显示
     var showScale: Boolean = DEFAULT_SHOW_SCALE
+
     //X轴上的小刻度线长度
     var scaleLength: Float = DEFAULT_SCALE_LENGTH
+
     //是否显示网格，默认显示
     var showGrid: Boolean = DEFAULT_SHOW_GRID
+
     //网格线宽度
     var gridWidth: Float = DEFAULT_GRID_WIDTH
+
     //网格线组成虚线的线段之间的间隔
     var gridDashInterval: Float = DEFAULT_GRID_DASH_INTERVAL
+
     //网格线组成虚线的线段长度
     var gridDashLength: Float = DEFAULT_GRID_DASH_LENGTH
+
     //网格线颜色
     var gridColor: Int = DEFAULT_GRID_COLOR
+
     //折线宽度
     var lineWidth: Float = DEFAULT_LINE_WIDTH
+
     //折线一颜色
     var lineColor1: Int = DEFAULT_LINE_COLOR1
+
     //折线二颜色
     var lineColor2: Int = DEFAULT_LINE_COLOR2
+
     //标签的矩形宽度
     var labelWidth: Float = DEFAULT_LABEL_WIDTH
+
     //标签的矩形高度
     var labelHeight: Float = DEFAULT_LABEL_HEIGHT
+
     //标签背景颜色
     var labelBackgroundColor = DEFAULT_LABEL_BACKGROUND_COLOR
+
     //标签的矩形圆角
     var labelRadius: Float = DEFAULT_LABEL_RADIUS
+
     //标签内文本字体大小
     var labelTextSize: Float = DEFAULT_LABEL_TEXT_SIZE
+
     //标签内文本字体颜色
     var labelTextColor: Int = DEFAULT_LABEL_TEXT_COLOR
+
     //标签的箭头宽度
     var labelArrowWidth: Float = DEFAULT_LABEL_ARROW_WIDTH
+
     //标签的箭头高度
     var labelArrowHeight: Float = DEFAULT_LABEL_ARROW_HEIGHT
+
     //标签的箭头到标签左侧或右侧的偏移量
     var labelArrowOffset: Float = DEFAULT_LABEL_ARROW_OFFSET
+
     //标签的箭头到坐标轴最上方的下边距
     var labelArrowMargin: Float = DEFAULT_LABEL_ARROW_MARGIN
+
     //是否可点击
     var clickAble: Boolean = DEFAULT_CLICKABLE
+
     //坐标轴到View左侧的边距，多出来的空间可以用来绘制Y轴刻度文本
     var leftMargin: Float = DEFAULT_LEFT_MARGIN
+
     //坐标轴到View顶部的边距，多出来的空间可以用来绘制标签信息
     var topMargin: Float = DEFAULT_TOP_MARGIN
+
     //坐标轴到View右侧的边距
     var rightMargin: Float = DEFAULT_RIGHT_MARGIN
+
     //坐标轴到View底部的边距，多出来的空间可以用来绘制X轴刻度文本
     var bottomMargin: Float = DEFAULT_BOTTOM_MARGIN
 
@@ -153,6 +188,7 @@ class LineChart @JvmOverloads constructor(
 
     private var mDataList1: MutableList<Float> = mutableListOf()     //折线一(交易收益)对应数据
     private var mDataList2: MutableList<Float> = mutableListOf()     //折线二(返现收益)对应数据
+
     //记录每个数据点的X、Y坐标
     private var mDataPointList1: MutableList<PointF> = mutableListOf()
     private var mDataPointList2: MutableList<PointF> = mutableListOf()
@@ -651,7 +687,12 @@ class LineChart @JvmOverloads constructor(
 
     //设置数据，startAnim：是否开启动画，动画默认一条一条折线的画
     //list1和list2的数据个数要相同，dateList的数据个数大于等于list1和list2的数据个数
-    fun drawData(list1: MutableList<Float>, list2: MutableList<Float>, dateList: MutableList<String>, startAnim: Boolean = false) {
+    fun drawData(
+        list1: MutableList<Float>,
+        list2: MutableList<Float>,
+        dateList: MutableList<String>,
+        startAnim: Boolean = false
+    ) {
         if (list1.size != list2.size) {
             throw RuntimeException("the size of list1 must be equal to the size of list2")
         }

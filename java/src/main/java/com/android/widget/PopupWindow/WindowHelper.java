@@ -1,9 +1,10 @@
 package com.android.widget.PopupWindow;
 
 import android.app.Activity;
-import android.support.annotation.FloatRange;
 import android.view.Window;
 import android.view.WindowManager;
+
+import androidx.annotation.FloatRange;
 
 /**
  * Create by xuzhb on 2020/1/21

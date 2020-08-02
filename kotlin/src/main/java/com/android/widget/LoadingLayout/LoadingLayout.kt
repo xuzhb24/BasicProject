@@ -2,7 +2,6 @@ package com.android.widget.LoadingLayout
 
 import android.content.Context
 import android.graphics.drawable.Drawable
-import android.support.annotation.AttrRes
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
@@ -13,6 +12,7 @@ import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.AttrRes
 import com.android.basicproject.R
 
 /**

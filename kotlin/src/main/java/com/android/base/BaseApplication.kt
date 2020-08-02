@@ -3,7 +3,7 @@ package com.android.base
 import android.app.Activity
 import android.app.Application
 import android.content.Context
-import android.support.multidex.MultiDex
+import androidx.multidex.MultiDex
 import java.util.*
 
 /**

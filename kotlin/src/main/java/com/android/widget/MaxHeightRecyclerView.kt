@@ -1,9 +1,9 @@
 package com.android.widget
 
 import android.content.Context
-import android.support.annotation.AttrRes
-import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
+import androidx.annotation.AttrRes
+import androidx.recyclerview.widget.RecyclerView
 import com.android.basicproject.R
 
 /**

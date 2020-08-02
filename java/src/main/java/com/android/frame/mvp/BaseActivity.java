@@ -4,19 +4,26 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.android.base.BaseApplication;
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
-import com.android.util.NetReceiver;
+import com.android.java.BuildConfig;
 import com.android.java.R;
+import com.android.util.CheckFastClickUtil;
+import com.android.util.ExtraUtil;
+import com.android.util.NetReceiver;
 import com.android.util.NetworkUtil;
+import com.android.util.ScreenUtil;
+import com.android.util.SizeUtil;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.widget.TitleBar;
@@ -275,6 +282,20 @@ public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<
         }
         unregisterReceiver(mNetReceiver);
         mNetReceiver = null;
+    }
+
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (BuildConfig.DEBUG && ev.getAction() == MotionEvent.ACTION_DOWN &&
+                ev.getRawY() < SizeUtil.dp2px(50f) && ev.getRawX() > SizeUtil.dp2px(80f) &&
+                ev.getRawX() < ScreenUtil.getScreenWidth(this) - SizeUtil.dp2px(80f)) {
+            CheckFastClickUtil.setOnMultiClickListener(400, clickCount -> {
+                if (clickCount == 2) {
+                    ExtraUtil.getTopActivityName(this);
+                }
+            });
+        }
+        return super.dispatchTouchEvent(ev);
     }
 
 }

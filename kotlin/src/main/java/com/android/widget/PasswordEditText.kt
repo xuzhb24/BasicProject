@@ -5,9 +5,9 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
-import android.support.v7.widget.AppCompatEditText
 import android.text.InputType
 import android.util.AttributeSet
+import androidx.appcompat.widget.AppCompatEditText
 import com.android.basicproject.R
 import com.android.util.SizeUtil
 

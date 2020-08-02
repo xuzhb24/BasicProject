@@ -1,10 +1,10 @@
 package com.android.widget
 
 import android.content.Context
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.annotation.AttrRes
 import com.android.basicproject.R
 import com.android.util.SizeUtil
 

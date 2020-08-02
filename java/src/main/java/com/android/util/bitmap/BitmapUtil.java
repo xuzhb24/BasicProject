@@ -32,9 +32,10 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
-import android.support.annotation.FloatRange;
-import android.support.annotation.IntRange;
 import android.view.View;
+
+import androidx.annotation.FloatRange;
+import androidx.annotation.IntRange;
 
 import com.android.base.BaseApplication;
 import com.android.util.FileUtil;

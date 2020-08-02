@@ -2,7 +2,6 @@ package com.android.widget
 
 import android.content.Context
 import android.graphics.Color
-import android.support.annotation.AttrRes
 import android.text.Editable
 import android.text.InputType
 import android.text.TextUtils
@@ -14,6 +13,7 @@ import android.view.View
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import androidx.annotation.AttrRes
 import com.android.basicproject.R
 import com.android.util.LayoutParamsUtil
 import com.android.util.SizeUtil
@@ -35,7 +35,7 @@ class InputLayout @JvmOverloads constructor(
         private val DEFAULT_TEXT_COLOR_HINT = Color.parseColor("#a3a3a3")
         private val DEFAULT_MULTI_LINE = true
         private val DEFAULT_EDITABLE = true
-        private val DEFAULT_SHOW_DIVIDER = true
+        private val DEFAULT_SHOW_DIVIDER_LINE = true
         private val DEFAULT_DIVIDER_COLOR = Color.parseColor("#dbdbdb")
         private val DEFAULT_DIVIDER_HEIGHT = SizeUtil.dp2px(1f)
     }
@@ -90,10 +90,10 @@ class InputLayout @JvmOverloads constructor(
             mClearIv.visibility = if (value && !TextUtils.isEmpty(inputText)) View.VISIBLE else View.GONE
         }
 
-    var showDivider = DEFAULT_SHOW_DIVIDER  //是否显示下划线
+    var showDividerLine = DEFAULT_SHOW_DIVIDER_LINE  //是否显示下划线
         set(value) {
             field = value
-            mDivierLine.visibility = if (showDivider) View.VISIBLE else View.GONE
+            mDivierLine.visibility = if (showDividerLine) View.VISIBLE else View.GONE
         }
 
     var dividerColor = DEFAULT_DIVIDER_COLOR  //下划线颜色
@@ -130,7 +130,7 @@ class InputLayout @JvmOverloads constructor(
             inputTextColorHint = ta.getColor(R.styleable.InputLayout_inputTextColorHint, DEFAULT_TEXT_COLOR_HINT)
             multiLine = ta.getBoolean(R.styleable.InputLayout_multiLine, DEFAULT_MULTI_LINE)
             editable = ta.getBoolean(R.styleable.InputLayout_editable, DEFAULT_EDITABLE)
-            showDivider = ta.getBoolean(R.styleable.InputLayout_showDivider, DEFAULT_SHOW_DIVIDER)
+            showDividerLine = ta.getBoolean(R.styleable.InputLayout_showDividerLine, DEFAULT_SHOW_DIVIDER_LINE)
             dividerColor = ta.getColor(R.styleable.InputLayout_dividerColor, DEFAULT_DIVIDER_COLOR)
             dividerHeight = ta.getDimension(R.styleable.InputLayout_dividerHeight, DEFAULT_DIVIDER_HEIGHT)
             ta.recycle()
@@ -175,7 +175,7 @@ class InputLayout @JvmOverloads constructor(
         }
 
         with(mDivierLine) {
-            visibility = if (showDivider) View.VISIBLE else View.GONE
+            visibility = if (showDividerLine) View.VISIBLE else View.GONE
             setBackgroundColor(dividerColor)
             LayoutParamsUtil.setHeight(mDivierLine, dividerHeight.toInt())
         }

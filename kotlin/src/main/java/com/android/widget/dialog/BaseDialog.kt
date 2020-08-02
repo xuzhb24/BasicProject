@@ -2,12 +2,12 @@ package com.android.widget.dialog
 
 import android.app.Dialog
 import android.os.Bundle
-import android.support.annotation.FloatRange
-import android.support.annotation.LayoutRes
-import android.support.annotation.StyleRes
-import android.support.v4.app.DialogFragment
-import android.support.v4.app.FragmentManager
 import android.view.*
+import androidx.annotation.FloatRange
+import androidx.annotation.LayoutRes
+import androidx.annotation.StyleRes
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import com.android.basicproject.R
 import com.android.widget.ViewHolder
 

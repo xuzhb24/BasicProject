@@ -10,7 +10,7 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
-import android.support.v4.app.ActivityCompat
+import androidx.core.app.ActivityCompat
 import com.android.basicproject.R
 import com.android.frame.camera.zxing.ui.CaptureActivity
 import com.android.frame.camera.zxing.util.QRConstant
@@ -34,6 +34,7 @@ class TestZXingActivity : BaseActivity() {
             Manifest.permission.WRITE_EXTERNAL_STORAGE,  //从相册选取照片需要该权限
             Manifest.permission.CAMERA
         )
+
         //请求状态码
         private const val REQUEST_PERMISSION_CODE = 1
         private const val DEFAULT_SETTINGS_REQ_CODE = 16061

@@ -3,10 +3,10 @@ package com.android.widget.PieChart.type1
 import android.animation.ValueAnimator
 import android.content.Context
 import android.graphics.*
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
+import androidx.annotation.AttrRes
 import com.android.basicproject.R
 import com.android.util.SizeUtil
 import com.android.widget.PieChart.PieData
@@ -25,7 +25,7 @@ class PieChart @JvmOverloads constructor(
         private val DEFAULT_SHOW_INSIDE = true
         private val DEFAULT_INSIDE_RATIO = 0.5f
         private val DEFAULT_INSIDE_COLOR = Color.WHITE
-        private val DEFAULT_SHOW_DIVIDER = true
+        private val DEFAULT_SHOW_DIVIDER_LINE = true
         private val DEFAULT_DIVIDER_COLOR = Color.WHITE
         private val DEFAULT_DIVIDER_WIDTH = SizeUtil.dp2px(1f)
         private val DEFAULT_POINT_RADIUS = SizeUtil.dp2px(2f)
@@ -47,46 +47,67 @@ class PieChart @JvmOverloads constructor(
 
     //绘制开始的角度
     var beginAngle: Float = DEFAULT_BEGIN_ANGLE
+
     //是否显示中间的圆圈
     var showInside: Boolean = DEFAULT_SHOW_INSIDE
+
     //中间圆圈占整个饼状图的比例
     var insideRatio: Float = DEFAULT_INSIDE_RATIO
+
     //中间圆圈的背景颜色
     var insideColor: Int = DEFAULT_INSIDE_COLOR
+
     //是否显示各个扇形的分界线
-    var showDivider: Boolean = DEFAULT_SHOW_DIVIDER
+    var showDividerLine: Boolean = DEFAULT_SHOW_DIVIDER_LINE
+
     //分界线的颜色
     var dividerColor: Int = DEFAULT_DIVIDER_COLOR
+
     //分界线的宽度
     var dividerWidth: Float = DEFAULT_DIVIDER_WIDTH
+
     //延长线起始点圆圈的半径
     var pointRadius: Float = DEFAULT_POINT_RADIUS
+
     //延长线起始点和饼状图边缘的距离
     var pointDistance: Float = DEFAULT_POINT_DISTANCE
+
     //延长线起始点到延长线拐点的长度
     var pointLength: Float = DEFAULT_POINT_LENGTH
+
     //延长线的宽度
     var lineWidth: Float = DEFAULT_LINE_WIDTH
+
     //延长线上方文本的字体大小
     var valueTextSize: Float = DEFAULT_VALUE_TEXT_SIZE
+
     //延长线上方文本的字体颜色
     var valueTextColor: Int = DEFAULT_VALUE_TEXT_COLOR
+
     //延长线上方文本到延长线的边距
     var valueTextMargin: Float = DEFAULT_VALUE_TEXT_MARGIN
+
     //延长线下方文本的字体大小
     var labelTextSize: Float = DEFAULT_LABEL_TEXT_SIZE
+
     //延长线下方文本的字体颜色
     var labelTextColor: Int = DEFAULT_LABEL_TEXT_COLOR
+
     //延长线下方文本到延长线的边距
     var labelTextMargin: Float = DEFAULT_LABEL_TEXT_MARGIN
+
     //数据为空时饼图的颜色
     var emptyPieColor: Int = DEFAULT_EMPTY_PIE_COLOR
+
     //数据为空时的文本描述
     var emptyText: String = DEFAULT_EMPTY_TEXT
+
     //数据为空时的文本字体大小
     var emptyTextSize: Float = DEFAULT_EMPTY_TEXT_SIZE
+
     //数据为空时的文本字体颜色
     var emptyTextColor: Int = DEFAULT_EMPTY_TEXT_COLOR
+
     //饼图左右两侧的预留空间，用来绘制延长线和文本
     var horizontalExtend: Float = DEFAULT_HORIZONTAL_EXTEND
 
@@ -129,7 +150,7 @@ class PieChart @JvmOverloads constructor(
                 insideRatio = 1f
             }
             insideColor = ta.getColor(R.styleable.PieChart_insideColor, DEFAULT_INSIDE_COLOR)
-            showDivider = ta.getBoolean(R.styleable.PieChart_showDivider, DEFAULT_SHOW_DIVIDER)
+            showDividerLine = ta.getBoolean(R.styleable.PieChart_showDividerLine, DEFAULT_SHOW_DIVIDER_LINE)
             dividerColor = ta.getColor(R.styleable.PieChart_dividerColor, DEFAULT_DIVIDER_COLOR)
             dividerWidth = ta.getDimension(R.styleable.PieChart_dividerWidth, DEFAULT_DIVIDER_WIDTH)
             pointRadius = ta.getDimension(R.styleable.PieChart_pointRadius, DEFAULT_POINT_RADIUS)
@@ -422,16 +443,16 @@ class PieChart @JvmOverloads constructor(
             val minRate =
                 Math.toDegrees(Math.asin((dividerWidth / (mRadius * insideRatio)).toDouble())) / 180f
             if (rate <= minRate && rate != 0f) {
-                showDivider = false
+                showDividerLine = false
             }
         }
         if (!mIsDataEmpty && mNotEmptyItemCount > 1) {  //两条或两条以上数据才绘制分界线
-            if (showDivider && startAngle < mProgress) {
+            if (showDividerLine && startAngle < mProgress) {
                 val x1 = (mCenterX + Math.cos(Math.toRadians(startAngle.toDouble())) * mRadius).toFloat()
                 val y1 = (mCenterY + Math.sin(Math.toRadians(startAngle.toDouble())) * mRadius).toFloat()
                 canvas.drawLine(mCenterX, mCenterY, x1, y1, mDividerPaint)
             }
-            if (showDivider && mProgress >= endAngle) {
+            if (showDividerLine && mProgress >= endAngle) {
                 val x2 = (mCenterX + Math.cos(Math.toRadians(endAngle.toDouble())) * mRadius).toFloat()
                 val y2 = (mCenterY + Math.sin(Math.toRadians(endAngle.toDouble())) * mRadius).toFloat()
                 canvas.drawLine(mCenterX, mCenterY, x2, y2, mDividerPaint)

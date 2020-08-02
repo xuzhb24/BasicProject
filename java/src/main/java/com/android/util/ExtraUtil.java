@@ -7,14 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.android.java.BuildConfig;
 import com.android.java.R;
 import com.android.widget.PopupWindow.CommonPopupWindow;
-import com.android.widget.TitleBar;
 
 import java.util.Random;
 
@@ -101,23 +98,11 @@ public class ExtraUtil {
 
     //双击标题栏获取当前页面的Activity名称，只是调试用
     public static void getTopActivityName(Activity activity) {
-        if (BuildConfig.DEBUG) {
-            TitleBar titleBar = activity.findViewById(R.id.title_bar);
-            if (titleBar != null) {
-                titleBar.setOnClickListener(new OnMultiClickListener() {
-                    @Override
-                    public void onMultiClick(View v, int clickCount) {
-                        if (clickCount == 2) {
-                            ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
-                            ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
-                            String packageName = info.topActivity.getPackageName();
-                            String className = info.topActivity.getClassName();
-                            alert(activity, packageName + "(包名)\n" + className + "(类名)");
-                        }
-                    }
-                });
-            }
-        }
+        ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
+        ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
+        String packageName = info.topActivity.getPackageName();
+        String className = info.topActivity.getClassName();
+        alert(activity, "包名：" + packageName + "\n类名：" + className);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.android.util
 
-import android.support.v4.util.SimpleArrayMap
 import android.text.TextUtils
+import androidx.collection.SimpleArrayMap
 
 /**
  * Created by xuzhb on 2020/2/1

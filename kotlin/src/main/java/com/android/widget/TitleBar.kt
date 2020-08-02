@@ -3,7 +3,6 @@ package com.android.widget
 import android.content.Context
 import android.graphics.Color
 import android.graphics.drawable.Drawable
-import android.support.annotation.AttrRes
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.LayoutInflater
@@ -11,6 +10,7 @@ import android.view.View
 import android.widget.FrameLayout
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.AttrRes
 import com.android.basicproject.R
 import com.android.util.SizeUtil
 
@@ -144,7 +144,7 @@ class TitleBar @JvmOverloads constructor(
                 requestLayout()
             }
         }
-    var showDivider: Boolean = true  //是否显示底部分割线
+    var showDividerLine: Boolean = true  //是否显示底部分割线
         set(value) {
             field = value
             with(mDividerLine) {
@@ -211,7 +211,7 @@ class TitleBar @JvmOverloads constructor(
             rightTextColor = getColor(R.styleable.TitleBar_rightTextColor, DEFAULT_SIDE_TEXT_COLOR)
             rightTextMargin =
                 getDimension(R.styleable.TitleBar_rightTextMargin, DEFAULT_TEXT_MARGIN)
-            showDivider = getBoolean(R.styleable.TitleBar_showDivider, false)
+            showDividerLine = getBoolean(R.styleable.TitleBar_showDividerLine, false)
             recycle()
         }
 
@@ -264,7 +264,7 @@ class TitleBar @JvmOverloads constructor(
         }
 
         with(mDividerLine) {
-            if (showDivider) {
+            if (showDividerLine) {
                 visibility = View.VISIBLE
             } else {
                 visibility = View.GONE

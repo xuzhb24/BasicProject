@@ -5,14 +5,14 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentActivity
-import android.support.v4.widget.SwipeRefreshLayout
-import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.base.BaseApplication
 import com.android.basicproject.R
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog
@@ -36,8 +36,10 @@ abstract class BaseFragment<V : IBaseView, P : BasePresenter<V>> : Fragment(), I
 
     //加载框
     private var mLoadingDialog: LoadingDialog? = null
+
     //通用的下拉刷新组件，需在布局文件中固定id名为swipe_refresh_layout
     protected var mSwipeRefreshLayout: SwipeRefreshLayout? = null
+
     //通用的RecyclerView组件，需在布局文件中固定id名为R.id.recycler_view
     protected var mRecyclerView: RecyclerView? = null
 

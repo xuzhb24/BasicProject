@@ -69,7 +69,7 @@
         <!--不显示波纹效果-->
         <item name="android:overScrollMode">never</item>
         <!--默认线性布局-->
-        <item name="layoutManager">android.support.v7.widget.LinearLayoutManager</item>
+        <item name="layoutManager">androidx.recyclerview.widget.LinearLayoutManager</item>
     </style>
 
     <!--向上弹出的平移动画-->

@@ -1,12 +1,12 @@
 package com.android.widget
 
-import android.support.annotation.IdRes
 import android.util.SparseArray
 import android.util.TypedValue
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.annotation.IdRes
 
 /**
  * Created by xuzhb on 2019/10/22

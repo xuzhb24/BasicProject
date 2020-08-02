@@ -4,20 +4,26 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.widget.SwipeRefreshLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.RecyclerView;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.viewbinding.ViewBinding;
 import android.widget.FrameLayout;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewbinding.ViewBinding;
+
 import com.android.base.BaseApplication;
+import com.android.java.BuildConfig;
 import com.android.java.R;
+import com.android.util.CheckFastClickUtil;
 import com.android.util.ExtraUtil;
 import com.android.util.NetReceiver;
 import com.android.util.NetworkUtil;
+import com.android.util.ScreenUtil;
+import com.android.util.SizeUtil;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.widget.LoadingDialog;
@@ -62,7 +68,6 @@ public abstract class BaseActivity_VB<VB extends ViewBinding> extends AppCompatA
         initNetReceiver();
         handleView(savedInstanceState);
         initListener();
-        ExtraUtil.getTopActivityName(this);
     }
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
@@ -263,4 +268,17 @@ public abstract class BaseActivity_VB<VB extends ViewBinding> extends AppCompatA
         mNetReceiver = null;
     }
 
+    @Override
+    public boolean dispatchTouchEvent(MotionEvent ev) {
+        if (BuildConfig.DEBUG && ev.getAction() == MotionEvent.ACTION_DOWN &&
+                ev.getRawY() < SizeUtil.dp2px(50f) && ev.getRawX() > SizeUtil.dp2px(80f) &&
+                ev.getRawX() < ScreenUtil.getScreenWidth(this) - SizeUtil.dp2px(80f)) {
+            CheckFastClickUtil.setOnMultiClickListener(400, clickCount -> {
+                if (clickCount == 2) {
+                    ExtraUtil.getTopActivityName(this);
+                }
+            });
+        }
+        return super.dispatchTouchEvent(ev);
+    }
 }

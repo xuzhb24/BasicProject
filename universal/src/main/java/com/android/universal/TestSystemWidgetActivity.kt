@@ -3,10 +3,10 @@ package com.android.universal
 import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.app.FragmentStatePagerAdapter
-import android.support.v7.app.AppCompatActivity
 import android.view.View
+import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentStatePagerAdapter
 import kotlinx.android.synthetic.main.activity_test_system_widget.*
 import kotlinx.android.synthetic.main.layout_title_bar.*
 
@@ -25,7 +25,7 @@ class TestSystemWidgetActivity : AppCompatActivity() {
     }
 
     private fun initTitleBar() {
-        title_fl.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+        title_fl.setBackgroundColor(Color.parseColor("#db4b3c"))
         val dp20 = (20 * resources.displayMetrics.density + 0.5f).toInt()
         title_fl.setPadding(dp20, 0, dp20, 0)
         title_tv.text = "系统控件"
@@ -57,6 +57,7 @@ class TestSystemWidgetActivity : AppCompatActivity() {
             TestSystemWidgetFragment.newInstance(R.layout.fragment_test_system_widget7),
             TestSystemWidgetFragment.newInstance(R.layout.fragment_test_system_widget8)
         )
+        view_pager.offscreenPageLimit = fragmentList.size
         view_pager.adapter = object : FragmentStatePagerAdapter(supportFragmentManager) {
 
             override fun getItem(i: Int): Fragment = fragmentList.get(i)
