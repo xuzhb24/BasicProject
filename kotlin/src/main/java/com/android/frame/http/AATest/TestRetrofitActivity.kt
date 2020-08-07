@@ -1,7 +1,7 @@
 package com.android.frame.http.AATest
 
 import android.os.Bundle
-import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.frame.http.AATest.bean.WeatherBean
 import com.android.frame.http.ExceptionUtil
@@ -26,7 +26,7 @@ import retrofit2.Response
  * Created by xuzhb on 2019/9/29
  * Desc:测试Retrofit
  */
-class TestRetrofitActivity : BaseActivity() {
+class TestRetrofitActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     override fun handleView(savedInstanceState: Bundle?) {
         initCommonLayout(
             this, "测试Retrofit",
@@ -40,9 +40,6 @@ class TestRetrofitActivity : BaseActivity() {
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
         btn1.setOnClickListener {
             getWeatherByQuery(il.inputText.trim())
         }
@@ -64,7 +61,7 @@ class TestRetrofitActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_common_layout
+    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
 
     //访问网址，Retrofit
     private fun accessUrl(url: String) {

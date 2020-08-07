@@ -1,7 +1,9 @@
 package com.android.base
 
 import android.os.Bundle
-import com.android.basicproject.R
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import com.android.basicproject.databinding.FragmentWidgetBinding
 import com.android.frame.mvc.BaseFragment
 import com.android.universal.TestSystemWidgetActivity
 import com.android.widget.LineChart.TestLineChartActivity
@@ -13,13 +15,12 @@ import com.android.widget.ProgressBar.TestProgressBarActivity
 import com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity
 import com.android.widget.TestSingleWidgetActivity
 import com.android.widget.dialog.TestDialogActivity
-import kotlinx.android.synthetic.main.fragment_widget.*
 
 /**
  * Created by xuzhb on 2019/9/7
  * Desc:控件篇
  */
-class WidgetFragment : BaseFragment() {
+class WidgetFragment : BaseFragment<FragmentWidgetBinding>() {
 
     companion object {
         fun newInstance() = WidgetFragment()
@@ -27,43 +28,43 @@ class WidgetFragment : BaseFragment() {
 
     override fun handleView(savedInstanceState: Bundle?) {
         //通用PopupWindow
-        popup_tv.setOnClickListener {
+        binding.popupTv.setOnClickListener {
             startActivity(TestPopupWindowActivity::class.java)
         }
         //饼状图
-        piechart_tv.setOnClickListener {
+        binding.piechartTv.setOnClickListener {
             startActivity(TestPieChartActivity::class.java)
         }
         //曲线图/折线图
-        linechart_tv.setOnClickListener {
+        binding.linechartTv.setOnClickListener {
             startActivity(TestLineChartActivity::class.java)
         }
         //进度条
-        progress_tv.setOnClickListener {
+        binding.progressTv.setOnClickListener {
             startActivity(TestProgressBarActivity::class.java)
         }
         //对话框
-        dialog_tv.setOnClickListener {
+        binding.dialogTv.setOnClickListener {
             startActivity(TestDialogActivity::class.java)
         }
         //拍照和相册弹窗
-        pic_dialog_tv.setOnClickListener {
+        binding.picDialogTv.setOnClickListener {
             startActivity(TestPicGetterDialogActivity::class.java)
         }
         //RecyclerView组件
-        recyclerview_tv.setOnClickListener {
+        binding.recyclerviewTv.setOnClickListener {
             startActivity(TestRecyclerViewActivity::class.java)
         }
         //加载状态布局
-        loading_tv.setOnClickListener {
+        binding.loadingTv.setOnClickListener {
             startActivity(TestLoadingLayoutActivity::class.java)
         }
         //单一控件
-        single_tv.setOnClickListener {
+        binding.singleTv.setOnClickListener {
             startActivity(TestSingleWidgetActivity::class.java)
         }
         //系统控件
-        system_tv.setOnClickListener {
+        binding.systemTv.setOnClickListener {
             startActivity(TestSystemWidgetActivity::class.java)
         }
     }
@@ -71,7 +72,7 @@ class WidgetFragment : BaseFragment() {
     override fun initListener() {
     }
 
-    override fun getLayoutId(): Int = R.layout.fragment_widget
-
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentWidgetBinding.inflate(inflater, container, false)
 
 }

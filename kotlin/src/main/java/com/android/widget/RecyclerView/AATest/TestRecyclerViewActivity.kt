@@ -1,7 +1,7 @@
 package com.android.widget.RecyclerView.AATest
 
 import android.os.Bundle
-import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.initCommonLayout
 import kotlinx.android.synthetic.main.activity_common_layout.*
@@ -10,7 +10,7 @@ import kotlinx.android.synthetic.main.activity_common_layout.*
  * Created by xuzhb on 2019/10/30
  * Desc:
  */
-class TestRecyclerViewActivity : BaseActivity() {
+class TestRecyclerViewActivity : BaseActivity<ActivityCommonLayoutBinding>() {
 
     override fun handleView(savedInstanceState: Bundle?) {
         initCommonLayout(
@@ -44,5 +44,6 @@ class TestRecyclerViewActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_common_layout
+    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
+
 }

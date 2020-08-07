@@ -8,11 +8,11 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityMainBinding
 import com.android.frame.mvc.BaseActivity
 import com.google.android.material.tabs.TabLayout
-import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     private val mImageButton = intArrayOf(
         R.drawable.selector_bottom_frame,
@@ -34,7 +34,7 @@ class MainActivity : BaseActivity() {
     private fun initBottomNavigationBar() {
 //        tab_layout.setTabMode(TabLayout.MODE_FIXED)//不可以轮动
         for (i in mTitleList.indices) {
-            tab_layout.addTab(tab_layout.newTab().setText(mTitleList.get(i)))
+            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(mTitleList.get(i)))
         }
         val adapter = object : FragmentPagerAdapter(supportFragmentManager) {
 
@@ -45,11 +45,11 @@ class MainActivity : BaseActivity() {
             override fun getPageTitle(i: Int): CharSequence? = mTitleList.get(i)
 
         }
-        view_pager.adapter = adapter
-        view_pager.offscreenPageLimit = 3
-        tab_layout.setupWithViewPager(view_pager)
+        binding.viewPager.adapter = adapter
+        binding.viewPager.offscreenPageLimit = mFragmentList.size
+        binding.tabLayout.setupWithViewPager(binding.viewPager)
         for (i in mFragmentList.indices) {
-            val tab = tab_layout.getTabAt(i)
+            val tab = binding.tabLayout.getTabAt(i)
             //添加自定义布局
             tab!!.setCustomView(getTabView(i))
             //默认选中第一个导航栏
@@ -59,7 +59,7 @@ class MainActivity : BaseActivity() {
             }
         }
 
-        tab_layout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+        binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             //选中之后再次点击Tab时触发
             override fun onTabReselected(tab: TabLayout.Tab?) {
             }
@@ -73,7 +73,7 @@ class MainActivity : BaseActivity() {
                 //解决ViewPager + Fragment，点击tab切换时造成的闪屏问题
                 tab?.let {
                     // 默认切换的时候，会有一个过渡动画，设为false后，取消动画，直接显示
-                    view_pager.setCurrentItem(it.position, false)
+                    binding.viewPager.setCurrentItem(it.position, false)
                 }
             }
 
@@ -96,8 +96,7 @@ class MainActivity : BaseActivity() {
     override fun initListener() {
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_main
-
+    override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
 
     //再按一次退出程序
     private var mLastPressTime: Long = 0

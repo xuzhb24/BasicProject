@@ -1,7 +1,7 @@
 package com.android.frame.mvp.AATest.activity
 
 import android.os.Bundle
-import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvp.AATest.activity.newslist.NewsListActivity
 import com.android.frame.mvp.AATest.activity.weather.WeatherActivity
 import com.android.frame.mvp.CommonBaseActivity
@@ -12,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_common_layout.*
  * Created by xuzhb on 2020/1/4
  * Desc:
  */
-class TestMvpActivity : CommonBaseActivity() {
+class TestMvpActivity : CommonBaseActivity<ActivityCommonLayoutBinding>() {
 
     override fun handleView(savedInstanceState: Bundle?) {
         initCommonLayout(this, "MVP框架", "天气信息", "网易新闻")
@@ -27,6 +27,6 @@ class TestMvpActivity : CommonBaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_common_layout
+    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
 
 }

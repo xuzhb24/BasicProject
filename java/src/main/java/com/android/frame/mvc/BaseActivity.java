@@ -10,12 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewbinding.ViewBinding;
 
 import com.android.base.BaseApplication;
-import com.android.java.BuildConfig;
 import com.android.java.R;
-import com.android.util.CheckFastClickUtil;
 import com.android.util.ExtraUtil;
-import com.android.util.ScreenUtil;
-import com.android.util.SizeUtil;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.widget.TitleBar;
@@ -36,9 +32,15 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         super.onCreate(savedInstanceState);
         binding = getViewBinding();
         setContentView(binding.getRoot());
+        initBaseView();
         initBar();
         handleView(savedInstanceState);
         initListener();
+    }
+
+    //初始化一些通用控件，如加载框、SwipeRefreshLayout、网络错误提示布局
+    protected void initBaseView() {
+        mTitleBar = findViewById(R.id.title_bar);
     }
 
     //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等

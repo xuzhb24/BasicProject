@@ -1,14 +1,15 @@
 package com.android.frame.mvp
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewbinding.ViewBinding
 import com.android.widget.RecyclerView.LoadMoreAdapter
 
 /**
  * Created by xuzhb on 2020/7/22
  * Desc:列表数据对应的基类Activity
  */
-abstract class BaseListActivity<T, V : IBaseListView<T>, P : BaseListPresenter<T, V>> :
-    BaseActivity<V, P>(), IBaseListView<T>, SwipeRefreshLayout.OnRefreshListener {
+abstract class BaseListActivity<VB : ViewBinding, T, V : IBaseListView<T>, P : BaseListPresenter<T, V>> :
+    BaseActivity<VB, V, P>(), IBaseListView<T>, SwipeRefreshLayout.OnRefreshListener {
 
     private var mCurrentPage = 1  //记录当前页面
     protected lateinit var mAdapter: LoadMoreAdapter<T>

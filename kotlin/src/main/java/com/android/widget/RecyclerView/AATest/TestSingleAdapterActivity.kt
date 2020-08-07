@@ -1,15 +1,14 @@
 package com.android.widget.RecyclerView.AATest
 
 import android.os.Bundle
-import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityTestAdapterBinding
 import com.android.frame.mvc.BaseActivity
-import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2019/10/31
  * Desc:单一布局
  */
-class TestSingleAdapterActivity : BaseActivity() {
+class TestSingleAdapterActivity : BaseActivity<ActivityTestAdapterBinding>() {
 
     private var mSelectedItem = ""
     private var mList: MutableList<String> = mutableListOf()
@@ -17,8 +16,8 @@ class TestSingleAdapterActivity : BaseActivity() {
 
     override fun handleView(savedInstanceState: Bundle?) {
         mList = createData()
-        srl.isEnabled = false
-        rv.adapter = mAdapter
+        binding.srl.isEnabled = false
+        binding.rv.adapter = mAdapter
     }
 
     private fun createData(): MutableList<String> = mutableListOf(
@@ -27,14 +26,12 @@ class TestSingleAdapterActivity : BaseActivity() {
     )
 
     override fun initListener() {
-        title_bar.setOnClickListener {
-            finish()
-        }
         mAdapter.setOnItemClickListener { obj, position ->
             mSelectedItem = obj as String
             mAdapter.setData(mList, mSelectedItem)
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_test_adapter
+    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
+
 }

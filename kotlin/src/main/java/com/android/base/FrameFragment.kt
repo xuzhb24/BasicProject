@@ -1,7 +1,9 @@
 package com.android.base
 
 import android.os.Bundle
-import com.android.basicproject.R
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import com.android.basicproject.databinding.FragmentFrameBinding
 import com.android.frame.TestLeakActivity
 import com.android.frame.camera.zxing.AATest.TestZXingActivity
 import com.android.frame.http.AATest.TestRetrofitActivity
@@ -10,13 +12,12 @@ import com.android.frame.mvc.viewBinding.AATest.TestMvcActivity
 import com.android.frame.mvp.AATest.activity.TestMvpActivity
 import com.android.frame.permission.PermissionFrameActivity
 import com.android.frame.permission.PermissionRequestActivity
-import kotlinx.android.synthetic.main.fragment_frame.*
 
 /**
  * Created by xuzhb on 2019/9/7
  * Desc:框架篇
  */
-class FrameFragment : BaseFragment() {
+class FrameFragment : BaseFragment<FragmentFrameBinding>() {
 
     companion object {
         fun newInstance() = FrameFragment()
@@ -29,35 +30,36 @@ class FrameFragment : BaseFragment() {
     override fun initListener() {
         //动态权限申请
         //原生API实现
-        orignal_permission_tv.setOnClickListener {
+        binding.orignalPermissionTv.setOnClickListener {
             startActivity(PermissionRequestActivity::class.java)
         }
         //第三方框架EasyPermission实现
-        easy_permission_tv.setOnClickListener {
+        binding.easyPermissionTv.setOnClickListener {
             startActivity(PermissionFrameActivity::class.java)
         }
         //测试内存泄漏
-        leak_tv.setOnClickListener {
+        binding.leakTv.setOnClickListener {
             startActivity(TestLeakActivity::class.java)
         }
         //测试Retrofit
-        retrofit_tv.setOnClickListener {
+        binding.retrofitTv.setOnClickListener {
             startActivity(TestRetrofitActivity::class.java)
         }
         //MVP框架
-        mvp_tv.setOnClickListener {
+        binding.mvpTv.setOnClickListener {
             startActivity(TestMvpActivity::class.java)
         }
         //MVC框架
-        mvc_tv.setOnClickListener {
+        binding.mvcTv.setOnClickListener {
             startActivity(TestMvcActivity::class.java)
         }
         //zxing扫码
-        zxing_tv.setOnClickListener {
+        binding.zxingTv.setOnClickListener {
             startActivity(TestZXingActivity::class.java)
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.fragment_frame
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentFrameBinding.inflate(inflater, container, false)
 
 }

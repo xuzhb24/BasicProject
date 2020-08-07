@@ -23,7 +23,7 @@ class NewsListActivity : BaseListActivity<NewsListBeanMvp, ActivityListLayoutBin
         NewsListAdapter(this, mutableListOf())
 
     override fun handleView(savedInstanceState: Bundle?) {
-        binding.titleBar.titleText = "新闻列表"
+        mTitleBar?.titleText = "新闻列表"
     }
 
     override fun initListener() {

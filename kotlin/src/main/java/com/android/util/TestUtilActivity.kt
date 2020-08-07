@@ -10,6 +10,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant
 import com.android.frame.http.AATest.WangYiNewsWebviewActivity
@@ -32,7 +33,7 @@ import kotlin.random.Random
  * Created by xuzhb on 2019/9/22
  * Desc:测试工具类方法
  */
-class TestUtilActivity : BaseActivity() {
+class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
 
     companion object {
         const val TEST_STATUS_BAR = "TEST_STATUS_BAR"
@@ -66,7 +67,7 @@ class TestUtilActivity : BaseActivity() {
 
     override fun initListener() {}
 
-    override fun getLayoutId(): Int = R.layout.activity_common_layout
+    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
 
     private fun testStatusBarUtil() {
         val text1 = "沉浸背景图片"
@@ -541,6 +542,7 @@ class TestUtilActivity : BaseActivity() {
     }
 
     private var mLastTime = 0L
+
     //连续点击事件监听
     private fun testContinuousClick() {
         initCommonLayout(this, "连续点击", "连续点击", "连续点击(点击最大时间间隔2秒)", showTextView = true)

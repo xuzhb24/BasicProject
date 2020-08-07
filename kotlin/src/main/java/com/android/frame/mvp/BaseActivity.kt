@@ -11,12 +11,15 @@ import android.widget.FrameLayout
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import androidx.viewbinding.ViewBinding
 import com.android.base.BaseApplication
-import com.android.basicproject.BuildConfig
 import com.android.basicproject.R
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog
-import com.android.util.*
+import com.android.util.NetReceiver
+import com.android.util.NetworkUtil
 import com.android.util.StatusBar.StatusBarUtil
+import com.android.util.ToastUtil
+import com.android.util.getTopActivityName
 import com.android.widget.TitleBar
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -25,8 +28,10 @@ import io.reactivex.disposables.Disposable
  * Created by xuzhb on 2019/12/29
  * Desc:基类Activity(MVP)
  */
-abstract class BaseActivity<V : IBaseView, P : BasePresenter<V>> : AppCompatActivity(),
+abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V>> : AppCompatActivity(),
     IBaseView, SwipeRefreshLayout.OnRefreshListener {
+
+    protected lateinit var binding: VB
 
     protected var mPresenter: P? = null
 
@@ -51,38 +56,21 @@ abstract class BaseActivity<V : IBaseView, P : BasePresenter<V>> : AppCompatActi
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(getLayoutId())
+        binding = getViewBinding()
+        setContentView(binding.root)
         BaseApplication.instance.addActivity(this)
         mPresenter = getPresenter()
         mPresenter?.attachView(this as V)
-        initBar()
         initBaseView()
+        initBar()
         initNetReceiver()
         handleView(savedInstanceState)
         initListener()
     }
 
-    //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
-    protected open fun initBar() {
-        mTitleBar = findViewById(R.id.title_bar)
-        if (mTitleBar != null) {  //如果当前布局包含id为title_bar的标题栏控件，以该控件为基准实现沉浸式状态栏
-            StatusBarUtil.darkModeAndPadding(this, mTitleBar!!)
-            if (isBarBack()) {
-                mTitleBar?.setOnLeftClickListener {
-                    finish()
-                }
-            }
-        } else {  //以ContentView为基准实现沉浸式状态栏，颜色是整个布局的背景色
-            val content: ViewGroup = findViewById(android.R.id.content)
-            StatusBarUtil.darkModeAndPadding(this, content)
-        }
-    }
-
-    //点击标题栏左侧图标是否退出Activity，默认true
-    protected open fun isBarBack(): Boolean = true
-
     //初始化一些通用控件，如加载框、SwipeRefreshLayout、网络错误提示布局
     protected open fun initBaseView() {
+        mTitleBar = findViewById(R.id.title_bar)
         mLoadingDialog = LoadingDialog(this, R.style.LoadingDialogStyle)
         //获取布局中的SwipeRefreshLayout组件，重用BaseCompatActivity的下拉刷新逻辑
         //注意布局中SwipeRefreshLayout的id命名为swipe_refresh_layout，否则mSwipeRefreshLayout为null
@@ -111,14 +99,32 @@ abstract class BaseActivity<V : IBaseView, P : BasePresenter<V>> : AppCompatActi
          */
     }
 
+    //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
+    protected open fun initBar() {
+        if (mTitleBar != null) {  //如果当前布局包含id为title_bar的标题栏控件，以该控件为基准实现沉浸式状态栏
+            StatusBarUtil.darkModeAndPadding(this, mTitleBar!!)
+            if (isBarBack()) {
+                mTitleBar?.setOnLeftClickListener {
+                    finish()
+                }
+            }
+        } else {  //以ContentView为基准实现沉浸式状态栏，颜色是整个布局的背景色
+            val content: ViewGroup = findViewById(android.R.id.content)
+            StatusBarUtil.darkModeAndPadding(this, content)
+        }
+    }
+
+    //点击标题栏左侧图标是否退出Activity，默认true
+    protected open fun isBarBack(): Boolean = true
+
     //执行onCreate接下来的逻辑
     abstract fun handleView(savedInstanceState: Bundle?)
 
     //所有的事件回调均放在该层，如onClickListener等
     abstract fun initListener()
 
-    //获取布局
-    abstract fun getLayoutId(): Int
+    //获取ViewBinding
+    abstract fun getViewBinding(): VB
 
     //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
     abstract fun getPresenter(): P
@@ -256,19 +262,8 @@ abstract class BaseActivity<V : IBaseView, P : BasePresenter<V>> : AppCompatActi
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        ev?.let {
-            //屏幕顶部中间区域连续点击2次获取当前Activity包名和类名，只在debug环境下有效
-            if (BuildConfig.DEBUG && it.action == MotionEvent.ACTION_DOWN &&
-                it.rawY < SizeUtil.dp2px(50f) && it.rawX > SizeUtil.dp2px(80f) &&
-                it.rawX < ScreenUtil.getScreenWidth(this) - SizeUtil.dp2px(80f)
-            ) {
-                CheckFastClickUtil.setOnMultiClickListener {
-                    if (it == 2) {
-                        getTopActivityName(this)
-                    }
-                }
-            }
-        }
+        //屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
+        getTopActivityName(this, ev)
         return super.dispatchTouchEvent(ev)
     }
 }

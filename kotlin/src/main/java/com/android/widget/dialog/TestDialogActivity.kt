@@ -6,6 +6,7 @@ import android.text.TextUtils
 import android.view.WindowManager
 import android.widget.EditText
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.DrawableUtil
 import com.android.util.KeyboardUtil
@@ -17,15 +18,13 @@ import kotlinx.android.synthetic.main.activity_common_layout.*
  * Created by xuzhb on 2019/10/22
  * Desc:
  */
-class TestDialogActivity : BaseActivity() {
+class TestDialogActivity : BaseActivity<ActivityCommonLayoutBinding>() {
+
     override fun handleView(savedInstanceState: Bundle?) {
         initCommonLayout(this, "通用的Dialog", "单按钮", "双按钮", "分享", "评论", "领券")
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
         btn1.setOnClickListener {
             showSingleDialog()
         }
@@ -135,5 +134,6 @@ class TestDialogActivity : BaseActivity() {
             .show(supportFragmentManager)
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_common_layout
+    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
+
 }

@@ -1,6 +1,5 @@
 package com.android.frame.mvc
 
-import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
@@ -9,19 +8,18 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import com.android.basicproject.R
-import com.android.util.StatusBar.StatusBarUtil
-import com.android.widget.TitleBar
+import androidx.viewbinding.ViewBinding
 
 /**
  * Created by xuzhb on 2019/9/7
  * Desc:基类Fragment(MVC)
  */
-abstract class BaseFragment : Fragment() {
+abstract class BaseFragment<VB : ViewBinding> : Fragment() {
+
+    protected lateinit var binding: VB
 
     protected var mActivity: FragmentActivity? = null
     protected var mContext: Context? = null
-    protected var mRootView: View? = null
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
@@ -34,29 +32,14 @@ abstract class BaseFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        if (mRootView == null) {
-            mRootView = inflater.inflate(getLayoutId(), container, false)
-        }
-        return mRootView
+        binding = getViewBinding(inflater, container!!)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initBar()
         handleView(savedInstanceState)
         initListener()
-    }
-
-    //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
-    protected open fun initBar() {
-        mRootView?.let {
-            val titleBar: TitleBar? = it.findViewById(R.id.title_bar)
-            if (titleBar != null) {
-                StatusBarUtil.darkModeAndPadding(activity as Activity, titleBar)
-            } else {
-                StatusBarUtil.darkModeAndPadding(activity as Activity, it)
-            }
-        }
     }
 
     //执行onCreate接下来的逻辑
@@ -65,8 +48,8 @@ abstract class BaseFragment : Fragment() {
     //所有的事件回调均放在该层，如onClickListener等
     abstract fun initListener()
 
-    //获取布局
-    abstract fun getLayoutId(): Int
+    //获取ViewBinding
+    abstract fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     fun startActivity(clazz: Class<*>) {
         val intent = Intent()

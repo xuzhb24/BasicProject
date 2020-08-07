@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.TranslateAnimation
-import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityScanBinding
 import com.android.frame.camera.zxing.ui.CaptureActivity
 import com.android.util.StatusBar.StatusBarUtil
 import kotlinx.android.synthetic.main.activity_scan.*
@@ -14,7 +14,7 @@ import kotlinx.android.synthetic.main.activity_scan.*
  * Created by xuzhb on 2019/11/16
  * Desc:CaptureActivity子类
  */
-class ScanActivity : CaptureActivity() {
+class ScanActivity : CaptureActivity<ActivityScanBinding>() {
 
     override fun initBar() {
         StatusBarUtil.darkMode(this, Color.BLACK, 0f, false)
@@ -40,6 +40,6 @@ class ScanActivity : CaptureActivity() {
         grid_iv.setAnimation(animation)
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_scan
+    override fun getViewBinding() = ActivityScanBinding.inflate(layoutInflater)
 
 }

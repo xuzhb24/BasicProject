@@ -1,26 +1,25 @@
 package com.android.widget.RecyclerView.AATest
 
 import android.os.Bundle
-import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityTestAdapterBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.widget.RecyclerView.AATest.entity.DetailBean
 import com.android.widget.RecyclerView.AATest.entity.MonthBean
 import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2019/11/1
  * Desc:多布局
  */
-class TestMultiAdapterActivity : BaseActivity() {
+class TestMultiAdapterActivity : BaseActivity<ActivityTestAdapterBinding>() {
 
     private var mList: MutableList<String> = mutableListOf()
     private val mAdapter by lazy { TestMultiAdapter(this, mList) }
 
     override fun handleView(savedInstanceState: Bundle?) {
         mList = createData()
-        srl.isEnabled = false
-        rv.adapter = mAdapter
+        binding.srl.isEnabled = false
+        binding.rv.adapter = mAdapter
     }
 
     private fun createData(): MutableList<String> {
@@ -45,10 +44,8 @@ class TestMultiAdapterActivity : BaseActivity() {
     }
 
     override fun initListener() {
-        title_bar.setOnClickListener {
-            finish()
-        }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_test_adapter
+    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
+
 }

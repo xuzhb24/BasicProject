@@ -6,16 +6,16 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityTestPopupWindowBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil
 import com.android.widget.PopupWindow.CommonPopupWindow
-import kotlinx.android.synthetic.main.activity_test_popup_window.*
 
 /**
  * Created by xuzhb on 2019/9/1
  * Desc:CommonPopupWindow使用示例
  */
-class TestPopupWindowActivity : BaseActivity() {
+class TestPopupWindowActivity : BaseActivity<ActivityTestPopupWindowBinding>() {
 
     private var mPopupWindow: CommonPopupWindow? = null
 
@@ -24,35 +24,32 @@ class TestPopupWindowActivity : BaseActivity() {
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
         //向下弹出
-        to_bottom_btn1.setOnClickListener {
+        binding.toBottomBtn1.setOnClickListener {
             showToBottomWindow1(it)
         }
-        to_bottom_btn2.setOnClickListener {
+        binding.toBottomBtn2.setOnClickListener {
             showToBottomWindow2(it)
         }
         //向右弹出
-        to_right_btn.setOnClickListener {
+        binding.toRightBtn.setOnClickListener {
             showToRightWindow(it)
         }
         //向左弹出
-        to_left_btn.setOnClickListener {
+        binding.toLeftBtn.setOnClickListener {
             showToLeftWindow(it)
         }
         //全屏弹出
-        full_btn.setOnClickListener {
+        binding.fullBtn.setOnClickListener {
             showFullWindow(it)
         }
         //向上弹出
-        to_top_btn.setOnClickListener {
+        binding.toTopBtn.setOnClickListener {
             showToTopWindow(it)
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_test_popup_window
+    override fun getViewBinding() = ActivityTestPopupWindowBinding.inflate(layoutInflater)
 
     //向下弹出
     private fun showToBottomWindow1(view: View) {

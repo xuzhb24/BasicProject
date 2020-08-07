@@ -25,9 +25,6 @@ public class TestCodeUtilActivity extends BaseActivity<ActivityTestCodeUtilBindi
 
     @Override
     public void initListener() {
-        binding.titleBar.setOnLeftClickListener(v -> {
-            finish();
-        });
         binding.btn1.setOnClickListener(v -> {
             String content = binding.il.getInputText().trim();
             if (TextUtils.isEmpty(content)) {

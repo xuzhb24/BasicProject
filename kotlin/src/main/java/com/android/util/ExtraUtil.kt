@@ -7,6 +7,8 @@ import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.provider.Settings
+import android.view.MotionEvent
+import com.android.basicproject.BuildConfig
 import com.google.gson.Gson
 import java.util.*
 
@@ -56,9 +58,20 @@ fun isEntity(text: String, obj: Any): Boolean {
     }
 }
 
-//双击标题栏获取当前页面的Activity名称，只是调试用
-fun getTopActivityName(activity: Activity) {
-    val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-    val info = manager.getRunningTasks(1).get(0)
-    alert(activity, "包名：${info.topActivity.packageName}\n类名：${info.topActivity.className}")
+//屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
+fun getTopActivityName(activity: Activity, ev: MotionEvent?) {
+    ev?.let {
+        if (BuildConfig.DEBUG && it.action == MotionEvent.ACTION_DOWN &&
+            it.rawY < SizeUtil.dp2px(80f) && it.rawX > SizeUtil.dp2px(80f) &&
+            it.rawX < ScreenUtil.getScreenWidth(activity) - SizeUtil.dp2px(80f)
+        ) {
+            CheckFastClickUtil.setOnMultiClickListener(600) {
+                if (it == 2) {
+                    val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+                    val info = manager.getRunningTasks(1).get(0)
+                    alert(activity, "包名：${info.topActivity.packageName}\n类名：${info.topActivity.className}")
+                }
+            }
+        }
+    }
 }

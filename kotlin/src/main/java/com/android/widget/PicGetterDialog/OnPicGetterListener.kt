@@ -14,14 +14,14 @@ interface OnPicGetterListener {
      * @param bitmap  图片
      * @param picPath 图片路径
      */
-    fun onSuccess(bitmap: Bitmap, picPath: String)
+    fun onSuccess(bitmap: Bitmap?, picPath: String?)
 
     /**
      * 图片获取失败
      *
      * @param errorMsg 错误信息
      */
-    fun onFailure(errorMsg: String)
+    fun onFailure(errorMsg: String?)
 
 
     /**

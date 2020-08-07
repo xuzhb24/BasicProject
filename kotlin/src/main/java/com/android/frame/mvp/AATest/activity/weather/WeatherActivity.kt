@@ -2,34 +2,33 @@ package com.android.frame.mvp.AATest.activity.weather
 
 import android.os.Bundle
 import android.text.TextUtils
-import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityWeatherBinding
 import com.android.frame.mvp.AATest.bean.WeatherBeanMvp
 import com.android.frame.mvp.BaseActivity
 import com.android.util.regex.RegexUtil
-import kotlinx.android.synthetic.main.activity_weather.*
 
 /**
  * Created by xuzhb on 2020/1/4
  * Desc:
  */
-class WeatherActivity : BaseActivity<WeatherView, WeatherPresenter>(), WeatherView {
+class WeatherActivity : BaseActivity<ActivityWeatherBinding, WeatherView, WeatherPresenter>(), WeatherView {
 
     override fun handleView(savedInstanceState: Bundle?) {
         mPresenter?.getWeatherInfo("深圳")
     }
 
     override fun initListener() {
-        query_btn.setOnClickListener {
-            result_tv.text = ""
-            if (TextUtils.isEmpty(area_il.inputText.trim())) {
+        binding.queryBtn.setOnClickListener {
+            binding.resultTv.text = ""
+            if (TextUtils.isEmpty(binding.areaIl.inputText.trim())) {
                 showToast("请先输入要查询的地区")
                 return@setOnClickListener
             }
-            mPresenter?.getWeatherInfo(area_il.inputText.trim())
+            mPresenter?.getWeatherInfo(binding.areaIl.inputText.trim())
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_weather
+    override fun getViewBinding() = ActivityWeatherBinding.inflate(layoutInflater)
 
     override fun getPresenter(): WeatherPresenter = WeatherPresenter()
 
@@ -54,9 +53,9 @@ class WeatherActivity : BaseActivity<WeatherView, WeatherPresenter>(), WeatherVi
                         .append("  ").append(forecast.type).append("\n")
                 }
             }
-            result_tv.text = sb.toString()
+            binding.resultTv.text = sb.toString()
         } else {
-            result_tv.text = "未获取到天气信息"
+            binding.resultTv.text = "未获取到天气信息"
         }
     }
 

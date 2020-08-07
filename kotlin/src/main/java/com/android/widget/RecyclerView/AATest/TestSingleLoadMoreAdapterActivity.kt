@@ -3,6 +3,7 @@ package com.android.widget.RecyclerView.AATest
 import android.os.Bundle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityTestAdapterBinding
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant
 import com.android.frame.http.AATest.WangYiNewsWebviewActivity
@@ -13,13 +14,12 @@ import com.android.frame.http.SchedulerUtil
 import com.android.frame.mvc.BaseActivity
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2020/1/13
  * Desc:单布局时上拉加载更多
  */
-class TestSingleLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
+class TestSingleLoadMoreAdapterActivity : BaseActivity<ActivityTestAdapterBinding>(), SwipeRefreshLayout.OnRefreshListener {
 
     companion object {
         private const val ONCE_LOAD_SIEE = 10
@@ -29,19 +29,16 @@ class TestSingleLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnR
     private var mCurrentPage: Int = 1  //记录当前页面
 
     override fun handleView(savedInstanceState: Bundle?) {
-        srl.setOnRefreshListener(this)  //下拉监听
-        srl.setColorSchemeColors(resources.getColor(R.color.colorPrimaryDark))  //设置颜色
-//        rv.layoutManager = GridLayoutManager(this, 2)
-        rv.adapter = mAdapter
+        binding.srl.setOnRefreshListener(this)  //下拉监听
+        binding.srl.setColorSchemeColors(resources.getColor(R.color.colorPrimaryDark))  //设置颜色
+//        binding.rv.layoutManager = GridLayoutManager(this, 2)
+        binding.rv.adapter = mAdapter
         queryData(mCurrentPage)
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
         //底部上拉加载更多
-        mAdapter.setOnLoadMoreListener(rv) {
+        mAdapter.setOnLoadMoreListener(binding.rv) {
             queryData(mCurrentPage)
         }
         //设置加载异常监听，如网络异常导致无法加载数据
@@ -54,7 +51,7 @@ class TestSingleLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnR
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_test_adapter;
+    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
 
     override fun onRefresh() {
         mCurrentPage = 1
@@ -111,8 +108,8 @@ class TestSingleLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnR
 
     //停止刷新，即收起刷新头部
     private fun endRefresh() {
-        if (srl.isRefreshing) {
-            srl.isRefreshing = false
+        if (binding.srl.isRefreshing) {
+            binding.srl.isRefreshing = false
         }
     }
 

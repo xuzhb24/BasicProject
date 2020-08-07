@@ -4,18 +4,18 @@ import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.ViewGroup
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityTestPicGetterDialogBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil
 import com.android.widget.PicGetterDialog.OnPicGetterListener
 import com.android.widget.PicGetterDialog.PicGetterDialog
 import com.yalantis.ucrop.UCrop
-import kotlinx.android.synthetic.main.activity_test_pic_getter_dialog.*
 
 /**
  * Created by xuzhb on 2020/1/28
  * Desc:
  */
-class TestPicGetterDialogActivity : BaseActivity() {
+class TestPicGetterDialogActivity : BaseActivity<ActivityTestPicGetterDialogBinding>() {
 
     private var mPicGetterDialog: PicGetterDialog? = null
 
@@ -24,13 +24,10 @@ class TestPicGetterDialogActivity : BaseActivity() {
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
-        dialog_btn1.setOnClickListener {
+        binding.dialogBtn1.setOnClickListener {
             showPicGetDialog()
         }
-        dialog_btn2.setOnClickListener {
+        binding.dialogBtn2.setOnClickListener {
             showCustomPicGetDialog()
         }
     }
@@ -50,13 +47,13 @@ class TestPicGetterDialogActivity : BaseActivity() {
             .setCropOptions(options)
             .setMaxCropSize(800, 2400)
             .setOnPicGetterListener(object : OnPicGetterListener {
-                override fun onSuccess(bitmap: Bitmap, picPath: String) {
-                    pic_iv.setImageBitmap(bitmap)
-                    pic_tv.text = picPath
+                override fun onSuccess(bitmap: Bitmap?, picPath: String?) {
+                    binding.picIv.setImageBitmap(bitmap)
+                    binding.picTv.text = picPath
                 }
 
-                override fun onFailure(errorMsg: String) {
-                    showToast(errorMsg)
+                override fun onFailure(errorMsg: String?) {
+                    showToast(errorMsg ?: "发生异常了")
                 }
 
                 override fun onCancel() {
@@ -71,13 +68,13 @@ class TestPicGetterDialogActivity : BaseActivity() {
         val dialog = CustomPicGetterDialog()
         dialog.setViewParams(SizeUtil.dp2px(315f).toInt(), ViewGroup.MarginLayoutParams.WRAP_CONTENT)
             .setOnPicGetterListener(object : OnPicGetterListener {
-                override fun onSuccess(bitmap: Bitmap, picPath: String) {
-                    pic_iv.setImageBitmap(bitmap)
-                    pic_tv.text = picPath
+                override fun onSuccess(bitmap: Bitmap?, picPath: String?) {
+                    binding.picIv.setImageBitmap(bitmap)
+                    binding.picTv.text = picPath
                 }
 
-                override fun onFailure(errorMsg: String) {
-                    showToast(errorMsg)
+                override fun onFailure(errorMsg: String?) {
+                    showToast(errorMsg ?: "发生异常了")
                 }
 
                 override fun onCancel() {
@@ -87,6 +84,6 @@ class TestPicGetterDialogActivity : BaseActivity() {
         dialog.showAtCenter(supportFragmentManager)
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_test_pic_getter_dialog
+    override fun getViewBinding() = ActivityTestPicGetterDialogBinding.inflate(layoutInflater)
 
 }

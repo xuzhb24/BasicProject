@@ -13,112 +13,123 @@
         app:rightText="说明"
         app:titleText="单一控件" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <ScrollView style="@style/ScrollViewStyle">
 
-        <Button
-            android:id="@+id/loading_btn1"
-            style="@style/SingleWidgetStyle"
-            android:text="加载框(不带消息)" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-        <Button
-            android:id="@+id/loading_btn2"
-            style="@style/SingleWidgetStyle"
-            android:text="加载框(带消息)" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-        <Button
-            android:id="@+id/loading_btn3"
-            style="@style/SingleWidgetStyle"
-            android:text="加载框(不可取消)" />
+                <Button
+                    android:id="@+id/loading_btn1"
+                    style="@style/SingleWidgetStyle"
+                    android:text="加载框(不带消息)" />
 
-    </LinearLayout>
+                <Button
+                    android:id="@+id/loading_btn2"
+                    style="@style/SingleWidgetStyle"
+                    android:text="加载框(带消息)" />
 
-    <View style="@style/SingleWidgetDividerLineStyle" />
+                <Button
+                    android:id="@+id/loading_btn3"
+                    style="@style/SingleWidgetStyle"
+                    android:text="加载框(不可取消)" />
 
-    <!--密码输入框-->
-    <com.android.widget.PasswordEditText
-        android:id="@+id/password_edittext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/interval_margin" />
+            </LinearLayout>
 
-    <TextView
-        android:id="@+id/pet_tv"
-        style="@style/SingleWidgetStyle" />
+            <View style="@style/SingleWidgetDividerLineStyle" />
 
-    <Button
-        android:id="@+id/pet_btn"
-        style="@style/SingleWidgetStyle"
-        android:text="清空" />
+            <!--密码输入框-->
+            <com.android.widget.PasswordEditText
+                android:id="@+id/password_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/interval_margin" />
 
-    <View style="@style/SingleWidgetDividerLineStyle" />
+            <TextView
+                android:id="@+id/pet_tv"
+                style="@style/SingleWidgetStyle" />
 
-    <!--搜索框-->
-    <com.android.widget.SearchLayout
-        android:id="@+id/search_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        app:searchHint="请输入文本" />
+            <Button
+                android:id="@+id/pet_btn"
+                style="@style/SingleWidgetStyle"
+                android:text="清空" />
 
-    <TextView
-        android:id="@+id/searchlayout_tv"
-        style="@style/SingleWidgetStyle" />
+            <View style="@style/SingleWidgetDividerLineStyle" />
 
-    <View style="@style/SingleWidgetDividerLineStyle" />
+            <!--搜索框-->
+            <com.android.widget.SearchLayout
+                android:id="@+id/search_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                app:searchHint="请输入文本" />
 
-    <!--输入框-->
-    <com.android.widget.InputLayout
-        android:id="@+id/input_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        app:inputTextHint="请输入文本" />
+            <TextView
+                android:id="@+id/searchlayout_tv"
+                style="@style/SingleWidgetStyle" />
 
-    <TextView
-        android:id="@+id/inputlayout_tv"
-        style="@style/SingleWidgetStyle" />
+            <View style="@style/SingleWidgetDividerLineStyle" />
 
-    <View style="@style/SingleWidgetDividerLineStyle" />
+            <!--输入框-->
+            <com.android.widget.InputLayout
+                android:id="@+id/input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                app:inputTextHint="请输入文本" />
 
-    <!--TextView文字滚动显示-->
-    <com.android.widget.ScrollTextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:text="这是一段很长很长很长很长很长很长很长很长很长很长很长很长很长很长的文本" />
+            <TextView
+                android:id="@+id/inputlayout_tv"
+                style="@style/SingleWidgetStyle" />
 
-    <com.android.widget.ScrollTextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="5dp"
-        android:text="这是一段短文本" />
+            <View style="@style/SingleWidgetDividerLineStyle" />
 
-    <View style="@style/SingleWidgetDividerLineStyle" />
+            <!--TextView文字滚动显示-->
+            <com.android.widget.ScrollTextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:text="这是一段很长很长很长很长很长很长很长很长很长很长很长很长很长很长的文本" />
 
-    <com.youth.banner.Banner
-        android:id="@+id/banner"
-        android:layout_width="match_parent"
-        android:layout_height="150dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
-        app:image_scale_type="fit_xy" />
+            <com.android.widget.ScrollTextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="5dp"
+                android:text="这是一段短文本" />
 
-    <com.android.widget.IndicatorLayout
-        android:id="@+id/idicatorLayout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:gravity="center_horizontal" />
+            <View style="@style/SingleWidgetDividerLineStyle" />
 
-    <View style="@style/SingleWidgetDividerLineStyle" />
+            <com.youth.banner.Banner
+                android:id="@+id/banner"
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="20dp"
+                android:layout_marginBottom="10dp"
+                app:image_scale_type="fit_xy" />
+
+            <com.android.widget.IndicatorLayout
+                android:id="@+id/idicatorLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal" />
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

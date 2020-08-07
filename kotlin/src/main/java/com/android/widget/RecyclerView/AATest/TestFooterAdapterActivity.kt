@@ -1,16 +1,15 @@
 package com.android.widget.RecyclerView.AATest
 
 import android.os.Bundle
-import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityTestAdapterBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.alert
-import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2019/11/17
  * Desc:尾部Footer
  */
-class TestFooterAdapterActivity : BaseActivity() {
+class TestFooterAdapterActivity : BaseActivity<ActivityTestAdapterBinding>() {
 
     private var mSelectedList: MutableList<String> = mutableListOf()
     private var mList: MutableList<String> = mutableListOf()
@@ -19,9 +18,9 @@ class TestFooterAdapterActivity : BaseActivity() {
     override fun handleView(savedInstanceState: Bundle?) {
         mList = createData()
         mList.add("没有更多数据了")  //添加尾部的Footer
-        title_bar.rightText = "已添加列表"
-        srl.isEnabled = false
-        rv.adapter = mAdapter
+        mTitleBar?.rightText = "已添加列表"
+        binding.srl.isEnabled = false
+        binding.rv.adapter = mAdapter
     }
 
     private fun createData(): MutableList<String> = mutableListOf(
@@ -30,10 +29,7 @@ class TestFooterAdapterActivity : BaseActivity() {
     )
 
     override fun initListener() {
-        title_bar.setOnClickListener {
-            finish()
-        }
-        title_bar.setOnRightClickListener {
+        mTitleBar?.setOnRightClickListener {
             val sb = StringBuilder()
             sb.append("\n")
             if (mSelectedList.size == 0) {
@@ -57,5 +53,5 @@ class TestFooterAdapterActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_test_adapter
+    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
 }

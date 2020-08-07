@@ -11,7 +11,8 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.SurfaceHolder
 import android.view.SurfaceView
-import com.android.basicproject.R
+import androidx.viewbinding.ViewBinding
+import com.android.basicproject.databinding.ActivityCaptureBinding
 import com.android.frame.camera.zxing.camera.CameraManager
 import com.android.frame.camera.zxing.decode.CaptureActivityHandler
 import com.android.frame.camera.zxing.decode.InactivityTimer
@@ -37,7 +38,7 @@ import kotlin.concurrent.thread
  * 或者选择重写getSurfaceView()和getViewfinderView()返回对应的两个控件，
  * 扫码最终是在handleDecode(result: Result?, bitmap: Bitmap?)处理扫描后的结果
  */
-open class CaptureActivity : BaseActivity(), SurfaceHolder.Callback {
+open class CaptureActivity<VB : ViewBinding> : BaseActivity<VB>(), SurfaceHolder.Callback {
 
     companion object {
         private const val TAG = "CaptureActivity"
@@ -104,7 +105,7 @@ open class CaptureActivity : BaseActivity(), SurfaceHolder.Callback {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_capture
+    override fun getViewBinding(): VB = ActivityCaptureBinding.inflate(layoutInflater) as VB
 
     override fun onResume() {
         super.onResume()

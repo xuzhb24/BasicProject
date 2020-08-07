@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityTestAdapterBinding
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant
 import com.android.frame.http.AATest.WangYiNewsWebviewActivity
@@ -17,13 +18,12 @@ import com.android.widget.RecyclerView.AATest.entity.DateBean
 import com.google.gson.Gson
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2020/1/14
  * Desc:
  */
-class TestMultiLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
+class TestMultiLoadMoreAdapterActivity : BaseActivity<ActivityTestAdapterBinding>(), SwipeRefreshLayout.OnRefreshListener {
 
     companion object {
         private const val ONCE_LOAD_SIEE = 10
@@ -35,18 +35,15 @@ class TestMultiLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRe
     private var mCurrentDate = DateUtil.getDistanceDateByDay(1, DateUtil.Y_M_D)
 
     override fun handleView(savedInstanceState: Bundle?) {
-        srl.setOnRefreshListener(this)  //下拉监听
-        srl.setColorSchemeColors(resources.getColor(R.color.colorPrimaryDark))  //设置颜色
-        rv.adapter = mAdapter
+        binding.srl.setOnRefreshListener(this)  //下拉监听
+        binding.srl.setColorSchemeColors(resources.getColor(R.color.colorPrimaryDark))  //设置颜色
+        binding.rv.adapter = mAdapter
         queryData(mCurrentPage)
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
         //底部上拉加载更多
-        mAdapter.setOnLoadMoreListener(rv) {
+        mAdapter.setOnLoadMoreListener(binding.rv) {
             queryData(mCurrentPage)
         }
         //设置加载异常监听，如网络异常导致无法加载数据
@@ -59,7 +56,7 @@ class TestMultiLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRe
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_test_adapter;
+    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
 
     override fun onRefresh() {
         mCurrentPage = 1
@@ -131,8 +128,8 @@ class TestMultiLoadMoreAdapterActivity : BaseActivity(), SwipeRefreshLayout.OnRe
 
     //停止刷新，即收起刷新头部
     private fun endRefresh() {
-        if (srl.isRefreshing) {
-            srl.isRefreshing = false
+        if (binding.srl.isRefreshing) {
+            binding.srl.isRefreshing = false
         }
     }
 

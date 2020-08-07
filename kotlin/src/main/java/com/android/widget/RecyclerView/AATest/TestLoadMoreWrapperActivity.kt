@@ -3,6 +3,7 @@ package com.android.widget.RecyclerView.AATest
 import android.os.Bundle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityTestAdapterBinding
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant
 import com.android.frame.http.AATest.WangYiNewsWebviewActivity
@@ -14,13 +15,12 @@ import com.android.frame.mvc.BaseActivity
 import com.android.widget.RecyclerView.LoadMoreWrapper
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_test_adapter.*
 
 /**
  * Created by xuzhb on 2019/10/30
  * Desc:使用装饰者模式实现下拉刷新和上拉加载更多
  */
-class TestLoadMoreWrapperActivity : BaseActivity(), SwipeRefreshLayout.OnRefreshListener {
+class TestLoadMoreWrapperActivity : BaseActivity<ActivityTestAdapterBinding>(), SwipeRefreshLayout.OnRefreshListener {
 
     companion object {
         private const val ONCE_LOAD_SIEE = 10
@@ -31,22 +31,19 @@ class TestLoadMoreWrapperActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
     private var mCurrentPage: Int = 1  //记录当前页面
 
     override fun handleView(savedInstanceState: Bundle?) {
-//        srl.isEnabled = false  //禁用下拉刷新功能
-        srl.setOnRefreshListener(this)  //下拉监听
-        srl.setColorSchemeColors(resources.getColor(R.color.colorPrimaryDark))  //设置颜色
+//        binding.srl.isEnabled = false  //禁用下拉刷新功能
+        binding.srl.setOnRefreshListener(this)  //下拉监听
+        binding.srl.setColorSchemeColors(resources.getColor(R.color.colorPrimaryDark))  //设置颜色
 //        rv.layoutManager = GridLayoutManager(this, 2)
-        rv.adapter = mMoreAdapter
+        binding.rv.adapter = mMoreAdapter
         mMoreAdapter.isEmptyViewLoadMoreEnable = true
         showToast("下拉或上拉加载数据")
 //        queryData(mCurrentPage)
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
         //底部上拉加载更多
-        mMoreAdapter.setOnLoadMoreListener(rv) {
+        mMoreAdapter.setOnLoadMoreListener(binding.rv) {
             queryData(mCurrentPage)
         }
         //设置加载异常监听，如网络异常导致无法加载数据
@@ -59,7 +56,7 @@ class TestLoadMoreWrapperActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_test_adapter
+    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
 
     //下拉刷新
     override fun onRefresh() {
@@ -119,8 +116,8 @@ class TestLoadMoreWrapperActivity : BaseActivity(), SwipeRefreshLayout.OnRefresh
 
     //停止刷新，即收起刷新头部
     private fun endRefresh() {
-        if (srl.isRefreshing) {
-            srl.isRefreshing = false
+        if (binding.srl.isRefreshing) {
+            binding.srl.isRefreshing = false
         }
     }
 

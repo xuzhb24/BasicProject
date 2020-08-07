@@ -3,23 +3,22 @@ package com.android.widget.ProgressBar
 import android.graphics.Color
 import android.os.Bundle
 import android.view.animation.AccelerateDecelerateInterpolator
-import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityTestProgressBarBinding
 import com.android.frame.mvc.BaseActivity
-import kotlinx.android.synthetic.main.activity_test_progress_bar.*
 
-class TestProgressBarActivity : BaseActivity() {
+class TestProgressBarActivity : BaseActivity<ActivityTestProgressBarBinding>() {
 
     override fun handleView(savedInstanceState: Bundle?) {
-        circle_cpb1.startAnim(75)
-        with(circle_cpb2) {
+        binding.circleCpb1.startAnim(75)
+        with(binding.circleCpb2) {
             rindColorArray = intArrayOf(
                 Color.parseColor("#0888FF"),
                 Color.parseColor("#6CD0FF")
             )
             startAnim(85)
         }
-        arc_av1.startRotate()
-        with(arc_av2) {
+        binding.arcAv1.startRotate()
+        with(binding.arcAv2) {
             rindColorArray = intArrayOf(
                 Color.parseColor("#0888FF"),
                 Color.parseColor("#6CD0FF")
@@ -29,10 +28,8 @@ class TestProgressBarActivity : BaseActivity() {
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_test_progress_bar
+    override fun getViewBinding() = ActivityTestProgressBarBinding.inflate(layoutInflater)
+
 }

@@ -5,6 +5,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
 import android.text.TextUtils
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityTestCodeUtilBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.BitmapUtil
 import com.android.util.SizeUtil
@@ -14,7 +15,7 @@ import kotlinx.android.synthetic.main.activity_test_code_util.*
  * Created by xuzhb on 2019/11/18
  * Desc:
  */
-class TestCodeUtilActivity : BaseActivity() {
+class TestCodeUtilActivity : BaseActivity<ActivityTestCodeUtilBinding>() {
 
     override fun handleView(savedInstanceState: Bundle?) {
         il.inputText = "1234567890abcdefg"
@@ -23,9 +24,6 @@ class TestCodeUtilActivity : BaseActivity() {
     override fun initListener() {
         val width = SizeUtil.dp2px(250f).toInt()
         val height = SizeUtil.dp2px(250f).toInt()
-        title_bar.setOnLeftClickListener {
-            finish()
-        }
         btn1.setOnClickListener {
             val content = il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
@@ -72,6 +70,6 @@ class TestCodeUtilActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_test_code_util
+    override fun getViewBinding() = ActivityTestCodeUtilBinding.inflate(layoutInflater)
 
 }

@@ -2,11 +2,12 @@ package com.android.frame.WebView
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.text.TextUtils
 import android.view.KeyEvent
-import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.webkit.*
@@ -14,17 +15,21 @@ import android.widget.LinearLayout
 import com.android.base.MainActivity
 import com.android.basicproject.BuildConfig
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityCommonWebviewBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.KeyboardUtil
 import com.android.util.LogUtil
 import com.android.util.StatusBar.StatusBarUtil
+import com.android.widget.PicGetterDialog.OnPicGetterListener
+import com.android.widget.PicGetterDialog.PicGetterDialog
 import kotlinx.android.synthetic.main.activity_common_webview.*
+import java.io.File
 
 /**
  * Created by xuzhb on 2019/10/30
  * Desc:H5 Activity基类
  */
-open class CommonWebviewActivity : BaseActivity() {
+open class CommonWebviewActivity : BaseActivity<ActivityCommonWebviewBinding>() {
 
     companion object {
         private const val TAG = "CommonWebviewActivity"
@@ -51,6 +56,28 @@ open class CommonWebviewActivity : BaseActivity() {
     override fun initBar() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)  //保证WebView的输入框不被软键盘遮挡
         StatusBarUtil.darkMode(this, resources.getColor(R.color.colorPrimaryDark), 1f)
+        mTitleBar?.let {
+            it.setOnLeftClickListener {
+                goPageBack()
+            }
+            if (BuildConfig.DEBUG) {
+                it.setOnLongClickListener {
+                    val url = mWebView?.url.toString()
+                    KeyboardUtil.copyToClipboard(applicationContext, url)
+                    showToast("${url}\n已复制到剪切板！")
+                    true
+                }
+            }
+        }
+    }
+
+    //返回操作
+    protected open fun goPageBack() {
+        if (mWebView != null && mWebView!!.canGoBack()) {
+            mWebView!!.goBack()
+        } else {
+            finish()
+        }
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -207,41 +234,42 @@ open class CommonWebviewActivity : BaseActivity() {
 
     //选择拍照或相册
     private fun showImageChooseDialog() {
-//        val dialog = PicChooseDialog()
-//        dialog.setOnPicGetterListener(object : OnPicGetterListener {
-//            override fun onSuc(bitmap: Bitmap?, picPath: String?) {
-//                if (picPath == null) {
-//                    if (mFilePathCallback != null) {
-//                        mFilePathCallback!!.onReceiveValue(arrayOf())
-//                        mFilePathCallback = null
-//                    } else if (mUploadMsg != null) {
-//                        mUploadMsg!!.onReceiveValue(null)
-//                        mUploadMsg = null
-//                    }
-//                } else {
-//                    val result = Uri.fromFile(File(picPath))
-//                    if (mFilePathCallback != null) {
-//                        mFilePathCallback!!.onReceiveValue(arrayOf(result))
-//                        mFilePathCallback = null
-//                    } else {
-//                        mUploadMsg!!.onReceiveValue(result)
-//                        mUploadMsg = null
-//                    }
-//                }
-//            }
-//
-//            override fun onFail(errorCode: Int, errorMsg: String?) {
-//                dialog.dismiss()
-//                showErrorToast(errorMsg ?: "发生异常了！")
-//                releaseUploadMessage()
-//            }
-//
-//            override fun onCancel() {
-//                releaseUploadMessage()
-//            }
-//
-//        })
-//        dialog.show(fragmentManager, PicChooseDialog::class.java.simpleName)
+        val dialog = PicGetterDialog()
+        dialog.setOnPicGetterListener(object : OnPicGetterListener {
+
+            override fun onSuccess(bitmap: Bitmap?, picPath: String?) {
+                if (TextUtils.isEmpty(picPath)) {
+                    if (mFilePathCallback != null) {
+                        mFilePathCallback!!.onReceiveValue(arrayOf())
+                        mFilePathCallback = null
+                    } else if (mUploadMsg != null) {
+                        mUploadMsg!!.onReceiveValue(null)
+                        mUploadMsg = null
+                    }
+                } else {
+                    val result = Uri.fromFile(File(picPath))
+                    if (mFilePathCallback != null) {
+                        mFilePathCallback!!.onReceiveValue(arrayOf(result))
+                        mFilePathCallback = null
+                    } else {
+                        mUploadMsg!!.onReceiveValue(result)
+                        mUploadMsg = null
+                    }
+                }
+            }
+
+            override fun onFailure(errorMsg: String?) {
+                dialog.dismiss()
+                showToast(errorMsg ?: "发生异常了")
+                releaseUploadMessage()
+            }
+
+            override fun onCancel() {
+                releaseUploadMessage()
+            }
+
+        })
+        dialog.show(supportFragmentManager)
     }
 
     private fun releaseUploadMessage() {
@@ -256,29 +284,10 @@ open class CommonWebviewActivity : BaseActivity() {
     }
 
     override fun initListener() {
-        title_bar.setOnLeftClickListener {
-            goPageBack()
-        }
-        if (BuildConfig.DEBUG) {
-            title_bar.setOnLongClickListener {
-                val url = mWebView?.url.toString()
-                KeyboardUtil.copyToClipboard(applicationContext, url)
-                showToast("${url}\n已复制到剪切板！")
-                true
-            }
-        }
+
     }
 
-    //返回操作
-    protected open fun goPageBack() {
-        if (mWebView != null && mWebView!!.canGoBack()) {
-            mWebView!!.goBack()
-        } else {
-            finish()
-        }
-    }
-
-    override fun getLayoutId(): Int = R.layout.activity_common_webview
+    override fun getViewBinding() = ActivityCommonWebviewBinding.inflate(layoutInflater)
 
     override fun onDestroy() {
         destroyWebView()

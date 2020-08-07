@@ -11,7 +11,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
-import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.camera.zxing.ui.CaptureActivity
 import com.android.frame.camera.zxing.util.QRConstant
 import com.android.frame.mvc.BaseActivity
@@ -22,7 +22,7 @@ import kotlinx.android.synthetic.main.activity_common_layout.*
  * Created by xuzhb on 2019/11/16
  * Desc:测试扫码，要注意权限的申请
  */
-class TestZXingActivity : BaseActivity() {
+class TestZXingActivity : BaseActivity<ActivityCommonLayoutBinding>() {
 
     companion object {
         private const val REQUEST_CODE = 1
@@ -73,7 +73,7 @@ class TestZXingActivity : BaseActivity() {
         }
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_common_layout
+    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

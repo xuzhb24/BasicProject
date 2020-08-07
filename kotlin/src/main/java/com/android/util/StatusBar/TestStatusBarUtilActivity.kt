@@ -3,6 +3,7 @@ package com.android.util.StatusBar
 import android.os.Bundle
 import android.view.View
 import com.android.basicproject.R
+import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.initCommonLayout
 import kotlinx.android.synthetic.main.activity_common_layout.*
@@ -11,7 +12,7 @@ import kotlinx.android.synthetic.main.activity_common_layout.*
  * Created by xuzhb on 2020/1/8
  * Desc:实现沉浸式状态栏
  */
-class TestStatusBarUtilActivity : BaseActivity() {
+class TestStatusBarUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
 
     companion object {
         const val EXTRA_TYPE = "EXTRA_TYPE"
@@ -64,5 +65,6 @@ class TestStatusBarUtilActivity : BaseActivity() {
     override fun initListener() {
     }
 
-    override fun getLayoutId(): Int = R.layout.activity_common_layout
+    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
+
 }

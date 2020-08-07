@@ -13,10 +13,12 @@ import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import androidx.viewbinding.ViewBinding
 import com.android.base.BaseApplication
-import com.android.basicproject.BuildConfig
 import com.android.basicproject.R
-import com.android.util.*
+import com.android.util.NetReceiver
+import com.android.util.NetworkUtil
 import com.android.util.StatusBar.StatusBarUtil
+import com.android.util.ToastUtil
+import com.android.util.getTopActivityName
 import com.android.widget.LoadingDialog
 import com.android.widget.TitleBar
 import io.reactivex.disposables.CompositeDisposable
@@ -242,19 +244,8 @@ abstract class BaseActivity_VB<VB : ViewBinding> : AppCompatActivity(),
     }
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        ev?.let {
-            //屏幕顶部中间区域连续点击2次获取当前Activity包名和类名，只在debug环境下有效
-            if (BuildConfig.DEBUG && it.action == MotionEvent.ACTION_DOWN &&
-                it.rawY < SizeUtil.dp2px(50f) && it.rawX > SizeUtil.dp2px(80f) &&
-                it.rawX < ScreenUtil.getScreenWidth(this) - SizeUtil.dp2px(80f)
-            ) {
-                CheckFastClickUtil.setOnMultiClickListener {
-                    if (it == 2) {
-                        getTopActivityName(this)
-                    }
-                }
-            }
-        }
+        //屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
+        getTopActivityName(this, ev)
         return super.dispatchTouchEvent(ev)
     }
 }

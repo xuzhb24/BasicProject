@@ -41,9 +41,6 @@ public class CommonLayoutUtil {
         Button btn11 = activity.findViewById(R.id.btn11);
         Button btn12 = activity.findViewById(R.id.btn12);
         titleBar.setTitleText(title);
-        titleBar.setOnLeftClickListener(v -> {
-            activity.finish();
-        });
         il.setVisibility(View.GONE);
         tv.setVisibility(View.GONE);
         btn1.setVisibility(View.GONE);

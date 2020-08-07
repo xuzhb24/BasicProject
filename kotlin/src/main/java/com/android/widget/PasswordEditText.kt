@@ -139,17 +139,28 @@ class PasswordEditText(
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-        val widthMode = MeasureSpec.getMode(widthMeasureSpec)
-        var widthSize = MeasureSpec.getSize(widthMeasureSpec)
-        if (widthMode == MeasureSpec.AT_MOST) {  //支持wrap_content属性
-            widthSize = (passwordCount * (frameSize + 2 * frameMargin) + frameStrokeWidth).toInt() + 1
+        setMeasuredDimension(
+            measureSpec(widthMeasureSpec, (passwordCount * (frameSize + 2 * frameMargin) + frameStrokeWidth).toInt() + 1),
+            measureSpec(
+                heightMeasureSpec,
+                Math.max(SizeUtil.dp2px(50f).toInt(), (frameSize + frameStrokeWidth).toInt() + 1)
+            )  //不小于50dp
+        )
+    }
+
+    private fun measureSpec(measureSpec: Int, minSize: Int): Int {
+        var result = 0
+        val specMode = MeasureSpec.getMode(measureSpec)
+        val specSize = MeasureSpec.getSize(measureSpec)
+        if (specMode == MeasureSpec.EXACTLY) {
+            result = specSize
+        } else {
+            result = minSize
+            if (specMode == MeasureSpec.AT_MOST) {
+                result = Math.min(result, specSize)
+            }
         }
-        val heightMode = MeasureSpec.getMode(heightMeasureSpec)
-        var heightSize = MeasureSpec.getSize(heightMeasureSpec)
-        if (heightMode == MeasureSpec.AT_MOST) {  //支持wrap_content属性
-            heightSize = Math.max(SizeUtil.dp2px(50f).toInt(), (frameSize + frameStrokeWidth).toInt() + 1)  //不小于50dp
-        }
-        setMeasuredDimension(widthSize, heightSize)
+        return result
     }
 
     override fun onDraw(canvas: Canvas?) {

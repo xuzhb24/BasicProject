@@ -62,34 +62,16 @@ public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, 
         BaseApplication.getInstance().addActivity(this);
         mPresenter = getPresenter();
         mPresenter.attachView((V) this);
-        initBar();
         initBaseView();
+        initBar();
         initNetReceiver();
         handleView(savedInstanceState);
         initListener();
     }
 
-    //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
-    protected void initBar() {
-        mTitleBar = findViewById(R.id.title_bar);
-        if (mTitleBar != null) {
-            StatusBarUtil.darkModeAndPadding(this, mTitleBar);
-            if (isBarBack()) {
-                mTitleBar.setOnLeftClickListener(v -> finish());
-            }
-        } else {
-            ViewGroup content = findViewById(android.R.id.content);
-            StatusBarUtil.darkModeAndPadding(this, content);
-        }
-    }
-
-    //点击标题栏左侧图标是否退出Activity，默认true
-    protected boolean isBarBack() {
-        return true;
-    }
-
     //初始化一些通用控件，如加载框、SwipeRefreshLayout、网络错误提示布局
     protected void initBaseView() {
+        mTitleBar = findViewById(R.id.title_bar);
         mLoadingDialog = new LoadingDialog(this, R.style.LoadingDialogStyle);
         //获取布局中的SwipeRefreshLayout组件，重用BaseCompatActivity的下拉刷新逻辑
         //注意布局中SwipeRefreshLayout的id命名为swipe_refresh_layout，否则mSwipeRefreshLayout为null
@@ -116,6 +98,24 @@ public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, 
          * 3、在刷新结束时调用IBaseView的loadFinish()方法收起刷新头部，而在自定义Observer类CustomObserver中已经实现了
          *    这部分逻辑，在请求数据结束或请求数据出现异常时会调用IBaseView的loadFinish()
          */
+    }
+
+    //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
+    protected void initBar() {
+        if (mTitleBar != null) {
+            StatusBarUtil.darkModeAndPadding(this, mTitleBar);
+            if (isBarBack()) {
+                mTitleBar.setOnLeftClickListener(v -> finish());
+            }
+        } else {
+            ViewGroup content = findViewById(android.R.id.content);
+            StatusBarUtil.darkModeAndPadding(this, content);
+        }
+    }
+
+    //点击标题栏左侧图标是否退出Activity，默认true
+    protected boolean isBarBack() {
+        return true;
     }
 
     //执行onCreate接下来的逻辑
