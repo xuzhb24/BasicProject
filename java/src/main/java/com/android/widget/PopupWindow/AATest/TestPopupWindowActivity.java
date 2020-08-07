@@ -9,26 +9,20 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.java.databinding.ActivityTestPopupWindowBinding;
 import com.android.util.SizeUtil;
 import com.android.widget.PopupWindow.CommonPopupWindow;
-import com.android.widget.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Create by xuzhb on 2020/1/21
  * Desc:CommonPopupWindow使用示例
  */
-public class TestPopupWindowActivity extends BaseActivity {
+public class TestPopupWindowActivity extends BaseActivity<ActivityTestPopupWindowBinding> {
 
     private CommonPopupWindow mPopupWindow;
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -37,38 +31,17 @@ public class TestPopupWindowActivity extends BaseActivity {
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(v -> {
-            finish();
-        });
+        binding.toBottomBtn1.setOnClickListener(this::showToBottomWindow1);  //向下弹出
+        binding.toBottomBtn2.setOnClickListener(this::showToBottomWindow2);  //向下弹出
+        binding.toRightBtn.setOnClickListener(this::showToRightWindow);      //向右弹出
+        binding.toLeftBtn.setOnClickListener(this::showToLeftWindow);        //向左弹出
+        binding.fullBtn.setOnClickListener(this::showFullWindow);            //全屏弹出
+        binding.toTopBtn.setOnClickListener(this::showToTopWIndow);          //向上弹出
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_test_popup_window;
-    }
-
-    @OnClick({R.id.to_bottom_btn1, R.id.to_bottom_btn2, R.id.to_right_btn, R.id.to_left_btn, R.id.full_btn, R.id.to_top_btn})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.to_bottom_btn1:  //向下弹出
-                showToBottomWindow1(view);
-                break;
-            case R.id.to_bottom_btn2:  //向下弹出
-                showToBottomWindow2(view);
-                break;
-            case R.id.to_right_btn:  //向右弹出
-                showToRightWindow(view);
-                break;
-            case R.id.to_left_btn:  //向左弹出
-                showToLeftWindow(view);
-                break;
-            case R.id.full_btn:  //全屏弹出
-                showFullWindow(view);
-                break;
-            case R.id.to_top_btn:  //向上弹出
-                showToTopWIndow(view);
-                break;
-        }
+    public ActivityTestPopupWindowBinding getViewBinding() {
+        return ActivityTestPopupWindowBinding.inflate(getLayoutInflater());
     }
 
     //向下弹出

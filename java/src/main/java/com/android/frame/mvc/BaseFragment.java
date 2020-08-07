@@ -11,21 +11,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
-
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
+import androidx.viewbinding.ViewBinding;
 
 /**
  * Created by xuzhb on 2019/10/19
  * Desc:基类Fragment(MVC)
  */
-public abstract class BaseFragment extends Fragment {
+public abstract class BaseFragment<VB extends ViewBinding>  extends Fragment {
+
+    protected VB binding;
 
     protected FragmentActivity mActivity;
     protected Context mContext;
-    protected View mRootView;
-
-    private Unbinder mUnbinder;
 
     @Override
     public void onAttach(Context context) {
@@ -37,11 +34,10 @@ public abstract class BaseFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (mRootView == null) {
-            mRootView = inflater.inflate(getLayoutId(), container, false);
-            mUnbinder = ButterKnife.bind(this, mRootView);  //引入ButterKnife
+        if (binding == null) {
+            binding = getViewBinding(inflater, container);
         }
-        return mRootView;
+        return binding.getRoot();
     }
 
     @Override
@@ -63,12 +59,11 @@ public abstract class BaseFragment extends Fragment {
     //所有的事件回调均放在该层，如onClickListener等
     public abstract void initListener();
 
-    //获取布局
-    public abstract int getLayoutId();
+    //获取ViewBinding
+    public abstract VB getViewBinding(LayoutInflater inflater, ViewGroup container);
 
     @Override
     public void onDestroy() {
-        mUnbinder.unbind();  //解绑ButterKnife
         super.onDestroy();
     }
 

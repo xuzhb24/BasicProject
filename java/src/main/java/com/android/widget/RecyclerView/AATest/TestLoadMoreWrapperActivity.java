@@ -2,7 +2,6 @@ package com.android.widget.RecyclerView.AATest;
 
 import android.os.Bundle;
 
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.frame.http.AATest.ApiService;
@@ -14,13 +13,12 @@ import com.android.frame.http.RetrofitFactory;
 import com.android.frame.http.SchedulerUtil;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.java.databinding.ActivityTestAdapterBinding;
 import com.android.widget.RecyclerView.LoadMoreWrapper;
-import com.android.widget.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -28,16 +26,9 @@ import io.reactivex.disposables.Disposable;
  * Create by xuzhb on 2020/1/21
  * Desc:使用装饰者模式实现下拉刷新和上拉加载更多
  */
-public class TestLoadMoreWrapperActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class TestLoadMoreWrapperActivity extends BaseActivity<ActivityTestAdapterBinding> implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final int ONCE_LOAD_SIEE = 10;
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
-    @BindView(R.id.rv)
-    RecyclerView rv;
-    @BindView(R.id.srl)
-    SwipeRefreshLayout srl;
 
     private List<NewsListBean.ResultBean> mList = new ArrayList<>();  //后续通过mList更新数据
     private LoadMoreWrapper mMoreAdapter;  //实现上拉加载更多
@@ -46,11 +37,11 @@ public class TestLoadMoreWrapperActivity extends BaseActivity implements SwipeRe
     @Override
     public void handleView(Bundle savedInstanceState) {
 //        srl.setEnabled(false);  //禁用下拉刷新功能
-        srl.setOnRefreshListener(this);  //下拉监听
-        srl.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark));
+        binding.srl.setOnRefreshListener(this);  //下拉监听
+        binding.srl.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark));
 //        rv.setLayoutManager(new GridLayoutManager(this, 2));
         mMoreAdapter = new LoadMoreWrapper(new TestLoadMoreWrapper(this, mList));
-        rv.setAdapter(mMoreAdapter);
+        binding.rv.setAdapter(mMoreAdapter);
         mMoreAdapter.setEmptyViewLoadMoreEnable(true);
         showToast("下拉或上拉加载数据");
 //        queryData(mCurrentPage);
@@ -58,11 +49,8 @@ public class TestLoadMoreWrapperActivity extends BaseActivity implements SwipeRe
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(v -> {
-            finish();
-        });
         //底部上拉加载更多
-        mMoreAdapter.setOnLoadMoreListener(rv, () -> {
+        mMoreAdapter.setOnLoadMoreListener(binding.rv, () -> {
             queryData(mCurrentPage);
         });
         //设置加载异常监听，如网络异常导致无法加载数据
@@ -76,8 +64,8 @@ public class TestLoadMoreWrapperActivity extends BaseActivity implements SwipeRe
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_test_adapter;
+    public ActivityTestAdapterBinding getViewBinding() {
+        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
     }
 
     @Override
@@ -141,8 +129,8 @@ public class TestLoadMoreWrapperActivity extends BaseActivity implements SwipeRe
 
     //停止刷新，即收起刷新头部
     private void endRefresh() {
-        if (srl.isRefreshing()) {
-            srl.setRefreshing(false);
+        if (binding.srl.isRefreshing()) {
+            binding.srl.setRefreshing(false);
         }
     }
 

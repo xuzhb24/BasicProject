@@ -2,41 +2,29 @@ package com.android.widget.RecyclerView.AATest;
 
 import android.os.Bundle;
 
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.java.databinding.ActivityTestAdapterBinding;
 import com.android.widget.RecyclerView.AATest.entity.DetailBean;
 import com.android.widget.RecyclerView.AATest.entity.MonthBean;
-import com.android.widget.TitleBar;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
-
 /**
  * Create by xuzhb on 2020/1/21
  * Desc:多布局
  */
-public class TestMultiAdapterActivity extends BaseActivity {
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
-    @BindView(R.id.rv)
-    RecyclerView rv;
-    @BindView(R.id.srl)
-    SwipeRefreshLayout srl;
+public class TestMultiAdapterActivity extends BaseActivity<ActivityTestAdapterBinding> {
 
     private TestMultiAdapter mAdapter;
 
     @Override
     public void handleView(Bundle savedInstanceState) {
         mAdapter = new TestMultiAdapter(this, createData());
-        srl.setEnabled(false);
-        rv.setAdapter(mAdapter);
+        binding.srl.setEnabled(false);
+        binding.rv.setAdapter(mAdapter);
     }
 
     private List<String> createData() {
@@ -60,13 +48,12 @@ public class TestMultiAdapterActivity extends BaseActivity {
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(v -> {
-            finish();
-        });
+
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_test_adapter;
+    public ActivityTestAdapterBinding getViewBinding() {
+        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
     }
+
 }

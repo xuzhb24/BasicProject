@@ -3,27 +3,22 @@ package com.android.widget.Dialog;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import butterknife.BindView;
-import butterknife.OnClick;
+
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.java.databinding.ActivityCommonLayoutBinding;
 import com.android.util.CommonLayoutUtil;
 import com.android.util.DrawableUtil;
 import com.android.util.KeyboardUtil;
 import com.android.util.SizeUtil;
-import com.android.widget.TitleBar;
 
 /**
  * Created by xuzhb on 2019/10/21
  * Desc:
  */
-public class TestDialogActivity extends BaseActivity {
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
+public class TestDialogActivity extends BaseActivity<ActivityCommonLayoutBinding> {
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -32,33 +27,26 @@ public class TestDialogActivity extends BaseActivity {
 
     @Override
     public void initListener() {
-
+        binding.btn1.setOnClickListener(v -> {
+            showSingleDialog();
+        });
+        binding.btn2.setOnClickListener(v -> {
+            showMultiDialog();
+        });
+        binding.btn3.setOnClickListener(v -> {
+            showShareDialog();
+        });
+        binding.btn4.setOnClickListener(v -> {
+            showCommentDialog();
+        });
+        binding.btn5.setOnClickListener(v -> {
+            showCouponDialog();
+        });
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_common_layout;
-    }
-
-    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn1:
-                showSingleDialog();
-                break;
-            case R.id.btn2:
-                showMultiDialog();
-                break;
-            case R.id.btn3:
-                showShareDialog();
-                break;
-            case R.id.btn4:
-                showCommentDialog();
-                break;
-            case R.id.btn5:
-                showCouponDialog();
-                break;
-        }
+    public ActivityCommonLayoutBinding getViewBinding() {
+        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
     }
 
     //单按钮Dialog

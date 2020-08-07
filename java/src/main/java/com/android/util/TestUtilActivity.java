@@ -39,6 +39,7 @@ import androidx.annotation.RequiresApi;
 
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.java.databinding.ActivityCommonLayoutBinding;
 import com.android.util.StatusBar.TestStatusBarUtilActivity;
 import com.android.util.activity.ActivityUtil;
 import com.android.util.activity.TestJumpActivity;
@@ -66,13 +67,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import butterknife.BindView;
-
 /**
  * Created by xuzhb on 2019/10/20
  * Desc:测试工具类方法
  */
-public class TestUtilActivity extends BaseActivity {
+public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> {
 
     private static final String TAG = "TestUtilActivity";
 
@@ -106,39 +105,39 @@ public class TestUtilActivity extends BaseActivity {
     public static final String TEST_NETWORK = "TEST_NETWORK";
     public static final String TEST_APK_DOWNLOAD = "TEST_APK_DOWNLOAD";
 
-    @BindView(R.id.ll)
-    LinearLayout ll;
-    @BindView(R.id.il)
-    InputLayout il;
-    @BindView(R.id.tv)
-    TextView tv;
-    @BindView(R.id.btn1)
-    Button btn1;
-    @BindView(R.id.btn2)
-    Button btn2;
-    @BindView(R.id.btn3)
-    Button btn3;
-    @BindView(R.id.btn4)
-    Button btn4;
-    @BindView(R.id.btn5)
-    Button btn5;
-    @BindView(R.id.btn6)
-    Button btn6;
-    @BindView(R.id.btn7)
-    Button btn7;
-    @BindView(R.id.btn8)
-    Button btn8;
-    @BindView(R.id.btn9)
-    Button btn9;
-    @BindView(R.id.btn10)
-    Button btn10;
-    @BindView(R.id.btn11)
-    Button btn11;
-    @BindView(R.id.btn12)
-    Button btn12;
+    private LinearLayout ll;
+    private InputLayout il;
+    private TextView tv;
+    private Button btn1;
+    private Button btn2;
+    private Button btn3;
+    private Button btn4;
+    private Button btn5;
+    private Button btn6;
+    private Button btn7;
+    private Button btn8;
+    private Button btn9;
+    private Button btn10;
+    private Button btn11;
+    private Button btn12;
 
     @Override
     public void handleView(Bundle savedInstanceState) {
+        ll = binding.ll;
+        il = binding.il;
+        tv = binding.tv;
+        btn1 = binding.btn1;
+        btn2 = binding.btn2;
+        btn3 = binding.btn3;
+        btn4 = binding.btn4;
+        btn5 = binding.btn5;
+        btn6 = binding.btn6;
+        btn7 = binding.btn7;
+        btn8 = binding.btn8;
+        btn9 = binding.btn9;
+        btn10 = binding.btn10;
+        btn11 = binding.btn11;
+        btn12 = binding.btn12;
         switch (getIntent().getStringExtra(CommonLayoutUtil.MODULE_NAME)) {
             case TEST_STATUS_BAR:
                 testStatusBarUtil();
@@ -238,8 +237,8 @@ public class TestUtilActivity extends BaseActivity {
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_common_layout;
+    public ActivityCommonLayoutBinding getViewBinding() {
+        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
     }
 
     private void testStatusBarUtil() {

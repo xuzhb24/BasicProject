@@ -7,11 +7,9 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.view.ViewGroup;
 
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
-import com.android.frame.mvp.CommonBaseActivity;
+import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.java.databinding.ActivityTestAdapterBinding;
 import com.android.util.ExtraUtil;
 import com.android.util.IntentUtil;
 import com.android.util.LogUtil;
@@ -19,39 +17,29 @@ import com.android.util.SizeUtil;
 import com.android.util.app.AppInfo;
 import com.android.util.app.AppUtil;
 import com.android.widget.Dialog.CommonDialog;
-import com.android.widget.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * Created by xuzhb on 2020/2/5
  * Desc:
  */
-public class TestAppListActivity extends CommonBaseActivity {
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
-    @BindView(R.id.rv)
-    RecyclerView rv;
-    @BindView(R.id.srl)
-    SwipeRefreshLayout srl;
+public class TestAppListActivity extends BaseActivity<ActivityTestAdapterBinding> {
 
     private AppAdapter mAdapter;
 
     @Override
     public void handleView(Bundle savedInstanceState) {
-        titleBar.setTitleText("已安装应用列表");
-        srl.setEnabled(false);
-        showLoading("正在加载...", true);
+        mTitleBar.setTitleText("已安装应用列表");
+        binding.srl.setEnabled(false);
+//        showLoading("正在加载...", true);
         mAdapter = new AppAdapter(this, new ArrayList<>());
-        rv.setAdapter(mAdapter);
+        binding.rv.setAdapter(mAdapter);
         new Thread(() -> {
             List<AppInfo> list = AppUtil.getAppInfoList(this);
             runOnUiThread(() -> {
-                dismissLoading();
+//                dismissLoading();
                 mAdapter.setData(list);
             });
         }).start();
@@ -59,9 +47,6 @@ public class TestAppListActivity extends CommonBaseActivity {
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(v -> {
-            finish();
-        });
         mAdapter.setOnItemClickListener(((data, position) -> {
             AppInfo appInfo = (AppInfo) data;
             CommonDialog.newInstance()
@@ -94,8 +79,8 @@ public class TestAppListActivity extends CommonBaseActivity {
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_test_adapter;
+    public ActivityTestAdapterBinding getViewBinding() {
+        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
     }
 
     private SpannableStringBuilder getAppInfo(String packageName) {

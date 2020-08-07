@@ -2,7 +2,6 @@ package com.android.widget.RecyclerView.AATest;
 
 import android.os.Bundle;
 
-import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.android.frame.http.AATest.ApiService;
@@ -14,12 +13,11 @@ import com.android.frame.http.RetrofitFactory;
 import com.android.frame.http.SchedulerUtil;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
-import com.android.widget.TitleBar;
+import com.android.java.databinding.ActivityTestAdapterBinding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 
@@ -27,37 +25,27 @@ import io.reactivex.disposables.Disposable;
  * Create by xuzhb on 2020/1/21
  * Desc:单布局时上拉加载更多
  */
-public class TestSingleLoadMoreAdapterActivity extends BaseActivity implements SwipeRefreshLayout.OnRefreshListener {
+public class TestSingleLoadMoreAdapterActivity extends BaseActivity<ActivityTestAdapterBinding> implements SwipeRefreshLayout.OnRefreshListener {
 
     private static final int ONCE_LOAD_SIEE = 10;
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
-    @BindView(R.id.rv)
-    RecyclerView rv;
-    @BindView(R.id.srl)
-    SwipeRefreshLayout srl;
 
     private TestSingleLoadMoreAdapter mAdapter;
     private int mCurrentPage = 1;  //记录当前页面
 
     @Override
     public void handleView(Bundle savedInstanceState) {
-        srl.setOnRefreshListener(this);  //下拉监听
-        srl.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark));
+        binding.srl.setOnRefreshListener(this);  //下拉监听
+        binding.srl.setColorSchemeColors(getResources().getColor(R.color.colorPrimaryDark));
 //        rv.setLayoutManager(new GridLayoutManager(this, 2));
         mAdapter = new TestSingleLoadMoreAdapter(this, new ArrayList<>());
-        rv.setAdapter(mAdapter);
+        binding.rv.setAdapter(mAdapter);
         queryData(mCurrentPage);
     }
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(v -> {
-            finish();
-        });
         //底部上拉加载更多
-        mAdapter.setOnLoadMoreListener(rv, () -> {
+        mAdapter.setOnLoadMoreListener(binding.rv, () -> {
             queryData(mCurrentPage);
         });
         //设置加载异常监听，如网络异常导致无法加载数据
@@ -71,8 +59,8 @@ public class TestSingleLoadMoreAdapterActivity extends BaseActivity implements S
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_test_adapter;
+    public ActivityTestAdapterBinding getViewBinding() {
+        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
     }
 
     @Override
@@ -136,8 +124,8 @@ public class TestSingleLoadMoreAdapterActivity extends BaseActivity implements S
 
     //停止刷新，即收起刷新头部
     private void endRefresh() {
-        if (srl.isRefreshing()) {
-            srl.setRefreshing(false);
+        if (binding.srl.isRefreshing()) {
+            binding.srl.setRefreshing(false);
         }
     }
 

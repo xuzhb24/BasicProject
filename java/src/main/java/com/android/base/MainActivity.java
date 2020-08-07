@@ -12,24 +12,17 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
-import com.android.widget.CustomViewPager;
+import com.android.java.databinding.ActivityMainBinding;
 import com.google.android.material.tabs.TabLayout;
 
 import java.util.ArrayList;
-
-import butterknife.BindView;
 
 
 /**
  * Created by xuzhb on 2019/10/19
  * Desc:
  */
-public class MainActivity extends BaseActivity {
-
-    @BindView(R.id.view_pager)
-    CustomViewPager viewPager;
-    @BindView(R.id.tab_layout)
-    TabLayout tabLayout;
+public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
     private int[] mImageButton = new int[]{
             R.drawable.selector_bottom_frame,
@@ -54,7 +47,7 @@ public class MainActivity extends BaseActivity {
     //初始化底部导航栏
     private void initBottomNavigationBar() {
         for (String title : mTitleList) {
-            tabLayout.addTab(tabLayout.newTab().setText(title));
+            binding.tabLayout.addTab(binding.tabLayout.newTab().setText(title));
         }
         FragmentPagerAdapter adapter = new FragmentPagerAdapter(getSupportFragmentManager()) {
             @Override
@@ -73,11 +66,11 @@ public class MainActivity extends BaseActivity {
                 return mTitleList.get(position);
             }
         };
-        viewPager.setAdapter(adapter);
-        viewPager.setOffscreenPageLimit(3);
-        tabLayout.setupWithViewPager(viewPager);
+        binding.viewPager.setAdapter(adapter);
+        binding.viewPager.setOffscreenPageLimit(3);
+        binding.tabLayout.setupWithViewPager(binding.viewPager);
         for (int i = 0; i < mFragmentList.size(); i++) {
-            TabLayout.Tab tab = tabLayout.getTabAt(i);
+            TabLayout.Tab tab = binding.tabLayout.getTabAt(i);
             //添加自定义布局
             tab.setCustomView(getTabView(i));
             //默认选中第一个导航栏
@@ -87,14 +80,14 @@ public class MainActivity extends BaseActivity {
             }
         }
 
-        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+        binding.tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
             //选择某一个Tab时触发，返回切换后的Tab
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
                 //解决ViewPager + Fragment，点击tab切换时造成的闪屏问题
                 // 默认切换的时候，会有一个过渡动画，设为false后，取消动画，直接显示
-                viewPager.setCurrentItem(tab.getPosition(), false);
+                binding.viewPager.setCurrentItem(tab.getPosition(), false);
             }
 
             //切换Tab时触发，返回切换前的Tab
@@ -131,8 +124,8 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_main;
+    public ActivityMainBinding getViewBinding() {
+        return ActivityMainBinding.inflate(getLayoutInflater());
     }
 
 }

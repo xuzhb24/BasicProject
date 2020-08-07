@@ -13,22 +13,18 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewbinding.ViewBinding;
 
 import com.android.base.BaseApplication;
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
-import com.android.java.BuildConfig;
 import com.android.java.R;
-import com.android.util.CheckFastClickUtil;
 import com.android.util.ExtraUtil;
 import com.android.util.NetReceiver;
 import com.android.util.NetworkUtil;
-import com.android.util.ScreenUtil;
-import com.android.util.SizeUtil;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.widget.TitleBar;
 
-import butterknife.ButterKnife;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -36,9 +32,10 @@ import io.reactivex.disposables.Disposable;
  * Created by xuzhb on 2020/1/5
  * Desc:基类Activity
  */
-public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<V>> extends AppCompatActivity
+public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, P extends BasePresenter<V>> extends AppCompatActivity
         implements IBaseView, SwipeRefreshLayout.OnRefreshListener {
 
+    protected VB binding;
     protected P mPresenter;
 
     //防止RxJava内存泄漏
@@ -60,8 +57,8 @@ public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutId());
-        ButterKnife.bind(this);  //引入ButterKnife
+        binding = getViewBinding();
+        setContentView(binding.getRoot());
         BaseApplication.getInstance().addActivity(this);
         mPresenter = getPresenter();
         mPresenter.attachView((V) this);
@@ -127,8 +124,8 @@ public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<
     //所有的事件回调均放在该层，如onClickListener等
     public abstract void initListener();
 
-    //获取布局
-    public abstract int getLayoutId();
+    //获取ViewBinding
+    public abstract VB getViewBinding();
 
     //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
     public abstract P getPresenter();
@@ -286,15 +283,8 @@ public abstract class BaseActivity<V extends IBaseView, P extends BasePresenter<
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (BuildConfig.DEBUG && ev.getAction() == MotionEvent.ACTION_DOWN &&
-                ev.getRawY() < SizeUtil.dp2px(50f) && ev.getRawX() > SizeUtil.dp2px(80f) &&
-                ev.getRawX() < ScreenUtil.getScreenWidth(this) - SizeUtil.dp2px(80f)) {
-            CheckFastClickUtil.setOnMultiClickListener(400, clickCount -> {
-                if (clickCount == 2) {
-                    ExtraUtil.getTopActivityName(this);
-                }
-            });
-        }
+        //屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
+        ExtraUtil.getTopActivityName(this, ev);
         return super.dispatchTouchEvent(ev);
     }
 

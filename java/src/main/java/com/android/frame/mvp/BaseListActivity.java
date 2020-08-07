@@ -3,6 +3,7 @@ package com.android.frame.mvp;
 import android.view.View;
 
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewbinding.ViewBinding;
 
 import com.android.widget.RecyclerView.LoadMoreAdapter;
 
@@ -13,7 +14,7 @@ import java.util.List;
  * Created by xuzhb on 2020/7/22
  * Desc:列表数据对应的基类Activity
  */
-public abstract class BaseListActivity<T, V extends IBaseListView<T>, P extends BaseListPresenter<T, V>> extends BaseActivity<V, P> implements
+public abstract class BaseListActivity<VB extends ViewBinding, T, V extends IBaseListView<T>, P extends BaseListPresenter<T, V>> extends BaseActivity<VB, V, P> implements
         IBaseListView<T>, SwipeRefreshLayout.OnRefreshListener, LoadMoreAdapter.OnLoadMoreListener, LoadMoreAdapter.OnLoadFailListener {
 
     private int mCurrentPage = 1;  //记录当前页面

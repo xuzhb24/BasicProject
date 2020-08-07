@@ -16,6 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewbinding.ViewBinding;
 
 import com.android.base.BaseApplication;
 import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
@@ -24,8 +25,6 @@ import com.android.util.NetReceiver;
 import com.android.util.NetworkUtil;
 import com.android.util.ToastUtil;
 
-import butterknife.ButterKnife;
-import butterknife.Unbinder;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -33,9 +32,10 @@ import io.reactivex.disposables.Disposable;
  * Created by xuzhb on 2020/1/5
  * Desc:基类Fragment
  */
-public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<V>> extends Fragment
+public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, P extends BasePresenter<V>> extends Fragment
         implements IBaseView, SwipeRefreshLayout.OnRefreshListener {
 
+    protected VB binding;
     protected P mPresenter;
 
     //防止RxJava内存泄漏
@@ -54,16 +54,13 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
 
     private FragmentActivity mActivity;
     private Context mContext;
-    private View mRootView;
-
-    private Unbinder mUnbinder;
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         //第一次加载时，setUserVisibleHint会比onAttach先回调，此时布局为null;
         //之后切换Fragment时，当Fragment变得可见或可见时都会回调setUserVisibleHint，此时布局不为null
-        if (mRootView != null) {
+        if (binding != null) {
             if (isVisibleToUser) {
                 onVisible();
             } else {
@@ -84,13 +81,12 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (mRootView == null) {
-            mRootView = inflater.inflate(getLayoutId(), container, false);
+        if (binding == null) {
+            binding = getViewBinding(inflater, container);
         }
-        mUnbinder = ButterKnife.bind(this, mRootView);  //引入ButterKnife
         initBaseView();
         initNetReceiver();
-        return mRootView;
+        return binding.getRoot();
     }
 
     //初始化一些通用控件，如加载框、SwipeRefreshLayout、网络错误提示布局
@@ -99,7 +95,7 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
         //获取布局中的SwipeRefreshLayout组件，重用BaseCompatActivity的下拉刷新逻辑
         //注意布局中SwipeRefreshLayout的id命名为swipe_refresh_layout，否则mSwipeRefreshLayout为null
         //如果SwipeRefreshLayout里面只包含RecyclerView，可引用<include layout="@layout/layout_recycler_view" />
-        mSwipeRefreshLayout = mRootView.findViewById(R.id.swipe_refresh_layout);
+        mSwipeRefreshLayout = binding.getRoot().findViewById(R.id.swipe_refresh_layout);
         //如果当前布局文件不包含id为swipe_refresh_layout的组件则不执行下面的逻辑
         if (mSwipeRefreshLayout != null) {
             mSwipeRefreshLayout.setOnRefreshListener(this);
@@ -108,7 +104,7 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
         //获取布局中的RecyclerView组件，注意布局中RecyclerView的id命名为recycler_view，否则mRecyclerView为null
         mRecyclerView = mRecyclerView.findViewById(R.id.recycler_view);
         //在当前布局的合适位置引用<include layout="@layout/layout_net_error" />，则当网络出现错误时会进行相应的提示
-        mNetErrorFl = mRootView.findViewById(R.id.net_error_fl);
+        mNetErrorFl = binding.getRoot().findViewById(R.id.net_error_fl);
 
         /*
          * 完整的一次下拉刷新过程
@@ -136,8 +132,8 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
     //所有的事件回调均放在该层，如onClickListener等
     public abstract void initListener();
 
-    //获取布局
-    public abstract int getLayoutId();
+    //获取ViewBinding
+    public abstract VB getViewBinding(LayoutInflater inflater, ViewGroup container);
 
     //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
     public abstract P getPresenter();
@@ -170,7 +166,6 @@ public abstract class BaseFragment<V extends IBaseView, P extends BasePresenter<
         super.onDestroy();
         //取消所有正在执行的订阅
         mCompositeDisposable.clear();
-        mUnbinder.unbind();  //解绑ButterKnife
     }
 
     @Override

@@ -7,9 +7,11 @@ import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.text.SpannableStringBuilder;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.android.java.BuildConfig;
 import com.android.java.R;
 import com.android.widget.PopupWindow.CommonPopupWindow;
 
@@ -95,14 +97,21 @@ public class ExtraUtil {
                 .showAtLocation(activity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0);
     }
 
-
-    //双击标题栏获取当前页面的Activity名称，只是调试用
-    public static void getTopActivityName(Activity activity) {
-        ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
-        ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
-        String packageName = info.topActivity.getPackageName();
-        String className = info.topActivity.getClassName();
-        alert(activity, "包名：" + packageName + "\n类名：" + className);
+    //屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
+    public static void getTopActivityName(Activity activity, MotionEvent ev) {
+        if (BuildConfig.DEBUG && ev.getAction() == MotionEvent.ACTION_DOWN &&
+                ev.getRawY() < SizeUtil.dp2px(80f) && ev.getRawX() > SizeUtil.dp2px(80f) &&
+                ev.getRawX() < ScreenUtil.getScreenWidth(activity) - SizeUtil.dp2px(80f)) {
+            CheckFastClickUtil.setOnMultiClickListener(600, clickCount -> {
+                if (clickCount == 2) {
+                    ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
+                    ActivityManager.RunningTaskInfo info = manager.getRunningTasks(1).get(0);
+                    String packageName = info.topActivity.getPackageName();
+                    String className = info.topActivity.getClassName();
+                    alert(activity, "包名：" + packageName + "\n类名：" + className);
+                }
+            });
+        }
     }
 
 }

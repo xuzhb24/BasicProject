@@ -16,14 +16,10 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewbinding.ViewBinding;
 
 import com.android.base.BaseApplication;
-import com.android.java.BuildConfig;
 import com.android.java.R;
-import com.android.util.CheckFastClickUtil;
 import com.android.util.ExtraUtil;
 import com.android.util.NetReceiver;
 import com.android.util.NetworkUtil;
-import com.android.util.ScreenUtil;
-import com.android.util.SizeUtil;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.widget.LoadingDialog;
@@ -270,15 +266,8 @@ public abstract class BaseActivity_VB<VB extends ViewBinding> extends AppCompatA
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (BuildConfig.DEBUG && ev.getAction() == MotionEvent.ACTION_DOWN &&
-                ev.getRawY() < SizeUtil.dp2px(50f) && ev.getRawX() > SizeUtil.dp2px(80f) &&
-                ev.getRawX() < ScreenUtil.getScreenWidth(this) - SizeUtil.dp2px(80f)) {
-            CheckFastClickUtil.setOnMultiClickListener(400, clickCount -> {
-                if (clickCount == 2) {
-                    ExtraUtil.getTopActivityName(this);
-                }
-            });
-        }
+        //屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
+        ExtraUtil.getTopActivityName(this, ev);
         return super.dispatchTouchEvent(ev);
     }
 }

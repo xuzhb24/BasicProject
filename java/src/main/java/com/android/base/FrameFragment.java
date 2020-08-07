@@ -1,7 +1,8 @@
 package com.android.base;
 
 import android.os.Bundle;
-import android.view.View;
+import android.view.LayoutInflater;
+import android.view.ViewGroup;
 
 import com.android.frame.TestLeakActivity;
 import com.android.frame.guide.GuideActivity;
@@ -9,20 +10,13 @@ import com.android.frame.http.AATest.TestRetrofitActivity;
 import com.android.frame.mvc.BaseFragment;
 import com.android.frame.mvc.viewBinding.AATest.TestMvcActivity;
 import com.android.frame.mvp.AATest.activity.TestMvpActivity;
-import com.android.java.R;
-import com.android.widget.TitleBar;
-
-import butterknife.BindView;
-import butterknife.OnClick;
+import com.android.java.databinding.FragmentFrameBinding;
 
 /**
  * Created by xuzhb on 2019/10/19
  * Desc:框架篇
  */
-public class FrameFragment extends BaseFragment {
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
+public class FrameFragment extends BaseFragment<FragmentFrameBinding> {
 
     public static FrameFragment newInstance() {
         return new FrameFragment();
@@ -35,37 +29,40 @@ public class FrameFragment extends BaseFragment {
 
     @Override
     public void initListener() {
+        //测试内存泄漏
+        binding.leakTv.setOnClickListener(v -> {
+            startActivity(TestLeakActivity.class);
+        });
+        //动态权限申请
+        //原生API实现
+        binding.orignalPermissionTv.setOnClickListener(v -> {
 
+        });
+        //EasyPermission
+        binding.easyPermissionTv.setOnClickListener(v -> {
+
+        });
+        //测试Retrofit
+        binding.retrofitTv.setOnClickListener(v -> {
+            startActivity(TestRetrofitActivity.class);
+        });
+        //MVP框架
+        binding.mvpTv.setOnClickListener(v -> {
+            startActivity(TestMvpActivity.class);
+        });
+        //MVC框架
+        binding.mvcTv.setOnClickListener(v -> {
+            startActivity(TestMvcActivity.class);
+        });
+        //引导页
+        binding.guideTv.setOnClickListener(v -> {
+            startActivity(GuideActivity.class);
+        });
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.fragment_frame;
+    public FragmentFrameBinding getViewBinding(LayoutInflater inflater, ViewGroup container) {
+        return FragmentFrameBinding.inflate(inflater, container, false);
     }
 
-    @OnClick({R.id.leak_tv, R.id.orignal_permission_tv, R.id.easy_permission_tv, R.id.retrofit_tv,
-            R.id.mvp_tv, R.id.mvc_tv, R.id.guide_tv})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.leak_tv:
-                startActivity(TestLeakActivity.class);
-                break;
-            case R.id.orignal_permission_tv:
-                break;
-            case R.id.easy_permission_tv:
-                break;
-            case R.id.retrofit_tv:
-                startActivity(TestRetrofitActivity.class);
-                break;
-            case R.id.mvp_tv:
-                startActivity(TestMvpActivity.class);
-                break;
-            case R.id.mvc_tv:
-                startActivity(TestMvcActivity.class);
-                break;
-            case R.id.guide_tv:
-                startActivity(GuideActivity.class);
-                break;
-        }
-    }
 }

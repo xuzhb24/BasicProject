@@ -6,7 +6,7 @@ import com.android.frame.http.AATest.WangYiNewsWebviewActivity;
 import com.android.frame.mvp.AATest.adapter.NewsListAdapter;
 import com.android.frame.mvp.AATest.bean.NewsListBeanMvp;
 import com.android.frame.mvp.BaseListActivity;
-import com.android.java.R;
+import com.android.java.databinding.ActivityListLayoutBinding;
 import com.android.widget.RecyclerView.LoadMoreAdapter;
 
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * Created by xuzhb on 2020/1/8
  * Desc:
  */
-public class NewsListActivity extends BaseListActivity<NewsListBeanMvp, NewsListView, NewsListPresenter> implements NewsListView {
+public class NewsListActivity extends BaseListActivity<ActivityListLayoutBinding, NewsListBeanMvp, NewsListView, NewsListPresenter> implements NewsListView {
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -30,8 +30,8 @@ public class NewsListActivity extends BaseListActivity<NewsListBeanMvp, NewsList
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_list_layout;
+    public ActivityListLayoutBinding getViewBinding() {
+        return ActivityListLayoutBinding.inflate(getLayoutInflater());
     }
 
     @Override

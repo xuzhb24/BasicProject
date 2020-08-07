@@ -3,34 +3,23 @@ package com.android.widget.PicGetterDialog.AATest;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
+
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
+import com.android.java.databinding.ActivityTestPicGetterDialogBinding;
 import com.android.util.DateUtil;
 import com.android.util.IntentUtil;
 import com.android.util.SizeUtil;
 import com.android.widget.PicGetterDialog.OnPicGetterListener;
 import com.android.widget.PicGetterDialog.PicGetterDialog;
-import com.android.widget.TitleBar;
 import com.yalantis.ucrop.UCrop;
 
 /**
  * Created by xuzhb on 2020/1/26
  * Desc:
  */
-public class TestPicGetterDialogActivity extends BaseActivity {
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
-    @BindView(R.id.pic_tv)
-    TextView picTv;
-    @BindView(R.id.pic_iv)
-    ImageView picIv;
+public class TestPicGetterDialogActivity extends BaseActivity<ActivityTestPicGetterDialogBinding> {
 
     private PicGetterDialog mPicGetterDialog;
     private String mPicPath;
@@ -42,35 +31,22 @@ public class TestPicGetterDialogActivity extends BaseActivity {
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(v -> {
-            finish();
+        binding.dialogBtn1.setOnClickListener(v -> showPicGetDialog());
+        binding.dialogBtn2.setOnClickListener(v -> showCustomPicGetDialog());
+        binding.dialogBtn3.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(mPicPath)) {
+                showToast("请先选择或拍一张照片");
+            } else {
+                String content = "分享于" + DateUtil.getCurrentDateTime();
+                String authority = getApplicationInfo().packageName + ".provider";
+                startActivity(IntentUtil.getShareImageIntent(this, content, mPicPath, authority));
+            }
         });
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_test_pic_getter_dialog;
-    }
-
-    @OnClick({R.id.dialog_btn1, R.id.dialog_btn2, R.id.dialog_btn3})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.dialog_btn1:
-                showPicGetDialog();
-                break;
-            case R.id.dialog_btn2:
-                showCustomPicGetDialog();
-                break;
-            case R.id.dialog_btn3:
-                if (TextUtils.isEmpty(mPicPath)) {
-                    showToast("请先选择或拍一张照片");
-                } else {
-                    String content = "分享于" + DateUtil.getCurrentDateTime();
-                    String authority = getApplicationInfo().packageName + ".provider";
-                    startActivity(IntentUtil.getShareImageIntent(this, content, mPicPath, authority));
-                }
-                break;
-        }
+    public ActivityTestPicGetterDialogBinding getViewBinding() {
+        return ActivityTestPicGetterDialogBinding.inflate(getLayoutInflater());
     }
 
     private void showPicGetDialog() {
@@ -90,8 +66,8 @@ public class TestPicGetterDialogActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Bitmap bitmap, String picPath) {
                         mPicPath = picPath;
-                        picIv.setImageBitmap(bitmap);
-                        picTv.setText(picPath);
+                        binding.picIv.setImageBitmap(bitmap);
+                        binding.picTv.setText(picPath);
                     }
 
                     @Override
@@ -114,8 +90,8 @@ public class TestPicGetterDialogActivity extends BaseActivity {
                     @Override
                     public void onSuccess(Bitmap bitmap, String picPath) {
                         mPicPath = picPath;
-                        picIv.setImageBitmap(bitmap);
-                        picTv.setText(picPath);
+                        binding.picIv.setImageBitmap(bitmap);
+                        binding.picTv.setText(picPath);
                     }
 
                     @Override

@@ -2,31 +2,19 @@ package com.android.widget.RecyclerView.AATest;
 
 import android.os.Bundle;
 
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.java.databinding.ActivityTestAdapterBinding;
 import com.android.util.ExtraUtil;
-import com.android.widget.TitleBar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import butterknife.BindView;
 
 /**
  * Create by xuzhb on 2020/1/21
  * Desc:尾部Footer
  */
-public class TestFooterAdapterActivity extends BaseActivity {
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
-    @BindView(R.id.rv)
-    RecyclerView rv;
-    @BindView(R.id.srl)
-    SwipeRefreshLayout srl;
+public class TestFooterAdapterActivity extends BaseActivity<ActivityTestAdapterBinding> {
 
     private List<String> mSelectedList = new ArrayList<>();
     private List<String> mList;
@@ -37,9 +25,9 @@ public class TestFooterAdapterActivity extends BaseActivity {
         mList = createData();
         mList.add("没有更多数据了");  //添加尾部的Footer
         mAdapter = new TestFooterAdapter(this, mList, mSelectedList);
-        titleBar.setRightText("已添加列表");
-        srl.setEnabled(false);
-        rv.setAdapter(mAdapter);
+        mTitleBar.setRightText("已添加列表");
+        binding.srl.setEnabled(false);
+        binding.rv.setAdapter(mAdapter);
     }
 
     private List<String> createData() {
@@ -59,10 +47,7 @@ public class TestFooterAdapterActivity extends BaseActivity {
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(v -> {
-            finish();
-        });
-        titleBar.setOnRightClickListener(v -> {
+        mTitleBar.setOnRightClickListener(v -> {
             StringBuilder sb = new StringBuilder();
             sb.append("\n");
             if (mSelectedList.size() == 0) {
@@ -87,7 +72,8 @@ public class TestFooterAdapterActivity extends BaseActivity {
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_test_adapter;
+    public ActivityTestAdapterBinding getViewBinding() {
+        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
     }
+
 }

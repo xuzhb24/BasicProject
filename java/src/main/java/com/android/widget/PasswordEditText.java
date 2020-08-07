@@ -202,17 +202,25 @@ public class PasswordEditText extends AppCompatEditText {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int widthMode = MeasureSpec.getMode(widthMeasureSpec);
-        int widthSize = MeasureSpec.getSize(widthMeasureSpec);
-        if (widthMode == MeasureSpec.AT_MOST) {  //支持wrap_content属性
-            widthSize = (int) (passwordCount * (frameSize + 2 * frameMargin) + frameStrokeWidth) + 1;
+        setMeasuredDimension(
+                measureSpec(widthMeasureSpec, (int) (passwordCount * (frameSize + 2 * frameMargin) + frameStrokeWidth) + 1),
+                measureSpec(heightMeasureSpec, Math.max((int) SizeUtil.dp2px(50), (int) (frameSize + frameStrokeWidth) + 1))  //不小于50dp
+        );
+    }
+
+    private int measureSpec(int measureSpec, int minSize) {
+        int result = 0;
+        int specMode = MeasureSpec.getMode(measureSpec);
+        int specSize = MeasureSpec.getSize(measureSpec);
+        if (specMode == MeasureSpec.EXACTLY) {
+            result = specSize;
+        } else {
+            result = minSize;
+            if (specMode == MeasureSpec.AT_MOST) {
+                result = Math.min(result, specSize);
+            }
         }
-        int heightMode = MeasureSpec.getMode(heightMeasureSpec);
-        int heightSize = MeasureSpec.getSize(heightMeasureSpec);
-        if (heightMode == MeasureSpec.AT_MOST) {  //支持wrap_content属性
-            heightSize = Math.max((int) SizeUtil.dp2px(50), (int) (frameSize + frameStrokeWidth) + 1);  //不小于50dp
-        }
-        setMeasuredDimension(widthSize, heightSize);
+        return result;
     }
 
     @Override

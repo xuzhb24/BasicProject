@@ -13,130 +13,141 @@
         app:rightText="说明"
         app:titleText="单一控件" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+    <ScrollView style="@style/ScrollViewStyle">
 
-        <Button
-            android:id="@+id/loading_btn1"
-            style="@style/SingleWidgetStyle"
-            android:text="加载框(不带消息)" />
-
-        <Button
-            android:id="@+id/loading_btn2"
-            style="@style/SingleWidgetStyle"
-            android:text="加载框(带消息)" />
-
-        <Button
-            android:id="@+id/loading_btn3"
-            style="@style/SingleWidgetStyle"
-            android:text="加载框(不可取消)" />
-
-    </LinearLayout>
-
-    <View style="@style/SingleWidgetDividerLineStyle" />
-
-    <!--密码输入框-->
-    <com.android.widget.PasswordEditText
-        android:id="@+id/password_edittext"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/interval_margin" />
-
-    <TextView
-        android:id="@+id/pet_tv"
-        style="@style/SingleWidgetStyle" />
-
-    <Button
-        android:id="@+id/pet_btn"
-        style="@style/SingleWidgetStyle"
-        android:text="清空" />
-
-    <View style="@style/SingleWidgetDividerLineStyle" />
-
-    <!--图形验证码-->
-    <com.android.widget.VerifyCodeView
-        android:id="@+id/verify_code_view"
-        android:layout_width="100dp"
-        android:layout_height="40dp"
-        android:layout_marginLeft="@dimen/default_margin"
-        app:codeBackground="#e7e7e7"
-        app:codeLength="4"
-        app:codeTextSize="35sp"
-        app:isContainChar="true"
-        app:pointNum="15" />
-
-    <EditText
-        android:id="@+id/verify_code_et"
-        style="@style/SingleWidgetStyle"
-        android:layout_width="match_parent" />
-
-    <Button
-        android:id="@+id/verify_code_btn"
-        style="@style/SingleWidgetStyle"
-        android:text="验证" />
-
-    <View style="@style/SingleWidgetDividerLineStyle" />
-
-    <!--输入框-->
-    <com.android.widget.InputLayout
-        android:id="@+id/input_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginRight="@dimen/default_margin"
-        app:inputTextHint="请输入文本" />
-
-    <TextView
-        android:id="@+id/inputlayout_tv"
-        style="@style/SingleWidgetStyle" />
-
-    <View style="@style/SingleWidgetDividerLineStyle" />
-
-    <!--TextView文字滚动显示-->
-    <com.android.widget.ScrollTextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:text="这是一段很长很长很长很长很长很长很长很长很长很长很长很长很长很长的文本" />
-
-    <com.android.widget.ScrollTextView
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/default_margin"
-        android:layout_marginTop="5dp"
-        android:text="这是一段短文本" />
-
-    <View style="@style/SingleWidgetDividerLineStyle" />
-
-    <com.android.widget.ShadowLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:rectBackgroundColor="@color/white"
-        app:rectRadiusX="10dp"
-        app:rectRadiusY="10dp"
-        app:shadowColor="@color/colorPrimary"
-        app:shadowOffsetX="0dp"
-        app:shadowOffsetY="0dp"
-        app:shadowRadius="20dp">
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:layout_marginLeft="40dp"
-            android:layout_marginTop="30dp"
-            android:layout_marginRight="40dp"
-            android:layout_marginBottom="30dp"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:text="自定义阴影布局"
-            android:textColor="#333333"
-            android:textSize="15sp" />
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
 
-    </com.android.widget.ShadowLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-    <View style="@style/SingleWidgetDividerLineStyle" />
+                <Button
+                    android:id="@+id/loading_btn1"
+                    style="@style/SingleWidgetStyle"
+                    android:text="加载框(不带消息)" />
+
+                <Button
+                    android:id="@+id/loading_btn2"
+                    style="@style/SingleWidgetStyle"
+                    android:text="加载框(带消息)" />
+
+                <Button
+                    android:id="@+id/loading_btn3"
+                    style="@style/SingleWidgetStyle"
+                    android:text="加载框(不可取消)" />
+
+            </LinearLayout>
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
+            <!--密码输入框-->
+            <com.android.widget.PasswordEditText
+                android:id="@+id/password_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/interval_margin" />
+
+            <TextView
+                android:id="@+id/pet_tv"
+                style="@style/SingleWidgetStyle" />
+
+            <Button
+                android:id="@+id/pet_btn"
+                style="@style/SingleWidgetStyle"
+                android:text="清空" />
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
+            <!--图形验证码-->
+            <com.android.widget.VerifyCodeView
+                android:id="@+id/verify_code_view"
+                android:layout_width="100dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="@dimen/default_margin"
+                app:codeBackground="#e7e7e7"
+                app:codeLength="4"
+                app:codeTextSize="35sp"
+                app:isContainChar="true"
+                app:pointNum="15" />
+
+            <EditText
+                android:id="@+id/verify_code_et"
+                style="@style/SingleWidgetStyle"
+                android:layout_width="match_parent" />
+
+            <Button
+                android:id="@+id/verify_code_btn"
+                style="@style/SingleWidgetStyle"
+                android:text="验证" />
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
+            <!--输入框-->
+            <com.android.widget.InputLayout
+                android:id="@+id/input_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginRight="@dimen/default_margin"
+                app:inputTextHint="请输入文本" />
+
+            <TextView
+                android:id="@+id/inputlayout_tv"
+                style="@style/SingleWidgetStyle" />
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
+            <!--TextView文字滚动显示-->
+            <com.android.widget.ScrollTextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:text="这是一段很长很长很长很长很长很长很长很长很长很长很长很长很长很长的文本" />
+
+            <com.android.widget.ScrollTextView
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_margin"
+                android:layout_marginTop="5dp"
+                android:text="这是一段短文本" />
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
+            <com.android.widget.ShadowLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:rectBackgroundColor="@color/white"
+                app:rectRadiusX="10dp"
+                app:rectRadiusY="10dp"
+                app:shadowColor="@color/colorPrimary"
+                app:shadowOffsetX="0dp"
+                app:shadowOffsetY="0dp"
+                app:shadowRadius="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginLeft="40dp"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginRight="40dp"
+                    android:layout_marginBottom="30dp"
+                    android:gravity="center"
+                    android:includeFontPadding="false"
+                    android:text="自定义阴影布局"
+                    android:textColor="#333333"
+                    android:textSize="15sp" />
+
+            </com.android.widget.ShadowLayout>
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

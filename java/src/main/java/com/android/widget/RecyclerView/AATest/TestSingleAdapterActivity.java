@@ -2,30 +2,17 @@ package com.android.widget.RecyclerView.AATest;
 
 import android.os.Bundle;
 
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
-import com.android.widget.TitleBar;
+import com.android.java.databinding.ActivityTestAdapterBinding;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import butterknife.BindView;
 
 /**
  * Create by xuzhb on 2020/1/21
  * Desc:单一布局
  */
-public class TestSingleAdapterActivity extends BaseActivity {
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
-    @BindView(R.id.rv)
-    RecyclerView rv;
-    @BindView(R.id.srl)
-    SwipeRefreshLayout srl;
+public class TestSingleAdapterActivity extends BaseActivity<ActivityTestAdapterBinding> {
 
     private String mSelectedItem;
     private List<String> mList;
@@ -35,8 +22,8 @@ public class TestSingleAdapterActivity extends BaseActivity {
     public void handleView(Bundle savedInstanceState) {
         mList = createData();
         mAdapter = new TestSingleAdapter(this, mList, mSelectedItem);
-        srl.setEnabled(false);
-        rv.setAdapter(mAdapter);
+        binding.srl.setEnabled(false);
+        binding.rv.setAdapter(mAdapter);
     }
 
     private List<String> createData() {
@@ -56,9 +43,6 @@ public class TestSingleAdapterActivity extends BaseActivity {
 
     @Override
     public void initListener() {
-        titleBar.setOnLeftClickListener(v -> {
-            finish();
-        });
         mAdapter.setOnItemClickListener((data, position) -> {
             mSelectedItem = (String) data;
             mAdapter.setData(mList, mSelectedItem);
@@ -66,8 +50,8 @@ public class TestSingleAdapterActivity extends BaseActivity {
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_test_adapter;
+    public ActivityTestAdapterBinding getViewBinding() {
+        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
     }
 
 }

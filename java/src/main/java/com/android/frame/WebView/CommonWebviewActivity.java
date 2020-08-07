@@ -14,6 +14,7 @@ import com.android.base.MainActivity;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.BuildConfig;
 import com.android.java.R;
+import com.android.java.databinding.ActivityCommonWebviewBinding;
 import com.android.util.KeyboardUtil;
 import com.android.util.LogUtil;
 import com.android.util.StatusBar.StatusBarUtil;
@@ -23,7 +24,7 @@ import com.android.widget.TitleBar;
  * Created by xuzhb on 2020/1/15
  * Desc:H5 Activity基类
  */
-public class CommonWebviewActivity extends BaseActivity {
+public class CommonWebviewActivity extends BaseActivity<ActivityCommonWebviewBinding> {
 
     private static final String TAG = "CommonWebviewActivity";
     private static final String EXTRA_TITLE = "EXTRA_TITLE";
@@ -223,8 +224,8 @@ public class CommonWebviewActivity extends BaseActivity {
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_common_webview;
+    public ActivityCommonWebviewBinding getViewBinding() {
+        return ActivityCommonWebviewBinding.inflate(getLayoutInflater());
     }
 
     @Override

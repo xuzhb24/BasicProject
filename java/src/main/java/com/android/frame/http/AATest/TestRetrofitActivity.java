@@ -1,23 +1,23 @@
 package com.android.frame.http.AATest;
 
 import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
-import butterknife.BindView;
-import butterknife.OnClick;
+
 import com.android.frame.http.AATest.bean.NewsListBean;
 import com.android.frame.http.AATest.bean.WeatherBean;
 import com.android.frame.http.ExceptionUtil;
 import com.android.frame.http.RetrofitFactory;
 import com.android.frame.http.SchedulerUtil;
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.java.databinding.ActivityCommonLayoutBinding;
 import com.android.util.CommonLayoutUtil;
 import com.android.util.ExtraUtil;
 import com.android.util.JsonUtil;
-import com.android.widget.InputLayout;
-import com.android.widget.TitleBar;
 import com.google.gson.Gson;
+
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import okhttp3.MediaType;
@@ -27,22 +27,11 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import java.io.IOException;
-import java.util.HashMap;
-import java.util.Map;
-
 /**
  * Created by xuzhb on 2019/10/26
  * Desc:测试Retrofit
  */
-public class TestRetrofitActivity extends BaseActivity {
-
-    @BindView(R.id.title_bar)
-    TitleBar titleBar;
-    @BindView(R.id.il)
-    InputLayout il;
-    @BindView(R.id.tv)
-    TextView tv;
+public class TestRetrofitActivity extends BaseActivity<ActivityCommonLayoutBinding> {
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -50,44 +39,38 @@ public class TestRetrofitActivity extends BaseActivity {
                 "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取网易新闻(@Field POST)",
                 "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)");
         String city = "北京";
-        il.setInputText(city);
-        il.getEditText().setSelection(city.length());  //将光标移至文字末尾
+        binding.il.setInputText(city);
+        binding.il.getEditText().setSelection(city.length());  //将光标移至文字末尾
     }
 
     @Override
     public void initListener() {
-
+        binding.btn1.setOnClickListener(v -> {
+            String city = binding.il.getInputText().trim();
+            getWeatherByQuery(city);
+        });
+        binding.btn2.setOnClickListener(v -> {
+            String city = binding.il.getInputText().trim();
+            getWeatherByQueryMap(city);
+        });
+        binding.btn3.setOnClickListener(v -> {
+            getWangYiNewsByField("1", "1");
+        });
+        binding.btn4.setOnClickListener(v -> {
+            getWangYiNewsByFieldMap("1", "2");
+        });
+        binding.btn5.setOnClickListener(v -> {
+            getWangYiNewsByBody("1", "3");
+        });
+        binding.btn6.setOnClickListener(v -> {
+//            accessUrl(UrlConstant.BAIDU_URL);
+            accessUrlRxJava(UrlConstant.BAIDU_URL);
+        });
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_common_layout;
-    }
-
-    @OnClick({R.id.btn1, R.id.btn2, R.id.btn3, R.id.btn4, R.id.btn5, R.id.btn6})
-    public void onViewClicked(View view) {
-        String city = il.getInputText().trim();
-        switch (view.getId()) {
-            case R.id.btn1:
-                getWeatherByQuery(city);
-                break;
-            case R.id.btn2:
-                getWeatherByQueryMap(city);
-                break;
-            case R.id.btn3:
-                getWangYiNewsByField("1", "1");
-                break;
-            case R.id.btn4:
-                getWangYiNewsByFieldMap("1", "2");
-                break;
-            case R.id.btn5:
-                getWangYiNewsByBody("1", "3");
-                break;
-            case R.id.btn6:
-//                accessUrl(UrlConstant.BAIDU_URL);
-                accessUrlRxJava(UrlConstant.BAIDU_URL);
-                break;
-        }
+    public ActivityCommonLayoutBinding getViewBinding() {
+        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
     }
 
     //访问网址，Retrofit

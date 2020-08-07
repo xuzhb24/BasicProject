@@ -3,26 +3,23 @@ package com.android.util.permission;
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.java.databinding.ActivityCommonLayoutBinding;
 import com.android.util.AlertDialogUtil;
 import com.android.util.CommonLayoutUtil;
 import com.android.util.LogUtil;
 
 import java.util.Arrays;
 
-import butterknife.OnClick;
-
 /**
  * Created by xuzhb on 2020/6/1
  * Desc:
  */
-public class TestPermissionActivity extends BaseActivity {
+public class TestPermissionActivity extends BaseActivity<ActivityCommonLayoutBinding> {
 
     private static final String TAG = "PermissionTAG";
     private static final String[] REQUEST_PERMISSION = new String[]{
@@ -43,28 +40,21 @@ public class TestPermissionActivity extends BaseActivity {
 
     @Override
     public void initListener() {
-
+        binding.btn1.setOnClickListener(v -> {
+            //申请权限
+            if (PermissionUtil.requestPermissions(this, REQUEST_PERMISSION_CODE, REQUEST_PERMISSION)) {
+                executeNextLogic();
+            }
+        });
+        binding.btn2.setOnClickListener(v -> {
+            //打开应用设置页面
+            PermissionUtil.openSettings(this, getPackageName(), 2222);
+        });
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_common_layout;
-    }
-
-    @OnClick({R.id.btn1, R.id.btn2})
-    public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.btn1:
-                //申请权限
-                if (PermissionUtil.requestPermissions(this, REQUEST_PERMISSION_CODE, REQUEST_PERMISSION)) {
-                    executeNextLogic();
-                }
-                break;
-            case R.id.btn2:
-                //打开应用设置页面
-                PermissionUtil.openSettings(this, getPackageName(), 2222);
-                break;
-        }
+    public ActivityCommonLayoutBinding getViewBinding() {
+        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
     }
 
     @Override

@@ -2,29 +2,19 @@ package com.android.frame.mvp.AATest.activity.weather;
 
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.android.frame.mvp.AATest.bean.WeatherBeanMvp;
 import com.android.frame.mvp.BaseActivity;
-import com.android.java.R;
+import com.android.java.databinding.ActivityWeatherBinding;
 import com.android.util.regex.RegexUtil;
-import com.android.widget.InputLayout;
 
 import java.util.List;
-
-import butterknife.BindView;
-import butterknife.OnClick;
 
 /**
  * Created by xuzhb on 2020/1/8
  * Desc:
  */
-public class WeatherActivity extends BaseActivity<WeatherView, WeatherPresenter> implements WeatherView {
-
-    @BindView(R.id.area_il)
-    InputLayout areaIl;
-    @BindView(R.id.result_tv)
-    TextView resultTv;
+public class WeatherActivity extends BaseActivity<ActivityWeatherBinding, WeatherView, WeatherPresenter> implements WeatherView {
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -33,12 +23,20 @@ public class WeatherActivity extends BaseActivity<WeatherView, WeatherPresenter>
 
     @Override
     public void initListener() {
-
+        binding.queryBtn.setOnClickListener(v -> {
+            binding.resultTv.setText("");
+            String area = binding.areaIl.getInputText().trim();
+            if (TextUtils.isEmpty(area)) {
+                showToast("请先输入要查询的地区");
+                return;
+            }
+            mPresenter.getWeatherInfo(area);
+        });
     }
 
     @Override
-    public int getLayoutId() {
-        return R.layout.activity_weather;
+    public ActivityWeatherBinding getViewBinding() {
+        return ActivityWeatherBinding.inflate(getLayoutInflater());
     }
 
     @Override
@@ -64,9 +62,9 @@ public class WeatherActivity extends BaseActivity<WeatherView, WeatherPresenter>
                             .append("  ").append(forecast.getType()).append("\n");
                 }
             }
-            resultTv.setText(sb.toString());
+            binding.resultTv.setText(sb.toString());
         } else {
-            resultTv.setText("未获取到天气信息");
+            binding.resultTv.setText("未获取到天气信息");
         }
     }
 
@@ -75,14 +73,4 @@ public class WeatherActivity extends BaseActivity<WeatherView, WeatherPresenter>
                 RegexUtil.extractDigit(high, " ") + "℃";
     }
 
-    @OnClick(R.id.query_btn)
-    public void onViewClicked() {
-        resultTv.setText("");
-        String area = areaIl.getInputText().trim();
-        if (TextUtils.isEmpty(area)) {
-            showToast("请先输入要查询的地区");
-            return;
-        }
-        mPresenter.getWeatherInfo(area);
-    }
 }
