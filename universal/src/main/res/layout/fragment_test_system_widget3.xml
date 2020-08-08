@@ -33,6 +33,58 @@
 
         </LinearLayout>
 
+        <!--ProgressBar-->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/SystemWidgetTextStyle"
+                android:text="ProgressBar" />
+
+            <TextView
+                android:id="@+id/progress_tv"
+                style="@style/SystemWidgetTextStyle"
+                android:layout_gravity="right|center_vertical"
+                android:layout_marginRight="20dp"
+                android:gravity="right" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <Button
+                android:id="@+id/progress_btn"
+                style="@style/ButtonStyle"
+                android:layout_width="100dp"
+                android:layout_marginLeft="0dp"
+                android:text="开始动画" />
+
+            <ProgressBar
+                android:id="@+id/progress_pb"
+                style="@android:style/Widget.ProgressBar.Horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_marginTop="15dp"
+                android:max="100"
+                android:progress="0"
+                android:progressDrawable="@drawable/layer_list_progress_drawable" />
+
+            <ProgressBar
+                android:id="@+id/loading_pb"
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginTop="20dp"
+                android:indeterminateDrawable="@drawable/loading_progressbar_bg"
+                android:indeterminateDuration="2000" />
+
+        </LinearLayout>
+
     </LinearLayout>
 
 </ScrollView>

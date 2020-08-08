@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
-import kotlinx.android.synthetic.main.fragment_test_system_widget2.*
+import kotlinx.android.synthetic.main.fragment_test_system_widget3.*
 
 /**
  * Created by xuzhb on 2020/3/1
@@ -56,6 +56,11 @@ class TestSystemWidgetFragment : Fragment() {
 
     //第二个页面
     private fun page2() {
+
+    }
+
+    //第三个页面
+    private fun page3() {
         //ProgressBar
         progress_btn.setOnClickListener {
             val animator = ValueAnimator.ofInt(0, 100)
@@ -65,17 +70,12 @@ class TestSystemWidgetFragment : Fragment() {
                 val fraction = it.animatedFraction  //百分比
                 progress_pb.progress = value as Int
                 if ((fraction * 100).toInt() % 1 == 0) {  //调用100次
-                    progress_tv.text = "${value} ${fraction}"
+                    progress_tv.text = "${value}   ${fraction}"
                 }
             }
             animator.interpolator = LinearInterpolator()
             animator.setDuration(5 * 1000).start()
         }
-    }
-
-    //第三个页面
-    private fun page3() {
-
     }
 
 }

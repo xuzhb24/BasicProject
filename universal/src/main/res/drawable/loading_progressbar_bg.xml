@@ -12,7 +12,7 @@
         android:useLevel="false">
 
         <gradient
-            android:endColor="#ffffff"
+            android:endColor="@color/colorPrimary"
             android:startColor="@android:color/transparent"
             android:type="sweep"
             android:useLevel="false" />
