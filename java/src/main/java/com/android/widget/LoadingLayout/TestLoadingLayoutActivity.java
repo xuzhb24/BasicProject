@@ -13,6 +13,7 @@ import com.android.java.databinding.ActivityTestLoadingLayoutBinding;
 public class TestLoadingLayoutActivity extends BaseActivity_VB<ActivityTestLoadingLayoutBinding> {
     @Override
     public void handleView(Bundle savedInstanceState) {
+        binding.loadingLayout.loadStart();
         new Handler().postDelayed(() -> binding.loadingLayout.loadComplete(), 2000);
     }
 

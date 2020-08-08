@@ -7,8 +7,8 @@ import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.RotateAnimation;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -89,32 +89,10 @@ public class LoadingLayout extends LinearLayout {
 
     public LoadingLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        initView(context);
         if (attrs != null) {
             parseAttributes(context, attrs);
         }
-        initView(context);
-    }
-
-    //获取自定义属性集
-    private void parseAttributes(Context context, AttributeSet attrs) {
-        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.LoadingLayout);
-        loadingSrc = ta.getDrawable(R.styleable.LoadingLayout_loadingSrc);
-        if (loadingSrc == null) {
-            loadingSrc = getResources().getDrawable(R.drawable.ic_loading);
-        }
-        loadingDesc = ta.getString(R.styleable.LoadingLayout_loadingDesc);
-        emptySrc = ta.getDrawable(R.styleable.LoadingLayout_emptySrc);
-        if (emptySrc == null) {
-            emptySrc = getResources().getDrawable(R.drawable.ic_empty_data);
-        }
-        emptyDesc = ta.getString(R.styleable.LoadingLayout_emptyDesc);
-        failSrc = ta.getDrawable(R.styleable.LoadingLayout_failSrc);
-        if (failSrc == null) {
-            failSrc = getResources().getDrawable(R.drawable.ic_fail);
-        }
-        failDesc = ta.getString(R.styleable.LoadingLayout_failDesc);
-        retryDesc = ta.getString(R.styleable.LoadingLayout_retryDesc);
-        ta.recycle();
     }
 
     private void initView(Context context) {
@@ -129,7 +107,28 @@ public class LoadingLayout extends LinearLayout {
                 mOnRetryListener.onRetry();
             }
         });
-        loadStart();
+    }
+
+    //获取自定义属性集
+    private void parseAttributes(Context context, AttributeSet attrs) {
+        TypedArray ta = context.obtainStyledAttributes(attrs, R.styleable.LoadingLayout);
+        loadingSrc = ta.getDrawable(R.styleable.LoadingLayout_loadingSrc);
+        if (loadingSrc == null) {
+            loadingSrc = getResources().getDrawable(R.drawable.ic_load_loading);
+        }
+        loadingDesc = ta.getString(R.styleable.LoadingLayout_loadingDesc);
+        emptySrc = ta.getDrawable(R.styleable.LoadingLayout_emptySrc);
+        if (emptySrc == null) {
+            emptySrc = getResources().getDrawable(R.drawable.ic_load_empty);
+        }
+        emptyDesc = ta.getString(R.styleable.LoadingLayout_emptyDesc);
+        failSrc = ta.getDrawable(R.styleable.LoadingLayout_failSrc);
+        if (failSrc == null) {
+            failSrc = getResources().getDrawable(R.drawable.ic_load_fail);
+        }
+        failDesc = ta.getString(R.styleable.LoadingLayout_failDesc);
+        retryDesc = ta.getString(R.styleable.LoadingLayout_retryDesc);
+        ta.recycle();
     }
 
     //开始加载
@@ -153,6 +152,7 @@ public class LoadingLayout extends LinearLayout {
     }
 
     private void setLoadState(int loadState) {
+        System.out.println("TAG5======" + loadState);
         if (loadState == STATE_HIDE) {
             setVisibility(GONE);
         } else {
@@ -167,8 +167,8 @@ public class LoadingLayout extends LinearLayout {
                 mLoadingIv.setImageDrawable(loadingSrc);
                 RotateAnimation animation = new RotateAnimation(0f, 359f,
                         Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-                animation.setInterpolator(new LinearInterpolator());
-                animation.setDuration(1500);
+                animation.setInterpolator(new AccelerateDecelerateInterpolator());
+                animation.setDuration(800);
                 animation.setRepeatCount(Animation.INFINITE);
                 animation.setRepeatMode(Animation.RESTART);
                 mLoadingIv.startAnimation(animation);
