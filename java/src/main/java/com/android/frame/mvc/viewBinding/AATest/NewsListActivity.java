@@ -30,7 +30,8 @@ public class NewsListActivity extends BaseListActivity<NewsListBeanMvp, Activity
 
     @Override
     public Observable<BaseListResponse<NewsListBeanMvp>> loadDataFromServer(int page) {
-        return RetrofitFactory.getInstance().createService(ApiServiceMvp.class, UrlConstantMvp.NEWS_URL)
+        //缓存接口请求
+        return RetrofitFactory.getInstance().createService(ApiServiceMvp.class, UrlConstantMvp.NEWS_URL, true)
                 .getNews(page + "", getLoadSize() + "")
                 .map(new NewsFunction());
     }

@@ -1,13 +1,14 @@
-package com.android.frame.http;
+package com.android.frame.http.Interceptor;
 
 import android.util.Log;
+
 import okhttp3.logging.HttpLoggingInterceptor;
 
 /**
  * Created by xuzhb on 2019/9/29
- * Desc:将服务器请求报文和响应报文Json格式化
+ * Desc:日志拦截器，将服务器请求报文和响应报文Json格式化
  */
-public class HttpLogger implements HttpLoggingInterceptor.Logger {
+public class HttpLogInterceptor implements HttpLoggingInterceptor.Logger {
 
     private static final String TAG = "HttpLogger";
 

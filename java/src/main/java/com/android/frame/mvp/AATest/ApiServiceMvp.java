@@ -2,7 +2,8 @@ package com.android.frame.mvp.AATest;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
-import retrofit2.http.*;
+import retrofit2.http.GET;
+import retrofit2.http.Query;
 
 /**
  * Created by xuzhb on 2020/1/8
@@ -13,8 +14,7 @@ public interface ApiServiceMvp {
     @GET("weather_mini")
     Observable<ResponseBody> getWeather(@Query("city") String city);
 
-    @FormUrlEncoded
-    @POST("getWangYiNews")
-    Observable<ResponseBody> getNews(@Field("page") String page, @Field("count") String count);
+    @GET("getWangYiNews")
+    Observable<ResponseBody> getNews(@Query("page") String page, @Query("count") String count);
 
 }

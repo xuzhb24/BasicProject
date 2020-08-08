@@ -1,12 +1,16 @@
 package com.android.frame.http;
 
 import android.text.TextUtils;
+
+import com.android.util.NetworkUtil;
+
 import org.json.JSONException;
-import retrofit2.HttpException;
 
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
+
+import retrofit2.HttpException;
 
 /**
  * Created by xuzhb on 2019/10/26
@@ -17,6 +21,10 @@ public class ExceptionUtil {
     public static String convertExceptopn(Throwable t) {
         if (t instanceof UnknownHostException) {
             return "网络不可用";
+        }
+        if (!TextUtils.isEmpty(t.getMessage()) && t.getMessage().contains("HTTP 504 Unsatisfiable Request (only-if-cached)")
+                && !NetworkUtil.isConnected()) {
+            return "网络不可用";  //这种情况主要是修改某些接口设置了缓存而且缓存失效后的提示信息
         }
         if (t instanceof SocketTimeoutException) {
             return "请求网络超时";

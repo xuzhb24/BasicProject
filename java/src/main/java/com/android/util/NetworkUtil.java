@@ -8,6 +8,8 @@ import android.net.wifi.WifiManager;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 
+import com.android.base.BaseApplication;
+
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
@@ -30,6 +32,11 @@ public class NetworkUtil {
         Intent intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         context.startActivity(intent);
+    }
+
+    //是否连接到网络
+    public static boolean isConnected() {
+        return isConnected(BaseApplication.getInstance());
     }
 
     //是否连接到网络

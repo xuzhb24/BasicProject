@@ -5,6 +5,7 @@ import android.os.Bundle;
 import com.android.frame.http.AATest.bean.NewsListBean;
 import com.android.frame.http.AATest.bean.WeatherBean;
 import com.android.frame.http.ExceptionUtil;
+import com.android.frame.http.Interceptor.MaxRetryInterceptor;
 import com.android.frame.http.RetrofitFactory;
 import com.android.frame.http.SchedulerUtil;
 import com.android.frame.mvc.BaseActivity;
@@ -26,6 +27,7 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.converter.gson.GsonConverterFactory;
 
 /**
  * Created by xuzhb on 2019/10/26
@@ -37,7 +39,8 @@ public class TestRetrofitActivity extends BaseActivity<ActivityCommonLayoutBindi
     public void handleView(Bundle savedInstanceState) {
         CommonLayoutUtil.initCommonLayout(this, "测试Retrofit", true, true,
                 "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取网易新闻(@Field POST)",
-                "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)");
+                "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)",
+                "缓存GET请求", "清除缓存文件", "最多重试3次");
         String city = "北京";
         binding.il.setInputText(city);
         binding.il.getEditText().setSelection(city.length());  //将光标移至文字末尾
@@ -66,65 +69,26 @@ public class TestRetrofitActivity extends BaseActivity<ActivityCommonLayoutBindi
 //            accessUrl(UrlConstant.BAIDU_URL);
             accessUrlRxJava(UrlConstant.BAIDU_URL);
         });
+        binding.btn7.setOnClickListener(v -> {
+            String city = binding.il.getInputText().trim();
+            testCache(city);
+        });
+        binding.btn8.setOnClickListener(v -> {
+            if (RetrofitFactory.getInstance().clearCache()) {
+                showToast("缓存已清除");
+            } else {
+                showToast("缓存清除失败");
+            }
+        });
+        binding.btn9.setOnClickListener(v -> {
+            String city = binding.il.getInputText().trim();
+            testMaxRetry(city);
+        });
     }
 
     @Override
     public ActivityCommonLayoutBinding getViewBinding() {
         return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
-    //访问网址，Retrofit
-    private void accessUrl(String url) {
-        RetrofitFactory.getInstance().createService(ApiService.class, url)
-                .accessUrl()
-                .enqueue(new Callback<ResponseBody>() {  //异步请求
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        showToast("访问成功！");
-                        ExtraUtil.alert(TestRetrofitActivity.this, response.toString());
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        showToast(ExceptionUtil.convertExceptopn(t));
-                        t.printStackTrace();
-                    }
-                });
-    }
-
-    //访问网址，Retrofit + RxJava
-    private void accessUrlRxJava(String url) {
-        RetrofitFactory.getInstance().createService(ApiService.class, url)
-                .accessUrlRxJava()
-                .compose(SchedulerUtil.ioToMain())
-//                .subscribeOn(Schedulers.io())
-//                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<ResponseBody>() {
-                    @Override
-                    public void onSubscribe(Disposable d) {
-
-                    }
-
-                    @Override
-                    public void onNext(ResponseBody responseBody) {
-                        showToast("访问成功！");
-                        try {
-                            ExtraUtil.alert(TestRetrofitActivity.this, responseBody.string());
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        showToast("访问失败，" + ExceptionUtil.convertExceptopn(e));
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
     }
 
     //获取天气信息，@Query，GET请求
@@ -240,6 +204,77 @@ public class TestRetrofitActivity extends BaseActivity<ActivityCommonLayoutBindi
 
             }
         };
+    }
+
+    //访问网址，Retrofit
+    private void accessUrl(String url) {
+        RetrofitFactory.getInstance().createService(ApiService.class, url)
+                .accessUrl()
+                .enqueue(new Callback<ResponseBody>() {  //异步请求
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        showToast("访问成功！");
+                        ExtraUtil.alert(TestRetrofitActivity.this, response.toString());
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        showToast(ExceptionUtil.convertExceptopn(t));
+                        t.printStackTrace();
+                    }
+                });
+    }
+
+    //访问网址，Retrofit + RxJava
+    private void accessUrlRxJava(String url) {
+        RetrofitFactory.getInstance().createService(ApiService.class, url)
+                .accessUrlRxJava()
+                .compose(SchedulerUtil.ioToMain())
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<ResponseBody>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        showToast("访问成功！");
+                        try {
+                            ExtraUtil.alert(TestRetrofitActivity.this, responseBody.string());
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        showToast("访问失败，" + ExceptionUtil.convertExceptopn(e));
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+    }
+
+    //测试缓存机制
+    private void testCache(String city) {
+        RetrofitFactory.getInstance().createService(ApiService.class, UrlConstant.WEATHER_URL, true)
+                .getWeatherByQuery(city)
+                .compose(SchedulerUtil.ioToMain())
+                .subscribe(WeatherObserver());
+    }
+
+    //最多重试3次
+    private void testMaxRetry(String city) {
+        RetrofitFactory.getInstance().createService(ApiService.class, UrlConstant.WEATHER_URL,
+                GsonConverterFactory.create(), new MaxRetryInterceptor(3), 30, false)
+                .getWeatherByQuery(city)
+                .compose(SchedulerUtil.ioToMain())
+                .subscribe(WeatherObserver());
     }
 
 }
