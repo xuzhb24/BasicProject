@@ -19,7 +19,7 @@ import com.android.basicproject.R
 import com.android.util.NetReceiver
 import com.android.util.NetworkUtil
 import com.android.util.ToastUtil
-import com.android.widget.LoadingDialog
+import com.android.widget.LoadingDialog.LoadingDialog
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 

@@ -8,6 +8,7 @@ import androidx.viewpager.widget.ViewPager
 import com.android.basicproject.databinding.ActivityTestSingleWidgetBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil
+import com.android.widget.LoadingDialog.LoadingDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions

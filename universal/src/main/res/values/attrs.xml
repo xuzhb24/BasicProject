@@ -321,4 +321,12 @@
         <attr name="retryDesc" format="string" />
     </declare-styleable>
 
+    <!--仿iOS菊花加载-->
+    <declare-styleable name="LoadingView">
+        <attr name="petalColor" format="color" />
+        <attr name="petalLength" format="dimension" />
+        <attr name="petalWidth" format="dimension" />
+        <attr name="petalCount" format="integer" />
+    </declare-styleable>
+
 </resources>
