@@ -1,4 +1,4 @@
-package com.android.widget;
+package com.android.widget.LoadingDialog;
 
 import android.app.Dialog;
 import android.content.Context;

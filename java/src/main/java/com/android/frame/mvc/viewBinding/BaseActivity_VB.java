@@ -22,7 +22,7 @@ import com.android.util.NetReceiver;
 import com.android.util.NetworkUtil;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
-import com.android.widget.LoadingDialog;
+import com.android.widget.LoadingDialog.LoadingDialog;
 import com.android.widget.TitleBar;
 
 import io.reactivex.disposables.CompositeDisposable;

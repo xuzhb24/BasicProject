@@ -97,7 +97,7 @@ class LoadingView @JvmOverloads constructor(
     override fun onDraw(canvas: Canvas?) {
         super.onDraw(canvas)
         canvas?.let {
-            for (i in 1..petalCount) {
+            for (i in 0..petalCount - 1) {
                 mPaint.alpha = (i + 1 + mCurrentIndex) % petalCount * 255 / petalCount
                 it.drawLine(mCenterX, petalWidth / 2f + 1, mCenterX, petalLength + petalWidth / 2f + 1, mPaint)
                 it.rotate(360f / petalCount, mCenterX, mCenterY)

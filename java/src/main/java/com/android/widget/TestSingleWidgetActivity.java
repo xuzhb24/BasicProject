@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.android.frame.mvc.viewBinding.BaseActivity_VB;
 import com.android.java.databinding.ActivityTestSingleWidgetBinding;
 import com.android.util.ExtraUtil;
+import com.android.widget.LoadingDialog.LoadingDialog;
 
 /**
  * Created by xuzhb on 2019/10/20
