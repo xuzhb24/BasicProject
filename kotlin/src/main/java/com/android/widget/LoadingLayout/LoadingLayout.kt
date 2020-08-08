@@ -6,8 +6,8 @@ import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.view.View
+import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
-import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -84,18 +84,17 @@ class LoadingLayout @JvmOverloads constructor(
         attrs?.let {
             val ta = context.obtainStyledAttributes(it, R.styleable.LoadingLayout)
             loadingSrc = ta.getDrawable(R.styleable.LoadingLayout_loadingSrc)
-                ?: resources.getDrawable(R.drawable.ic_loading)
+                ?: resources.getDrawable(R.drawable.ic_load_loading)
             loadingDesc = ta.getString(R.styleable.LoadingLayout_loadingDesc) ?: ""
             emptySrc = ta.getDrawable(R.styleable.LoadingLayout_emptySrc)
-                ?: resources.getDrawable(R.drawable.ic_empty_data)
+                ?: resources.getDrawable(R.drawable.ic_load_empty)
             emptyDesc = ta.getString(R.styleable.LoadingLayout_emptyDesc) ?: ""
             failSrc = ta.getDrawable(R.styleable.LoadingLayout_failSrc)
-                ?: resources.getDrawable(R.drawable.ic_fail)
+                ?: resources.getDrawable(R.drawable.ic_load_fail)
             failDesc = ta.getString(R.styleable.LoadingLayout_failDesc) ?: ""
             retryDesc = ta.getString(R.styleable.LoadingLayout_retryDesc) ?: ""
             ta.recycle()
         }
-        loadStart()
     }
 
     //开始加载
@@ -136,10 +135,10 @@ class LoadingLayout @JvmOverloads constructor(
                     Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
                 )
                 mLoadingIv.startAnimation(animation.apply {
-                    duration = 1500
+                    duration = 800
                     repeatCount = Animation.INFINITE
                     repeatMode = Animation.RESTART
-                    interpolator = LinearInterpolator()
+                    interpolator = AccelerateDecelerateInterpolator()
                 })
                 setDescText(mDescTv, loadingDesc)
             } else if (loadState == STATE_EMPTY) {

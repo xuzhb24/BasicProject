@@ -10,19 +10,19 @@
         android:id="@+id/loading_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tool:src="@drawable/ic_loading" />
+        tool:src="@drawable/ic_load_loading" />
 
     <ImageView
         android:id="@+id/empty_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tool:src="@drawable/ic_empty_data" />
+        tool:src="@drawable/ic_load_empty" />
 
     <ImageView
         android:id="@+id/fail_iv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        tool:src="@drawable/ic_fail" />
+        tool:src="@drawable/ic_load_fail" />
 
     <TextView
         android:id="@+id/desc_tv"
@@ -47,7 +47,7 @@
         android:paddingTop="8dp"
         android:paddingRight="20dp"
         android:paddingBottom="8dp"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/black"
         android:textSize="15sp"
         tool:text="刷新" />
 

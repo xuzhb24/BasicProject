@@ -12,6 +12,7 @@ import com.android.frame.mvc.viewBinding.BaseActivity_VB
 class TestLoadingLayoutActivity : BaseActivity_VB<ActivityTestLoadingLayoutBinding>() {
 
     override fun handleView(savedInstanceState: Bundle?) {
+        binding.loadingLayout.loadStart()
         Handler().postDelayed({ binding.loadingLayout.loadComplete() }, 2000)
     }
 
