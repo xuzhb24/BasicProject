@@ -1,4 +1,4 @@
-package com.android.frame.http
+package com.android.frame.http.interceptor
 
 import android.util.Log
 import okhttp3.logging.HttpLoggingInterceptor
@@ -7,7 +7,7 @@ import okhttp3.logging.HttpLoggingInterceptor
  * Created by xuzhb on 2019/9/29
  * Desc:将服务器请求报文和响应报文Json格式化
  */
-class HttpLogger : HttpLoggingInterceptor.Logger {
+class HttpLogInterceptor : HttpLoggingInterceptor.Logger {
 
     companion object {
         const val TAG = "HttpLogger"

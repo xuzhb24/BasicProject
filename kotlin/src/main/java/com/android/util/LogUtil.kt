@@ -1,6 +1,7 @@
 package com.android.util
 
 import android.util.Log
+import com.android.basicproject.BuildConfig
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -18,7 +19,7 @@ object LogUtil {
     private val Error = 5
 
     //日志文件总开关
-    private val mLogSwitch = true
+    private val mLogSwitch = BuildConfig.DEBUG
     //输出日志级别，如Verbose代表输出Verbose及以上级别的日志信息，Warn代表输出Warn及以上级别的日志信息
     private val mLogType = Verbose
     //日志写入文件开关

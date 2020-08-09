@@ -1,5 +1,6 @@
 package com.android.frame.http
 
+import com.android.util.NetworkUtil
 import org.json.JSONException
 import retrofit2.HttpException
 import java.net.SocketTimeoutException
@@ -32,7 +33,10 @@ object ExceptionUtil {
             500 -> "服务器内部错误[${e.code()}]"
             502 -> "错误网关[${e.code()}]"
             503 -> "服务器暂不可用[${e.code()}]"
-            504 -> "网关超时[${e.code()}]"
+            504 -> {
+                if (!NetworkUtil.isConnected()) "网络不可用"  //这种情况主要是修改某些接口设置了缓存而且缓存失效后的提示信息
+                else "网关超时[${e.code()}]"
+            }
             in 500..600 -> "服务器处理请求出错[${e.code()}]"
             in 400..499 -> "服务器无法处理请求[${e.code()}]"
             in 300..399 -> "请求被重定向到其他页面[${e.code()}]"

@@ -7,6 +7,7 @@ import com.android.frame.http.AATest.bean.WeatherBean
 import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
+import com.android.frame.http.interceptor.MaxRetryInterceptor
 import com.android.frame.mvc.BaseActivity
 import com.android.util.JsonUtil
 import com.android.util.alert
@@ -32,6 +33,7 @@ class TestRetrofitActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             this, "测试Retrofit",
             "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取网易新闻(@Field POST)",
             "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)",
+            "缓存GET请求", "清除缓存文件", "最多重试3次",
             showInputLayout = true
         )
         val city = "北京"
@@ -59,54 +61,22 @@ class TestRetrofitActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             //            accessUrl(UrlConstant.BAIDU_URL)
             accessUrlRxJava(UrlConstant.BAIDU_URL)
         }
+        btn7.setOnClickListener {
+            testCache(il.inputText.trim())
+        }
+        btn8.setOnClickListener {
+            if (RetrofitFactory.instance.clearCache()) {
+                showToast("缓存已清除")
+            } else {
+                showToast("缓存清除失败")
+            }
+        }
+        btn9.setOnClickListener {
+            testMaxRetry(il.inputText.trim())
+        }
     }
 
     override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
-
-    //访问网址，Retrofit
-    private fun accessUrl(url: String) {
-        RetrofitFactory.instance.createService(ApiService::class.java, url)
-            .accessUrl()
-            .enqueue(object : Callback<ResponseBody> {
-                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                    showToast(ExceptionUtil.convertExceptopn(t))
-                    t.printStackTrace()
-                }
-
-                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                    showToast("访问成功！")
-                    alert(this@TestRetrofitActivity, response.toString())
-                }
-
-            })
-    }
-
-    //访问网址，Retrofit + RxJava
-    private fun accessUrlRxJava(url: String) {
-        RetrofitFactory.instance.createService(ApiService::class.java, url)
-            .accessUrlRxJava()
-            .compose(SchedulerUtil.ioToMain())
-//            .subscribeOn(Schedulers.io())
-//            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(object : Observer<ResponseBody> {
-                override fun onComplete() {
-                }
-
-                override fun onSubscribe(d: Disposable) {
-                }
-
-                override fun onNext(response: ResponseBody) {
-                    showToast("访问成功！")
-                    alert(this@TestRetrofitActivity, response.string())
-                }
-
-                override fun onError(e: Throwable) {
-                    showToast(ExceptionUtil.convertExceptopn(e))
-                    e.printStackTrace()
-                }
-
-            })
-    }
 
     //获取天气信息，@Query，GET请求
     private fun getWeatherByQuery(city: String) {
@@ -211,6 +181,70 @@ class TestRetrofitActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             }
 
         }
+    }
+
+    //访问网址，Retrofit
+    private fun accessUrl(url: String) {
+        RetrofitFactory.instance.createService(ApiService::class.java, url)
+            .accessUrl()
+            .enqueue(object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                    showToast(ExceptionUtil.convertExceptopn(t))
+                    t.printStackTrace()
+                }
+
+                override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                    showToast("访问成功！")
+                    alert(this@TestRetrofitActivity, response.toString())
+                }
+
+            })
+    }
+
+    //访问网址，Retrofit + RxJava
+    private fun accessUrlRxJava(url: String) {
+        RetrofitFactory.instance.createService(ApiService::class.java, url)
+            .accessUrlRxJava()
+            .compose(SchedulerUtil.ioToMain())
+//            .subscribeOn(Schedulers.io())
+//            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(object : Observer<ResponseBody> {
+                override fun onComplete() {
+                }
+
+                override fun onSubscribe(d: Disposable) {
+                }
+
+                override fun onNext(response: ResponseBody) {
+                    showToast("访问成功！")
+                    alert(this@TestRetrofitActivity, response.string())
+                }
+
+                override fun onError(e: Throwable) {
+                    showToast(ExceptionUtil.convertExceptopn(e))
+                    e.printStackTrace()
+                }
+
+            })
+    }
+
+    //测试缓存机制
+    private fun testCache(city: String) {
+        RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.WEATHER_URL, cache = true)
+            .getWeatherByQuery(city)
+            .compose(SchedulerUtil.ioToMain())
+            .subscribe(WeatherObserver())
+    }
+
+    //最多重试3次
+    private fun testMaxRetry(city: String) {
+        RetrofitFactory.instance.createService(
+            ApiService::class.java,
+            UrlConstant.WEATHER_URL,
+            interceptor = MaxRetryInterceptor(3)
+        ).getWeatherByQuery(city)
+            .compose(SchedulerUtil.ioToMain())
+            .subscribe(WeatherObserver())
     }
 
 }

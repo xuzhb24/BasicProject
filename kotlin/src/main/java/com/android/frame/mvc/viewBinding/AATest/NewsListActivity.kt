@@ -33,7 +33,8 @@ class NewsListActivity : BaseListActivity<NewsListBeanMvp, ActivityListLayoutBin
     override fun getViewBinding() = ActivityListLayoutBinding.inflate(layoutInflater)
 
     override fun loadDataFromServer(page: Int): Observable<BaseListResponse<NewsListBeanMvp>>? {
-        return RetrofitFactory.instance.createService(ApiServiceMvp::class.java, UrlConstantMvp.NEWS_URL)
+        //缓存接口请求
+        return RetrofitFactory.instance.createService(ApiServiceMvp::class.java, UrlConstantMvp.NEWS_URL, cache = true)
             .getNews("$page", "${getLoadSize()}")
             .map(NewsFunction())
     }
