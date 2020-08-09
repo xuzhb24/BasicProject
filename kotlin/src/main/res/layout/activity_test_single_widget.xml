@@ -44,6 +44,37 @@
 
             <View style="@style/SingleWidgetDividerLineStyle" />
 
+            <com.android.widget.ExpandTextView
+                android:id="@+id/expand_tv1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#33000000" />
+
+            <com.android.widget.ExpandTextView
+                android:id="@+id/expand_tv2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#33000000"
+                app:contentSuffixText="----"
+                app:contentText="一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
+                app:contentTextColor="#333333"
+                app:contentTextSize="16sp"
+                app:labelExpandText="点击展开"
+                app:labelMarginLeft="20dp"
+                app:labelMarginRight="10dp"
+                app:labelShrinkText="点击收起"
+                app:labelTextColor="@color/colorPrimary"
+                app:labelTextSize="12sp"
+                app:lineSpacing="10dp"
+                app:maxShowLines="3" />
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
             <!--密码输入框-->
             <com.android.widget.PasswordEditText
                 android:id="@+id/password_edittext"

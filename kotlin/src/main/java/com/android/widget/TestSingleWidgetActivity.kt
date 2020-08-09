@@ -15,6 +15,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.youth.banner.BannerConfig
 import com.youth.banner.Transformer
 import com.youth.banner.loader.ImageLoader
+import kotlin.random.Random
 
 /**
  * Created by xuzhb on 2019/10/20
@@ -32,6 +33,26 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
                 .setMessage("本页面主要是查看编写的一些单一控件的样式")
                 .show()
         }
+        //展开/收起的TextView
+        binding.expandTv1.contentText = "这是可以展开收起的文本，${createExpandText(160)}这是可以展开收起的文本"
+        binding.expandTv1.setOnTextClickListener(object : ExpandTextView.OnTextClickListener {
+            override fun onContentTextClick(isExpand: Boolean) {
+                showToast(if (isExpand) "已展开" else "已收起")
+            }
+
+            override fun onLabelTextClick(isExpand: Boolean) {
+                binding.expandTv1.isExpand = !isExpand
+            }
+        })
+        binding.expandTv2.setOnTextClickListener(object : ExpandTextView.OnTextClickListener {
+            override fun onContentTextClick(isExpand: Boolean) {
+                binding.expandTv2.isExpand = !isExpand
+            }
+
+            override fun onLabelTextClick(isExpand: Boolean) {
+                binding.expandTv2.isExpand = !isExpand
+            }
+        })
         //加载框
         binding.loadingBtn1.setOnClickListener {
             LoadingDialog(this).show()
@@ -105,6 +126,22 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
             }
 
         })
+    }
+
+    private fun createExpandText(count: Int): String {
+        var array = arrayOf(
+            "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
+            "a", "b", "c", "d", "e", "f", "t", "g", "q", "w", "e",
+            "p", "l", "k", "i", "n", "m", "G", "H", "J", "I", "L", "C", "V", "B"
+            , "你", "我", "他", "天", "地", "动", "进", "啊", "去", "改", "酒",
+            "一", "会", "年", "收", "好", "嗯", "这", "有",
+            "\r", "\n", "\r\n", "\t", "，", "！", "%", "@"
+        )
+        val sb = StringBuilder()
+        for (i in 0 until count) {
+            sb.append(array[Random.nextInt(array.size)])
+        }
+        return sb.toString()
     }
 
     //Glide加载图片
