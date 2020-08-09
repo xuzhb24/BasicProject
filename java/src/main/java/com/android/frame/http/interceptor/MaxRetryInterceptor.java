@@ -1,4 +1,4 @@
-package com.android.frame.http.Interceptor;
+package com.android.frame.http.interceptor;
 
 import com.android.util.LogUtil;
 
@@ -26,8 +26,8 @@ public class MaxRetryInterceptor implements Interceptor {
     @Override
     public Response intercept(Chain chain) throws IOException {
         Request request = chain.request();
-        Response response = chain.proceed(request);  //默认请求1次
         LogUtil.w(TAG, "retry count:" + retryCount);
+        Response response = chain.proceed(request);  //默认请求1次
         while (!response.isSuccessful() && retryCount < maxRetryCount) {
             retryCount++;
             LogUtil.w(TAG, "retry count:" + retryCount);

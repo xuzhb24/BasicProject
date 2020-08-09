@@ -1,8 +1,8 @@
 package com.android.frame.http;
 
 import com.android.base.BaseApplication;
-import com.android.frame.http.Interceptor.HttpCacheInterceptor;
-import com.android.frame.http.Interceptor.HttpLogInterceptor;
+import com.android.frame.http.interceptor.HttpCacheInterceptor;
+import com.android.frame.http.interceptor.HttpLogInterceptor;
 import com.android.java.BuildConfig;
 import com.android.util.FileUtil;
 

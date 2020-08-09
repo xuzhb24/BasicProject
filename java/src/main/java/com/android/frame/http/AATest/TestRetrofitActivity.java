@@ -5,9 +5,9 @@ import android.os.Bundle;
 import com.android.frame.http.AATest.bean.NewsListBean;
 import com.android.frame.http.AATest.bean.WeatherBean;
 import com.android.frame.http.ExceptionUtil;
-import com.android.frame.http.Interceptor.MaxRetryInterceptor;
 import com.android.frame.http.RetrofitFactory;
 import com.android.frame.http.SchedulerUtil;
+import com.android.frame.http.interceptor.MaxRetryInterceptor;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.databinding.ActivityCommonLayoutBinding;
 import com.android.util.CommonLayoutUtil;
@@ -37,7 +37,7 @@ public class TestRetrofitActivity extends BaseActivity<ActivityCommonLayoutBindi
 
     @Override
     public void handleView(Bundle savedInstanceState) {
-        CommonLayoutUtil.initCommonLayout(this, "测试Retrofit", true, true,
+        CommonLayoutUtil.initCommonLayout(this, "测试Retrofit", true, false,
                 "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取网易新闻(@Field POST)",
                 "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)",
                 "缓存GET请求", "清除缓存文件", "最多重试3次");

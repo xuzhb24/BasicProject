@@ -1,4 +1,4 @@
-package com.android.frame.http.Interceptor;
+package com.android.frame.http.interceptor;
 
 import android.util.Log;
 

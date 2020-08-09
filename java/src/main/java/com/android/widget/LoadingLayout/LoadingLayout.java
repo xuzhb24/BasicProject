@@ -152,7 +152,6 @@ public class LoadingLayout extends LinearLayout {
     }
 
     private void setLoadState(int loadState) {
-        System.out.println("TAG5======" + loadState);
         if (loadState == STATE_HIDE) {
             setVisibility(GONE);
         } else {

@@ -2,7 +2,15 @@ package com.android.util;
 
 import android.util.Log;
 
-import java.io.*;
+import com.android.java.BuildConfig;
+
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -19,7 +27,7 @@ public class LogUtil {
     private static final int Error = 5;
 
     //日志文件总开关
-    private static Boolean mLogSwitch = true;
+    private static Boolean mLogSwitch = BuildConfig.DEBUG;
     //输出日志级别，如Verbose代表输出Verbose及以上级别的日志信息，Warn代表输出Warn及以上级别的日志信息
     private static int mLogType = Debug;
     //日志写入文件开关
