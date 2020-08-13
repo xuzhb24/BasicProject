@@ -37,7 +37,7 @@ class ExpandTextView @JvmOverloads constructor(
         private val DEFAULT_LABEL_TEXT_SIZE = SizeUtil.sp2px(15f)
         private val DEFAULT_LABEL_TEXT_COLOR = Color.BLACK
         private val DEFAULT_LABEL_MARGIN_LEFT = SizeUtil.dp2px(5f)
-        private val DEFAULT_LABEL_MARGIN_RIGHT = 0f
+        private val DEFAULT_LABEL_MARGIN_RIGHT = SizeUtil.dp2px(5f)
     }
 
     var maxShowLines: Int = DEFAULT_MAX_SHOW_LINES               //收起状态时最多显示的文本行数
@@ -219,7 +219,8 @@ class ExpandTextView @JvmOverloads constructor(
                         val contentSuffixStaticLayout = getStaticLayout(contentSuffixText, mContentPaint, width)
                         val contentSuffixStaticLayoutWidth = contentSuffixStaticLayout.getLineWidth(0)
                         //主内容可以进行绘制的宽度，labelMarginRight收起时是不生效的
-                        val contentTextWidth = width - expandStaticLayoutWidth - labelMarginLeft - contentSuffixStaticLayoutWidth
+                        val contentTextWidth =
+                            width - expandStaticLayoutWidth - labelMarginLeft - contentSuffixStaticLayoutWidth - labelMarginRight
                         //当前正在绘制的宽度
                         var currentWidth = 0f
                         //临时的一个高度，表达当前主内容的y值
@@ -265,7 +266,7 @@ class ExpandTextView @JvmOverloads constructor(
                                 currentWidth += currentStringStaticLayoutWidth
                             }
                         }
-                    } else {  //普通行
+                    } else if (i < maxShowLines - 1) {  //普通行
                         height += currentLineStaticLayout.height
                         canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
                         height += lineSpacing
