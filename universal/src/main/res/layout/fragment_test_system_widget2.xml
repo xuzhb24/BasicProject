@@ -32,6 +32,20 @@
 
         </FrameLayout>
 
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="45dp"
+            android:layout_margin="30dp"
+            android:background="@drawable/layer_list_shadow_bg">
+
+            <View
+                android:layout_width="10dp"
+                android:layout_height="30dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/black" />
+
+        </FrameLayout>
+
         <!--ToggleButton-->
         <TextView
             style="@style/SystemWidgetTextStyle"
