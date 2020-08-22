@@ -40,9 +40,9 @@ class ExpandTextView @JvmOverloads constructor(
         private val DEFAULT_LABEL_MARGIN_RIGHT = SizeUtil.dp2px(5f)
     }
 
-    var maxShowLines: Int = DEFAULT_MAX_SHOW_LINES               //收起状态时最多显示的文本行数
-    var lineSpacing: Float = DEFAULT_LINE_SPACING                //文本的行间距
-    var contentText: String = ""                                 //主内容的文本
+    var maxShowLines: Int = DEFAULT_MAX_SHOW_LINES  //收起状态时最多显示的文本行数
+    var lineSpacing: Float = DEFAULT_LINE_SPACING   //文本的行间距
+    var contentText: String = ""                    //主内容的文本
         set(value) {
             field = getFilterText(value)
             bottom = calculateHeight(width)
@@ -125,7 +125,7 @@ class ExpandTextView @JvmOverloads constructor(
         var height = MeasureSpec.getSize(heightMeasureSpec)
         when (heightMode) {
             MeasureSpec.EXACTLY -> height = height
-            else -> height = calculateHeight(width).toInt()
+            else -> height = calculateHeight(width)
         }
         setMeasuredDimension(width, height)
     }
@@ -197,7 +197,6 @@ class ExpandTextView @JvmOverloads constructor(
                                 height + shrinkStaticLayoutHeight
                             )
                         }
-                        return
                     } else {  //普通行
                         height += currentLineStaticLayout.height
                         canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
@@ -210,7 +209,7 @@ class ExpandTextView @JvmOverloads constructor(
                 val expandStaticLayoutHeight = expandStaticLayout.height
                 val expandStaticLayoutWidth = expandStaticLayout.getLineWidth(0)
                 var height = 0f
-                for (i in 0 until lineCount) {
+                for (i in 0 until maxShowLines) {
                     //获取当前行内容
                     val currentLineText = contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i))
                     val currentLineStaticLayout = getStaticLayout(currentLineText, mContentPaint, width)
@@ -266,7 +265,7 @@ class ExpandTextView @JvmOverloads constructor(
                                 currentWidth += currentStringStaticLayoutWidth
                             }
                         }
-                    } else if (i < maxShowLines - 1) {  //普通行
+                    } else {  //普通行
                         height += currentLineStaticLayout.height
                         canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
                         height += lineSpacing
@@ -364,7 +363,7 @@ class ExpandTextView @JvmOverloads constructor(
                 }
             } else {  //已收起
                 //计算收起时的高度
-                for (i in 0 until lineCount) {
+                for (i in 0 until maxShowLines) {
                     //获取当前行内容
                     val currentLineText = contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i))
                     val currentLineStaticLayout = getStaticLayout(currentLineText, mContentPaint, width)
@@ -372,7 +371,6 @@ class ExpandTextView @JvmOverloads constructor(
                         val expandStaticLayout = getStaticLayout(labelShrinkText, mLabelPaint, width)
                         //计算最大行那一行的内容
                         height += max(currentLineStaticLayout.height, expandStaticLayout.height) //+ lineSpacing
-                        return height.toInt()
                     } else {  //普通行
                         height += currentLineStaticLayout.height + lineSpacing
                     }
