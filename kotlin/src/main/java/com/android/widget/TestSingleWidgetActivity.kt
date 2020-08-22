@@ -37,7 +37,7 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
         binding.expandTv1.contentText = "这是可以展开收起的文本，${createExpandText(160)}这是可以展开收起的文本"
         binding.expandTv1.setOnTextClickListener(object : ExpandTextView.OnTextClickListener {
             override fun onContentTextClick(isExpand: Boolean) {
-                showToast(if (isExpand) "已展开" else "已收起")
+                binding.expandTv1.contentText = createExpandText(Random.nextInt(160))
             }
 
             override fun onLabelTextClick(isExpand: Boolean) {
@@ -46,12 +46,23 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
         })
         binding.expandTv2.setOnTextClickListener(object : ExpandTextView.OnTextClickListener {
             override fun onContentTextClick(isExpand: Boolean) {
-                binding.expandTv2.isExpand = !isExpand
+                showToast(if (isExpand) "已展开" else "已收起")
             }
 
             override fun onLabelTextClick(isExpand: Boolean) {
                 binding.expandTv2.isExpand = !isExpand
             }
+        })
+        //带有后缀的TextView
+        binding.suffixTv.setOnTextClickListener(object : SuffixTextView.OnTextClickListener {
+            override fun onContentTextClick() {
+                binding.suffixTv.contentText = createSuffixText(Random.nextInt(4))
+            }
+
+            override fun onSuffixTextClick() {
+                showToast("查看详情")
+            }
+
         })
         //加载框
         binding.loadingBtn1.setOnClickListener {
@@ -142,6 +153,27 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
             sb.append(array[Random.nextInt(array.size)])
         }
         return sb.toString()
+    }
+
+    private fun createSuffixText(index: Int): String {
+        return when (index) {
+            0 -> {
+                //一行文本，后缀不需要换行
+                "一二三四五六七八九十"
+            }
+            1 -> {
+                //一行文本，后缀需要换行
+                "一二三四五六七八九十一二三四五六七八九十"
+            }
+            2 -> {
+                //两行文本，不需要绘制内容文本的后缀
+                "一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
+            }
+            else -> {
+                //超过两行文本
+                "一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
+            }
+        }
     }
 
     //Glide加载图片

@@ -50,7 +50,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:background="#33000000" />
+                android:background="#33000000"
+                app:labelTextColor="@color/colorPrimary" />
 
             <com.android.widget.ExpandTextView
                 android:id="@+id/expand_tv2"
@@ -72,6 +73,22 @@
                 app:labelTextSize="12sp"
                 app:lineSpacing="10dp"
                 app:maxShowLines="3" />
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
+            <com.android.widget.SuffixTextView
+                android:id="@+id/suffix_tv"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="#33000000"
+                app:contentText="一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
+                app:lineSpacing="3dp"
+                app:maxShowLines="2"
+                app:suffixMarginLeft="5dp"
+                app:suffixMarginRight="15dp"
+                app:suffixText="查看详情>>" />
 
             <View style="@style/SingleWidgetDividerLineStyle" />
 

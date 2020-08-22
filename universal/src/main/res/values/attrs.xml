@@ -8,12 +8,17 @@
     <attr name="dividerHeight" format="dimension" />
     <attr name="lineWidth" format="dimension" />
     <attr name="labelTextMargin" format="dimension" />
-
     <attr name="startAngle" format="float" />
     <attr name="roundCap" format="boolean" />
     <attr name="ringWidth" format="dimension" />
     <attr name="ringColor" format="color" />
     <attr name="ringBackgroungColor" format="color" />
+    <attr name="maxShowLines" format="integer" />
+    <attr name="lineSpacing" format="dimension" />
+    <attr name="contentText" format="string" />
+    <attr name="contentSuffixText" format="string" />
+    <attr name="contentTextSize" format="dimension" />
+    <attr name="contentTextColor" format="color" />
 
     <!--标题栏属性-->
     <declare-styleable name="TitleBar">
@@ -331,20 +336,49 @@
 
     <!--点击展开/收起的TextView-->
     <declare-styleable name="ExpandTextView">
-        <attr name="maxShowLines" format="integer" />
-        <attr name="lineSpacing" format="dimension" />
-        <attr name="contentText" format="string" />
-        <attr name="contentSuffixText" format="string" />
-        <attr name="contentTextSize" format="dimension" />
-        <attr name="contentTextColor" format="color" />
+        <!--        <attr name="maxShowLines" format="integer" />-->
+        <!--        <attr name="lineSpacing" format="dimension" />-->
+        <!--        <attr name="contentText" format="string" />-->
+        <!--        <attr name="contentSuffixText" format="string" />-->
+        <!--        <attr name="contentTextSize" format="dimension" />-->
+        <!--        <attr name="contentTextColor" format="color" />-->
         <attr name="labelExpandText" format="string" />
         <attr name="labelShrinkText" format="string" />
         <!--        <attr name="labelTextSize" format="dimension" />-->
         <!--        <attr name="labelTextColor" format="color" />-->
-        <attr name="labelTextSize" />
-        <attr name="labelTextColor" />
         <attr name="labelMarginLeft" format="dimension" />
         <attr name="labelMarginRight" format="dimension" />
+
+        <attr name="maxShowLines" />
+        <attr name="lineSpacing" />
+        <attr name="contentText" />
+        <attr name="contentSuffixText" />
+        <attr name="contentTextSize" />
+        <attr name="contentTextColor" />
+        <attr name="labelTextSize" />
+        <attr name="labelTextColor" />
+    </declare-styleable>
+
+    <!--带有特定后缀的TextView-->
+    <declare-styleable name="SuffixTextView">
+        <!--        <attr name="maxShowLines" format="integer" />-->
+        <!--        <attr name="lineSpacing" format="dimension" />-->
+        <!--        <attr name="contentText" format="string" />-->
+        <!--        <attr name="contentSuffixText" format="string" />-->
+        <!--        <attr name="contentTextSize" format="dimension" />-->
+        <!--        <attr name="contentTextColor" format="color" />-->
+        <attr name="suffixText" format="string" />
+        <attr name="suffixTextSize" format="dimension" />
+        <attr name="suffixTextColor" format="color" />
+        <attr name="suffixMarginLeft" format="dimension" />
+        <attr name="suffixMarginRight" format="dimension" />
+
+        <attr name="maxShowLines" />
+        <attr name="lineSpacing" />
+        <attr name="contentText" />
+        <attr name="contentSuffixText" />
+        <attr name="contentTextSize" />
+        <attr name="contentTextColor" />
     </declare-styleable>
 
 </resources>
