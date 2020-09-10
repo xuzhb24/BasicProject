@@ -5,10 +5,17 @@ import android.app.ActivityManager
 import android.app.AlertDialog
 import android.content.Context
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
+import android.view.Gravity
 import android.view.MotionEvent
+import android.view.ViewGroup
+import android.widget.ImageView
 import com.android.basicproject.BuildConfig
+import com.android.basicproject.R
+import com.android.widget.PopupWindow.CommonPopupWindow
 import com.google.gson.Gson
 import java.util.*
 
@@ -74,4 +81,29 @@ fun getTopActivityName(activity: Activity, ev: MotionEvent?) {
             }
         }
     }
+}
+
+fun showImage(activity: Activity, bitmap: Bitmap) {
+    CommonPopupWindow.Builder(activity)
+        .setContentView(R.layout.layout_image)
+        .setViewParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        .setBackGroundAlpha(0.5f)
+        .setOnViewListener { holder, popupWindow ->
+            holder.getView<ImageView>(R.id.iv)?.setImageBitmap(bitmap)
+        }
+        .build()
+        .showAtLocation(activity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0)
+}
+
+
+fun showImage(activity: Activity, drawable: Drawable) {
+    CommonPopupWindow.Builder(activity)
+        .setContentView(R.layout.layout_image)
+        .setViewParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
+        .setBackGroundAlpha(0.5f)
+        .setOnViewListener { holder, popupWindow ->
+            holder.getView<ImageView>(R.id.iv)?.setImageDrawable(drawable)
+        }
+        .build()
+        .showAtLocation(activity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0)
 }

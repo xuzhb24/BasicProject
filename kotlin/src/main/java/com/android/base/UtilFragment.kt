@@ -68,6 +68,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.regexTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_REGEX)
         }
+        //磁盘缓存工具
+        binding.cacheTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CACHE)
+        }
     }
 
     override fun initListener() {

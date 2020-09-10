@@ -4,10 +4,16 @@ import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
+import android.graphics.Bitmap.CompressFormat
 import android.graphics.BitmapFactory
+import android.graphics.Canvas
+import android.graphics.PixelFormat
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.os.Environment
 import android.provider.MediaStore
+import androidx.annotation.IntRange
 import java.io.*
 
 /**
@@ -15,6 +21,50 @@ import java.io.*
  * Desc:图片工具
  */
 object BitmapUtil {
+
+    //Bitmap转化byte数组
+    fun bitmap2Bytes(bitmap: Bitmap?): ByteArray? {
+        return bitmap2Bytes(bitmap, CompressFormat.PNG, 100)
+    }
+
+    //Bitmap转化byte数组
+    fun bitmap2Bytes(bitmap: Bitmap?, format: CompressFormat, @IntRange(from = 0, to = 100) quality: Int): ByteArray? {
+        if (bitmap == null) {
+            return null
+        }
+        val baos = ByteArrayOutputStream()
+        bitmap.compress(format, quality, baos)
+        return baos.toByteArray()
+    }
+
+    //byte数组转化Bitmap
+    fun bytes2Bitmap(bytes: ByteArray?): Bitmap? {
+        return if (bytes == null || bytes.size == 0) null
+        else BitmapFactory.decodeByteArray(bytes, 0, bytes.size)
+    }
+
+    //Bitmap转化Drawable
+    fun bitmap2Drawable(bitmap: Bitmap?): Drawable? = bitmap?.let { BitmapDrawable(it) }
+
+    //Drawable转化Bitmap
+    fun drawable2Bitmap(drawable: Drawable?): Bitmap? {
+        if (drawable == null) {
+            return null
+        }
+        //取Drawable的长宽
+        val width = drawable.intrinsicWidth
+        val height = drawable.intrinsicHeight
+        //取Drawable的颜色格式
+        val config = if (drawable.opacity != PixelFormat.OPAQUE) Bitmap.Config.ARGB_8888 else Bitmap.Config.RGB_565
+        //建立对应Bitmap
+        val bitmap = Bitmap.createBitmap(width, height, config)
+        //建立对应Bitmap的画布
+        val canvas = Canvas(bitmap)
+        drawable.setBounds(0, 0, width, height)
+        //把Dawable内容画到画布中
+        drawable.draw(canvas)
+        return bitmap
+    }
 
     //保存图片到系统相册，返回true表示保存成功，false表示保存失败
     fun saveImageToGallery(

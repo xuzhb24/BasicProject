@@ -1,9 +1,11 @@
 package com.android.util
 
 import android.content.Intent
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.text.InputType
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.view.Gravity
@@ -21,7 +23,10 @@ import com.android.frame.http.SchedulerUtil
 import com.android.frame.mvc.BaseActivity
 import com.android.util.StatusBar.TestStatusBarUtilActivity
 import com.android.util.regex.RegexUtil
+import com.android.widget.InputLayout
+import com.android.widget.RecyclerView.AATest.entity.MonthBean
 import com.bumptech.glide.Glide
+import com.google.gson.Gson
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_common_layout.*
@@ -47,6 +52,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_PINYIN = "TEST_PINYIN"
         const val TEST_LAYOUT_PARAMS = "TEST_LAYOUT_PARAMS"
         const val TEST_REGEX = "TEST_REGEX"
+        const val TEST_CACHE = "TEST_CACHE"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -62,6 +68,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_PINYIN -> testPinyin()
             TEST_LAYOUT_PARAMS -> testLayoutParams()
             TEST_REGEX -> testRegex()
+            TEST_CACHE -> testCache()
         }
     }
 
@@ -761,6 +768,168 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     private fun setRegexResult(isCorrect: Boolean) {
         val result = "\"${il.inputText}\"：$isCorrect"
         tv.text = result
+    }
+
+    //磁盘缓存工具
+    private fun testCache() {
+        initCommonLayout(
+            this, "磁盘缓存工具", true, true,
+            "读取", "保存字符串", "保存Serializable数据", "保存Bitmap", "保存Drawable",
+            "移除指定key", "清除所有缓存内容"
+        )
+        il.inputTextHint = "请输入Key名"
+        val valueIl = createInputLayout(this, "请输入要保存的字符串")
+        val durationIl = createInputLayout(this, "请输入保存的时长")
+        durationIl.inputTextType = InputType.TYPE_CLASS_NUMBER
+        ll.addView(valueIl, 1)
+        ll.addView(durationIl, 2)
+        val tip = "默认Key名：\n字符串：String\t\t\t\t\tSerializable：Serializable\nBitmap：Bitmap\t\t\tDrawable：Drawable\n"
+        tv.text = tip
+        val cacheUtil = CacheUtil(this)
+//        val cacheUtil = CacheUtil(this,"cacheUtils2")
+        btn1.setOnClickListener {
+            tv.text = tip
+            switchCacheState(!isSaveCache, valueIl, durationIl)
+            isSaveCache = !isSaveCache
+        }
+        btn2.setOnClickListener {
+            tv.text = tip
+            val key = getKey(il, "String")
+            if (isSaveCache) {
+                val value = valueIl.inputText.trim()
+                if (TextUtils.isEmpty(value)) {
+                    showToast("请输入保存的字符串")
+                    return@setOnClickListener
+                }
+                val saveTime = getSaveTime(durationIl)
+                when (saveTime) {
+                    0 -> showToast("请输入大于0秒的时长")
+                    -1 -> {
+                        cacheUtil.putString(key, value)
+                        showToast("保存成功")
+                    }
+                    else -> {
+                        cacheUtil.putString(key, value, saveTime)
+                        showToast("保存成功，数据将缓存${saveTime}秒")
+                    }
+                }
+            } else {
+                val result = cacheUtil.getString(key)
+                tv.text = if (TextUtils.isEmpty(result)) "数据为空" else result
+            }
+        }
+        btn3.setOnClickListener {
+            tv.text = tip
+            val key = getKey(il, "Serializable")
+            val bean = MonthBean("2020-02", key)
+            if (isSaveCache) {
+                val saveTime = getSaveTime(durationIl)
+                when (saveTime) {
+                    0 -> showToast("请输入大于0秒的时长")
+                    -1 -> {
+                        cacheUtil.putObject(key, bean)
+                        showToast("保存成功")
+                    }
+                    else -> {
+                        cacheUtil.putObject(key, bean, saveTime)
+                        showToast("保存成功，数据将缓存${saveTime}秒")
+                    }
+                }
+            } else {
+                val result = cacheUtil.getObject(key)
+                tv.text = if (result == null) "数据为空" else Gson().toJson(result)
+            }
+        }
+        btn4.setOnClickListener {
+            tv.text = tip
+            val key = getKey(il, "Bitmap")
+            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_coupon_header)
+            if (isSaveCache) {
+                val saveTime = getSaveTime(durationIl)
+                when (saveTime) {
+                    0 -> showToast("请输入大于0秒的时长")
+                    -1 -> {
+                        cacheUtil.putBitmap(key, bitmap)
+                        showToast("保存成功")
+                    }
+                    else -> {
+                        cacheUtil.putBitmap(key, bitmap, saveTime)
+                        showToast("保存成功，数据将缓存${saveTime}秒")
+                    }
+                }
+            } else {
+                val result = cacheUtil.getBitmap(key)
+                if (result != null) {
+                    showImage(this, result)
+                } else {
+                    showToast("数据为空")
+                }
+            }
+        }
+        btn5.setOnClickListener {
+            tv.text = tip
+            val key = getKey(il, "Drawable")
+            val drawable = resources.getDrawable(R.drawable.shape_oval_size_34_solid_db4b3c)
+            if (isSaveCache) {
+                val saveTime = getSaveTime(durationIl)
+                when (saveTime) {
+                    0 -> showToast("请输入大于0秒的时长")
+                    -1 -> {
+                        cacheUtil.putDrawable(key, drawable)
+                        showToast("保存成功")
+                    }
+                    else -> {
+                        cacheUtil.putDrawable(key, drawable, saveTime)
+                        showToast("保存成功，数据将缓存${saveTime}秒")
+                    }
+                }
+            } else {
+                val result = cacheUtil.getDrawable(key)
+                if (result != null) {
+                    showImage(this, result)
+                } else {
+                    showToast("数据为空")
+                }
+            }
+        }
+        btn6.setOnClickListener {
+            val key = il.inputText.trim()
+            if (TextUtils.isEmpty(key)) {
+                showToast("请先输入要删除的Key名")
+                return@setOnClickListener
+            }
+            cacheUtil.remove(key)
+            showToast("已删除")
+        }
+        btn7.setOnClickListener {
+            cacheUtil.delete()
+            showToast("已清除")
+        }
+    }
+
+    private var isSaveCache = true
+
+    private fun switchCacheState(save: Boolean, vararg inputLayouts: InputLayout) {
+        for (il in inputLayouts) {
+            il.visibility = if (save) View.VISIBLE else View.GONE
+            il.inputText = ""
+        }
+        il.inputText = ""
+        btn1.text = if (save) "读取" else "保存"
+        btn2.text = if (save) "保存字符串" else "读取字符串"
+        btn3.text = if (save) "保存Serializable数据" else "读取Serializable数据"
+        btn4.text = if (save) "保存Bitmap" else "读取Bitmap"
+        btn5.text = if (save) "保存Drawable" else "读取Drawable"
+    }
+
+    private fun getKey(il: InputLayout, defaultKey: String): String {
+        val key = il.inputText.trim()
+        return if (TextUtils.isEmpty(key)) defaultKey else key
+    }
+
+    private fun getSaveTime(il: InputLayout): Int {
+        val saveTime = il.inputText.trim()
+        return if (TextUtils.isEmpty(saveTime)) -1 else saveTime.toInt()
     }
 
 }
