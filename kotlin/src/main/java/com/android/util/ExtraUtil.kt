@@ -9,10 +9,12 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
+import android.text.TextUtils
 import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import com.android.basicproject.BuildConfig
 import com.android.basicproject.R
 import com.android.widget.PopupWindow.CommonPopupWindow
@@ -66,17 +68,40 @@ fun isEntity(text: String, obj: Any): Boolean {
 }
 
 //屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
-fun getTopActivityName(activity: Activity, ev: MotionEvent?) {
+fun getTopActivityName(activity: AppCompatActivity, ev: MotionEvent?) {
     ev?.let {
+        val screenWidth = ScreenUtil.getScreenWidth(activity)
+        val width = SizeUtil.dp2px(80f)
+        val height = SizeUtil.dp2px(80f)
+        val left = (screenWidth - width) / 2f
+        val right = left + width
         if (BuildConfig.DEBUG && it.action == MotionEvent.ACTION_DOWN &&
-            it.rawY < SizeUtil.dp2px(80f) && it.rawX > SizeUtil.dp2px(80f) &&
-            it.rawX < ScreenUtil.getScreenWidth(activity) - SizeUtil.dp2px(80f)
+            it.rawY < height && it.rawX > left && it.rawX < right
         ) {
             CheckFastClickUtil.setOnMultiClickListener(600) {
                 if (it == 2) {
                     val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
                     val info = manager.getRunningTasks(1).get(0)
-                    alert(activity, "包名：${info.topActivity.packageName}\n类名：${info.topActivity.className}")
+                    val sb = StringBuilder()
+                    sb.append("当前应用包名：\n").append(info.topActivity.packageName)
+                        .append("\n当前Activity类名：\n").append(info.topActivity.className)
+                    var visibleFragmentName = ""
+                    val fragments = activity.supportFragmentManager.fragments
+                    if (!fragments.isNullOrEmpty()) {
+                        for (i in fragments.indices) {
+                            if (i == 0) {
+                                sb.append("\n\n当前Fragment列表：\n")
+                            }
+                            sb.append(fragments[i].javaClass.name).append("\n")
+                            if (fragments[i].userVisibleHint) {
+                                visibleFragmentName = fragments[i].javaClass.name
+                            }
+                        }
+                        if (!TextUtils.isEmpty(visibleFragmentName)) {
+                            sb.append("当前Fragment类名：\n").append(visibleFragmentName)
+                        }
+                    }
+                    alert(activity, sb.toString())
                 }
             }
         }
