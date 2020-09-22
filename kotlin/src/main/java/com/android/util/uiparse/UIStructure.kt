@@ -1,6 +1,7 @@
 package com.android.util.uiparse
 
 import android.text.TextUtils
+import androidx.fragment.app.Fragment
 import java.io.Serializable
 
 /**
@@ -15,11 +16,11 @@ data class UIStructure(
 
     data class FragmentStructure(
         val name: String,
-        val visible: Boolean,      //是否可见
-        val parrentName: String?   //父Fragment的名称
+        val visible: Boolean,          //是否可见
+        val parrent: FragmentStructure?  //父Fragment
     ) : Serializable {
         //是否是二级Fragment
-        fun isChildFragment() = !TextUtils.isEmpty(parrentName)
+        fun isChildFragment() = parrent != null
     }
 
     fun getTopFragmentInfo(): String {
@@ -42,7 +43,7 @@ data class UIStructure(
         }
         if (secondList.isNotEmpty()) {
             for (f in secondList) {
-                if (TextUtils.equals(f.parrentName, firstName)) {
+                if (f.parrent?.visible == true) {
                     return f.name
                 }
             }

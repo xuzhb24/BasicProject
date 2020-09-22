@@ -54,7 +54,7 @@ class ParseDialog private constructor() : DialogFragment() {
     private fun initParams() {
         dialog?.window?.let {
             val params = it.attributes
-            params.dimAmount = 0.3f
+            params.dimAmount = 0.1f
             params.gravity = Gravity.CENTER
             params.width = SizeUtil.dp2px(280f).toInt()
             params.height = WindowManager.LayoutParams.WRAP_CONTENT

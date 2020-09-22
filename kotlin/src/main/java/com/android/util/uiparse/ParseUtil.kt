@@ -38,27 +38,6 @@ object ParseUtil {
         }
     }
 
-    fun getUIStructure(activity: AppCompatActivity): UIStructure {
-        val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        val info = manager.getRunningTasks(1)[0]
-        val packageName = info.topActivity.packageName
-        val className = info.topActivity.className
-        val activityName = className.substring(className.lastIndexOf(".") + 1)
-        val activityPath = className.substring(0, className.lastIndexOf("."))
-        val fragmentList: MutableList<UIStructure.FragmentStructure> = mutableListOf()
-        for (fragment in activity.supportFragmentManager.fragments) {
-            if (fragment is ParseDialog) {
-                continue
-            }
-//            if (fragment is SupportRequestManagerFragment) {
-//                continue
-//            }
-            fragmentList.add(UIStructure.FragmentStructure(getFragmentName(fragment), fragment.userVisibleHint, null))
-            fragmentList.addAll(getChildFragments(fragment))
-        }
-        return UIStructure(packageName, activityName, activityPath, fragmentList)
-    }
-
     fun getUIStructure(activity: FragmentActivity): UIStructure {
         val manager = activity.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val info = manager.getRunningTasks(1)[0]
@@ -74,16 +53,20 @@ object ParseUtil {
 //            if (fragment is SupportRequestManagerFragment) {
 //                continue
 //            }
-            fragmentList.add(UIStructure.FragmentStructure(getFragmentName(fragment), fragment.userVisibleHint, null))
-            fragmentList.addAll(getChildFragments(fragment))
+            val parent = UIStructure.FragmentStructure(getFragmentName(fragment), fragment.userVisibleHint, null)
+            fragmentList.add(parent)
+            fragmentList.addAll(getChildFragments(fragment, parent))
         }
         return UIStructure(packageName, activityName, activityPath, fragmentList)
     }
 
-    private fun getChildFragments(fragment: Fragment): MutableList<UIStructure.FragmentStructure> {
+    private fun getChildFragments(
+        fragment: Fragment,
+        parent: UIStructure.FragmentStructure
+    ): MutableList<UIStructure.FragmentStructure> {
         val list: MutableList<UIStructure.FragmentStructure> = mutableListOf()
         for (f in fragment.childFragmentManager.fragments) {
-            list.add(UIStructure.FragmentStructure(getFragmentName(f), f.userVisibleHint, getFragmentName(fragment)))
+            list.add(UIStructure.FragmentStructure(getFragmentName(f), f.userVisibleHint, parent))
         }
         return list
     }
