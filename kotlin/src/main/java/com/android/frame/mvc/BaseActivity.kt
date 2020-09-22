@@ -9,9 +9,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.viewbinding.ViewBinding
 import com.android.base.BaseApplication
 import com.android.basicproject.R
+import com.android.util.uiparse.ParseUtil
 import com.android.util.StatusBar.StatusBarUtil
 import com.android.util.ToastUtil
-import com.android.util.getTopActivityName
 import com.android.widget.TitleBar
 
 /**
@@ -87,7 +87,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity() {
 
     override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
         //屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
-        getTopActivityName(this, ev)
+        ParseUtil.showTopActivityInfo(this, ev)
         return super.dispatchTouchEvent(ev)
     }
 }
