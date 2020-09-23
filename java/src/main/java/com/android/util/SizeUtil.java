@@ -28,4 +28,20 @@ public class SizeUtil {
         return spValue * scaledDensity + 0.5f;
     }
 
+    public static int px2dpInt(float pxValue) {
+        return (int) px2dp(pxValue);
+    }
+
+    public static int dp2pxInt(float dpValue) {
+        return (int) dp2px(dpValue);
+    }
+
+    public static int px2spInt(float pxValue) {
+        return (int) px2sp(pxValue);
+    }
+
+    public static int sp2pxInt(float spValue) {
+        return (int) sp2px(spValue);
+    }
+
 }
