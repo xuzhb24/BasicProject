@@ -7,6 +7,7 @@ import com.android.basicproject.databinding.FragmentUtilBinding
 import com.android.frame.mvc.BaseFragment
 import com.android.util.TestUtilActivity
 import com.android.util.code.TestCodeUtilActivity
+import com.android.util.glide.TestGlideActivity
 import com.android.util.jumpToTestUtilActivity
 
 /**
@@ -71,6 +72,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         //磁盘缓存工具
         binding.cacheTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CACHE)
+        }
+        //Glide工具
+        binding.glideTv.setOnClickListener {
+            startActivity(TestGlideActivity::class.java)
         }
     }
 
