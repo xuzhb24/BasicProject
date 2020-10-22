@@ -14,6 +14,17 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop
  */
 object GlideUtil {
 
+    //显示网络图片
+    fun showImageFromUrl(
+        iv: ImageView,
+        url: String,
+        transformation: BitmapTransformation? = null,
+        @DrawableRes placeResId: Int = -1,
+        @DrawableRes errorResId: Int = -1
+    ) {
+        loadUrl(iv, url, transformation, placeResId, errorResId).into(iv)
+    }
+
     /**
      * 加载网络图片
      * @param url 图片链接
@@ -27,8 +38,8 @@ object GlideUtil {
         transformation: BitmapTransformation? = null,
         @DrawableRes placeResId: Int = -1,
         @DrawableRes errorResId: Int = -1
-    ) {
-        Glide.with(iv).load(url).apply {
+    ): RequestBuilder<Drawable> {
+        return Glide.with(iv).load(url).apply {
             if (iv.scaleType == ImageView.ScaleType.CENTER_CROP) {
                 if (transformation != null) {
                     transform(CenterCrop(), transformation)
@@ -42,27 +53,36 @@ object GlideUtil {
             }
             if (placeResId != -1) {
                 if (transformation != null) {
-                    thumbnail(loadTransform(iv, placeResId, transformation))  //占位图图片转换
+                    thumbnail(loadResource(iv, placeResId, transformation))  //占位图图片转换
                 } else {
                     placeholder(placeResId)
                 }
             }
             if (errorResId != -1) {
                 if (transformation != null) {
-                    thumbnail(loadTransform(iv, errorResId, transformation))  //错误图图片转换
+                    thumbnail(loadResource(iv, errorResId, transformation))  //错误图图片转换
                 } else {
                     error(errorResId)
                 }
             }
-        }.into(iv)
+        }
+    }
+
+    //显示本地图片
+    fun showImageFromResource(
+        iv: ImageView,
+        @DrawableRes resId: Int,
+        transformation: BitmapTransformation?
+    ) {
+        loadResource(iv, resId, transformation).into(iv)
     }
 
     /**
-     * 本地图片转换
+     * 加载本地图片
      * @param resId 本地图片
      * @param transformation 图片转换，CircleCrop：圆形图片，RoundedCorners：圆角图片，SectionRoundedCorners：指定部分圆角图片
      */
-    private fun loadTransform(
+    fun loadResource(
         iv: ImageView,
         @DrawableRes resId: Int,
         transformation: BitmapTransformation?
