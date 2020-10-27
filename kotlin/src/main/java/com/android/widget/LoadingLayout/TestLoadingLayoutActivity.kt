@@ -12,7 +12,6 @@ import com.android.frame.mvc.viewBinding.BaseActivity_VB
 class TestLoadingLayoutActivity : BaseActivity_VB<ActivityTestLoadingLayoutBinding>() {
 
     override fun handleView(savedInstanceState: Bundle?) {
-        binding.loadingLayout.loadStart()
         Handler().postDelayed({ binding.loadingLayout.loadComplete() }, 2000)
     }
 
@@ -33,9 +32,13 @@ class TestLoadingLayoutActivity : BaseActivity_VB<ActivityTestLoadingLayoutBindi
             Handler().postDelayed({ binding.loadingLayout.loadEmpty() }, 2000)
         }
         //点击重试
-        binding.loadingLayout.setOnRetryListener {
+        binding.loadingLayout.setOnFailListener {
             binding.loadingLayout.loadStart()
             Handler().postDelayed({ binding.loadingLayout.loadComplete() }, 2000)
+        }
+        //空数据时点击按钮回调
+        binding.loadingLayout.setOnEmptyListener {
+            showToast("页面无数据")
         }
     }
 

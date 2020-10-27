@@ -5,10 +5,12 @@ import android.graphics.drawable.Drawable
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.animation.AccelerateDecelerateInterpolator
 import android.view.animation.Animation
 import android.view.animation.RotateAnimation
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
@@ -35,7 +37,7 @@ class LoadingLayout @JvmOverloads constructor(
             field = value
             mLoadingIv.setImageDrawable(value)
         }
-    var loadingDesc: String = ""  //加载中的文本描述
+    var loadingDescText: String = ""  //加载中的文本描述
         set(value) {
             field = value
             setDescText(mDescTv, value)
@@ -45,56 +47,65 @@ class LoadingLayout @JvmOverloads constructor(
             field = value
             mEmptyIv.setImageDrawable(value)
         }
-    var emptyDesc: String = ""  //无数据的文本描述
+    var emptyDescText: String = ""  //无数据的文本描述
         set(value) {
             field = value
             setDescText(mDescTv, value)
+        }
+    var emptyActionText: String = ""  //无数据时操作按钮的文本
+        set(value) {
+            field = value
+            setActionText(mActionBtn, value)
         }
     var failSrc: Drawable? = null  //加载失败的图片
         set(value) {
             field = value
             mFailIv.setImageDrawable(value)
         }
-    var failDesc: String = ""  //加载失败的文本描述
+    var failDescText: String = ""  //加载失败的文本描述
         set(value) {
             field = value
             setDescText(mDescTv, value)
         }
-    var retryDesc: String = ""  //重试的文本描述
+    var failActionText: String = ""  //重试的文本描述
         set(value) {
             field = value
-            setDescText(mDescTv, value)
+            setActionText(mActionBtn, value)
         }
 
+    //获取根布局，以便设置布局的LayoutParams
+    fun getRootLayout(): LinearLayout = mRootLayout
+
+    private val mRootLayout: LinearLayout
     private val mLoadingIv: ImageView
     private val mEmptyIv: ImageView
     private val mFailIv: ImageView
     private val mDescTv: TextView
-    private val mRetryTv: TextView
+    private val mActionBtn: Button
 
     init {
         val layout = LayoutInflater.from(context).inflate(R.layout.layout_loading, this)
         with(layout) {
+            mRootLayout = findViewById(R.id.root_ll)
             mLoadingIv = findViewById(R.id.loading_iv)
             mEmptyIv = findViewById(R.id.empty_iv)
             mFailIv = findViewById(R.id.fail_iv)
             mDescTv = findViewById(R.id.desc_tv)
-            mRetryTv = findViewById(R.id.retry_tv)
+            mActionBtn = findViewById(R.id.action_btn)
         }
         attrs?.let {
             val ta = context.obtainStyledAttributes(it, R.styleable.LoadingLayout)
-            loadingSrc = ta.getDrawable(R.styleable.LoadingLayout_loadingSrc)
-                ?: resources.getDrawable(R.drawable.ic_load_loading)
-            loadingDesc = ta.getString(R.styleable.LoadingLayout_loadingDesc) ?: ""
-            emptySrc = ta.getDrawable(R.styleable.LoadingLayout_emptySrc)
-                ?: resources.getDrawable(R.drawable.ic_load_empty)
-            emptyDesc = ta.getString(R.styleable.LoadingLayout_emptyDesc) ?: ""
-            failSrc = ta.getDrawable(R.styleable.LoadingLayout_failSrc)
-                ?: resources.getDrawable(R.drawable.ic_load_fail)
-            failDesc = ta.getString(R.styleable.LoadingLayout_failDesc) ?: ""
-            retryDesc = ta.getString(R.styleable.LoadingLayout_retryDesc) ?: ""
+            loadingSrc = ta.getDrawable(R.styleable.LoadingLayout_loadingSrc) ?: resources.getDrawable(R.drawable.ic_load_loading)
+            loadingDescText = ta.getString(R.styleable.LoadingLayout_loadingDescText) ?: ""
+            emptySrc = ta.getDrawable(R.styleable.LoadingLayout_emptySrc) ?: resources.getDrawable(R.drawable.ic_load_empty)
+            emptyDescText = ta.getString(R.styleable.LoadingLayout_emptyDescText) ?: ""
+            emptyActionText = ta.getString(R.styleable.LoadingLayout_emptyActionText) ?: ""
+            failSrc = ta.getDrawable(R.styleable.LoadingLayout_failSrc) ?: resources.getDrawable(R.drawable.ic_load_fail)
+            failDescText = ta.getString(R.styleable.LoadingLayout_failDescText) ?: ""
+            failActionText = ta.getString(R.styleable.LoadingLayout_failActionText) ?: ""
             ta.recycle()
         }
+        loadStart()
     }
 
     //开始加载
@@ -126,30 +137,37 @@ class LoadingLayout @JvmOverloads constructor(
             mLoadingIv.visibility = View.GONE
             mEmptyIv.visibility = View.GONE
             mFailIv.visibility = View.GONE
-            mRetryTv.visibility = View.GONE
-            if (loadState == STATE_LOADING) {
-                mLoadingIv.visibility = View.VISIBLE
-                mLoadingIv.setImageDrawable(loadingSrc)
-                val animation = RotateAnimation(
-                    0f, 359f,
-                    Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
-                )
-                mLoadingIv.startAnimation(animation.apply {
-                    duration = 800
-                    repeatCount = Animation.INFINITE
-                    repeatMode = Animation.RESTART
-                    interpolator = AccelerateDecelerateInterpolator()
-                })
-                setDescText(mDescTv, loadingDesc)
-            } else if (loadState == STATE_EMPTY) {
-                mEmptyIv.visibility = View.VISIBLE
-                mEmptyIv.setImageDrawable(emptySrc)
-                setDescText(mDescTv, emptyDesc)
-            } else if (loadState == STATE_FAIL) {
-                mFailIv.visibility = View.VISIBLE
-                mFailIv.setImageDrawable(failSrc)
-                setDescText(mDescTv, failDesc)
-                setDescText(mRetryTv, retryDesc)
+            mActionBtn.visibility = View.GONE
+            when (loadState) {
+                STATE_LOADING -> {
+                    mLoadingIv.visibility = View.VISIBLE
+                    mLoadingIv.setImageDrawable(loadingSrc)
+                    val animation = RotateAnimation(
+                        0f, 359f,
+                        Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f
+                    )
+                    mLoadingIv.startAnimation(animation.apply {
+                        duration = 800
+                        repeatCount = Animation.INFINITE
+                        repeatMode = Animation.RESTART
+                        interpolator = AccelerateDecelerateInterpolator()
+                    })
+                    setDescText(mDescTv, loadingDescText)
+                }
+                STATE_EMPTY -> {
+                    mEmptyIv.visibility = View.VISIBLE
+                    mEmptyIv.setImageDrawable(emptySrc)
+                    setDescText(mDescTv, emptyDescText)
+                    setActionText(mActionBtn, emptyActionText)
+                    mActionBtn.setOnClickListener { mOnEmptyListener?.invoke() }
+                }
+                STATE_FAIL -> {
+                    mFailIv.visibility = View.VISIBLE
+                    mFailIv.setImageDrawable(failSrc)
+                    setDescText(mDescTv, failDescText)
+                    setActionText(mActionBtn, failActionText)
+                    mActionBtn.setOnClickListener { mOnFailListener?.invoke() }
+                }
             }
         }
     }
@@ -163,8 +181,31 @@ class LoadingLayout @JvmOverloads constructor(
         }
     }
 
-    fun setOnRetryListener(listener: () -> Unit) {
-        mRetryTv.setOnClickListener { listener.invoke() }
+    private fun setActionText(btn: Button, text: String) {
+        if (TextUtils.isEmpty(text)) {
+            btn.visibility = View.GONE
+        } else {
+            btn.visibility = View.VISIBLE
+            btn.text = text
+        }
+    }
+
+    private var mOnEmptyListener: (() -> Unit)? = null
+
+    //无数据时相应的操作
+    fun setOnEmptyListener(listener: () -> Unit) {
+        mOnEmptyListener = listener
+    }
+
+    private var mOnFailListener: (() -> Unit)? = null
+
+    //加载失败时相应的操作，如点击重试
+    fun setOnFailListener(listener: () -> Unit) {
+        mOnFailListener = listener
+    }
+
+    override fun onTouchEvent(event: MotionEvent?): Boolean {
+        return true  //拦截点击事件
     }
 
 }

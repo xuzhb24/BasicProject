@@ -318,12 +318,13 @@
     <!--加载状态布局-->
     <declare-styleable name="LoadingLayout">
         <attr name="loadingSrc" format="reference" />
-        <attr name="loadingDesc" format="string" />
+        <attr name="loadingDescText" format="string" />
         <attr name="emptySrc" format="reference" />
-        <attr name="emptyDesc" format="string" />
+        <attr name="emptyDescText" format="string" />
+        <attr name="emptyActionText" format="string" />
         <attr name="failSrc" format="reference" />
-        <attr name="failDesc" format="string" />
-        <attr name="retryDesc" format="string" />
+        <attr name="failDescText" format="string" />
+        <attr name="failActionText" format="string" />
     </declare-styleable>
 
     <!--仿iOS菊花加载-->

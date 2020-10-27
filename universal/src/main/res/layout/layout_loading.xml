@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tool="http://schemas.android.com/tools"
+    android:id="@+id/root_ll"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
@@ -36,19 +37,18 @@
         android:textSize="12sp"
         tool:text="网络不给力，请刷新重试" />
 
-    <TextView
-        android:id="@+id/retry_tv"
+    <Button
+        android:id="@+id/action_btn"
+        style="@style/Widget.AppCompat.Button.Borderless"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/shape_corners_5_stroke_1_a3a3a3"
+        android:background="@drawable/shape_retry_btn_bg"
         android:includeFontPadding="false"
-        android:paddingLeft="20dp"
-        android:paddingTop="8dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="8dp"
+        android:paddingLeft="38dp"
+        android:paddingRight="38dp"
         android:textColor="@color/black"
-        android:textSize="15sp"
+        android:textSize="16sp"
         tool:text="刷新" />
 
 </LinearLayout>
