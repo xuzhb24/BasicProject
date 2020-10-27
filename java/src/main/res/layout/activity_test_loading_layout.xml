@@ -42,9 +42,10 @@
         android:id="@+id/loading_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:emptyDesc="暂无数据"
-        app:failDesc="网络不给力，请刷新重试"
-        app:loadingDesc="加载中..."
-        app:retryDesc="点击重试" />
+        app:emptyActionText="去看看"
+        app:emptyDescText="暂无数据"
+        app:failActionText="点击重试"
+        app:failDescText="网络不给力，请刷新重试"
+        app:loadingDescText="加载中..." />
 
 </LinearLayout>

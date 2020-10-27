@@ -6,10 +6,12 @@ import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.RotateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -30,22 +32,23 @@ public class LoadingLayout extends LinearLayout {
     private static final int STATE_FAIL = 2;     //加载失败
     private static final int STATE_HIDE = 3;     //隐藏
 
-    private Drawable loadingSrc;  //加载中的图片
-    private String loadingDesc;   //加载中的文本描述
-    private Drawable emptySrc;    //无数据的图片
-    private String emptyDesc;     //无数据的文本描述
-    private Drawable failSrc;     //加载失败的图片
-    private String failDesc;      //加载失败的文本描述
-    private String retryDesc;     //重试的文本描述
+    private Drawable loadingSrc;     //加载中的图片
+    private String loadingDescText;  //加载中的文本描述
+    private Drawable emptySrc;       //无数据的图片
+    private String emptyDescText;    //无数据的文本描述
+    private String emptyActionText;  //无数据时操作按钮的文本
+    private Drawable failSrc;        //加载失败的图片
+    private String failDescText;     //加载失败的文本描述
+    private String failActionText;   //重试的文本描述
 
     public void setLoadingSrc(Drawable loadingSrc) {
         this.loadingSrc = loadingSrc;
         mLoadingIv.setImageDrawable(loadingSrc);
     }
 
-    public void setLoadingDesc(String loadingDesc) {
-        this.loadingDesc = loadingDesc;
-        setDescText(mDescTv, loadingDesc);
+    public void setLoadingDescText(String loadingDescText) {
+        this.loadingDescText = loadingDescText;
+        setDescText(mDescTv, loadingDescText);
     }
 
     public void setEmptySrc(Drawable emptySrc) {
@@ -53,9 +56,14 @@ public class LoadingLayout extends LinearLayout {
         mEmptyIv.setImageDrawable(emptySrc);
     }
 
-    public void setEmptyDesc(String emptyDesc) {
-        this.emptyDesc = emptyDesc;
-        setDescText(mDescTv, emptyDesc);
+    public void setEmptyDescText(String emptyDescText) {
+        this.emptyDescText = emptyDescText;
+        setDescText(mDescTv, emptyDescText);
+    }
+
+    public void setEmptyActionText(String emptyActionText) {
+        this.emptyActionText = emptyActionText;
+        setActionText(mActionBtn, emptyActionText);
     }
 
     public void setFailSrc(Drawable failSrc) {
@@ -63,21 +71,27 @@ public class LoadingLayout extends LinearLayout {
         mFailIv.setImageDrawable(failSrc);
     }
 
-    public void setFailDesc(String failDesc) {
-        this.failDesc = failDesc;
-        setDescText(mDescTv, failDesc);
+    public void setFailDescText(String failDescText) {
+        this.failDescText = failDescText;
+        setDescText(mDescTv, failDescText);
     }
 
-    public void setRetryDesc(String retryDesc) {
-        this.retryDesc = retryDesc;
-        setDescText(mDescTv, retryDesc);
+    public void setFailActionText(String failActionText) {
+        this.failActionText = failActionText;
+        setActionText(mActionBtn, failActionText);
     }
 
+    //获取根布局，以便设置布局的LayoutParams
+    public LinearLayout getRootLayout() {
+        return mRootLayout;
+    }
+
+    private LinearLayout mRootLayout;
     private ImageView mLoadingIv;
     private ImageView mEmptyIv;
     private ImageView mFailIv;
     private TextView mDescTv;
-    private TextView mRetryTv;
+    private Button mActionBtn;
 
     public LoadingLayout(Context context) {
         this(context, null);
@@ -93,20 +107,17 @@ public class LoadingLayout extends LinearLayout {
         if (attrs != null) {
             parseAttributes(context, attrs);
         }
+        loadStart();
     }
 
     private void initView(Context context) {
         View layout = LayoutInflater.from(context).inflate(R.layout.layout_loading, this);
+        mRootLayout = layout.findViewById(R.id.root_ll);
         mLoadingIv = layout.findViewById(R.id.loading_iv);
         mEmptyIv = layout.findViewById(R.id.empty_iv);
         mFailIv = layout.findViewById(R.id.fail_iv);
         mDescTv = layout.findViewById(R.id.desc_tv);
-        mRetryTv = layout.findViewById(R.id.retry_tv);
-        mRetryTv.setOnClickListener(v -> {
-            if (mOnRetryListener != null) {
-                mOnRetryListener.onRetry();
-            }
-        });
+        mActionBtn = layout.findViewById(R.id.action_btn);
     }
 
     //获取自定义属性集
@@ -116,18 +127,19 @@ public class LoadingLayout extends LinearLayout {
         if (loadingSrc == null) {
             loadingSrc = getResources().getDrawable(R.drawable.ic_load_loading);
         }
-        loadingDesc = ta.getString(R.styleable.LoadingLayout_loadingDesc);
+        loadingDescText = ta.getString(R.styleable.LoadingLayout_loadingDescText);
         emptySrc = ta.getDrawable(R.styleable.LoadingLayout_emptySrc);
         if (emptySrc == null) {
             emptySrc = getResources().getDrawable(R.drawable.ic_load_empty);
         }
-        emptyDesc = ta.getString(R.styleable.LoadingLayout_emptyDesc);
+        emptyDescText = ta.getString(R.styleable.LoadingLayout_emptyDescText);
+        emptyActionText = ta.getString(R.styleable.LoadingLayout_emptyActionText);
         failSrc = ta.getDrawable(R.styleable.LoadingLayout_failSrc);
         if (failSrc == null) {
             failSrc = getResources().getDrawable(R.drawable.ic_load_fail);
         }
-        failDesc = ta.getString(R.styleable.LoadingLayout_failDesc);
-        retryDesc = ta.getString(R.styleable.LoadingLayout_retryDesc);
+        failDescText = ta.getString(R.styleable.LoadingLayout_failDescText);
+        failActionText = ta.getString(R.styleable.LoadingLayout_failActionText);
         ta.recycle();
     }
 
@@ -160,7 +172,7 @@ public class LoadingLayout extends LinearLayout {
             mLoadingIv.setVisibility(GONE);
             mEmptyIv.setVisibility(GONE);
             mFailIv.setVisibility(GONE);
-            mRetryTv.setVisibility(GONE);
+            mActionBtn.setVisibility(GONE);
             if (loadState == STATE_LOADING) {
                 mLoadingIv.setVisibility(VISIBLE);
                 mLoadingIv.setImageDrawable(loadingSrc);
@@ -171,16 +183,27 @@ public class LoadingLayout extends LinearLayout {
                 animation.setRepeatCount(Animation.INFINITE);
                 animation.setRepeatMode(Animation.RESTART);
                 mLoadingIv.startAnimation(animation);
-                setDescText(mDescTv, loadingDesc);
+                setDescText(mDescTv, loadingDescText);
             } else if (loadState == STATE_EMPTY) {
                 mEmptyIv.setVisibility(VISIBLE);
                 mEmptyIv.setImageDrawable(emptySrc);
-                setDescText(mDescTv, emptyDesc);
+                setDescText(mDescTv, emptyDescText);
+                setActionText(mActionBtn, emptyActionText);
+                mActionBtn.setOnClickListener(v -> {
+                    if (mOnEmptyListener != null) {
+                        mOnEmptyListener.onEmpty();
+                    }
+                });
             } else if (loadState == STATE_FAIL) {
                 mFailIv.setVisibility(VISIBLE);
                 mFailIv.setImageDrawable(failSrc);
-                setDescText(mDescTv, failDesc);
-                setDescText(mRetryTv, retryDesc);
+                setDescText(mDescTv, failDescText);
+                setActionText(mActionBtn, failActionText);
+                mActionBtn.setOnClickListener(v -> {
+                    if (mOnFailListener != null) {
+                        mOnFailListener.onFail();
+                    }
+                });
             }
         }
     }
@@ -194,14 +217,39 @@ public class LoadingLayout extends LinearLayout {
         }
     }
 
-    public OnRetryListener mOnRetryListener;
-
-    public void setOnRetryListener(OnRetryListener listener) {
-        this.mOnRetryListener = listener;
+    private void setActionText(Button btn, String text) {
+        if (TextUtils.isEmpty(text)) {
+            btn.setVisibility(View.GONE);
+        } else {
+            btn.setVisibility(View.VISIBLE);
+            btn.setText(text);
+        }
     }
 
-    public interface OnRetryListener {
-        void onRetry();
+    public OnEmptyListener mOnEmptyListener;
+
+    //无数据时相应的操作
+    public void setOnEmptyListener(OnEmptyListener listener) {
+        this.mOnEmptyListener = listener;
     }
 
+    public interface OnEmptyListener {
+        void onEmpty();
+    }
+
+    public OnFailListener mOnFailListener;
+
+    //加载失败时相应的操作，如点击重试
+    public void setOnFailListener(OnFailListener listener) {
+        this.mOnFailListener = listener;
+    }
+
+    public interface OnFailListener {
+        void onFail();
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        return true;  //拦截点击事件
+    }
 }

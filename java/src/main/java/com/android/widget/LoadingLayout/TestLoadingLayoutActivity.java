@@ -13,7 +13,6 @@ import com.android.java.databinding.ActivityTestLoadingLayoutBinding;
 public class TestLoadingLayoutActivity extends BaseActivity_VB<ActivityTestLoadingLayoutBinding> {
     @Override
     public void handleView(Bundle savedInstanceState) {
-        binding.loadingLayout.loadStart();
         new Handler().postDelayed(() -> binding.loadingLayout.loadComplete(), 2000);
     }
 
@@ -35,9 +34,13 @@ public class TestLoadingLayoutActivity extends BaseActivity_VB<ActivityTestLoadi
             new Handler().postDelayed(() -> binding.loadingLayout.loadEmpty(), 2000);
         });
         //点击重试
-        binding.loadingLayout.setOnRetryListener(() -> {
+        binding.loadingLayout.setOnFailListener(() -> {
             binding.loadingLayout.loadStart();
             new Handler().postDelayed(() -> binding.loadingLayout.loadComplete(), 2000);
+        });
+        //空数据时点击按钮回调
+        binding.loadingLayout.setOnEmptyListener(() -> {
+            showToast("页面无数据");
         });
     }
 
