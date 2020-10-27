@@ -1,12 +1,17 @@
 package com.android.util.glide
 
+import android.content.Context
+import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
+import com.android.util.LogUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.request.target.SimpleTarget
+import com.bumptech.glide.request.transition.Transition
 
 /**
  * Created by xuzhb on 2020/10/21
@@ -100,6 +105,33 @@ object GlideUtil {
                 Glide.with(iv).load(resId)
             }
         }
+    }
+
+    //加载网络图片并转换成Bitmap
+    fun loadUrlAsBitmap(
+        context: Context,
+        url: String,
+        method: (resource: Bitmap) -> Unit
+    ) {
+        Glide.with(context).asBitmap().load(url).into(object : SimpleTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                LogUtil.i("Bitmap Size", "${resource.width} x ${resource.height}")
+                method(resource)
+            }
+        })
+    }
+
+    //加载网络图片并转换成drawable
+    fun loadUrlAsDrawable(
+        context: Context,
+        url: String,
+        method: (resource: Drawable) -> Unit
+    ) {
+        Glide.with(context).load(url).into(object : SimpleTarget<Drawable>() {
+            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                method(resource)
+            }
+        })
     }
 
 }

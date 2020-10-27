@@ -78,6 +78,13 @@
                 android:layout_marginTop="15dp"
                 android:scaleType="centerCrop" />
 
+            <ImageView
+                android:id="@+id/iv9"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:layout_marginTop="15dp"
+                android:scaleType="centerCrop" />
+
         </LinearLayout>
 
     </ScrollView>

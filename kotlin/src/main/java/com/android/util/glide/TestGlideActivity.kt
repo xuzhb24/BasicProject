@@ -58,6 +58,10 @@ class TestGlideActivity : BaseActivity<ActivityTestGlideBinding>() {
         ).into(binding.iv7)
         //centerCrop（不会拉伸）、圆形图片、显示本地图片
         GlideUtil.showImageFromResource(binding.iv8, R.drawable.ic_bitmap, CircleCrop())
+        //获取Bitmap
+        GlideUtil.loadUrlAsBitmap(this, imageUrl) {
+            binding.iv9.setImageBitmap(it)
+        }
     }
 
     override fun initListener() {
