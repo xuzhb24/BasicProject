@@ -46,8 +46,7 @@ abstract class BaseDialog : DialogFragment() {
 
     //初始化参数
     private fun initParams() {
-        val window = dialog.window
-        window?.let {
+        dialog.window?.let {
             val params = it.attributes
             params.dimAmount = mDimAmount
             params.gravity = mGravity
@@ -118,6 +117,6 @@ abstract class BaseDialog : DialogFragment() {
     abstract fun getLayoutId(): Int
 
     //处理dialog布局上的控件
-    abstract fun convertView(holder: ViewHolder, dialog: Dialog)
+    abstract fun convertView(holder: ViewHolder, dialog: Dialog?)
 
 }

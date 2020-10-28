@@ -49,7 +49,7 @@ class TestDialogActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .setContent("对不起审核不通过！")
             .setConfirmText("我知道了")
             .setOnConfirmListener {
-                it.dismiss()
+                it?.dismiss()
                 showToast("我知道了")
             }
             .setCancelVisible(false)
@@ -63,11 +63,11 @@ class TestDialogActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     private fun showMultiDialog() {
         ConfirmDialog.newInstance("提示", "提交成功！")
             .setOnConfirmListener {
-                it.dismiss()
+                it?.dismiss()
                 showToast("确定")
             }
             .setOnCancelListener {
-                it.dismiss()
+                it?.dismiss()
                 showToast("取消")
             }
             .setOutsideCancelable(true)
@@ -82,17 +82,17 @@ class TestDialogActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .setOnViewListener { holder, dialog ->
                 holder.setOnClickListener(R.id.weixin_tv) {
                     showToast("微信")
-                    dialog.dismiss()
+                    dialog?.dismiss()
                 }
                 holder.setOnClickListener(R.id.qq_tv) {
                     showToast("QQ")
-                    dialog.dismiss()
+                    dialog?.dismiss()
                 }
                 holder.setOnClickListener(R.id.weibo_tv) {
                     showToast("微博")
-                    dialog.dismiss()
+                    dialog?.dismiss()
                 }
-                holder.setOnClickListener(R.id.cancel_tv, { dialog.dismiss() })
+                holder.setOnClickListener(R.id.cancel_tv) { dialog?.dismiss() }
             }
             .setDimAmount(0.3f)
             .setAnimationStyle(R.style.AnimTranslateBottom)
@@ -113,7 +113,7 @@ class TestDialogActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                         showToast("请输入文字")
                     } else {
                         showToast(text)
-                        dialog.dismiss()
+                        dialog?.dismiss()
                     }
                 }
                 KeyboardUtil.showSoftInputDelay(this, commentEt)
@@ -128,7 +128,7 @@ class TestDialogActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .setOnViewListener { holder, dialog ->
                 holder.setOnClickListener(R.id.return_tv) {
                     showToast("领取成功！")
-                    dialog.dismiss()
+                    dialog?.dismiss()
                 }
             }
             .show(supportFragmentManager)

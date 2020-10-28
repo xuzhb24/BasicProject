@@ -105,7 +105,7 @@ public class ConfirmDialog extends BaseDialog {
 
     @Override
     public int getLayoutId() {
-        return R.layout.layout_confirm_dialog;
+        return R.layout.dialog_confirm;
     }
 
     @Override
