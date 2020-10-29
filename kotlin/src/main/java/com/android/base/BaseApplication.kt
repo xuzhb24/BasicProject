@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.Application
 import android.content.Context
 import androidx.multidex.MultiDex
+import com.android.util.CrashHandler
 import java.util.*
 
 /**
@@ -22,6 +23,7 @@ class BaseApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         instance = this
+        CrashHandler.instance.init(this)
         mActivityStack = LinkedList()
     }
 
