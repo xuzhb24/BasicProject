@@ -186,9 +186,6 @@ public class TitleBar extends FrameLayout {
         leftIconMargin = ta.getDimension(R.styleable.TitleBar_leftIconMargin, DEFAULT_MARGIN);
         showLeftIcon = ta.getBoolean(R.styleable.TitleBar_showLeftIcon, true);
         rightIcon = ta.getDrawable(R.styleable.TitleBar_rightIcon);
-        if (rightIcon == null) {
-            rightIcon = context.getResources().getDrawable(R.drawable.ic_add);
-        }
         rightIconMargin = ta.getDimension(R.styleable.TitleBar_rightIconMargin, DEFAULT_MARGIN);
         showRightIcon = ta.getBoolean(R.styleable.TitleBar_showRightIcon, false);
         leftText = ta.getString(R.styleable.TitleBar_leftText);

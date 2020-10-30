@@ -92,8 +92,7 @@ abstract class BasePicGetterDialog : DialogFragment() {
 
     //初始化参数
     private fun initParams() {
-        val window = dialog.window
-        window?.let {
+        dialog.window?.let {
             val params = it.attributes
             params.dimAmount = mDimAmount
             params.gravity = mGravity
@@ -275,7 +274,7 @@ abstract class BasePicGetterDialog : DialogFragment() {
     abstract fun getLayoutId(): Int
 
     //处理dialog布局上的控件
-    abstract fun convertView(holder: ViewHolder, dialog: Dialog)
+    abstract fun convertView(holder: ViewHolder, dialog: Dialog?)
 
     //申请权限后回调
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {

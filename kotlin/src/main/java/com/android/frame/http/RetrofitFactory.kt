@@ -80,9 +80,7 @@ class RetrofitFactory {
         }
         if (BuildConfig.DEBUG) {
             builder.sslSocketFactory(SSLSocketFactoryUtil.getPassAnySSLSocketFactory())  //不校验证书
-                .hostnameVerifier(object : HostnameVerifier {
-                    override fun verify(p0: String?, p1: SSLSession?): Boolean = true
-                })  //不校验服务器返回的信息
+                .hostnameVerifier { p0, p1 -> true }  //不校验服务器返回的信息
                 .addInterceptor(httpLoggingInterceptor) //打印日志，以便调试
         }
         return builder

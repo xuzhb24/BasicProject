@@ -15,7 +15,7 @@ import com.android.widget.ViewHolder
  * Created by xuzhb on 2019/9/3
  * Desc:通用的PopupWindow
  */
-class CommonPopupWindow private constructor(context: Context) : PopupWindow() {
+class CommonPopupWindow constructor(context: Context) : PopupWindow() {
 
     private var mWindowHelper: WindowHelper? = null
 

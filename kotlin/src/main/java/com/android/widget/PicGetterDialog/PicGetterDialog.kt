@@ -12,7 +12,7 @@ class PicGetterDialog : BasePicGetterDialog() {
 
     override fun getLayoutId(): Int = R.layout.dialog_pic_getter
 
-    override fun convertView(holder: ViewHolder, dialog: Dialog) {
+    override fun convertView(holder: ViewHolder, dialog: Dialog?) {
         holder.setOnClickListener(R.id.camera_tv) {
             openCamera()  //拍照
         }

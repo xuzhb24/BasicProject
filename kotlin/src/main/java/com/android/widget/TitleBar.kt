@@ -23,18 +23,18 @@ class TitleBar @JvmOverloads constructor(
 ) : FrameLayout(context, attrs, defStyleAttr) {
 
     companion object {
-        val DEFAULT_MARGIN = SizeUtil.dp2px(20f)          //默认左侧图标的左边距或右侧图标的右边距
-        val DEFAULT_TEXT_MARGIN = SizeUtil.dp2px(20f)     //默认左侧文本的左边距或右侧文本的右边距
-        val DEFAULT_SIDE_TEXT_SIZE = SizeUtil.sp2px(15f)  //默认左侧文本或右侧文本的字体大小
-        val DEFAULT_SIDE_TEXT_COLOR = Color.WHITE                  //默认左侧文本或右侧文本的字体颜色
-        val DEFAULT_TEXT_SIZE = SizeUtil.sp2px(18f)       //默认中间标题文本的字体大小
-        val DEFAULT_TEXT_COLOR = Color.WHITE                       //默认中间标题文本的字体颜色
+        private val DEFAULT_MARGIN = SizeUtil.dp2px(20f)          //默认左侧图标的左边距或右侧图标的右边距
+        private val DEFAULT_TEXT_MARGIN = SizeUtil.dp2px(20f)     //默认左侧文本的左边距或右侧文本的右边距
+        private val DEFAULT_SIDE_TEXT_SIZE = SizeUtil.sp2px(15f)  //默认左侧文本或右侧文本的字体大小
+        private val DEFAULT_SIDE_TEXT_COLOR = Color.WHITE                  //默认左侧文本或右侧文本的字体颜色
+        private val DEFAULT_TEXT_SIZE = SizeUtil.sp2px(18f)       //默认中间标题文本的字体大小
+        private val DEFAULT_TEXT_COLOR = Color.WHITE                       //默认中间标题文本的字体颜色
     }
 
     var leftIcon: Drawable? = null  //左侧图标
         set(value) {
             field = value
-            mLeftIv.setImageDrawable(value)
+            value?.let { mLeftIv.setImageDrawable(it) }
         }
     var leftIconMargin: Float = 0f  //左侧图标的左边距
         set(value) {
@@ -48,18 +48,12 @@ class TitleBar @JvmOverloads constructor(
     var showLeftIcon: Boolean = true  //是否显示左侧图标，默认显示
         set(value) {
             field = value
-            with(mLeftFl) {
-                if (value) {
-                    visibility = View.VISIBLE
-                } else {
-                    visibility = View.GONE
-                }
-            }
+            mLeftFl.visibility = if (value) View.VISIBLE else View.GONE
         }
     var rightIcon: Drawable? = null  //右侧图标
         set(value) {
             field = value
-            mRightIv.setImageDrawable(value)
+            value?.let { mRightIv.setImageDrawable(it) }
         }
     var rightIconMargin: Float = 0f  //右侧图标的右边距
         set(value) {
@@ -73,18 +67,12 @@ class TitleBar @JvmOverloads constructor(
     var showRightIcon: Boolean = false  //是否显示右侧图标，默认不显示
         set(value) {
             field = value
-            with(mRightFl) {
-                if (value) {
-                    visibility = View.VISIBLE
-                } else {
-                    visibility = View.GONE
-                }
-            }
+            mRightFl.visibility = if (value) View.VISIBLE else View.GONE
         }
     var leftText: String? = ""  //左侧文本
         set(value) {
             field = value
-            mLeftTv.setText(value)
+            mLeftTv.text = value
         }
     var leftTextSize: Float = 0f  //左侧文本的字体大小
         set(value) {
@@ -108,7 +96,7 @@ class TitleBar @JvmOverloads constructor(
     var titleText: String? = ""  //标题文本
         set(value) {
             field = value
-            mTitleTv.setText(value)
+            mTitleTv.text = value
         }
     var titleTextSize: Float = 0f  //标题文本的字体大小
         set(value) {
@@ -123,7 +111,7 @@ class TitleBar @JvmOverloads constructor(
     var rightText: String? = ""  //右侧文本
         set(value) {
             field = value
-            mRightTv.setText(value)
+            mRightTv.text = value
         }
     var rightTextSize: Float = 0f  //右侧文本的字体大小
         set(value) {
@@ -147,13 +135,7 @@ class TitleBar @JvmOverloads constructor(
     var showDividerLine: Boolean = true  //是否显示底部分割线
         set(value) {
             field = value
-            with(mDividerLine) {
-                if (value) {
-                    visibility = View.VISIBLE
-                } else {
-                    visibility = View.GONE
-                }
-            }
+            mDividerLine.visibility = if (value) View.VISIBLE else View.GONE
         }
 
     //设置标题栏高度
@@ -191,12 +173,10 @@ class TitleBar @JvmOverloads constructor(
 
         val ta = getContext().obtainStyledAttributes(attrs, R.styleable.TitleBar)
         with(ta) {
-            leftIcon = getDrawable(R.styleable.TitleBar_leftIcon)
-                ?: resources.getDrawable(R.drawable.ic_back)
+            leftIcon = getDrawable(R.styleable.TitleBar_leftIcon) ?: resources.getDrawable(R.drawable.ic_back)
             leftIconMargin = getDimension(R.styleable.TitleBar_leftIconMargin, DEFAULT_MARGIN)
             showLeftIcon = getBoolean(R.styleable.TitleBar_showLeftIcon, true)
             rightIcon = getDrawable(R.styleable.TitleBar_rightIcon)
-                ?: resources.getDrawable(R.drawable.ic_add)
             rightIconMargin = getDimension(R.styleable.TitleBar_rightIconMargin, DEFAULT_MARGIN)
             showRightIcon = getBoolean(R.styleable.TitleBar_showRightIcon, false)
             leftText = getString(R.styleable.TitleBar_leftText)
@@ -209,8 +189,7 @@ class TitleBar @JvmOverloads constructor(
             rightText = getString(R.styleable.TitleBar_rightText)
             rightTextSize = getDimension(R.styleable.TitleBar_rightTextSize, DEFAULT_SIDE_TEXT_SIZE)
             rightTextColor = getColor(R.styleable.TitleBar_rightTextColor, DEFAULT_SIDE_TEXT_COLOR)
-            rightTextMargin =
-                getDimension(R.styleable.TitleBar_rightTextMargin, DEFAULT_TEXT_MARGIN)
+            rightTextMargin = getDimension(R.styleable.TitleBar_rightTextMargin, DEFAULT_TEXT_MARGIN)
             showDividerLine = getBoolean(R.styleable.TitleBar_showDividerLine, false)
             recycle()
         }
@@ -220,11 +199,7 @@ class TitleBar @JvmOverloads constructor(
             val params = layoutParams as MarginLayoutParams
             params.leftMargin = leftIconMargin.toInt()
             requestLayout()
-            if (showLeftIcon) {
-                visibility = View.VISIBLE
-            } else {
-                visibility = View.GONE
-            }
+            visibility = if (showLeftIcon) View.VISIBLE else View.GONE
         }
 
         with(mRightFl) {
@@ -232,15 +207,11 @@ class TitleBar @JvmOverloads constructor(
             val params = layoutParams as MarginLayoutParams
             params.rightMargin = rightIconMargin.toInt()
             requestLayout()
-            if (showRightIcon) {
-                visibility = View.VISIBLE
-            } else {
-                visibility = View.GONE
-            }
+            visibility = if (showRightIcon) View.VISIBLE else View.GONE
         }
 
         with(mLeftTv) {
-            setText(leftText)
+            text = leftText
             setTextSize(TypedValue.COMPLEX_UNIT_PX, leftTextSize)
             setTextColor(leftTextColor)
             val params = layoutParams as MarginLayoutParams
@@ -249,28 +220,20 @@ class TitleBar @JvmOverloads constructor(
         }
 
         with(mTitleTv) {
-            setText(titleText)
+            text = titleText
             setTextSize(TypedValue.COMPLEX_UNIT_PX, titleTextSize)
             setTextColor(titleTextColor)
         }
 
         with(mRightTv) {
-            setText(rightText)
+            text = rightText
             setTextSize(TypedValue.COMPLEX_UNIT_PX, rightTextSize)
             setTextColor(rightTextColor)
             val params = layoutParams as MarginLayoutParams
             params.rightMargin = rightTextMargin.toInt()
             requestLayout()
         }
-
-        with(mDividerLine) {
-            if (showDividerLine) {
-                visibility = View.VISIBLE
-            } else {
-                visibility = View.GONE
-            }
-        }
-
+        mDividerLine.visibility = if (showDividerLine) View.VISIBLE else View.GONE
     }
 
     //点击左侧图标/文本回调
@@ -284,5 +247,7 @@ class TitleBar @JvmOverloads constructor(
 //        mRightFl.setOnClickListener { v -> listener.invoke(v) }
         mRightTv.setOnClickListener { v -> listener.invoke(v) }
     }
+
+
 
 }

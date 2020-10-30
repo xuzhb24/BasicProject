@@ -111,9 +111,9 @@ class InputLayout @JvmOverloads constructor(
     //获取输入框对应的EditText
     fun getEditText(): EditText = mInputEt
 
-    protected var mInputEt: EditText
-    protected var mClearIv: ImageView
-    protected var mDivierLine: View
+    private var mInputEt: EditText
+    private var mClearIv: ImageView
+    private var mDivierLine: View
 
     init {
         val layout = LayoutInflater.from(context).inflate(R.layout.layout_input, this)

@@ -43,7 +43,7 @@
         android:layout_width="wrap_content"
         android:layout_height="30dp"
         android:layout_marginTop="20dp"
-        android:background="@drawable/shape_retry_btn_bg"
+        android:background="@drawable/shape_loading_btn_bg"
         android:includeFontPadding="false"
         android:paddingLeft="38dp"
         android:paddingRight="38dp"

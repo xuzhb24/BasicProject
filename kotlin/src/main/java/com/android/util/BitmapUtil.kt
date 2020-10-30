@@ -133,7 +133,7 @@ object BitmapUtil {
     }
 
     //回收Bitmap
-    fun recycleBitmap(vararg bitmaps: Bitmap) {
+    fun recycleBitmap(vararg bitmaps: Bitmap?) {
         for (bm in bitmaps) {
             if (bm != null && !bm.isRecycled) {
                 bm.recycle()

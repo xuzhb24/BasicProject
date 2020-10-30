@@ -56,4 +56,11 @@ class CustomViewPager @JvmOverloads constructor(
         }
     }
 
+    /**
+     * 解决点击选项卡切换多页闪烁的问题
+     */
+    override fun setCurrentItem(item: Int) {
+        super.setCurrentItem(item, false)
+    }
+
 }
