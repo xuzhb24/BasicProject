@@ -22,6 +22,8 @@ import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.mvc.BaseActivity
 import com.android.util.StatusBar.TestStatusBarUtilActivity
+import com.android.util.activity.ActivityUtil
+import com.android.util.activity.TestJumpActivity
 import com.android.util.regex.RegexUtil
 import com.android.widget.InputLayout
 import com.android.widget.RecyclerView.AATest.entity.MonthBean
@@ -53,6 +55,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_LAYOUT_PARAMS = "TEST_LAYOUT_PARAMS"
         const val TEST_REGEX = "TEST_REGEX"
         const val TEST_CACHE = "TEST_CACHE"
+        const val TEST_ACTIVITY = "TEST_ACTIVITY"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -69,6 +72,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_LAYOUT_PARAMS -> testLayoutParams()
             TEST_REGEX -> testRegex()
             TEST_CACHE -> testCache()
+            TEST_ACTIVITY -> testActivity()
         }
     }
 
@@ -930,6 +934,71 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     private fun getSaveTime(il: InputLayout): Int {
         val saveTime = il.inputText.trim()
         return if (TextUtils.isEmpty(saveTime)) -1 else saveTime.toInt()
+    }
+
+    private fun testActivity() {
+        initCommonLayout(
+            this, "Activity工具", false, true,
+            "跳转到东方财富", "跳转Activity(带动画)", "跳转Activity(携带参数)"
+        )
+        val sb = StringBuilder()
+        sb.append("MainActivity是否存在：")
+            .append(ActivityUtil.isActivityExists(this, "com.android.kotlin", "com.android.base.MainActivity"))
+            .append("\n启动Activity名：")
+            .append(ActivityUtil.getLauncherActivityName(this, packageName))
+        val topActivity =
+            ActivityUtil.getTopActivityName(this).split(" ".toRegex()).toTypedArray()
+        sb.append("\n\n栈顶Activity信息：\n")
+            .append(topActivity[0]).append("(包名)\n")
+            .append(topActivity[1]).append("(类名)")
+        tv.text = sb.toString()
+        btn1.setOnClickListener {
+            /*
+            * 哔哩哔哩：tv.danmaku.bili，tv.danmaku.bili.ui.splash.SplashActivity
+            * 微博：com.sina.weibo，com.sina.weibo.SplashActivity
+            * 东方财富：com.eastmoney.android.berlin，com.eastmoney.android.berlin.activity.MainActivity
+            * 铁路12306：com.MobileTicket，com.alipay.mobile.quinox.LauncherActivity
+            * 微信：com.tencent.mm，com.tencent.mm.ui.LauncherUI
+            * 支付宝：com.eg.android.AlipayGphone，com.eg.android.AlipayGphone.AlipayLogin
+            * UC浏览器：com.UCMobile，com.UCMobile.main.UCMobile
+            * 淘宝：com.taobao.taobao，com.taobao.tao.welcome.Welcome
+            * 京东：com.jingdong.app.mall，com.jingdong.app.mall.main.MainActivity
+            * 爱奇艺：com.qiyi.video，com.qiyi.video.WelcomeActivity
+            * 今日头条：com.ss.android.article.news，com.ss.android.article.news.activity.MainActivity
+            */
+
+            /*
+             * 哔哩哔哩：tv.danmaku.bili，tv.danmaku.bili.ui.splash.SplashActivity
+             * 微博：com.sina.weibo，com.sina.weibo.SplashActivity
+             * 东方财富：com.eastmoney.android.berlin，com.eastmoney.android.berlin.activity.MainActivity
+             * 铁路12306：com.MobileTicket，com.alipay.mobile.quinox.LauncherActivity
+             * 微信：com.tencent.mm，com.tencent.mm.ui.LauncherUI
+             * 支付宝：com.eg.android.AlipayGphone，com.eg.android.AlipayGphone.AlipayLogin
+             * UC浏览器：com.UCMobile，com.UCMobile.main.UCMobile
+             * 淘宝：com.taobao.taobao，com.taobao.tao.welcome.Welcome
+             * 京东：com.jingdong.app.mall，com.jingdong.app.mall.main.MainActivity
+             * 爱奇艺：com.qiyi.video，com.qiyi.video.WelcomeActivity
+             * 今日头条：com.ss.android.article.news，com.ss.android.article.news.activity.MainActivity
+             */
+            val packageName = "com.eastmoney.android.berlin"
+            val className = "com.eastmoney.android.berlin.activity.MainActivity"
+            if (ActivityUtil.isActivityExists(this, packageName, className)) {
+                ActivityUtil.startActivity(this, packageName, className)
+            } else {
+                showToast("不存在该应用")
+            }
+        }
+        btn2.setOnClickListener {
+            ActivityUtil.startActivity(
+                this, TestJumpActivity::class.java, null,
+                R.anim.slide_right_in, R.anim.slide_left_out
+            )
+        }
+        btn3.setOnClickListener {
+            val bundle = Bundle()
+            bundle.putString(TestJumpActivity.EXTRA_DATA, btn3.text.toString())
+            ActivityUtil.startActivity(this, TestJumpActivity::class.java, bundle)
+        }
     }
 
 }

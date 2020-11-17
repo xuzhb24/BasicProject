@@ -77,6 +77,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.glideTv.setOnClickListener {
             startActivity(TestGlideActivity::class.java)
         }
+        //Activity工具
+        binding.activityTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_ACTIVITY)
+        }
     }
 
     override fun initListener() {

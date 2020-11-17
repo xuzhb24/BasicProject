@@ -88,6 +88,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="Glide工具" />
 
+            <TextView
+                android:id="@+id/activity_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="Activity工具" />
+
         </LinearLayout>
     </ScrollView>
 
