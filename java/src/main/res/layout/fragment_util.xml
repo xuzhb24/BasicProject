@@ -39,6 +39,11 @@
                 android:text="代码创建Drawable" />
 
             <TextView
+                android:id="@+id/sp_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="SharedPreferences工具类" />
+
+            <TextView
                 android:id="@+id/string_tv"
                 style="@style/ItemSingleTextStyle"
                 android:text="字符串工具类" />
@@ -82,6 +87,26 @@
                 android:id="@+id/pinyin_tv"
                 style="@style/ItemSingleTextStyle"
                 android:text="拼音工具" />
+
+            <TextView
+                android:id="@+id/layout_params_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="布局参数工具" />
+
+            <TextView
+                android:id="@+id/regex_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="正则表达式工具" />
+
+            <TextView
+                android:id="@+id/cache_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="磁盘缓存工具" />
+
+            <TextView
+                android:id="@+id/glide_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="Glide工具" />
 
             <TextView
                 android:id="@+id/activity_tv"
@@ -129,21 +154,6 @@
                 android:text="屏幕工具" />
 
             <TextView
-                android:id="@+id/cache_tv"
-                style="@style/ItemSingleTextStyle"
-                android:text="磁盘缓存工具" />
-
-            <TextView
-                android:id="@+id/sp_tv"
-                style="@style/ItemSingleTextStyle"
-                android:text="SharedPreferences工具" />
-
-            <TextView
-                android:id="@+id/layout_params_tv"
-                style="@style/ItemSingleTextStyle"
-                android:text="布局参数工具" />
-
-            <TextView
                 android:id="@+id/thread_pool_tv"
                 style="@style/ItemSingleTextStyle"
                 android:text="线程池工具" />
@@ -152,11 +162,6 @@
                 android:id="@+id/phone_tv"
                 style="@style/ItemSingleTextStyle"
                 android:text="手机工具" />
-
-            <TextView
-                android:id="@+id/regex_tv"
-                style="@style/ItemSingleTextStyle"
-                android:text="正则表达式工具" />
 
             <TextView
                 android:id="@+id/encode_tv"

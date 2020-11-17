@@ -10,6 +10,7 @@ import com.android.util.CommonLayoutUtil;
 import com.android.util.TestUtilActivity;
 import com.android.util.bitmap.TestBitmapActivity;
 import com.android.util.code.TestCodeUtilActivity;
+import com.android.util.glide.TestGlideActivity;
 import com.android.util.permission.TestPermissionActivity;
 import com.android.util.threadPool.AATest.TestThreadPoolUtilActivity;
 
@@ -113,6 +114,10 @@ public class UtilFragment extends BaseFragment<FragmentUtilBinding> {
         //磁盘缓存工具
         binding.cacheTv.setOnClickListener(v -> {
             CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_CACHE);
+        });
+        //Glide工具
+        binding.glideTv.setOnClickListener(v -> {
+            startActivity(TestGlideActivity.class);
         });
         //SharedPreferences工具
         binding.spTv.setOnClickListener(v -> {

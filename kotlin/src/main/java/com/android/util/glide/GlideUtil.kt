@@ -30,6 +30,15 @@ object GlideUtil {
         loadUrl(iv, url, transformation, placeResId, errorResId).into(iv)
     }
 
+    //显示本地图片
+    fun showImageFromResource(
+        iv: ImageView,
+        @DrawableRes resId: Int,
+        transformation: BitmapTransformation?
+    ) {
+        loadResource(iv, resId, transformation).into(iv)
+    }
+
     /**
      * 加载网络图片
      * @param url 图片链接
@@ -71,15 +80,6 @@ object GlideUtil {
                 }
             }
         }
-    }
-
-    //显示本地图片
-    fun showImageFromResource(
-        iv: ImageView,
-        @DrawableRes resId: Int,
-        transformation: BitmapTransformation?
-    ) {
-        loadResource(iv, resId, transformation).into(iv)
     }
 
     /**
