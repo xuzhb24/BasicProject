@@ -1,10 +1,12 @@
 package com.android.util
 
+import android.Manifest
 import android.content.Intent
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
+import android.os.Environment
 import android.text.InputType
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
@@ -56,6 +58,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_REGEX = "TEST_REGEX"
         const val TEST_CACHE = "TEST_CACHE"
         const val TEST_ACTIVITY = "TEST_ACTIVITY"
+        const val TEST_SHELL = "TEST_SHELL"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -73,6 +76,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_REGEX -> testRegex()
             TEST_CACHE -> testCache()
             TEST_ACTIVITY -> testActivity()
+            TEST_SHELL -> testShell()
         }
     }
 
@@ -998,6 +1002,46 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             val bundle = Bundle()
             bundle.putString(TestJumpActivity.EXTRA_DATA, btn3.text.toString())
             ActivityUtil.startActivity(this, TestJumpActivity::class.java, bundle)
+        }
+    }
+
+    //Shell工具
+    private fun testShell() {
+        val command1 = "getprop ro.product.model"
+        val command2 = "cd sdcard/AATest\ncat test.txt"
+        initCommonLayout(
+            this, "Shell工具", true, true,
+            "运行命令", command1, command2
+        )
+        il.inputTextHint = "请输入要执行的Shell命令，多条的话换行输入"
+        btn1.setOnClickListener {
+            val content = il.inputText.trim()
+            if (TextUtils.isEmpty(content)) {
+                showToast("请先输入命令")
+            } else {
+                val commands = content.split("\n")
+                val result = ShellUtil.execCmd(commands, false).toString()
+                LogUtil.w("Shell", result)
+                tv.text = result
+            }
+        }
+        btn2.setOnClickListener {
+            tv.text = ShellUtil.execShellCmd(command1).toString()
+        }
+        btn3.setOnClickListener {
+            val testFilePath = Environment.getExternalStorageDirectory().toString() + "/AATest/test.txt"
+            if (!PermissionUtil.requestPermissions(
+                    this, 1,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            ) {
+                showToast("请先允许权限")
+                return@setOnClickListener
+            }
+            val result = ShellUtil.execCmd(command2.split("\n".toRegex()), false).toString()
+            LogUtil.w("Shell", result)
+            tv.text = result
         }
     }
 

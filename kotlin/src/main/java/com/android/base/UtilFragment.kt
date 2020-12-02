@@ -81,6 +81,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.activityTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_ACTIVITY)
         }
+        //Shell工具
+        binding.shellTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_SHELL)
+        }
     }
 
     override fun initListener() {
