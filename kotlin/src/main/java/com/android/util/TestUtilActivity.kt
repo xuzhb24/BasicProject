@@ -59,6 +59,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_CACHE = "TEST_CACHE"
         const val TEST_ACTIVITY = "TEST_ACTIVITY"
         const val TEST_SHELL = "TEST_SHELL"
+        const val TEST_DEVICE = "TEST_DEVICE"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -77,6 +78,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_CACHE -> testCache()
             TEST_ACTIVITY -> testActivity()
             TEST_SHELL -> testShell()
+            TEST_DEVICE -> testDevice()
         }
     }
 
@@ -1043,6 +1045,25 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             LogUtil.w("Shell", result)
             tv.text = result
         }
+    }
+
+    //设备工具
+    fun testDevice() {
+        initCommonLayout(this, "设备工具", false, true);
+        val sb = StringBuilder()
+        sb.append("设备是否root：").append(DeviceUtil.isDeviceRooted())
+            .append("\n设备MAC地址：").append(DeviceUtil.getMacAddress(this))
+            .append("\n设备厂商：").append(DeviceUtil.getManufacturer())
+            .append("\n设备型号：").append(DeviceUtil.getModel())
+            .append("\n设备品牌：").append(DeviceUtil.getBrand())
+            .append("\nSDK版本号：").append(DeviceUtil.getSDKVersion())
+            .append("\n系统版本号：").append(DeviceUtil.getOSVersion())
+            .append("\n设备AndroidID：").append(DeviceUtil.getAndroidID(this))
+            .append("\n分辨率：").append(DeviceUtil.getScreenResolution(this))
+            .append("\n运营商名称：").append(DeviceUtil.getSimOperatorName(this))
+            .append("\n系统语言：").append(DeviceUtil.getSystemLanguage())
+            .append("\nIMEI：").append(DeviceUtil.getIMEI(this))
+        tv.text = sb.toString()
     }
 
 }
