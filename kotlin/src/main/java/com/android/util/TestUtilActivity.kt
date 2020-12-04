@@ -8,8 +8,11 @@ import android.graphics.Typeface
 import android.os.Bundle
 import android.os.Environment
 import android.text.InputType
+import android.text.Spannable
+import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
+import android.text.style.ImageSpan
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -26,6 +29,8 @@ import com.android.frame.mvc.BaseActivity
 import com.android.util.StatusBar.TestStatusBarUtilActivity
 import com.android.util.activity.ActivityUtil
 import com.android.util.activity.TestJumpActivity
+import com.android.util.app.AATest.TestAppListActivity
+import com.android.util.app.AppUtil
 import com.android.util.regex.RegexUtil
 import com.android.widget.InputLayout
 import com.android.widget.RecyclerView.AATest.entity.MonthBean
@@ -60,6 +65,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_ACTIVITY = "TEST_ACTIVITY"
         const val TEST_SHELL = "TEST_SHELL"
         const val TEST_DEVICE = "TEST_DEVICE"
+        const val TEST_APP = "TEST_APP"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -79,6 +85,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_ACTIVITY -> testActivity()
             TEST_SHELL -> testShell()
             TEST_DEVICE -> testDevice()
+            TEST_APP -> testApp()
         }
     }
 
@@ -1064,6 +1071,116 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .append("\n系统语言：").append(DeviceUtil.getSystemLanguage())
             .append("\nIMEI：").append(DeviceUtil.getIMEI(this))
         tv.text = sb.toString()
+    }
+
+    //App工具
+    private fun testApp() {
+        initCommonLayout(
+            this, "App工具",
+            "本应用相关信息", "已安装应用列表", "打开应用设置页面",
+            "安装测试应用", "卸载测试应用", "打开测试应用", "跳转至拨号界面",
+            "拨打电话", "发送短信"
+        )
+        btn1.setOnClickListener {
+            alert(this, getAppInfo())
+        }
+        btn2.setOnClickListener {
+            startActivity(TestAppListActivity::class.java)
+        }
+        btn3.setOnClickListener {
+            AppUtil.openLocalAppSettings(this)
+        }
+        val testApkPackageName = "com.android.testinstall"
+        val testApkPath = Environment.getExternalStorageDirectory().toString() + "/AATest/test_install.apk"
+        btn4.setOnClickListener {
+            if (!PermissionUtil.requestPermissions(
+                    this, 1,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            ) {
+                showToast("请先允许权限")
+                return@setOnClickListener
+            }
+            if (AppUtil.isAppInstall(this, testApkPackageName)) {
+                showToast("应用已安装")
+            } else {
+                if (FileUtil.isFileExists(testApkPath)) {
+                    AppUtil.installApp(this, testApkPath, applicationInfo.packageName + ".provider")
+                } else {
+                    kotlin.runCatching {
+                        if (IOUtil.writeFileFromInputStream(testApkPath, assets.open("test_install.apk"), false)) {  //写入成功
+                            AppUtil.installApp(this, testApkPath, applicationInfo.packageName + ".provider")
+                        } else {
+                            showToast("文件写入失败")
+                        }
+                    }.onFailure {
+                        it.printStackTrace()
+                        showToast("文件写入异常，" + it.message)
+                    }
+                }
+            }
+        }
+        btn5.setOnClickListener {
+            if (AppUtil.isAppInstall(this, testApkPackageName)) {
+                AppUtil.uninstallApp(this, testApkPackageName)
+            } else {
+                showToast("应用未安装")
+            }
+        }
+        btn6.setOnClickListener {
+            if (AppUtil.isAppInstall(this, testApkPackageName)) {
+                AppUtil.openApp(this, testApkPackageName)
+            } else {
+                showToast("应用未安装")
+            }
+        }
+        btn7.setOnClickListener {
+            startActivity(IntentUtil.getDialIntent("13302480305"))
+        }
+        btn8.setOnClickListener {
+            if (!PermissionUtil.requestPermissions(this, 1, Manifest.permission.CALL_PHONE)) {
+                showToast("请先允许权限")
+                return@setOnClickListener
+            }
+            startActivity(IntentUtil.getCallIntent("13302480305"))
+        }
+        btn9.setOnClickListener {
+            startActivity(IntentUtil.getSendSmsIntent("13302480305", "短信内容"))
+        }
+    }
+
+    private fun getAppInfo(): SpannableStringBuilder {
+        val builder = SpannableStringBuilder()
+        builder.append("应用图标： ")
+        val icon = AppUtil.getLocalAppIcon(this)
+        if (icon != null) {
+            icon.setBounds(0, 0, icon.intrinsicWidth, icon.intrinsicHeight)
+            val span = ImageSpan(icon)
+            builder.setSpan(span, 5, 6, Spannable.SPAN_INCLUSIVE_EXCLUSIVE)
+        }
+        builder.append("\n应用名称：")
+            .append(AppUtil.getLocalAppLabel(this))
+            .append("\n安装路径：\n")
+            .append(AppUtil.getLocalAppPath(this))
+            .append("\nversionName：")
+            .append(AppUtil.getLocalAppVersionName(this))
+            .append("\nversionCode：")
+            .append(AppUtil.getLocalAppVersionCode(this).toString())
+            .append("\n是否系统应用：")
+            .append(AppUtil.isLocalSystemApp(this).toString())
+            .append("\n是否是Debug版本：")
+            .append(AppUtil.isLocalAppDebug(this).toString())
+            .append("\n是否有root权限：")
+            .append(AppUtil.isLocalAppRoot().toString())
+            .append("\nMD5值：\n")
+            .append(AppUtil.getLocalAppSignatureMD5(this))
+            .append("\nSHA1值：\n")
+            .append(AppUtil.getLocalAppSignatureSHA1(this))
+            .append("\n是否处于前台：")
+            .append(AppUtil.isLocalAppForeground(this).toString())
+        LogUtil.e("AppInfo", " \n${AppUtil.getLocalAppInfo(this)}")
+        return builder
     }
 
 }

@@ -83,7 +83,7 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         }
         //APP工具
         binding.appTv.setOnClickListener {
-
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_APP)
         }
         //设备工具
         binding.deviceTv.setOnClickListener {

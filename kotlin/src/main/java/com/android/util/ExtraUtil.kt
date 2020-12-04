@@ -8,6 +8,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.provider.Settings
+import android.text.SpannableStringBuilder
 import android.view.Gravity
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -50,6 +51,10 @@ fun createRandomKey(length: Int): String {
 }
 
 fun alert(context: Context, msg: String) {
+    AlertDialog.Builder(context).setMessage(msg).show()
+}
+
+fun alert(context: Context, msg: SpannableStringBuilder) {
     AlertDialog.Builder(context).setMessage(msg).show()
 }
 

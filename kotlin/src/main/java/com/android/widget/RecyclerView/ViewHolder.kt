@@ -1,5 +1,6 @@
 package com.android.widget.RecyclerView
 
+import android.graphics.drawable.Drawable
 import android.util.SparseArray
 import android.util.TypedValue
 import android.view.View
@@ -59,6 +60,13 @@ open class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
     fun setImageResource(viewId: Int, resId: Int): ViewHolder {
         val iv = getView<ImageView>(viewId)
         iv?.setImageResource(resId)
+        return this
+    }
+
+    //设置图片
+    fun setImageDrawable(viewId: Int, drawable: Drawable): ViewHolder {
+        val iv = getView<ImageView>(viewId)
+        iv?.setImageDrawable(drawable)
         return this
     }
 
