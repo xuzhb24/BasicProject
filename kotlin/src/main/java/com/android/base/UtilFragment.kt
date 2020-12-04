@@ -93,6 +93,14 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.shellTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_SHELL)
         }
+        //底部选择器工具
+        binding.pickerTv.setOnClickListener {
+
+        }
+        //崩溃异常监听
+        binding.crashTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CRASH)
+        }
     }
 
     override fun initListener() {

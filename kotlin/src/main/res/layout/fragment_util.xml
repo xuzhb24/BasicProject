@@ -108,6 +108,76 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="Shell工具" />
 
+            <TextView
+                android:id="@+id/picker_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="底部选择器工具" />
+
+            <TextView
+                android:id="@+id/crash_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="崩溃异常监听" />
+
+            <TextView
+                android:id="@+id/clean_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="应用文件清除工具" />
+
+            <TextView
+                android:id="@+id/sdcard_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="SD卡工具" />
+
+            <TextView
+                android:id="@+id/screen_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="屏幕工具" />
+
+            <TextView
+                android:id="@+id/thread_pool_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="线程池工具" />
+
+            <TextView
+                android:id="@+id/phone_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="手机工具" />
+
+            <TextView
+                android:id="@+id/encode_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="编码解码工具" />
+
+            <TextView
+                android:id="@+id/service_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="Service工具" />
+
+            <TextView
+                android:id="@+id/bitmap_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="图片工具" />
+
+            <TextView
+                android:id="@+id/location_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="位置工具" />
+
+            <TextView
+                android:id="@+id/network_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="网络工具" />
+
+            <TextView
+                android:id="@+id/permission_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="权限工具" />
+
+            <TextView
+                android:id="@+id/download_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="应用下载" />
+
         </LinearLayout>
     </ScrollView>
 

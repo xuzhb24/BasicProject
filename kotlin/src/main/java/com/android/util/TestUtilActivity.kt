@@ -16,6 +16,7 @@ import android.text.style.ImageSpan
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
+import android.widget.TextView
 import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.http.AATest.ApiService
@@ -66,6 +67,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_SHELL = "TEST_SHELL"
         const val TEST_DEVICE = "TEST_DEVICE"
         const val TEST_APP = "TEST_APP"
+        const val TEST_CRASH = "TEST_CRASH"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -86,6 +88,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_SHELL -> testShell()
             TEST_DEVICE -> testDevice()
             TEST_APP -> testApp()
+            TEST_CRASH -> testCrash()
         }
     }
 
@@ -1181,6 +1184,52 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .append(AppUtil.isLocalAppForeground(this).toString())
         LogUtil.e("AppInfo", " \n${AppUtil.getLocalAppInfo(this)}")
         return builder
+    }
+
+    //崩溃异常监听
+    private fun testCrash() {
+        initCommonLayout(
+            this, "崩溃异常监听",
+            "抛异常", "读取crash文件", "删除crash文件", "移动文件到sd卡"
+        )
+        val dirName = "$cacheDir/log"
+        val fileName = "$dirName/crash.trace"
+        btn1.setOnClickListener {
+            findViewById<TextView>(R.id.toast_tv).text = ""  //空指针异常
+//            throw RuntimeException("自定义异常")
+        }
+        btn2.setOnClickListener {
+            if (FileUtil.isFileExists(fileName)) {
+                val content = IOUtil.readFileToString(fileName)
+                alert(this, content ?: "")
+            } else {
+                showToast("crash文件不存在")
+            }
+        }
+        btn3.setOnClickListener {
+            if (FileUtil.isFileExists(fileName)) {
+                showToast(if (FileUtil.deleteDirectory(dirName)) "删除成功" else "删除失败")
+            } else {
+                showToast("crash文件不存在")
+            }
+        }
+        btn4.setOnClickListener {
+            if (!PermissionUtil.requestPermissions(
+                    this, 1,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_EXTERNAL_STORAGE
+                )
+            ) {
+                showToast("请先允许权限")
+                return@setOnClickListener
+            }
+            val moveFileName = "sdcard/AATest/crash.trace"
+            if (FileUtil.deleteFile(moveFileName) && FileUtil.isFileExists(fileName)) {
+                showToast(if (FileUtil.moveFile(fileName, moveFileName)) "文件已移动到$moveFileName" else "移动失败")
+            } else {
+                showToast("crash文件不存在")
+            }
+        }
     }
 
 }
