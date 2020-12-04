@@ -1,6 +1,8 @@
 package com.android.util.encrypt
 
+import java.io.UnsupportedEncodingException
 import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
 
 /**
  * Created by xuzhb on 2019/8/14
@@ -10,43 +12,73 @@ import java.security.MessageDigest
 object MessageDigestUtil {
 
     //MD5加密(32位）
-    fun md5(plaintext: String): String {
-        val digest = MessageDigest.getInstance("MD5")
-        val result = digest.digest(plaintext.toByteArray(Charsets.UTF_8))
-        return byte2Hex(result)
+    fun md5(data: ByteArray?) = digest(data, "MD5")
+
+    //MD5加密(32位）
+    fun md5(plaintext: String): String? {
+        try {
+            md5(plaintext.toByteArray(Charsets.UTF_8))?.let {
+                return byte2Hex(it)
+            }
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        }
+        return plaintext
     }
 
-    fun sha1(plaintext: String): String {
-        val digest = MessageDigest.getInstance("SHA-1")
-        val result = digest.digest(plaintext.toByteArray(Charsets.UTF_8))
-        return byte2Hex(result)
+    fun sha1(data: ByteArray?) = digest(data, "SHA-1")
+
+    fun sha1(plaintext: String): String? {
+        try {
+            sha1(plaintext.toByteArray(Charsets.UTF_8))?.let {
+                return byte2Hex(it)
+            }
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        }
+        return plaintext
     }
 
-    fun sha256(plaintext: String): String {
-        val digest = MessageDigest.getInstance("SHA-256")
-        val result = digest.digest(plaintext.toByteArray(Charsets.UTF_8))
-        return byte2Hex(result)
+    fun sha256(data: ByteArray?) = digest(data, "SHA-256")
+
+    fun sha256(plaintext: String): String? {
+        try {
+            sha256(plaintext.toByteArray(Charsets.UTF_8))?.let {
+                return byte2Hex(it)
+            }
+        } catch (e: UnsupportedEncodingException) {
+            e.printStackTrace()
+        }
+        return plaintext
+    }
+
+    fun digest(data: ByteArray?, algorithm: String?): ByteArray? {
+        if (data == null || data.isEmpty() || algorithm.isNullOrBlank()) {
+            return null
+        }
+        try {
+            val md = MessageDigest.getInstance(algorithm)
+            return md.digest(data)
+        } catch (e: NoSuchAlgorithmException) {
+            e.printStackTrace()
+        }
+        return null
     }
 
     //byte数组转成16进制
-    private fun byte2Hex(byteArray: ByteArray): String {
-        val result = with(StringBuilder()) {
-            byteArray.forEach {
-                val value = it
-                val hex = value.toInt() and (0xFF)
-                val hexStr = Integer.toHexString(hex)
-                //println(hexStr)
-                if (hexStr.length == 1) {
-                    //this.append("0").append(hexStr)
-                    append("0").append(hexStr)
-                } else {
-                    //this.append(hexStr)
-                    append(hexStr)
-                }
-            }
-            this.toString()
+    private fun byte2Hex(array: ByteArray?): String? {
+        if (array == null) {
+            return null
         }
-        return result
+        val sb = StringBuilder()
+        for (b in array) {
+            var hex = Integer.toHexString(b.toInt() and 0xFF)
+            if (hex.length == 1) {
+                hex = "0$hex"
+            }
+            sb.append(hex)
+        }
+        return sb.toString()
     }
 
     @JvmStatic
