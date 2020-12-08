@@ -95,7 +95,7 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         }
         //底部选择器工具
         binding.pickerTv.setOnClickListener {
-
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_PICKER_VIEW)
         }
         //崩溃异常监听
         binding.crashTv.setOnClickListener {

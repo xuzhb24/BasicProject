@@ -35,6 +35,7 @@ import com.android.util.app.AppUtil
 import com.android.util.regex.RegexUtil
 import com.android.widget.InputLayout
 import com.android.widget.RecyclerView.AATest.entity.MonthBean
+import com.bigkoo.pickerview.listener.OnTimeSelectListener
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import io.reactivex.Observer
@@ -68,6 +69,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_DEVICE = "TEST_DEVICE"
         const val TEST_APP = "TEST_APP"
         const val TEST_CRASH = "TEST_CRASH"
+        const val TEST_PICKER_VIEW = "TEST_PICKER_VIEW"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -89,6 +91,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_DEVICE -> testDevice()
             TEST_APP -> testApp()
             TEST_CRASH -> testCrash()
+            TEST_PICKER_VIEW -> testPickerView()
         }
     }
 
@@ -1229,6 +1232,33 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             } else {
                 showToast("crash文件不存在")
             }
+        }
+    }
+
+    //选择器工具类
+    private fun testPickerView() {
+        initCommonLayout(
+            this, "底部选择器工具", false, true,
+            "选择年月日", "选择年月日时分秒"
+        )
+        btn1.setOnClickListener {
+            val curentTime = DateUtil.convertOtherFormat(tv.text.toString(), DateUtil.Y_M_D_H_M_S, DateUtil.Y_M_D)
+            PickerViewUtil.selectDate(this, OnTimeSelectListener { date, v ->
+                tv.text = DateUtil.date2String(date, DateUtil.Y_M_D)
+            }, curentTime, formatStr = DateUtil.Y_M_D)
+        }
+        btn2.setOnClickListener {
+            val startTime = "1990-01-01 00:00:00"
+            val endTime = "2100-01-01 12:00:00"
+            val formatStr = DateUtil.Y_M_D_H_M_S
+            val type = booleanArrayOf(true, true, true, true, true, true)
+            val curentTime = DateUtil.convertOtherFormat(tv.text.toString(), DateUtil.Y_M_D, DateUtil.Y_M_D_H_M_S)
+            PickerViewUtil.selectDateTime(
+                this, OnTimeSelectListener { date: Date?, v1: View? ->
+                    tv.text = DateUtil.date2String(date!!, formatStr)
+                }, curentTime, startTime, endTime, formatStr,
+                "选择日期时间", "取消", "确定", type
+            )
         }
     }
 
