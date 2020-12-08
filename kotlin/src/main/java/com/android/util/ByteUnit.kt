@@ -1,8 +1,6 @@
 package com.android.util
 
 import androidx.annotation.StringDef
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
 import kotlin.math.pow
 
 /**
@@ -17,7 +15,7 @@ object ByteUnit {
     const val GB = "gb"
 
     @StringDef(B, KB, MB, GB)
-    @Retention(RetentionPolicy.SOURCE)
+    @kotlin.annotation.Retention(AnnotationRetention.SOURCE)
     annotation class ByteUnitDef
 
     private const val UNIT = 1024.0

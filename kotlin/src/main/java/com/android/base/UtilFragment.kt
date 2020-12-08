@@ -9,6 +9,7 @@ import com.android.util.TestUtilActivity
 import com.android.util.code.TestCodeUtilActivity
 import com.android.util.glide.TestGlideActivity
 import com.android.util.jumpToTestUtilActivity
+import com.android.util.threadPool.AATest.TestThreadPoolUtilActivity
 
 /**
  * Created by xuzhb on 2019/9/7
@@ -112,6 +113,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         //屏幕工具
         binding.screenTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_SCREEN)
+        }
+        //线程池工具
+        binding.threadPoolTv.setOnClickListener {
+            startActivity(TestThreadPoolUtilActivity::class.java)
         }
     }
 
