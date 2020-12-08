@@ -293,7 +293,7 @@ object StatusBarUtil {
     }
 
     //通过反射获取状态栏高度
-    private fun getStatusBarHeight(context: Context): Int {
+    fun getStatusBarHeight(context: Context): Int {
         var result = 24
         val resId = context.resources.getIdentifier("status_bar_height", "dimen", "android")
         result = if (resId > 0) {

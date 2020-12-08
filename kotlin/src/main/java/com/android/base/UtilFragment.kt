@@ -109,6 +109,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.sdcardTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_SDCARD)
         }
+        //屏幕工具
+        binding.screenTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_SCREEN)
+        }
     }
 
     override fun initListener() {

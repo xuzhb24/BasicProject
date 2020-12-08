@@ -101,6 +101,8 @@ object ShellUtil {
         val code: Int,           //结果码，返回值说明见https://blog.csdn.net/qq_35661171/article/details/79096786
         val successMsg: String?,  //成功信息
         val failureMsg: String?   //失败信息
-    )
+    ) {
+        fun isSuccess() = code == 0
+    }
 
 }

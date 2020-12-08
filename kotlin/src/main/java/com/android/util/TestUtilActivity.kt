@@ -80,6 +80,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_PICKER_VIEW = "TEST_PICKER_VIEW"
         const val TEST_CLEAN = "TEST_CLEAN"
         const val TEST_SDCARD = "TEST_SDCARD"
+        const val TEST_SCREEN = "TEST_SCREEN"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -108,6 +109,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                     testSdcard()
                 }
             }
+            TEST_SCREEN -> testScreen()
         }
     }
 
@@ -1400,7 +1402,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     }
 
     //创建数据库
-    class DBHelper(context: Context, datebaseName: String) : SQLiteOpenHelper(context, datebaseName, null, 1) {
+    private class DBHelper(context: Context, datebaseName: String) : SQLiteOpenHelper(context, datebaseName, null, 1) {
 
         /**
          * 创建数据库表：person
@@ -1452,6 +1454,54 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .append("\n已用空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getUsedSize().toDouble(), ByteUnit.GB)).append(" GB")
             .append("\n\nSD卡信息：\n").append(JsonUtil.formatJson(Gson().toJson(SDCardUtil.getSDCardInfo())))
         tv.text = sb.toString()
+    }
+
+    //屏幕工具
+    private fun testScreen() {
+        initCommonLayout(
+            this, "屏幕工具", false, true,
+            "截屏(包含状态栏)", "截屏(不包含状态栏)", "设置屏幕横屏", "设置屏幕竖屏",
+            "设置屏幕跟随系统状态", "获取屏幕信息"
+        )
+        btn1.setOnClickListener {
+            val bitmap = ScreenUtil.captureWithStatusBar(this)
+            if (BitmapUtil.saveImageToGallery(this, bitmap, "截屏带状态栏")) {
+                showToast("保存成功！")
+            } else {
+                showToast("保存失败！")
+            }
+        }
+        btn2.setOnClickListener {
+            val bitmap = ScreenUtil.captureWithoutStatusBar(this)
+            if (BitmapUtil.saveImageToGallery(this, bitmap, "截屏不带状态栏")) {
+                showToast("保存成功！")
+            } else {
+                showToast("保存失败！")
+            }
+        }
+        btn3.setOnClickListener {
+            ScreenUtil.setLandscape(this)
+        }
+        btn4.setOnClickListener {
+            ScreenUtil.setPortrait(this)
+        }
+        btn5.setOnClickListener {
+            ScreenUtil.setSensor(this)
+        }
+        btn6.setOnClickListener {
+            val sb = StringBuilder()
+            val dm = ScreenUtil.getDisplayMetrics(this)
+            sb.append("屏幕宽度：").append(ScreenUtil.getScreenWidth(this))
+                .append("\n屏幕高度：").append(ScreenUtil.getScreenHeight(this))
+                .append("\ndensity：").append(dm.density)
+                .append("\nscaledDensity：").append(dm.scaledDensity)
+                .append("\ndensityDpi：").append(dm.densityDpi)
+                .append("\n是否是横屏：").append(ScreenUtil.isLandscape(this))
+                .append("\n是否是竖屏：").append(ScreenUtil.isPortrait(this))
+                .append("\n是否锁屏：").append(ScreenUtil.isScreenLock(this))
+                .append("\n旋转角度：").append(ScreenUtil.getScreenRotation(this))
+            alert(this, sb.toString())
+        }
     }
 
 }
