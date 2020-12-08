@@ -101,6 +101,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.crashTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CRASH)
         }
+        //应用文件清除工具
+        binding.cleanTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CLEAN)
+        }
     }
 
     override fun initListener() {

@@ -1,7 +1,10 @@
 package com.android.util
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
+import android.database.sqlite.SQLiteDatabase
+import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
@@ -13,6 +16,7 @@ import android.text.SpannableStringBuilder
 import android.text.TextUtils
 import android.text.method.LinkMovementMethod
 import android.text.style.ImageSpan
+import android.util.Log
 import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
@@ -52,6 +56,8 @@ import kotlin.random.Random
 class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
 
     companion object {
+        private const val TAG = "TestUtilActivity"
+
         const val TEST_STATUS_BAR = "TEST_STATUS_BAR"
         const val TEST_DATE = "TEST_DATE"
         const val TEST_KEYBOARD = "TEST_KEYBOARD"
@@ -70,6 +76,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_APP = "TEST_APP"
         const val TEST_CRASH = "TEST_CRASH"
         const val TEST_PICKER_VIEW = "TEST_PICKER_VIEW"
+        const val TEST_CLEAN = "TEST_CLEAN"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -92,6 +99,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_APP -> testApp()
             TEST_CRASH -> testCrash()
             TEST_PICKER_VIEW -> testPickerView()
+            TEST_CLEAN -> testClean()
         }
     }
 
@@ -1259,6 +1267,163 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 }, curentTime, startTime, endTime, formatStr,
                 "选择日期时间", "取消", "确定", type
             )
+        }
+    }
+
+    //应用文件清除工具
+    private fun testClean() {
+        initCommonLayout(
+            this, "应用文件清除工具", true, true,
+            "创建测试数据", "清除内部缓存(cache)", "清除内部数据库(databases)",
+            "清除内部文件(files)", "清除内部SharePreference", "清除外部缓存(cache)"
+        )
+        il.inputTextHint = "请输入要删除文件，如a.txt，不输入默认全部删除"
+        btn1.setOnClickListener {
+            showToast("正在创建")
+            thread(start = true) {
+                FileUtil.createOrExistsFile("$cacheDir/cache1.txt")
+                FileUtil.createOrExistsFile("$cacheDir/cache2.txt")
+                FileUtil.createOrExistsFile("$cacheDir/cache3.txt")
+                FileUtil.createOrExistsFile("$cacheDir/cache4.txt")
+                DBHelper(this, "test1.db").readableDatabase
+                DBHelper(this, "test2.db").readableDatabase
+                DBHelper(this, "test3.db").readableDatabase
+                DBHelper(this, "test4.db").readableDatabase
+                FileUtil.createOrExistsFile("$filesDir/files1.trace")
+                FileUtil.createOrExistsFile("$filesDir/files2.trace")
+                FileUtil.createOrExistsFile("$filesDir/files3.trace")
+                FileUtil.createOrExistsFile("$filesDir/files4.trace")
+                getSharedPreferences("share1", Context.MODE_PRIVATE).edit().putString("key", "value").apply()
+                getSharedPreferences("share2", Context.MODE_PRIVATE).edit().putString("key", "value").apply()
+                getSharedPreferences("share3", Context.MODE_PRIVATE).edit().putString("key", "value").apply()
+                getSharedPreferences("share4", Context.MODE_PRIVATE).edit().putString("key", "value").apply()
+                FileUtil.createOrExistsFile("$externalCacheDir/ecache1.txt")
+                FileUtil.createOrExistsFile("$externalCacheDir/ecache2.txt")
+                FileUtil.createOrExistsFile("$externalCacheDir/ecache3.txt")
+                FileUtil.createOrExistsFile("$externalCacheDir/ecache4.txt")
+                listFilesInDir()
+            }
+        }
+        btn2.setOnClickListener {
+            val name = il.inputText.trim()
+            if (TextUtils.isEmpty(name)) { //删除全部文件
+                if (CleanUtil.cleanInternalCache(this)) {
+                    showToast("删除成功")
+                } else {
+                    showToast("删除失败")
+                }
+            } else {  //删除指定文件
+                if (CleanUtil.cleanInternalCacheByName(this, name)) {
+                    showToast("删除成功")
+                } else {
+                    showToast("删除失败")
+                }
+            }
+            listFilesInDir()
+        }
+        btn3.setOnClickListener {
+            val name = il.inputText.trim()
+            if (TextUtils.isEmpty(name)) { //删除全部文件
+                if (CleanUtil.cleanInternalDatabase(this)) {
+                    showToast("删除成功")
+                } else {
+                    showToast("删除失败")
+                }
+            } else {  //删除指定文件
+                if (CleanUtil.cleanInternalDatabaseByName(this, name)) {
+                    showToast("删除成功")
+                } else {
+                    showToast("删除失败")
+                }
+            }
+            listFilesInDir()
+        }
+        btn4.setOnClickListener {
+            val name = il.inputText.trim()
+            if (TextUtils.isEmpty(name)) { //删除全部文件
+                if (CleanUtil.cleanInternalFiles(this)) {
+                    showToast("删除成功")
+                } else {
+                    showToast("删除失败")
+                }
+            } else {  //删除指定文件
+                if (CleanUtil.cleanInternalFilesByName(this, name)) {
+                    showToast("删除成功")
+                } else {
+                    showToast("删除失败")
+                }
+            }
+            listFilesInDir()
+        }
+        btn5.setOnClickListener {
+            val name = il.inputText.trim()
+            if (TextUtils.isEmpty(name)) { //删除全部文件
+                if (CleanUtil.cleanInternalSharePreference(this)) {
+                    showToast("删除成功")
+                } else {
+                    showToast("删除失败")
+                }
+            } else {  //删除指定文件
+                if (CleanUtil.cleanInternalSharePreferenceByName(this, name)) {
+                    showToast("删除成功")
+                } else {
+                    showToast("删除失败")
+                }
+            }
+            listFilesInDir()
+        }
+        btn6.setOnClickListener {
+            val name = il.inputText.trim()
+            if (TextUtils.isEmpty(name)) { //删除全部文件
+                if (CleanUtil.cleanExternalCache(this)) {
+                    showToast("删除成功")
+                } else {
+                    showToast("删除失败")
+                }
+            } else {  //删除指定文件
+                if (CleanUtil.cleanExternalCacheByName(this, name)) {
+                    showToast("删除成功")
+                } else {
+                    showToast("删除失败")
+                }
+            }
+            listFilesInDir()
+        }
+    }
+
+    //创建数据库
+    class DBHelper(context: Context, datebaseName: String) : SQLiteOpenHelper(context, datebaseName, null, 1) {
+
+        /**
+         * 创建数据库表：person
+         * _id为主键，自增
+         */
+        override fun onCreate(sqLiteDatabase: SQLiteDatabase) {
+            Log.i(TAG, "创建test数据库表！")
+            sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS test(_id INTEGER PRIMARY KEY AUTOINCREMENT, name VARCHAR,info TEXT)")
+        }
+
+        override fun onUpgrade(sqLiteDatabase: SQLiteDatabase, oldVersion: Int, newVersion: Int) {}
+
+        override fun onOpen(sqLiteDatabase: SQLiteDatabase) {
+            super.onOpen(sqLiteDatabase)
+        }
+    }
+
+    private fun listFilesInDir() {
+        runOnUiThread {
+            val sb = StringBuilder()
+            FileUtil.listFilesInDirectory(cacheDir.parent, true)?.let {
+                for (file in it) {
+                    sb.append(file.absolutePath).append("\n").append("------------------------------------").append("\n")
+                }
+            }
+            FileUtil.listFilesInDirectory(externalCacheDir.absolutePath, true)?.let {
+                for (file in it) {
+                    sb.append(file.absolutePath).append("\n").append("------------------------------------").append("\n")
+                }
+            }
+            alert(this, sb.toString())
         }
     }
 
