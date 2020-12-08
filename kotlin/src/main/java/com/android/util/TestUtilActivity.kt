@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
+import android.os.Build
 import android.os.Bundle
 import android.os.Environment
 import android.text.InputType
@@ -21,6 +22,7 @@ import android.view.Gravity
 import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.annotation.RequiresApi
 import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.http.AATest.ApiService
@@ -77,6 +79,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_CRASH = "TEST_CRASH"
         const val TEST_PICKER_VIEW = "TEST_PICKER_VIEW"
         const val TEST_CLEAN = "TEST_CLEAN"
+        const val TEST_SDCARD = "TEST_SDCARD"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -100,6 +103,11 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_CRASH -> testCrash()
             TEST_PICKER_VIEW -> testPickerView()
             TEST_CLEAN -> testClean()
+            TEST_SDCARD -> {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                    testSdcard()
+                }
+            }
         }
     }
 
@@ -1425,6 +1433,25 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             }
             alert(this, sb.toString())
         }
+    }
+
+    //SD卡工具
+    @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR2)
+    private fun testSdcard() {
+        initCommonLayout(this, "SD卡工具", false, true)
+        val sb = StringBuilder()
+        sb.append("SD卡是否可用：").append(SDCardUtil.isSDCardEnable())
+            .append("\nSD卡路径：").append(SDCardUtil.getSDCardPath())
+            .append("\n文件路径：").append(SDCardUtil.getDocumentPath())
+            .append("\n下载路径：").append(SDCardUtil.getDownloadPath())
+            .append("\n影视路径：").append(SDCardUtil.getMoviePath())
+            .append("\n音乐路径：").append(SDCardUtil.getMusicPath())
+            .append("\n图片路径：").append(SDCardUtil.getPicturePath())
+            .append("\n\n总存储空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getTotalSize().toDouble(), ByteUnit.GB)).append(" GB")
+            .append("\n剩余空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getAvailableSize().toDouble(), ByteUnit.GB)).append(" GB")
+            .append("\n已用空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getUsedSize().toDouble(), ByteUnit.GB)).append(" GB")
+            .append("\n\nSD卡信息：\n").append(JsonUtil.formatJson(Gson().toJson(SDCardUtil.getSDCardInfo())))
+        tv.text = sb.toString()
     }
 
 }

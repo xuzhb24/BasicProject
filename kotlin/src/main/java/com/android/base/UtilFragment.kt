@@ -105,6 +105,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.cleanTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CLEAN)
         }
+        //SD卡工具
+        binding.sdcardTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_SDCARD)
+        }
     }
 
     override fun initListener() {
