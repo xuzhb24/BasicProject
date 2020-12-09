@@ -10,10 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.util.LogUtil;
+import com.android.util.SizeUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestBuilder;
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
+import com.bumptech.glide.load.resource.bitmap.CircleCrop;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
@@ -23,14 +26,51 @@ import com.bumptech.glide.request.transition.Transition;
  */
 public class GlideUtil {
 
-    //显示网络图片
+    //从网络加载并显示图片
     public static void showImageFromUrl(ImageView iv, String url, BitmapTransformation transformation, @DrawableRes int placeResId, @DrawableRes int errorResId) {
         loadUrl(iv, url, transformation, placeResId, errorResId).into(iv);
     }
 
-    //显示本地图片
+    //从网络加载并显示圆形图片
+    public static void showCircleImageFromUrl(ImageView iv, String url, @DrawableRes int placeResId, @DrawableRes int errorResId) {
+        showImageFromUrl(iv, url, new CircleCrop(), placeResId, errorResId);
+    }
+
+    //从网络加载并显示圆角图片，radius：以dp为单位
+    public static void showRoundedImageFromUrl(ImageView iv, String url, float radius, @DrawableRes int placeResId, @DrawableRes int errorResId) {
+        showImageFromUrl(iv, url, new RoundedCorners(SizeUtil.dp2pxInt(radius)), placeResId, errorResId);
+    }
+
+    //从网络加载并显示部分圆角图片
+    public static void showSectionRoundedImageFromUrl(ImageView iv, String url,
+                                                      float topLeftRadius, float topRightRadius,
+                                                      float bottomLeftRadius, float bottomRightRadius,
+                                                      @DrawableRes int placeResId, @DrawableRes int errorResId) {
+        showImageFromUrl(iv, url, new SectionRoundedCorners(SizeUtil.dp2px(topLeftRadius), SizeUtil.dp2px(topRightRadius),
+                SizeUtil.dp2px(bottomLeftRadius), SizeUtil.dp2px(bottomRightRadius)), placeResId, errorResId);
+    }
+
+    //从本地加载并显示图片
     public static void showImageFromResource(ImageView iv, @DrawableRes int resId, BitmapTransformation transformation) {
         loadResource(iv, resId, transformation).into(iv);
+    }
+
+    //从本地加载并显示圆形图片
+    public static void showCircleImageFromResource(ImageView iv, @DrawableRes int resId) {
+        showImageFromResource(iv, resId, new CircleCrop());
+    }
+
+    //从本地加载并显示圆角图片，radius：以dp为单位
+    public static void showRoundedImageFromResource(ImageView iv, @DrawableRes int resId, float radius) {
+        showImageFromResource(iv, resId, new RoundedCorners(SizeUtil.dp2pxInt(radius)));
+    }
+
+    //从本地加载并显示部分圆角图片
+    public static void showSectionRoundedImageFromResource(ImageView iv, @DrawableRes int resId,
+                                                           float topLeftRadius, float topRightRadius,
+                                                           float bottomLeftRadius, float bottomRightRadius) {
+        showImageFromResource(iv, resId, new SectionRoundedCorners(SizeUtil.dp2px(topLeftRadius), SizeUtil.dp2px(topRightRadius),
+                SizeUtil.dp2px(bottomLeftRadius), SizeUtil.dp2px(bottomRightRadius)));
     }
 
     //加载网络图片
