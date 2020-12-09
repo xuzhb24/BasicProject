@@ -147,7 +147,7 @@ class TestThreadPoolUtilActivity : BaseActivity_VB<ActivityCommonLayoutBinding>(
         LogUtil.i(TAG, "setResult:$result")
         val activity = mWeakReference?.get()
         if (activity != null) {
-            val text = "${DateUtil.getCurrentDateTime(DateUtil.H_M_S_S)}  $result(${Thread.currentThread().id})"
+            val text = "${DateUtil.getCurrentDateTime(DateUtil.H_M_S_S)}  $result(${Thread.currentThread().id})\n"
             activity.runOnUiThread {
                 (activity.findViewById<View>(R.id.tv) as TextView).text = text
             }

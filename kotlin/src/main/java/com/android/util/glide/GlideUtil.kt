@@ -6,10 +6,13 @@ import android.graphics.drawable.Drawable
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
 import com.android.util.LogUtil
+import com.android.util.SizeUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.RequestBuilder
 import com.bumptech.glide.load.resource.bitmap.BitmapTransformation
 import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.CircleCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 
@@ -19,7 +22,7 @@ import com.bumptech.glide.request.transition.Transition
  */
 object GlideUtil {
 
-    //显示网络图片
+    //从网络加载并显示图片
     fun showImageFromUrl(
         iv: ImageView,
         url: String,
@@ -30,13 +33,94 @@ object GlideUtil {
         loadUrl(iv, url, transformation, placeResId, errorResId).into(iv)
     }
 
-    //显示本地图片
+    //从网络加载并显示圆形图片
+    fun showCircleImageFromUrl(
+        iv: ImageView,
+        url: String,
+        @DrawableRes placeResId: Int = -1,
+        @DrawableRes errorResId: Int = -1
+    ) {
+        showImageFromUrl(iv, url, CircleCrop(), placeResId, errorResId)
+    }
+
+    //从网络加载并显示圆角图片，radius：以dp为单位
+    fun showRoundedImageFromUrl(
+        iv: ImageView,
+        url: String,
+        radius: Float,
+        @DrawableRes placeResId: Int = -1,
+        @DrawableRes errorResId: Int = -1
+    ) {
+        showImageFromUrl(iv, url, RoundedCorners(SizeUtil.dp2pxInt(radius)), placeResId, errorResId)
+    }
+
+    //从网络加载并显示部分圆角图片
+    fun showSectionRoundedImageFromUrl(
+        iv: ImageView,
+        url: String,
+        topLeftRadius: Float = 0f,
+        topRightRadius: Float = 0f,
+        bottomLeftRadius: Float = 0f,
+        bottomRightRadius: Float = 0f,
+        @DrawableRes placeResId: Int = -1,
+        @DrawableRes errorResId: Int = -1
+    ) {
+        showImageFromUrl(
+            iv, url,
+            SectionRoundedCorners(
+                SizeUtil.dp2px(topLeftRadius),
+                SizeUtil.dp2px(topRightRadius),
+                SizeUtil.dp2px(bottomLeftRadius),
+                SizeUtil.dp2px(bottomRightRadius)
+            ),
+            placeResId, errorResId
+        )
+    }
+
+    //从本地加载并显示图片
     fun showImageFromResource(
         iv: ImageView,
         @DrawableRes resId: Int,
         transformation: BitmapTransformation?
     ) {
         loadResource(iv, resId, transformation).into(iv)
+    }
+
+    //从本地加载并显示圆形图片
+    fun showCircleImageFromResource(
+        iv: ImageView,
+        @DrawableRes resId: Int
+    ) {
+        showImageFromResource(iv, resId, CircleCrop())
+    }
+
+    //从本地加载并显示圆角图片，radius：以dp为单位
+    fun showRoundedImageFromResource(
+        iv: ImageView,
+        @DrawableRes resId: Int,
+        radius: Float
+    ) {
+        showImageFromResource(iv, resId, RoundedCorners(SizeUtil.dp2pxInt(radius)))
+    }
+
+    //从本地加载并显示部分圆角图片
+    fun showSectionRoundedImageFromResource(
+        iv: ImageView,
+        @DrawableRes resId: Int,
+        topLeftRadius: Float = 0f,
+        topRightRadius: Float = 0f,
+        bottomLeftRadius: Float = 0f,
+        bottomRightRadius: Float = 0f
+    ) {
+        showImageFromResource(
+            iv, resId,
+            SectionRoundedCorners(
+                SizeUtil.dp2px(topLeftRadius),
+                SizeUtil.dp2px(topRightRadius),
+                SizeUtil.dp2px(bottomLeftRadius),
+                SizeUtil.dp2px(bottomRightRadius)
+            )
+        )
     }
 
     /**
