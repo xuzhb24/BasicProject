@@ -118,6 +118,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.threadPoolTv.setOnClickListener {
             startActivity(TestThreadPoolUtilActivity::class.java)
         }
+        //手机工具
+        binding.phoneTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_PHONE)
+        }
     }
 
     override fun initListener() {

@@ -39,6 +39,7 @@ import com.android.util.activity.TestJumpActivity
 import com.android.util.app.AATest.TestAppListActivity
 import com.android.util.app.AppUtil
 import com.android.util.regex.RegexUtil
+import com.android.util.threadPool.ThreadPoolManager
 import com.android.widget.InputLayout
 import com.android.widget.RecyclerView.AATest.entity.MonthBean
 import com.bigkoo.pickerview.listener.OnTimeSelectListener
@@ -81,6 +82,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_CLEAN = "TEST_CLEAN"
         const val TEST_SDCARD = "TEST_SDCARD"
         const val TEST_SCREEN = "TEST_SCREEN"
+        const val TEST_PHONE = "TEST_PHONE"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -110,6 +112,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 }
             }
             TEST_SCREEN -> testScreen()
+            TEST_PHONE -> testPhone()
         }
     }
 
@@ -1501,6 +1504,118 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 .append("\n是否锁屏：").append(ScreenUtil.isScreenLock(this))
                 .append("\n旋转角度：").append(ScreenUtil.getScreenRotation(this))
             alert(this, sb.toString())
+        }
+    }
+
+    //手机工具类
+    private fun testPhone() {
+        initCommonLayout(
+            this, "手机工具", true, false,
+            "获取手机信息", "判断手机号是否合法", "跳转至拨号界面", "拨打电话", "跳转至发送短信界面",
+            "发送短信", "获取手机联系人信息", "获取手机短信内容"
+        )
+        val phoneNumber = "13302480305"
+        btn1.setOnClickListener {
+            if (!PermissionUtil.requestPermissions(this, 1, Manifest.permission.READ_PHONE_STATE)) {
+                showToast("请先允许权限")
+                return@setOnClickListener
+            }
+            val sb = StringBuilder()
+            sb.append("当前设备是否是手机：").append(PhoneUtil.isPhone(this))
+                .append("\nIMEI：").append(PhoneUtil.getIMEI(this))
+                .append("\nIMSI：").append(PhoneUtil.getIMSI(this))
+                .append("\n终端类型PhoneType：").append(PhoneUtil.getPhoneType(this))
+                .append("\nsim卡是否准备好：").append(PhoneUtil.isSimReady(this))
+                .append("\nSim卡运营商名称：").append(PhoneUtil.getSimOperatorName(this))
+                .append("\t\t").append(PhoneUtil.getSimOperatorCH(this))
+                .append("\n\n手机信息：\n").append(JsonUtil.formatJson(Gson().toJson(PhoneUtil.getPhoneInfo(this))))
+            alert(this, sb.toString())
+        }
+        btn2.setOnClickListener {
+            val phone = il.inputText.trim()
+            if (TextUtils.isEmpty(phone)) {
+                showToast("请先输入手机号")
+                return@setOnClickListener
+            }
+            showToast(if (PhoneUtil.isPhoneNumberValid(phone)) "手机号合法" else "非手机号")
+        }
+        btn3.setOnClickListener {
+            PhoneUtil.dial(this, phoneNumber)
+        }
+        btn4.setOnClickListener {
+            if (!PermissionUtil.requestPermissions(this, 1, Manifest.permission.CALL_PHONE)) {
+                showToast("请先允许权限")
+                return@setOnClickListener
+            }
+            val phone = il.inputText.trim()
+            if (TextUtils.isEmpty(phone)) {
+                showToast("请先输入手机号")
+                return@setOnClickListener
+            }
+            if (PhoneUtil.isPhoneNumberValid(phone)) {
+                PhoneUtil.call(this, phone)
+            } else {
+                showToast("非手机号")
+            }
+        }
+        btn5.setOnClickListener {
+            val content = il.inputText.trim()
+            if (TextUtils.isEmpty(content)) {
+                showToast("请先输入要发送的短信内容")
+                return@setOnClickListener
+            }
+            PhoneUtil.sendSms(this, phoneNumber, content)
+        }
+        btn6.setOnClickListener {
+            if (!PermissionUtil.requestPermissions(this, 1, Manifest.permission.SEND_SMS)) {
+                showToast("请先允许权限")
+                return@setOnClickListener
+            }
+            val content = il.inputText.trim()
+            if (TextUtils.isEmpty(content)) {
+                showToast("请先输入要发送的短信内容")
+                return@setOnClickListener
+            }
+            PhoneUtil.sendSmsSilent(this, phoneNumber, content)
+        }
+        btn7.setOnClickListener {
+            if (!PermissionUtil.requestPermissions(
+                    this, 1,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_CONTACTS
+                )
+            ) {
+                showToast("请先允许权限")
+                return@setOnClickListener
+            }
+            ThreadPoolManager.instance.getFixedThreadPool().submit(Runnable {
+                val info = Gson().toJson(PhoneUtil.getContactInfo(this, 10))
+                runOnUiThread {
+                    alert(this, JsonUtil.formatJson(info))
+                }
+                LogUtil.logLongTag(
+                    "获取所有手机号码",
+                    "==============================================================\n" +
+                            JsonUtil.formatJson(Gson().toJson(PhoneUtil.getAllContactInfo(this)))
+                )
+            })
+        }
+        btn8.setOnClickListener {
+            if (!PermissionUtil.requestPermissions(
+                    this, 1,
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.READ_SMS
+                )
+            ) {
+                showToast("请先允许权限")
+                return@setOnClickListener
+            }
+            ThreadPoolManager.instance.getFixedThreadPool().submit(Runnable {
+                val info = Gson().toJson(PhoneUtil.getSMSInfo(this, 10))
+                runOnUiThread {
+                    alert(this, JsonUtil.formatJson(info))
+                }
+            })
         }
     }
 
