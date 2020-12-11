@@ -4,7 +4,6 @@ import android.os.Build;
 import android.text.Html;
 import android.util.Base64;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 
@@ -26,7 +25,7 @@ public class EncodeUtil {
     public static String urlEncode(String content, String charset) {
         try {
             return URLEncoder.encode(content, charset);
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             return content;
         }
     }
@@ -40,46 +39,78 @@ public class EncodeUtil {
     public static String urlDecode(String content, String charset) {
         try {
             return URLDecoder.decode(content, charset);
-        } catch (UnsupportedEncodingException e) {
+        } catch (Exception e) {
             return content;
         }
     }
 
     //Base64编码
     public static byte[] base64Encode(String content) {
-        return base64Encode(content.getBytes());
+        try {
+            return base64Encode(content.getBytes());
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //Base64编码
     public static byte[] base64Encode(byte[] bytes) {
         //Base64.DEFAULT：默认，当字符串过长（一般超过76）时会自动在中间加一个换行符，字符串最后也会加一个换行符
         //Base64.NO_WRAP：略去所有的换行符
-        return Base64.encode(bytes, Base64.NO_WRAP);
+        try {
+            return Base64.encode(bytes, Base64.NO_WRAP);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //Base64编码成字符串
     public static String base64EncodeToString(byte[] bytes) {
-        return Base64.encodeToString(bytes, Base64.NO_WRAP);
+        try {
+            return Base64.encodeToString(bytes, Base64.NO_WRAP);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //Base64 URL安全编码，不会转码特殊字符，如"+"、"/"、"="等
     public static byte[] base64UrlSafeEncode(String url) {
-        return Base64.encode(url.getBytes(), Base64.URL_SAFE);
+        try {
+            return Base64.encode(url.getBytes(), Base64.URL_SAFE);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //Base64解码
     public static byte[] base64Decode(String content) {
-        return Base64.decode(content, Base64.NO_WRAP);
+        try {
+            return Base64.decode(content, Base64.NO_WRAP);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //Base64解码
     public static byte[] base64Decode(byte[] bytes) {
-        return Base64.decode(bytes, Base64.NO_WRAP);
+        try {
+            return Base64.decode(bytes, Base64.NO_WRAP);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     //Html编码
     public static String htmlEncode(CharSequence content) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+        if (content == null) {
+            return null;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
             return Html.escapeHtml(content);
         } else {
             // 参照Html.escapeHtml()中代码
@@ -119,7 +150,9 @@ public class EncodeUtil {
 
     //Html解码
     public static CharSequence htmlDecode(String content) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+        if (content == null) {
+            return null;
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             return Html.fromHtml(content, Html.FROM_HTML_MODE_LEGACY);
         } else {
             return Html.fromHtml(content);

@@ -1730,7 +1730,7 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 "<title>测试Html编码和解码</title>\n" +
                 "</head>";
         String htmlEncode = EncodeUtil.htmlEncode(htmlContent);
-        String htmlDecode = EncodeUtil.htmlDecode(htmlEncode).toString();
+        CharSequence htmlDecode = EncodeUtil.htmlDecode(htmlEncode);
         LogUtil.w(TAG, "Html编码：\n" + htmlEncode);
         LogUtil.w(TAG, "Html解码：\n" + htmlDecode);
         sb.append("\n\n").append(htmlContent).append("\nHtml编码：\n").append(htmlEncode)
