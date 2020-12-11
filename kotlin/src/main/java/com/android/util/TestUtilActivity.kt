@@ -83,6 +83,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_SDCARD = "TEST_SDCARD"
         const val TEST_SCREEN = "TEST_SCREEN"
         const val TEST_PHONE = "TEST_PHONE"
+        const val TEST_ENCODE = "TEST_ENCODE"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -113,6 +114,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             }
             TEST_SCREEN -> testScreen()
             TEST_PHONE -> testPhone()
+            TEST_ENCODE -> testEncode()
         }
     }
 
@@ -1452,8 +1454,10 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .append("\n影视路径：").append(SDCardUtil.getMoviePath())
             .append("\n音乐路径：").append(SDCardUtil.getMusicPath())
             .append("\n图片路径：").append(SDCardUtil.getPicturePath())
-            .append("\n\n总存储空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getTotalSize().toDouble(), ByteUnit.GB)).append(" GB")
-            .append("\n剩余空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getAvailableSize().toDouble(), ByteUnit.GB)).append(" GB")
+            .append("\n\n总存储空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getTotalSize().toDouble(), ByteUnit.GB))
+            .append(" GB")
+            .append("\n剩余空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getAvailableSize().toDouble(), ByteUnit.GB))
+            .append(" GB")
             .append("\n已用空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getUsedSize().toDouble(), ByteUnit.GB)).append(" GB")
             .append("\n\nSD卡信息：\n").append(JsonUtil.formatJson(Gson().toJson(SDCardUtil.getSDCardInfo())))
         tv.text = sb.toString()
@@ -1617,6 +1621,43 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 }
             })
         }
+    }
+
+    //编码解码工具
+    private fun testEncode() {
+        initCommonLayout(this, "编码解码工具", false, true)
+        val sb = StringBuilder()
+        val url = "https://www.google.com/imghp?hl=zh-CN&tab=wi&ogbl"
+        val urlEncode = EncodeUtil.urlEncode(url)
+        val urlDecode = EncodeUtil.urlDecode(urlEncode)
+        LogUtil.w(TAG, "URL编码：$urlEncode")
+        LogUtil.w(TAG, "URL解码：$urlDecode")
+        sb.append(url).append("\nURL编码：\n").append(urlEncode)
+            .append("\nURL解码：\n").append(urlDecode)
+        val content = "https://www.google.com/imghp?hl=zh-CN&tab=wi&content=测试Base64编码和解码"
+        val base64EncodeBytes = EncodeUtil.base64Encode(content)
+        val base64DecodeBytes = EncodeUtil.base64Decode(base64EncodeBytes)
+        val base64EncodeStr = String(base64EncodeBytes!!)
+        val base64DecodeStr = String(base64DecodeBytes!!)
+        LogUtil.w(TAG, "Base64编码：$base64EncodeStr")
+        LogUtil.w(TAG, "Base64解码：$base64DecodeStr")
+        LogUtil.w(TAG, "Base64编码成字符串：" + EncodeUtil.base64EncodeToString(content.toByteArray()))
+        LogUtil.w(TAG, "Base64 URL安全编码：" + String(EncodeUtil.base64UrlSafeEncode(content)!!))
+        sb.append("\n\n").append(content).append("\nBase64编码：\n").append(base64EncodeStr)
+            .append("\nBase64解码：\n").append(base64DecodeStr)
+        val htmlContent = "<!Doctype html>\n" +
+                "<html lang=\"zh_cn\">\n" +
+                "<head>\n" +
+                "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n" +
+                "<title>测试Html编码和解码</title>\n" +
+                "</head>"
+        val htmlEncode = EncodeUtil.htmlEncode(htmlContent)
+        val htmlDecode = EncodeUtil.htmlDecode(htmlEncode)
+        LogUtil.w(TAG, "Html编码：\n$htmlEncode")
+        LogUtil.w(TAG, "Html解码：\n$htmlDecode")
+        sb.append("\n\n").append(htmlContent).append("\nHtml编码：\n").append(htmlEncode)
+            .append("\nHtml解码：\n").append(htmlDecode)
+        tv.text = sb.toString()
     }
 
 }

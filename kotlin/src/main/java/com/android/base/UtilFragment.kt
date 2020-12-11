@@ -122,6 +122,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.phoneTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_PHONE)
         }
+        //编码解码工具
+        binding.encodeTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_ENCODE)
+        }
     }
 
     override fun initListener() {
