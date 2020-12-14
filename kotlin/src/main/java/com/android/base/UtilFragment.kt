@@ -126,6 +126,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.encodeTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_ENCODE)
         }
+        //Service工具
+        binding.serviceTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_SERVICE)
+        }
     }
 
     override fun initListener() {

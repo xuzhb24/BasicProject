@@ -1,8 +1,10 @@
 package com.android.util
 
 import android.Manifest
+import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
+import android.content.ServiceConnection
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.BitmapFactory
@@ -11,6 +13,7 @@ import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
+import android.os.IBinder
 import android.text.InputType
 import android.text.Spannable
 import android.text.SpannableStringBuilder
@@ -39,6 +42,8 @@ import com.android.util.activity.TestJumpActivity
 import com.android.util.app.AATest.TestAppListActivity
 import com.android.util.app.AppUtil
 import com.android.util.regex.RegexUtil
+import com.android.util.service.ServiceUtil
+import com.android.util.service.TestService
 import com.android.util.threadPool.ThreadPoolManager
 import com.android.widget.InputLayout
 import com.android.widget.RecyclerView.AATest.entity.MonthBean
@@ -84,6 +89,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_SCREEN = "TEST_SCREEN"
         const val TEST_PHONE = "TEST_PHONE"
         const val TEST_ENCODE = "TEST_ENCODE"
+        const val TEST_SERVICE = "TEST_SERVICE"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -115,6 +121,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_SCREEN -> testScreen()
             TEST_PHONE -> testPhone()
             TEST_ENCODE -> testEncode()
+            TEST_SERVICE -> testService()
         }
     }
 
@@ -1658,6 +1665,59 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         sb.append("\n\n").append(htmlContent).append("\nHtml编码：\n").append(htmlEncode)
             .append("\nHtml解码：\n").append(htmlDecode)
         tv.text = sb.toString()
+    }
+
+    //Service工具
+    private fun testService() {
+        initCommonLayout(
+            this, "Service工具", false, true,
+            "获取所有运行的服务", "服务是否在运行", "开启服务", "停止服务", "绑定服务", "解绑服务"
+        )
+        btn1.setOnClickListener {
+            val list = ServiceUtil.getAllRunningServiceInfo(this)
+            val sb = StringBuilder()
+            if (!list.isNullOrEmpty()) {
+                for (info in list) {
+                    sb.append(info.service.className).append("\n")
+                }
+            }
+            if (TextUtils.isEmpty(sb.toString())) {
+                tv.text = "目前没有正在运行的服务"
+            } else {
+                tv.text = sb.toString()
+            }
+        }
+        btn2.setOnClickListener {
+            tv.text = if (ServiceUtil.isServiceRunning(this, TestService::class.java)) "TestService正在运行" else "TestService未运行"
+        }
+        btn3.setOnClickListener {
+            ServiceUtil.startService(this, TestService::class.java)
+        }
+        btn4.setOnClickListener {
+            ServiceUtil.stopService(this, TestService::class.java)
+        }
+        btn5.setOnClickListener {
+            ServiceUtil.bindService(this, TestService::class.java, mConn)
+        }
+        btn6.setOnClickListener {
+            if (ServiceUtil.isServiceRunning(this, TestService::class.java)) {
+                ServiceUtil.unbindService(this, mConn)
+            } else {
+                showToast("服务尚未绑定")
+            }
+        }
+    }
+
+    private val mConn: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            val binder = service as TestService.LocalBinder
+            showToast(binder.getService().getBindState())
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {
+            //onServiceDisconnected在连接正常关闭的情况下是不会被调用的
+            //该方法只在Service被破坏了或者被杀死的时候调用，例如系统资源不足时
+        }
     }
 
 }
