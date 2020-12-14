@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.android.widget.TitleBar
+        android:id="@+id/title_bar"
+        style="@style/TitleBarStyle"
+        app:titleText="图片工具" />
+
+    <ScrollView
+        style="@style/ScrollViewStyle"
+        android:paddingTop="5dp"
+        android:paddingBottom="20dp">
+
+        <LinearLayout
+            android:id="@+id/root_ll"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_horizontal"
+            android:orientation="vertical">
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

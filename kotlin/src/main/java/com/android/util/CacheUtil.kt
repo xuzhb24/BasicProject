@@ -3,6 +3,7 @@ package com.android.util
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import com.android.util.bitmap.BitmapUtil
 import org.json.JSONArray
 import org.json.JSONException
 import org.json.JSONObject

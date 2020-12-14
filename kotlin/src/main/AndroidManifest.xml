@@ -113,6 +113,7 @@
         <activity android:name="com.android.util.activity.TestJumpActivity" />
         <activity android:name="com.android.util.app.AATest.TestAppListActivity" />
         <activity android:name="com.android.util.threadPool.AATest.TestThreadPoolUtilActivity" />
+        <activity android:name="com.android.util.bitmap.TestBitmapActivity" />
 
         <service android:name="com.android.util.service.TestService" />
 

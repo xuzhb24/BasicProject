@@ -7,7 +7,7 @@ import android.text.TextUtils
 import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityTestCodeUtilBinding
 import com.android.frame.mvc.BaseActivity
-import com.android.util.BitmapUtil
+import com.android.util.bitmap.BitmapUtil
 import com.android.util.SizeUtil
 import kotlinx.android.synthetic.main.activity_test_code_util.*
 

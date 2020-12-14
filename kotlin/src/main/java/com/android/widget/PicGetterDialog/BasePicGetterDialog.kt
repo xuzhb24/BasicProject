@@ -23,7 +23,7 @@ import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import com.android.basicproject.R
-import com.android.util.BitmapUtil
+import com.android.util.bitmap.BitmapUtil
 import com.android.widget.ViewHolder
 import com.yalantis.ucrop.UCrop
 import java.io.File
@@ -365,7 +365,7 @@ abstract class BasePicGetterDialog : DialogFragment() {
                 mOnPicGetterListener?.onFailure("图片剪裁出错")
                 return
             }
-            val bitmap = BitmapUtil.bytesToBitmap(BitmapUtil.compressImage(BitmapFactory.decodeFile(uri.path), 500))
+            val bitmap = BitmapUtil.bytes2Bitmap(BitmapUtil.compressByQuality(BitmapFactory.decodeFile(uri.path), 500))
             mOnPicGetterListener?.onSuccess(bitmap, uri.path)
             dismiss()
         } else if (resultCode == UCrop.RESULT_ERROR) {

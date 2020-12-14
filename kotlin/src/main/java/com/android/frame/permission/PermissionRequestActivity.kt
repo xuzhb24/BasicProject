@@ -13,7 +13,7 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import com.android.basicproject.R
-import com.android.util.BitmapUtil
+import com.android.util.bitmap.BitmapUtil
 import com.android.util.ToastUtil
 import com.android.util.initCommonLayout
 import com.android.util.jumpToAppSetting

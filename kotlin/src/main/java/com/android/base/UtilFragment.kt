@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.android.basicproject.databinding.FragmentUtilBinding
 import com.android.frame.mvc.BaseFragment
 import com.android.util.TestUtilActivity
+import com.android.util.bitmap.TestBitmapActivity
 import com.android.util.code.TestCodeUtilActivity
 import com.android.util.glide.TestGlideActivity
 import com.android.util.jumpToTestUtilActivity
@@ -129,6 +130,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         //Service工具
         binding.serviceTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_SERVICE)
+        }
+        //图片工具
+        binding.bitmapTv.setOnClickListener {
+            startActivity(TestBitmapActivity::class.java)
         }
     }
 
