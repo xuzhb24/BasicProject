@@ -32,6 +32,7 @@ import android.renderscript.Allocation;
 import android.renderscript.Element;
 import android.renderscript.RenderScript;
 import android.renderscript.ScriptIntrinsicBlur;
+import android.text.TextUtils;
 import android.view.View;
 
 import androidx.annotation.FloatRange;
@@ -203,22 +204,6 @@ public class BitmapUtil {
         // 最后通知图库更新
         context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
         return true;
-    }
-
-    //计算采样率
-    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
-        if (height > reqHeight || width > reqWidth) {
-            final int halfHeight = height / 2;
-            final int halfWidth = width / 2;
-            while ((halfHeight / inSampleSize) >= reqHeight
-                    && (halfWidth / inSampleSize) >= reqWidth) {
-                inSampleSize *= 2;
-            }
-        }
-        return inSampleSize;
     }
 
     //通过BitmapFactory.decodeFile从文件中获取Bitmap
@@ -508,7 +493,7 @@ public class BitmapUtil {
 
     //转为圆角图片
     public static Bitmap toRoundCorner(Bitmap src, float radius, boolean recycle) {
-        if (null == src) {
+        if (isEmptyBitmap(src)) {
             return null;
         }
         int width = src.getWidth();
@@ -592,6 +577,7 @@ public class BitmapUtil {
 
     //stack模糊图片
     public static Bitmap stackBlur(Bitmap src, int radius, boolean recycle) {
+        if (isEmptyBitmap(src)) return null;
         Bitmap ret;
         if (recycle) {
             ret = src;
@@ -873,7 +859,7 @@ public class BitmapUtil {
      */
     public static Bitmap addTextWatermark(Bitmap src, String content, float textSize, int color,
                                           float x, float y, boolean recycle) {
-        if (isEmptyBitmap(src) || content == null) return null;
+        if (isEmptyBitmap(src) || TextUtils.isEmpty(content)) return null;
         Bitmap ret = src.copy(src.getConfig(), true);
         Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
         Canvas canvas = new Canvas(ret);
@@ -989,26 +975,26 @@ public class BitmapUtil {
     }
 
     private static boolean isJPEG(byte[] b) {
-        return b.length >= 2 && (b[0] == (byte) 0xFF) && (b[1] == (byte) 0xD8);
+        return b != null && b.length >= 2 && b[0] == (byte) 0xFF && b[1] == (byte) 0xD8;
     }
 
     private static boolean isGIF(byte[] b) {
-        return b.length >= 6
+        return b != null && b.length >= 6
                 && b[0] == 'G' && b[1] == 'I'
                 && b[2] == 'F' && b[3] == '8'
                 && (b[4] == '7' || b[4] == '9') && b[5] == 'a';
     }
 
     private static boolean isPNG(byte[] b) {
-        return b.length >= 8
-                && (b[0] == (byte) 137 && b[1] == (byte) 80
+        return b != null && b.length >= 8
+                && b[0] == (byte) 137 && b[1] == (byte) 80
                 && b[2] == (byte) 78 && b[3] == (byte) 71
                 && b[4] == (byte) 13 && b[5] == (byte) 10
-                && b[6] == (byte) 26 && b[7] == (byte) 10);
+                && b[6] == (byte) 26 && b[7] == (byte) 10;
     }
 
     private static boolean isBMP(byte[] b) {
-        return b.length >= 2 && (b[0] == 0x42) && (b[1] == 0x4d);
+        return b != null && b.length >= 2 && b[0] == 0x42 && b[1] == 0x4d;
     }
 
     /**
@@ -1053,6 +1039,22 @@ public class BitmapUtil {
         byte[] bytes = baos.toByteArray();
         if (recycle && !src.isRecycled()) src.recycle();
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length, options);
+    }
+
+    //计算采样率
+    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
+        final int height = options.outHeight;
+        final int width = options.outWidth;
+        int inSampleSize = 1;
+        if (height > reqHeight || width > reqWidth) {
+            final int halfHeight = height / 2;
+            final int halfWidth = width / 2;
+            while ((halfHeight / inSampleSize) >= reqHeight
+                    && (halfWidth / inSampleSize) >= reqWidth) {
+                inSampleSize *= 2;
+            }
+        }
+        return inSampleSize;
     }
 
     //判断bitmap对象是否为空
