@@ -116,6 +116,7 @@
         <activity android:name="com.android.util.bitmap.TestBitmapActivity" />
 
         <service android:name="com.android.util.service.TestService" />
+        <service android:name="com.android.util.location.LocationService" />
 
         <!--Android 7.0以后通过FileProvider实现应用间文件共享，涉及到拍照，应用安装等-->
         <!--参考https://www.jianshu.com/p/47fcd7873f39-->

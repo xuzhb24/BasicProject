@@ -135,6 +135,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.bitmapTv.setOnClickListener {
             startActivity(TestBitmapActivity::class.java)
         }
+        //位置工具
+        binding.locationTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_LOCATION)
+        }
     }
 
     override fun initListener() {

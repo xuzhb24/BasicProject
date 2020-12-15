@@ -42,6 +42,8 @@ import com.android.util.activity.TestJumpActivity
 import com.android.util.app.AATest.TestAppListActivity
 import com.android.util.app.AppUtil
 import com.android.util.bitmap.BitmapUtil
+import com.android.util.location.LocationService
+import com.android.util.location.LocationUtil
 import com.android.util.regex.RegexUtil
 import com.android.util.service.ServiceUtil
 import com.android.util.service.TestService
@@ -91,6 +93,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_PHONE = "TEST_PHONE"
         const val TEST_ENCODE = "TEST_ENCODE"
         const val TEST_SERVICE = "TEST_SERVICE"
+        const val TEST_LOCATION = "TEST_LOCATION"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -123,6 +126,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_PHONE -> testPhone()
             TEST_ENCODE -> testEncode()
             TEST_SERVICE -> testService()
+            TEST_LOCATION -> testLocation()
         }
     }
 
@@ -1719,6 +1723,92 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             //onServiceDisconnected在连接正常关闭的情况下是不会被调用的
             //该方法只在Service被破坏了或者被杀死的时候调用，例如系统资源不足时
         }
+    }
+
+    //位置工具
+    private fun testLocation() {
+        initCommonLayout(
+            this, "位置工具", false, true,
+            "开启位置监听服务", "打开设置界面", "申请位置权限"
+        )
+        bindService(Intent(this, LocationService::class.java), mLocationConn, Context.BIND_AUTO_CREATE)
+        btn1.setOnClickListener {
+            if (ServiceUtil.isServiceRunning(this, LocationService::class.java)) {
+                showToast("服务正在运行")
+            } else {
+                bindService(Intent(this, LocationService::class.java), mLocationConn, Context.BIND_AUTO_CREATE)
+            }
+        }
+        btn2.setOnClickListener {
+            LocationUtil.openGPSSettings(this)
+        }
+        btn3.setOnClickListener {
+            if (PermissionUtil.requestPermissions(
+                    this, 1,
+                    Manifest.permission.ACCESS_COARSE_LOCATION,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )
+            ) {
+                showToast("已申请权限！")
+            }
+        }
+    }
+
+    private var mLocationConn: ServiceConnection = object : ServiceConnection {
+        override fun onServiceConnected(name: ComponentName, service: IBinder) {
+            val locationService = (service as LocationService.LocationBinder).getService()
+            locationService.setOnLocationListener(object : LocationService.OnLocationListener {
+                override fun initState(isSuccess: Boolean) {
+                    if (isSuccess) {
+                        showToast("位置监听初始化成功")
+                    } else {
+                        if (PermissionUtil.isPermissionGranted(
+                                applicationContext,
+                                Manifest.permission.ACCESS_FINE_LOCATION,
+                                Manifest.permission.ACCESS_COARSE_LOCATION
+                            )
+                        ) {
+                            if (!LocationUtil.isGPSEnable(applicationContext)) {
+                                showToast("请打开GPS")
+                            } else if (!LocationUtil.isLocationEnable(applicationContext)) {
+                                showToast("定位不可用")
+                            }
+                        } else {
+                            showToast("请先允许权限")
+                        }
+                        unbindService()
+                    }
+                }
+
+                override fun getLocation(
+                    lastLatitude: String, lastLongitude: String,
+                    latitude: String, longitude: String,
+                    country: String, locality: String, street: String
+                ) {
+                    runOnUiThread {
+                        val sb = java.lang.StringBuilder()
+                        sb.append("lastLatitude：").append(lastLatitude).append("\nlastLongitude：").append(lastLongitude)
+                            .append("\nlatitude：").append(latitude).append("\nlongitude：").append(longitude)
+                            .append("\ncountryName：").append(country).append("\nlocality：").append(locality)
+                            .append("\nstreet：").append(street)
+                        tv.text = sb.toString()
+                    }
+                }
+            })
+        }
+
+        override fun onServiceDisconnected(name: ComponentName) {}
+    }
+
+    private fun unbindService() {
+        unbindService(mLocationConn)
+    }
+
+    override fun onDestroy() {
+        if (ServiceUtil.isServiceRunning(this, LocationService::class.java)) {
+            unbindService(mLocationConn)
+        }
+        super.onDestroy()
     }
 
 }
