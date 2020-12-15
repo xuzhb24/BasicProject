@@ -139,6 +139,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.locationTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_LOCATION)
         }
+        //网络工具
+        binding.networkTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_NETWORK)
+        }
     }
 
     override fun initListener() {

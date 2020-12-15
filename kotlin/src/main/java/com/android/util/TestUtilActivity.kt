@@ -94,6 +94,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_ENCODE = "TEST_ENCODE"
         const val TEST_SERVICE = "TEST_SERVICE"
         const val TEST_LOCATION = "TEST_LOCATION"
+        const val TEST_NETWORK = "TEST_NETWORK"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -127,6 +128,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_ENCODE -> testEncode()
             TEST_SERVICE -> testService()
             TEST_LOCATION -> testLocation()
+            TEST_NETWORK -> testNetwork()
         }
     }
 
@@ -1786,7 +1788,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                     country: String, locality: String, street: String
                 ) {
                     runOnUiThread {
-                        val sb = java.lang.StringBuilder()
+                        val sb = StringBuilder()
                         sb.append("lastLatitude：").append(lastLatitude).append("\nlastLongitude：").append(lastLongitude)
                             .append("\nlatitude：").append(latitude).append("\nlongitude：").append(longitude)
                             .append("\ncountryName：").append(country).append("\nlocality：").append(locality)
@@ -1802,6 +1804,37 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
 
     private fun unbindService() {
         unbindService(mLocationConn)
+    }
+
+    //网络工具
+    private fun testNetwork() {
+        initCommonLayout(
+            this, "网络工具", false, false,
+            "获取网络信息", "打开网络设置页面", "打开WiFi", "关闭WiFi"
+        )
+        btn1.setOnClickListener {
+            val sb = StringBuilder()
+            sb.append("网络是否连接：").append(NetworkUtil.isConnected(this))
+                .append("\n网络是否可用：").append(NetworkUtil.isAvailable())
+                .append("\n移动数据是否打开：").append(NetworkUtil.getDataEnabled(this))
+                .append("\n网络是否是4G：").append(NetworkUtil.is4G(this))
+                .append("\nwifi是否打开：").append(NetworkUtil.isWifiEnabled(this))
+                .append("\nwifi是否连接：").append(NetworkUtil.isWifiConnected(this))
+                .append("\nwifi是否可用：").append(NetworkUtil.isWifiAvailable(this))
+                .append("\n当前网络类型：").append(NetworkUtil.getNetworkType(this))
+                .append("\nIP地址：").append(NetworkUtil.getIPAddress(true))
+                .append("\nbaidu.com对应的IP地址：").append(NetworkUtil.getDomainAddress("baidu.com"))
+            alert(this, sb.toString())
+        }
+        btn2.setOnClickListener {
+            NetworkUtil.openWirelessSettings(this)
+        }
+        btn3.setOnClickListener {
+            NetworkUtil.setWifiEnabled(this, true)
+        }
+        btn4.setOnClickListener {
+            NetworkUtil.setWifiEnabled(this, false)
+        }
     }
 
     override fun onDestroy() {
