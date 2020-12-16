@@ -10,6 +10,7 @@ import com.android.util.bitmap.TestBitmapActivity
 import com.android.util.code.TestCodeUtilActivity
 import com.android.util.glide.TestGlideActivity
 import com.android.util.jumpToTestUtilActivity
+import com.android.util.permission.TestPermissionActivity
 import com.android.util.threadPool.AATest.TestThreadPoolUtilActivity
 
 /**
@@ -142,6 +143,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         //网络工具
         binding.networkTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_NETWORK)
+        }
+        //权限工具
+        binding.permissionTv.setOnClickListener {
+            startActivity(TestPermissionActivity::class.java)
         }
     }
 

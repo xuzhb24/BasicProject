@@ -44,6 +44,7 @@ import com.android.util.app.AppUtil
 import com.android.util.bitmap.BitmapUtil
 import com.android.util.location.LocationService
 import com.android.util.location.LocationUtil
+import com.android.util.permission.PermissionUtil
 import com.android.util.regex.RegexUtil
 import com.android.util.service.ServiceUtil
 import com.android.util.service.TestService

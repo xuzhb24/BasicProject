@@ -6,7 +6,7 @@ import android.content.Context
 import android.content.Intent
 import android.location.*
 import android.provider.Settings
-import com.android.util.PermissionUtil
+import com.android.util.permission.PermissionUtil
 import java.io.IOException
 import java.util.*
 

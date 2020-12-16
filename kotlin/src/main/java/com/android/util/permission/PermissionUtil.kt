@@ -1,4 +1,4 @@
-package com.android.util
+package com.android.util.permission
 
 import android.app.Activity
 import android.content.Context
@@ -38,14 +38,20 @@ object PermissionUtil {
         @NonNull listener: OnPermissionListener
     ) {
         if (mRequestCode != -1 && requestCode == mRequestCode) {
-            val deniedForeverPermissions = getDeniedForeverPermissions(activity, *permissions)
-            val deniedPermissions = getDeniedPermissions(activity, *permissions)
-            if (deniedForeverPermissions.isNotEmpty()) {
-                listener.onPermissionDeniedForever(deniedForeverPermissions)
-            } else if (deniedPermissions.isNotEmpty()) {
-                listener.onPermissionDenied(deniedPermissions)
-            } else {
-                listener.onPermissionGranted()
+            val deniedForeverPermissions =
+                getDeniedForeverPermissions(activity, *permissions)
+            val deniedPermissions =
+                getDeniedPermissions(activity, *permissions)
+            when {
+                deniedForeverPermissions.isNotEmpty() -> {
+                    listener.onPermissionDeniedForever(deniedForeverPermissions)
+                }
+                deniedPermissions.isNotEmpty() -> {
+                    listener.onPermissionDenied(deniedPermissions)
+                }
+                else -> {
+                    listener.onPermissionGranted()
+                }
             }
         }
     }
