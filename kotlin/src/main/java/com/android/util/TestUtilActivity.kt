@@ -96,6 +96,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_SERVICE = "TEST_SERVICE"
         const val TEST_LOCATION = "TEST_LOCATION"
         const val TEST_NETWORK = "TEST_NETWORK"
+        const val TEST_APK_DOWNLOAD = "TEST_APK_DOWNLOAD"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -130,6 +131,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_SERVICE -> testService()
             TEST_LOCATION -> testLocation()
             TEST_NETWORK -> testNetwork()
+            TEST_APK_DOWNLOAD -> testApkDownload()
         }
     }
 
@@ -1835,6 +1837,18 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         }
         btn4.setOnClickListener {
             NetworkUtil.setWifiEnabled(this, false)
+        }
+    }
+
+    //版本升级
+    private fun testApkDownload() {
+        initCommonLayout(this, "应用下载", "下载QQ邮箱", "版本更新")
+        val apkDownloadUtil = ApkDownloadUtil(this)
+        btn1.setOnClickListener {
+            apkDownloadUtil.downLoadApk("http://app.mail.qq.com/cgi-bin/mailapp?latest=y&from=2")
+        }
+        btn2.setOnClickListener {
+            apkDownloadUtil.downLoadApk("https://ugc-download-2.imfir.cn/92d9763a68537b42d156507779b3a63635cf3909.apk?auth_key=1594538420-0-0-abce665cfe38f8e444a000dd9411587c")
         }
     }
 

@@ -148,6 +148,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.permissionTv.setOnClickListener {
             startActivity(TestPermissionActivity::class.java)
         }
+        //应用下载升级
+        binding.downloadTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_APK_DOWNLOAD)
+        }
     }
 
     override fun initListener() {
