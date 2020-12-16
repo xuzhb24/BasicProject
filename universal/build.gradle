@@ -62,4 +62,6 @@ dependencies {
     api 'com.contrarywind:Android-PickerView:4.1.8'
     //Banner轮播，https://github.com/youth5201314/banner
     api 'com.youth.banner:banner:1.4.10'
+    //页面解析工具
+    api 'com.github.xuzhb24:uiparse:1.0.1'
 }

@@ -284,7 +284,7 @@ public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         //屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
-        ExtraUtil.getTopActivityName(this, ev);
+        ExtraUtil.parseActivity(this, ev);
         return super.dispatchTouchEvent(ev);
     }
 

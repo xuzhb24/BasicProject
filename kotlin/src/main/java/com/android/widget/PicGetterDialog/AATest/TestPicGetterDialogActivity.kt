@@ -34,7 +34,7 @@ class TestPicGetterDialogActivity : BaseActivity<ActivityTestPicGetterDialogBind
 
     private fun showPicGetDialog() {
         if (mPicGetterDialog != null && mPicGetterDialog!!.dialog != null &&
-            mPicGetterDialog!!.dialog.isShowing
+            mPicGetterDialog!!.dialog!!.isShowing
         ) {
             return
         }

@@ -28,7 +28,7 @@ class TestSystemWidgetFragment : Fragment() {
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         mLayoutId = arguments?.getInt(EXTRA_LAYOUT_ID) ?: -1
     }

@@ -21,7 +21,7 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment() {
     protected var mActivity: FragmentActivity? = null
     protected var mContext: Context? = null
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         mActivity = this.activity
         mContext = context

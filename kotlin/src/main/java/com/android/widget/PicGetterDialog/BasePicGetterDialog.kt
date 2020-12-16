@@ -81,7 +81,7 @@ abstract class BasePicGetterDialog : DialogFragment() {
         mCurrentPhotoPath = savedInstanceState?.getString(EXTRA_PIC_URL)
     }
 
-    override fun onCancel(dialog: DialogInterface?) {
+    override fun onCancel(dialog: DialogInterface) {
         mOnPicGetterListener?.onCancel()
     }
 
@@ -92,7 +92,7 @@ abstract class BasePicGetterDialog : DialogFragment() {
 
     //初始化参数
     private fun initParams() {
-        dialog.window?.let {
+        dialog?.window?.let {
             val params = it.attributes
             params.dimAmount = mDimAmount
             params.gravity = mGravity

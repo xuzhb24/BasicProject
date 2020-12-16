@@ -20,8 +20,10 @@ class PicGetterDialog : BasePicGetterDialog() {
             openGallery()  //从相册选取照片
         }
         holder.setOnClickListener(R.id.cancel_tv) {
-            onCancel(getDialog())  //取消弹窗
-            dismiss()
+            getDialog()?.let {
+                onCancel(it)  //取消弹窗
+                dismiss()
+            }
         }
     }
 }

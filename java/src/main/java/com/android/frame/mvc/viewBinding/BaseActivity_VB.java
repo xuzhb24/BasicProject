@@ -267,7 +267,7 @@ public abstract class BaseActivity_VB<VB extends ViewBinding> extends AppCompatA
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         //屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
-        ExtraUtil.getTopActivityName(this, ev);
+        ExtraUtil.parseActivity(this, ev);
         return super.dispatchTouchEvent(ev);
     }
 }

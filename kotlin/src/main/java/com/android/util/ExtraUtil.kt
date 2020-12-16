@@ -10,9 +10,12 @@ import android.net.Uri
 import android.provider.Settings
 import android.text.SpannableStringBuilder
 import android.view.Gravity
+import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ImageView
+import androidx.appcompat.app.AppCompatActivity
 import com.android.basicproject.R
+import com.android.util.uiparse.ParseUtil
 import com.android.widget.PopupWindow.CommonPopupWindow
 import com.google.gson.Gson
 import java.util.*
@@ -90,4 +93,8 @@ fun showImage(activity: Activity, drawable: Drawable) {
         }
         .build()
         .showAtLocation(activity.findViewById(android.R.id.content), Gravity.CENTER, 0, 0)
+}
+
+fun parseActivity(activity: AppCompatActivity, ev: MotionEvent?) {
+    ParseUtil.showTopActivityInfo(activity, ev)
 }

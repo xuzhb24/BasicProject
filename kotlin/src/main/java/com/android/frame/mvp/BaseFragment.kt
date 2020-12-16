@@ -67,7 +67,7 @@ abstract class BaseFragment<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
         }
     }
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         mActivity = this.activity
         mContext = context
