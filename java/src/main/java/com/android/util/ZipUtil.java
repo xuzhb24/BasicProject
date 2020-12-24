@@ -79,6 +79,7 @@ public class ZipUtil {
      * @throws IOException IO错误时抛出
      */
     private static boolean zipFile(File srcFile, String rootPath, ZipOutputStream zos, String comment) throws IOException {
+        if (srcFile == null) return false;
         rootPath = rootPath + (StringUtil.isEmpty(rootPath) ? "" : File.separator) + srcFile.getName();
         if (srcFile.isDirectory()) {
             File[] fileList = srcFile.listFiles();
