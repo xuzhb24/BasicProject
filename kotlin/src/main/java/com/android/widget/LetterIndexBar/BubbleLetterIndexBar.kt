@@ -19,16 +19,21 @@ class BubbleLetterIndexBar @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     companion object {
+        private val DEFAULT_LETTERS = arrayOf(
+            "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
+            "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"
+        )
         private val DEFAULT_TEXT_SIZE = SizeUtil.dp2px(15f)
         private val DEFAULT_TEXT_COLOR = Color.BLACK
         private val DEFAULT_BUBBLE_MARGIN = SizeUtil.dp2px(10f)
         private val DEFAULT_BUBBLE_TEXT_MARGIN = SizeUtil.dp2px(35f)
     }
 
-    var letters: Array<String> = arrayOf(
-        "A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "K", "L", "M", "N",
-        "O", "P", "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "#"
-    )
+    var letters: Array<String> = DEFAULT_LETTERS
+        set(value) {
+            field = value
+            invalidate()
+        }
     var normalTextSize: Float = DEFAULT_TEXT_SIZE    //正常时字母的字体大小
     var pressedTextSize: Float = DEFAULT_TEXT_SIZE   //按下时字母的字体大小
     var bubbleTextSize: Float = DEFAULT_TEXT_SIZE    //气泡中字母的字体大小
@@ -161,6 +166,8 @@ class BubbleLetterIndexBar @JvmOverloads constructor(
                             mPreIndex = mCurIndex
                         }
                         invalidate()
+                    } else {  //不拦截其他区域的点击事件
+                        return false
                     }
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
