@@ -20,6 +20,11 @@
     <attr name="contentTextSize" format="dimension" />
     <attr name="contentTextColor" format="color" />
 
+    <attr name="normalTextSize" format="dimension" />
+    <attr name="pressedTextSize" format="dimension" />
+    <attr name="normalTextColor" format="color" />
+    <attr name="pressedTextColor" format="color" />
+
     <!--标题栏属性-->
     <declare-styleable name="TitleBar">
         <attr name="leftIcon" format="reference" />
@@ -380,6 +385,24 @@
         <attr name="contentSuffixText" />
         <attr name="contentTextSize" />
         <attr name="contentTextColor" />
+    </declare-styleable>
+
+    <declare-styleable name="LetterIndexBar">
+        <attr name="normalTextSize" />
+        <attr name="pressedTextSize" />
+        <attr name="normalTextColor" />
+        <attr name="pressedTextColor" />
+    </declare-styleable>
+
+    <declare-styleable name="BubbleLetterIndexBar">
+        <attr name="normalTextSize" />
+        <attr name="pressedTextSize" />
+        <attr name="normalTextColor" />
+        <attr name="pressedTextColor" />
+        <attr name="bubbleTextSize" format="dimension" />
+        <attr name="bubbleTextColor" format="color" />
+        <attr name="bubbleMargin" format="dimension" />
+        <attr name="bubbleTextMargin" format="dimension" />
     </declare-styleable>
 
 </resources>

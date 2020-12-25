@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.android.basicproject.databinding.FragmentWidgetBinding
 import com.android.frame.mvc.BaseFragment
 import com.android.universal.TestSystemWidgetActivity
+import com.android.widget.LetterIndexBar.TestLetterIndexBarActivity
 import com.android.widget.LineChart.TestLineChartActivity
 import com.android.widget.LoadingLayout.TestLoadingLayoutActivity
 import com.android.widget.PicGetterDialog.AATest.TestPicGetterDialogActivity
@@ -58,6 +59,10 @@ class WidgetFragment : BaseFragment<FragmentWidgetBinding>() {
         //加载状态布局
         binding.loadingTv.setOnClickListener {
             startActivity(TestLoadingLayoutActivity::class.java)
+        }
+        //字母通讯录
+        binding.letterTv.setOnClickListener {
+            startActivity(TestLetterIndexBarActivity::class.java)
         }
         //单一控件
         binding.singleTv.setOnClickListener {

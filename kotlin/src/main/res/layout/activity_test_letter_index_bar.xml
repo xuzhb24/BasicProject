@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.android.widget.TitleBar
+        android:id="@+id/title_bar"
+        style="@style/TitleBarStyle"
+        app:titleText="字母通讯录" />
+
+    <com.android.widget.LetterIndexBar.LetterIndexBar
+        android:id="@+id/left_letter_index_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        android:background="#33000000"
+        android:paddingLeft="30dp"
+        android:paddingTop="20dp"
+        android:paddingBottom="50dp"
+        app:normalTextColor="#888888"
+        app:normalTextSize="14sp"
+        app:pressedTextColor="#0093FF"
+        app:pressedTextSize="18sp" />
+
+    <com.android.widget.LetterIndexBar.BubbleLetterIndexBar
+        android:id="@+id/right_letter_index_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/title_bar"
+        android:layout_alignParentRight="true"
+        android:background="@color/white"
+        android:paddingLeft="50dp"
+        android:paddingTop="20dp"
+        android:paddingRight="30dp"
+        android:paddingBottom="20dp"
+        app:bubbleTextColor="@color/white"
+        app:bubbleTextSize="22sp"
+        app:normalTextColor="#888888"
+        app:pressedTextColor="#0093FF" />
+
+    <TextView
+        android:id="@+id/letter_tv"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/shape_corners_17_solid_66000000"
+        android:gravity="center"
+        android:textColor="#ffffff"
+        android:textSize="35sp"
+        android:textStyle="bold"
+        android:visibility="gone"
+        tool:text="C" />
+
+</RelativeLayout>
