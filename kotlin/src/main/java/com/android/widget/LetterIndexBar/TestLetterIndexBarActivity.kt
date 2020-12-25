@@ -26,6 +26,17 @@ class TestLetterIndexBarActivity : BaseActivity_VB<ActivityTestLetterIndexBarBin
             }
 
         })
+        binding.rightLetterIndexBar.setOnLetterChangedListener(object : BubbleLetterIndexBar.OnLetterChangedListener {
+            override fun onLetterChanged(letter: String, x: Float, y: Float) {
+                binding.letterTv.text = letter
+                binding.letterTv.visibility = View.VISIBLE
+            }
+
+            override fun onLetterGone() {
+                binding.letterTv.visibility = View.GONE
+            }
+
+        })
     }
 
     override fun getViewBinding() = ActivityTestLetterIndexBarBinding.inflate(layoutInflater)

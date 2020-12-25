@@ -50,6 +50,7 @@ class BubbleLetterIndexBar @JvmOverloads constructor(
     private var mBitmapHeight: Float = SizeUtil.dp2px(45f)  //气泡背景图高度
     private var mBitmapRect: Rect = Rect()
     private var mBitmap: Bitmap
+    private var isDownInLetter = false  //手指按下时是否在字母一栏
 
     init {
         attrs?.let {
@@ -145,28 +146,29 @@ class BubbleLetterIndexBar @JvmOverloads constructor(
         event?.let {
             when (it.action) {
                 MotionEvent.ACTION_DOWN, MotionEvent.ACTION_MOVE -> {
-                    mCurIndex = ((it.y - paddingTop) / mCellHeight).toInt()
-                    if (mCurIndex >= 0 && mCurIndex < letters.size && mCurIndex != mPreIndex) {
-                        mLetterChangedListener?.onLetterChanged(
-                            letters[mCurIndex],
-                            paddingLeft + mCellWidth / 2f,
-                            paddingTop + mCellHeight * mCurIndex + mCellHeight / 2f
-                        )
-                        mPreIndex = mCurIndex
+                    if (it.action == MotionEvent.ACTION_DOWN) {
+                        isDownInLetter =
+                            it.x > paddingLeft - SizeUtil.dp2px(10f) && it.x < width - paddingRight + SizeUtil.dp2px(10f)
+                    }
+                    if (isDownInLetter) {
+                        mCurIndex = ((it.y - paddingTop) / mCellHeight).toInt()
+                        if (mCurIndex >= 0 && mCurIndex < letters.size && mCurIndex != mPreIndex) {
+                            mLetterChangedListener?.onLetterChanged(
+                                letters[mCurIndex],
+                                paddingLeft + mCellWidth / 2f,
+                                paddingTop + mCellHeight * mCurIndex + mCellHeight / 2f
+                            )
+                            mPreIndex = mCurIndex
+                        }
+                        invalidate()
                     }
                 }
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
                     mCurIndex = -1
                     mPreIndex = -1
                     mLetterChangedListener?.onLetterGone()
+                    invalidate()
                 }
-            }
-            //当触摸字母一栏或者手指抬起时重新绘制
-            if (it.x > paddingLeft - SizeUtil.dp2px(10f) &&
-                it.x < width - paddingRight + SizeUtil.dp2px(10f) ||
-                (mCurIndex == -1 && mPreIndex == -1)
-            ) {
-                invalidate()
             }
         }
         return true
