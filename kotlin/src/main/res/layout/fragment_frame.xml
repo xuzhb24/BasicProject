@@ -63,6 +63,12 @@
                 android:text="MVC框架" />
 
             <TextView
+                android:id="@+id/guide_tv"
+                style="@style/ItemSingleTextStyle"
+                android:layout_marginTop="10dp"
+                android:text="引导页" />
+
+            <TextView
                 style="@style/ItemTitleTextStyle"
                 android:text="扫码" />
 

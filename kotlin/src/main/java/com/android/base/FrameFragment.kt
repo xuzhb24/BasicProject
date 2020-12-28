@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.android.basicproject.databinding.FragmentFrameBinding
 import com.android.frame.TestLeakActivity
 import com.android.frame.camera.zxing.AATest.TestZXingActivity
+import com.android.frame.guide.GuideActivity
 import com.android.frame.http.AATest.TestRetrofitActivity
 import com.android.frame.mvc.BaseFragment
 import com.android.frame.mvc.viewBinding.AATest.TestMvcActivity
@@ -56,6 +57,10 @@ class FrameFragment : BaseFragment<FragmentFrameBinding>() {
         //zxing扫码
         binding.zxingTv.setOnClickListener {
             startActivity(TestZXingActivity::class.java)
+        }
+        //引导页
+        binding.guideTv.setOnClickListener {
+            startActivity(GuideActivity::class.java)
         }
     }
 
