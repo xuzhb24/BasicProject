@@ -9,7 +9,9 @@ import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import com.bumptech.glide.Glide
 import kotlinx.android.synthetic.main.fragment_test_system_widget3.*
+import kotlinx.android.synthetic.main.fragment_test_system_widget4.*
 
 /**
  * Created by xuzhb on 2020/3/1
@@ -46,6 +48,7 @@ class TestSystemWidgetFragment : Fragment() {
             R.layout.fragment_test_system_widget1 -> page1()
             R.layout.fragment_test_system_widget2 -> page2()
             R.layout.fragment_test_system_widget3 -> page3()
+            R.layout.fragment_test_system_widget4 -> page4()
         }
     }
 
@@ -76,6 +79,13 @@ class TestSystemWidgetFragment : Fragment() {
             animator.interpolator = LinearInterpolator()
             animator.setDuration(5 * 1000).start()
         }
+    }
+
+    //第四个页面
+    private fun page4() {
+        Glide.with(this)
+            .load("https://img.ivsky.com/img/tupian/pre/202005/31/xingkong-012.jpg")
+            .into(iv)
     }
 
 }
