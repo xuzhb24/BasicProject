@@ -28,6 +28,14 @@ class WidgetFragment : BaseFragment<FragmentWidgetBinding>() {
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
+        //系统控件
+        binding.systemTv.setOnClickListener {
+            startActivity(TestSystemWidgetActivity::class.java)
+        }
+        //单一控件
+        binding.singleTv.setOnClickListener {
+            startActivity(TestSingleWidgetActivity::class.java)
+        }
         //通用PopupWindow
         binding.popupTv.setOnClickListener {
             startActivity(TestPopupWindowActivity::class.java)
@@ -63,14 +71,6 @@ class WidgetFragment : BaseFragment<FragmentWidgetBinding>() {
         //字母通讯录
         binding.letterTv.setOnClickListener {
             startActivity(TestLetterIndexBarActivity::class.java)
-        }
-        //单一控件
-        binding.singleTv.setOnClickListener {
-            startActivity(TestSingleWidgetActivity::class.java)
-        }
-        //系统控件
-        binding.systemTv.setOnClickListener {
-            startActivity(TestSystemWidgetActivity::class.java)
         }
     }
 

@@ -32,6 +32,14 @@ public class WidgetFragment extends BaseFragment<FragmentWidgetBinding> {
 
     @Override
     public void initListener() {
+        //系统控件
+        binding.systemTv.setOnClickListener(v -> {
+            startActivity(TestSystemWidgetActivity.class);
+        });
+        //单一控件
+        binding.singleTv.setOnClickListener(v -> {
+            startActivity(TestSingleWidgetActivity.class);
+        });
         //通用PopupWindow
         binding.popupTv.setOnClickListener(v -> {
             startActivity(TestPopupWindowActivity.class);
@@ -63,14 +71,6 @@ public class WidgetFragment extends BaseFragment<FragmentWidgetBinding> {
         //加载状态布局
         binding.loadingTv.setOnClickListener(v -> {
             startActivity(TestLoadingLayoutActivity.class);
-        });
-        //单一控件
-        binding.singleTv.setOnClickListener(v -> {
-            startActivity(TestSingleWidgetActivity.class);
-        });
-        //系统控件
-        binding.systemTv.setOnClickListener(v -> {
-            startActivity(TestSystemWidgetActivity.class);
         });
     }
 
