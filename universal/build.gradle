@@ -64,4 +64,6 @@ dependencies {
     api 'com.youth.banner:banner:1.4.10'
     //页面解析工具
     api 'com.github.xuzhb24:uiparse:1.0.3'
+    //侧滑返回框架
+    api 'com.billy.android:smart-swipe:1.1.2'
 }

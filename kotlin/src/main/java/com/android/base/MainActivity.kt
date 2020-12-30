@@ -12,7 +12,7 @@ import com.android.basicproject.databinding.ActivityMainBinding
 import com.android.frame.mvc.BaseActivity
 import com.google.android.material.tabs.TabLayout
 
-class MainActivity : BaseActivity<ActivityMainBinding>() {
+class MainActivity : BaseActivity<ActivityMainBinding>(), DontSwipeBack {
 
     private val mImageButton = intArrayOf(
         R.drawable.selector_bottom_frame,

@@ -22,7 +22,7 @@ import java.util.ArrayList;
  * Created by xuzhb on 2019/10/19
  * Desc:
  */
-public class MainActivity extends BaseActivity<ActivityMainBinding> {
+public class MainActivity extends BaseActivity<ActivityMainBinding> implements DontSwipeBack {
 
     private int[] mImageButton = new int[]{
             R.drawable.selector_bottom_frame,
