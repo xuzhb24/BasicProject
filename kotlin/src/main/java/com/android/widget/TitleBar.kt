@@ -236,18 +236,6 @@ class TitleBar @JvmOverloads constructor(
         mDividerLine.visibility = if (showDividerLine) View.VISIBLE else View.GONE
     }
 
-    //点击左侧图标/文本回调
-    fun setOnLeftClickListener(listener: (view: View) -> Unit) {
-        mLeftFl.setOnClickListener { v -> listener.invoke(v) }
-//        mLeftTv.setOnClickListener { v -> listener.invoke(v) }
-    }
-
-    //点击右侧图标/文本回调
-    fun setOnRightClickListener(listener: (view: View) -> Unit) {
-//        mRightFl.setOnClickListener { v -> listener.invoke(v) }
-        mRightTv.setOnClickListener { v -> listener.invoke(v) }
-    }
-
     //点击左侧图标回调
     fun setOnLeftIconClickListener(listener: (view: View) -> Unit) {
         mLeftFl.setOnClickListener { v -> listener.invoke(v) }
@@ -267,6 +255,5 @@ class TitleBar @JvmOverloads constructor(
     fun setOnRightTextClickListener(listener: (view: View) -> Unit) {
         mRightTv.setOnClickListener { v -> listener.invoke(v) }
     }
-
 
 }

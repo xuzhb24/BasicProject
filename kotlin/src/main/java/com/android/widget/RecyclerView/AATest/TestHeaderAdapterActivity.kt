@@ -31,7 +31,7 @@ class TestHeaderAdapterActivity : BaseActivity<ActivityTestAdapterBinding>() {
     )
 
     override fun initListener() {
-        mTitleBar?.setOnRightClickListener {
+        mTitleBar?.setOnRightTextClickListener {
             val sb = StringBuilder()
             sb.append("\n")
             if (mSelectedList.size == 0) {

@@ -28,7 +28,7 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
     }
 
     override fun initListener() {
-        mTitleBar?.setOnRightClickListener {
+        mTitleBar?.setOnRightTextClickListener {
             AlertDialog.Builder(this@TestSingleWidgetActivity)
                 .setMessage("本页面主要是查看编写的一些单一控件的样式")
                 .show()
