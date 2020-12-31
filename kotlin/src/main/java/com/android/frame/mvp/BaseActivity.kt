@@ -104,7 +104,7 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
         if (mTitleBar != null) {  //如果当前布局包含id为title_bar的标题栏控件，以该控件为基准实现沉浸式状态栏
             StatusBarUtil.darkModeAndPadding(this, mTitleBar!!)
             if (isBarBack()) {
-                mTitleBar?.setOnLeftClickListener {
+                mTitleBar?.setOnLeftIconClickListener {
                     finish()
                 }
             }

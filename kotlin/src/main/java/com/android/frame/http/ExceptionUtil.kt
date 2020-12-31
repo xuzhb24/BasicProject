@@ -1,8 +1,11 @@
 package com.android.frame.http
 
+import android.os.NetworkOnMainThreadException
+import android.text.TextUtils
 import com.android.util.NetworkUtil
 import org.json.JSONException
 import retrofit2.HttpException
+import java.net.ConnectException
 import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import java.text.ParseException
@@ -19,9 +22,10 @@ object ExceptionUtil {
             is SocketTimeoutException -> "请求网络超时"
             is HttpException -> convertStatusCode(t)
             is ParseException, is JSONException -> "数据解析错误"
-            else -> "未知错误，${t.message}"
+            is NetworkOnMainThreadException -> "调用错误，在主线程中请求网络"
+            is ConnectException -> "连接服务器异常"
+            else -> if (TextUtils.isEmpty(t.message)) "$t" else "${t.message}"
         }
-
 
     private fun convertStatusCode(e: HttpException): String =
         when (e.code()) {

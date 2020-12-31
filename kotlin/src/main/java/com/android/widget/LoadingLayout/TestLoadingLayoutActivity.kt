@@ -3,13 +3,13 @@ package com.android.widget.LoadingLayout
 import android.os.Bundle
 import android.os.Handler
 import com.android.basicproject.databinding.ActivityTestLoadingLayoutBinding
-import com.android.frame.mvc.viewBinding.BaseActivity_VB
+import com.android.frame.mvc.BaseActivity
 
 /**
  * Created by xuzhb on 2020/7/20
  * Desc:
  */
-class TestLoadingLayoutActivity : BaseActivity_VB<ActivityTestLoadingLayoutBinding>() {
+class TestLoadingLayoutActivity : BaseActivity<ActivityTestLoadingLayoutBinding>() {
 
     override fun handleView(savedInstanceState: Bundle?) {
         Handler().postDelayed({ binding.loadingLayout.loadComplete() }, 2000)

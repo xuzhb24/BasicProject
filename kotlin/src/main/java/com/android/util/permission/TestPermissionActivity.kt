@@ -5,7 +5,7 @@ import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import com.android.basicproject.databinding.ActivityCommonLayoutBinding
-import com.android.frame.mvc.viewBinding.BaseActivity_VB
+import com.android.frame.mvc.BaseActivity
 import com.android.util.AlertDialogUtil
 import com.android.util.LogUtil
 import com.android.util.initCommonLayout
@@ -14,7 +14,7 @@ import com.android.util.initCommonLayout
  * Created by xuzhb on 2020/12/16
  * Desc:
  */
-class TestPermissionActivity : BaseActivity_VB<ActivityCommonLayoutBinding>() {
+class TestPermissionActivity : BaseActivity<ActivityCommonLayoutBinding>() {
 
     companion object {
         private const val TAG = "PermissionTAG"

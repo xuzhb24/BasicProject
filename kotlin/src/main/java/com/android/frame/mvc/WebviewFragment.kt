@@ -1,109 +1,95 @@
-package com.android.frame.WebView
+package com.android.frame.mvc
 
 import android.content.Context
-import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.KeyEvent
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.webkit.*
 import android.widget.LinearLayout
-import com.android.base.MainActivity
-import com.android.basicproject.BuildConfig
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityCommonWebviewBinding
-import com.android.frame.mvc.BaseActivity
-import com.android.util.KeyboardUtil
+import com.android.basicproject.databinding.FragmentWebviewBinding
 import com.android.util.LogUtil
-import com.android.util.StatusBar.StatusBarUtil
 import com.android.widget.PicGetterDialog.OnPicGetterListener
 import com.android.widget.PicGetterDialog.PicGetterDialog
-import kotlinx.android.synthetic.main.activity_common_webview.*
 import java.io.File
 
 /**
- * Created by xuzhb on 2019/10/30
- * Desc:H5 Activity基类
+ * Created by xuzhb on 2020/7/31
+ * Desc:H5 Fragment基类
  */
-open class CommonWebviewActivity : BaseActivity<ActivityCommonWebviewBinding>() {
+class WebviewFragment : BaseFragment<FragmentWebviewBinding>() {
 
     companion object {
-        private const val TAG = "CommonWebviewActivity"
-        private const val EXTRA_TITLE = "EXTRA_TITLE"
+        private const val TAG = "WebviewFragment"
         private const val EXTRA_URL = "EXTRA_URL"
 
-        fun start(context: Context, title: String, url: String) {
-            val intent = Intent()
-            intent.setClass(context, CommonWebviewActivity::class.java)
-            intent.putExtra(EXTRA_TITLE, title)
-            intent.putExtra(EXTRA_URL, url)
-            context.startActivity(intent)
-        }
+        //通过这种方式构建，可以先添加WebView，后续再通过loadUrl方法加载网页
+        fun newInstance() = WebviewFragment()
+
+        //通过这种方式构建，添加WebView时就开始加载网页
+        fun newInstance(url: String) =
+            WebviewFragment().apply {
+                arguments = Bundle().apply {
+                    putString(EXTRA_URL, url)
+                }
+            }
     }
 
-    private var mTitle: String = ""
     private var mUrl: String = ""
 
     private var mUploadMsg: ValueCallback<Uri>? = null
     private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
 
     protected var mWebView: WebView? = null
+    private var hasReceivedError = false   //是否加载失败
 
-    override fun initBar() {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)  //保证WebView的输入框不被软键盘遮挡
-        StatusBarUtil.darkMode(this, resources.getColor(R.color.colorPrimaryDark), 1f)
-        mTitleBar?.let {
-            it.setOnLeftClickListener {
-                goPageBack()
-            }
-            if (BuildConfig.DEBUG) {
-                it.setOnLongClickListener {
-                    val url = mWebView?.url.toString()
-                    KeyboardUtil.copyToClipboard(applicationContext, url)
-                    showToast("${url}\n已复制到剪切板！")
-                    true
-                }
-            }
-        }
-    }
-
-    //返回操作
-    protected open fun goPageBack() {
-        if (mWebView != null && mWebView!!.canGoBack()) {
-            mWebView!!.goBack()
-        } else {
-            finish()
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mUrl = arguments?.getString(EXTRA_URL) ?: ""
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
-        mTitle = intent.getStringExtra(EXTRA_TITLE)
-        mUrl = intent.getStringExtra(EXTRA_URL)
-//        showLoadingDialog()  //显示加载框
-        title_bar.titleText = mTitle
-        createWebView()
-        mWebView!!.loadUrl(mUrl)
-        initWebView()
+        createWebView()        //创建WebView
+        initWebView()          //设置WebView属性
+        initWebViewClient()    //设置WebViewClient
+        initWebChromeClient()  //设置SetWebChromeClient
+    }
+
+    //如果网页没有加载成功，每次可见时再重新加载一次
+    override fun onResume() {
+        super.onResume()
+        if (hasReceivedError) {
+            refreshData()
+        }
+    }
+
+    override fun refreshData() {
+        if (!TextUtils.isEmpty(mUrl)) {
+//            showLoadingDialog()  //显示加载框
+            showLoadingLayout()
+            mWebView!!.loadUrl(mUrl)  //加载网页
+        }
+    }
+
+    //加载指定网页
+    fun loadUrl(url: String) {
+        mUrl = url
+        refreshData()
     }
 
     //创建WebView
     private fun createWebView() {
-        val params = LinearLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            ViewGroup.LayoutParams.MATCH_PARENT
-        )
-        mWebView = WebView(applicationContext)
+        mWebView = WebView(mContext.applicationContext)
         with(mWebView!!) {
-            layoutParams = params
+            layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
             overScrollMode = WebView.OVER_SCROLL_NEVER  //取消滑动到边缘时的波纹效果
             isVerticalScrollBarEnabled = false    //不显示垂直滚动条
             isHorizontalScrollBarEnabled = false  //不显示水平滚动条
         }
-        web_ll.addView(mWebView)
+        binding.webLl.addView(mWebView)
     }
 
     //可以通过重写以下方法重新初始化WebView
@@ -127,10 +113,7 @@ open class CommonWebviewActivity : BaseActivity<ActivityCommonWebviewBinding>() 
                 //自适应屏幕
                 settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
                 settings.loadWithOverviewMode = true
-                addJavascriptInterface(JavaScriptMethods(), "androidjs")  //js调用Android的方法
                 requestFocus()
-                initWebViewClient()
-                initWebChromeClient()
             }
         }
     }
@@ -140,35 +123,36 @@ open class CommonWebviewActivity : BaseActivity<ActivityCommonWebviewBinding>() 
         mWebView?.let {
             it.webViewClient = object : WebViewClient() {
                 override fun shouldOverrideUrlLoading(view: WebView?, url: String?): Boolean {
-                    LogUtil.i(TAG, "url===" + url)
+                    LogUtil.i(TAG, "shouldOverrideUrlLoading,url:$url")
                     url?.let {
                         if (!it.equals("about:blank", ignoreCase = true)) {
                             if (it.startsWith("http://") or it.startsWith("https://")) {
-//                                    showLoadingDialog()  //显示加载框
                                 view?.loadUrl(url)
                             }
-//                                else if (url.equals("yeahkalepos://goback")) {
-//                                    goPageBack()
-//                                }
                         }
                     }
                     return true
                 }
 
-                //页面加载结束时调用
-                override fun onPageFinished(view: WebView?, url: String?) {
-//                        dismissLoadingDialog()  //取消加载框
+                //页面开始加载时调用
+                override fun onPageStarted(view: WebView?, url: String?, favicon: Bitmap?) {
+                    super.onPageStarted(view, url, favicon)
+                    LogUtil.i(TAG, "onPageStarted,url:$url")
+                    hasReceivedError = false
                 }
 
-                //加载页面的服务器出现错误时调用
-                override fun onReceivedError(
-                    view: WebView?,
-                    errorCode: Int,
-                    description: String?,
-                    failingUrl: String?
-                ) {
-//                        dismissLoadingDialog()  //取消加载框
-//                        view?.loadUrl("file:///android_asset/html/error.html")
+                //加载页面服务器出现错误时调用
+                override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
+                    super.onReceivedError(view, request, error)
+                    LogUtil.i(TAG, "onReceivedError,error:$error")
+                    hasReceivedError = true
+                }
+
+                //页面加载结束时调用
+                override fun onPageFinished(view: WebView?, url: String?) {
+                    super.onPageFinished(view, url)
+                    LogUtil.i(TAG, "onPageFinished,url:$url")
+                    loadFinish(hasReceivedError)
                 }
 
             }
@@ -222,17 +206,21 @@ open class CommonWebviewActivity : BaseActivity<ActivityCommonWebviewBinding>() 
                     super.onGeolocationPermissionsShowPrompt(origin, callback)
                 }
 
+                override fun onProgressChanged(view: WebView?, newProgress: Int) {
+                    super.onProgressChanged(view, newProgress)
+                    LogUtil.i(TAG, "newProgress：${newProgress}")
+                }
+
                 //获取网页标题
                 override fun onReceivedTitle(view: WebView?, title: String?) {
                     super.onReceivedTitle(view, title)
-                    LogUtil.i(TAG, "title===" + title)
-                    title_bar.titleText = title
+                    LogUtil.i(TAG, "title：$title")
                 }
             }
         }
     }
 
-    //选择拍照或相册
+    //拍照或从相册选取照片
     private fun showImageChooseDialog() {
         val dialog = PicGetterDialog()
         dialog.setOnPicGetterListener(object : OnPicGetterListener {
@@ -269,7 +257,7 @@ open class CommonWebviewActivity : BaseActivity<ActivityCommonWebviewBinding>() 
             }
 
         })
-        dialog.show(supportFragmentManager)
+        dialog.show(childFragmentManager)
     }
 
     private fun releaseUploadMessage() {
@@ -284,10 +272,10 @@ open class CommonWebviewActivity : BaseActivity<ActivityCommonWebviewBinding>() 
     }
 
     override fun initListener() {
-
     }
 
-    override fun getViewBinding() = ActivityCommonWebviewBinding.inflate(layoutInflater)
+    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
+        FragmentWebviewBinding.inflate(inflater, container, false)
 
     override fun onDestroy() {
         destroyWebView()
@@ -302,33 +290,20 @@ open class CommonWebviewActivity : BaseActivity<ActivityCommonWebviewBinding>() 
                 loadDataWithBaseURL(null, "", "text/html", "utf-8", null)
                 //清除历史记录
                 clearHistory()
-
                 //先移除WebView再销毁WebView
                 (parent as ViewGroup).removeView(it)
                 it.destroy()
             }
             mWebView = null
         }
-
     }
 
-    //back键控制网页后退
-    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
-        if (event?.action == KeyEvent.ACTION_DOWN) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && mWebView!!.canGoBack()) {
-                mWebView!!.goBack()
-                return true
-            }
-        }
-        return super.onKeyDown(keyCode, event)
-    }
-
+    //android调用js方法
     inner class JavaScriptMethods {
-        //返回首页
-        @JavascriptInterface
-        fun toHome() {
-            startActivity(MainActivity::class.java)
-        }
+//        @JavascriptInterface
+//        fun toHome() {
+//            startActivity(MainActivity::class.java)
+//        }
     }
 
 }

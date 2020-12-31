@@ -3,13 +3,13 @@ package com.android.frame.http.AATest
 import android.content.Context
 import android.content.Intent
 import android.view.KeyEvent
-import com.android.frame.WebView.CommonWebviewActivity
+import com.android.frame.mvc.WebviewActivity
 
 /**
  * Created by xuzhb on 2020/1/4
  * Desc:
  */
-class WangYiNewsWebviewActivity : CommonWebviewActivity() {
+class WangYiNewsWebviewActivity : WebviewActivity() {
 
     companion object {
         fun start(context: Context, title: String, url: String) {

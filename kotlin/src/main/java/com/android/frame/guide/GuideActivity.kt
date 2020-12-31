@@ -9,7 +9,7 @@ import androidx.viewpager.widget.ViewPager
 import com.android.base.MainActivity
 import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityGuideBinding
-import com.android.frame.mvc.viewBinding.BaseActivity_VB
+import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil
 import com.android.util.StatusBar.StatusBarUtil
 
@@ -17,7 +17,7 @@ import com.android.util.StatusBar.StatusBarUtil
  * Created by xuzhb on 2020/12/28
  * Desc:引导页
  */
-class GuideActivity : BaseActivity_VB<ActivityGuideBinding>() {
+class GuideActivity : BaseActivity<ActivityGuideBinding>() {
 
     private var mLayoutIds: IntArray = intArrayOf(
         R.layout.layout_guide_one,

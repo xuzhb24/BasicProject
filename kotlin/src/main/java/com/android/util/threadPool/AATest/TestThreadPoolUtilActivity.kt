@@ -5,7 +5,7 @@ import android.view.View
 import android.widget.TextView
 import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityCommonLayoutBinding
-import com.android.frame.mvc.viewBinding.BaseActivity_VB
+import com.android.frame.mvc.BaseActivity
 import com.android.util.DateUtil
 import com.android.util.LogUtil
 import com.android.util.initCommonLayout
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit
  * Created by xuzhb on 2020/12/8
  * Desc:
  */
-class TestThreadPoolUtilActivity : BaseActivity_VB<ActivityCommonLayoutBinding>() {
+class TestThreadPoolUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
 
     companion object {
         private const val TAG = "ThreadPoolLog"

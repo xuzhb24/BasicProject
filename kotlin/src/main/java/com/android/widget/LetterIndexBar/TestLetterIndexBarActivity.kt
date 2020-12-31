@@ -3,13 +3,13 @@ package com.android.widget.LetterIndexBar
 import android.os.Bundle
 import android.view.View
 import com.android.basicproject.databinding.ActivityTestLetterIndexBarBinding
-import com.android.frame.mvc.viewBinding.BaseActivity_VB
+import com.android.frame.mvc.BaseActivity
 
 /**
  * Created by xuzhb on 2020/12/24
  * Desc:
  */
-class TestLetterIndexBarActivity : BaseActivity_VB<ActivityTestLetterIndexBarBinding>() {
+class TestLetterIndexBarActivity : BaseActivity<ActivityTestLetterIndexBarBinding>() {
 
     override fun handleView(savedInstanceState: Bundle?) {
     }

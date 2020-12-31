@@ -72,10 +72,10 @@ open class CaptureActivity<VB : ViewBinding> : BaseActivity<VB>(), SurfaceHolder
         //这里带"?"是因为继承CaptureActivity的Activity子类的布局不一定包含id为title_bar和light_ll的控件，
         //没有的话如果子类通过super.initListener()覆写时会因为找不到而报异常，所以这里加了一个判空；
         //如果子类的布局中包含id相同的控件，则不需要在子类中再重写相同的逻辑
-        title_bar?.setOnLeftClickListener {
+        title_bar?.setOnLeftIconClickListener {
             finish()
         }
-        title_bar?.setOnRightClickListener {
+        title_bar?.setOnRightTextClickListener {
             openAlbum()  //打开相册选取图片扫描
         }
         light_ll?.setOnClickListener {

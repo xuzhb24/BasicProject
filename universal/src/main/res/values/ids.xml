@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <item name="loading_layout" type="id" />
+    <item name="title_bar" type="id" />
+    <item name="smart_refresh_layout" type="id" />
+    <item name="recycler_view" type="id" />
     <item name="swipe_refresh_layout" type="id" />
     <item name="net_error_fl" type="id" />
+
     <!--二维码/条形码扫描相关-->
     <item name="auto_focus" type="id" />
     <item name="decode" type="id" />

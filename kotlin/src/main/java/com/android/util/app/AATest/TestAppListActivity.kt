@@ -7,7 +7,7 @@ import android.text.style.ImageSpan
 import android.view.ViewGroup
 import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityTestAdapterBinding
-import com.android.frame.mvc.viewBinding.BaseActivity_VB
+import com.android.frame.mvc.BaseActivity
 import com.android.util.IntentUtil
 import com.android.util.LogUtil
 import com.android.util.SizeUtil
@@ -21,19 +21,19 @@ import kotlin.concurrent.thread
  * Created by xuzhb on 2020/12/3
  * Desc:
  */
-class TestAppListActivity : BaseActivity_VB<ActivityTestAdapterBinding>() {
+class TestAppListActivity : BaseActivity<ActivityTestAdapterBinding>() {
 
     private val mAdapter by lazy { AppAdapter(this, mutableListOf()) }
 
     override fun handleView(savedInstanceState: Bundle?) {
         mTitleBar?.titleText = "已安装应用列表"
         binding.srl.isEnabled = false
-        showLoading("正在加载...", true)
+        showLoadingDialog("正在加载...", true)
         binding.rv.adapter = mAdapter
         thread(start = true) {
             val list = AppUtil.getAppInfoList(this)
             runOnUiThread {
-                dismissLoading()
+                loadFinish(false)
                 mAdapter.setData(list)
             }
         }

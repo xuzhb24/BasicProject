@@ -66,4 +66,10 @@ dependencies {
     api 'com.github.xuzhb24:uiparse:1.0.3'
     //侧滑返回框架
     api 'com.billy.android:smart-swipe:1.1.2'
+    //下拉刷新框架
+    api 'com.scwang.smartrefresh:SmartRefreshLayout:1.1.2'
+    //特殊Header
+    api 'com.scwang.smartrefresh:SmartRefreshHeader:1.1.2'
+    //Adapter
+    api 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.4'
 }

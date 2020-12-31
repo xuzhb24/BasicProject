@@ -73,7 +73,7 @@ fun initCommonLayout(
     val btn12: Button = activity.findViewById(R.id.btn12)
     with(titleBar) {
         titleText = title
-        setOnLeftClickListener {
+        setOnLeftIconClickListener {
             activity.finish()
         }
     }

@@ -8,7 +8,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityTestBitmapBinding
-import com.android.frame.mvc.viewBinding.BaseActivity_VB
+import com.android.frame.mvc.BaseActivity
 import com.android.util.LayoutParamsUtil
 import com.android.util.SizeUtil
 
@@ -16,7 +16,7 @@ import com.android.util.SizeUtil
  * Created by xuzhb on 2020/12/14
  * Desc:
  */
-class TestBitmapActivity : BaseActivity_VB<ActivityTestBitmapBinding>() {
+class TestBitmapActivity : BaseActivity<ActivityTestBitmapBinding>() {
 
     override fun handleView(savedInstanceState: Bundle?) {
         setImage(BitmapUtil.addTextWatermark(getSrc(), "原图", SizeUtil.sp2px(15f), Color.RED, 10f, 10f, true))
@@ -40,7 +40,16 @@ class TestBitmapActivity : BaseActivity_VB<ActivityTestBitmapBinding>() {
         //倒影
         setImage(BitmapUtil.addReflection(getSrc(), 250, true))
         //图片水印
-        setImage(BitmapUtil.addImageWatermark(getSrc(), BitmapUtil.getBitmapFromResource(resources, R.mipmap.ic_logo), 10, 10, 150, true))
+        setImage(
+            BitmapUtil.addImageWatermark(
+                getSrc(),
+                BitmapUtil.getBitmapFromResource(resources, R.mipmap.ic_logo),
+                10,
+                10,
+                150,
+                true
+            )
+        )
         //灰度图片
         setImage(BitmapUtil.toGray(getSrc()!!, true))
     }

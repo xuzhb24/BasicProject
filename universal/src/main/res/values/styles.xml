@@ -45,9 +45,29 @@
 
     <!--标题栏风格-->
     <style name="TitleBarStyle">
+        <item name="android:id">@id/title_bar</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:background">@color/colorPrimary</item>
+    </style>
+
+    <!--加载状态布局样式-->
+    <style name="LoadingLayoutStyle">
+        <item name="android:id">@id/loading_layout</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:background">@color/window_background</item>
+        <item name="android:visibility">gone</item>
+        <item name="emptyDescText">暂无数据</item>
+        <item name="failDescText">暂无网络</item>
+        <item name="failActionText">刷新</item>
+    </style>
+
+    <!--SmartRefreshLayout统一样式-->
+    <style name="SmartRefreshLayoutStyle">
+        <item name="android:id">@id/smart_refresh_layout</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
     </style>
 
     <!--ScrollView风格-->

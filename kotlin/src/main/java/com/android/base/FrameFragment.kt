@@ -8,8 +8,8 @@ import com.android.frame.TestLeakActivity
 import com.android.frame.camera.zxing.AATest.TestZXingActivity
 import com.android.frame.guide.GuideActivity
 import com.android.frame.http.AATest.TestRetrofitActivity
+import com.android.frame.mvc.AATest.TestActivityMvc
 import com.android.frame.mvc.BaseFragment
-import com.android.frame.mvc.viewBinding.AATest.TestMvcActivity
 import com.android.frame.mvp.AATest.activity.TestMvpActivity
 import com.android.frame.permission.PermissionFrameActivity
 import com.android.frame.permission.PermissionRequestActivity
@@ -46,13 +46,13 @@ class FrameFragment : BaseFragment<FragmentFrameBinding>() {
         binding.retrofitTv.setOnClickListener {
             startActivity(TestRetrofitActivity::class.java)
         }
+        //MVC框架
+        binding.mvcTv.setOnClickListener {
+            startActivity(TestActivityMvc::class.java)
+        }
         //MVP框架
         binding.mvpTv.setOnClickListener {
             startActivity(TestMvpActivity::class.java)
-        }
-        //MVC框架
-        binding.mvcTv.setOnClickListener {
-            startActivity(TestMvcActivity::class.java)
         }
         //zxing扫码
         binding.zxingTv.setOnClickListener {
