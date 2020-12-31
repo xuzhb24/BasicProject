@@ -72,7 +72,7 @@ public abstract class BaseActivity_VB<VB extends ViewBinding> extends AppCompatA
         if (mTitleBar != null) {
             StatusBarUtil.darkModeAndPadding(this, mTitleBar);
             if (isBarBack()) {
-                mTitleBar.setOnLeftClickListener(v -> finish());
+                mTitleBar.setOnLeftIconClickListener(v -> finish());
             }
         } else {
             ViewGroup content = findViewById(android.R.id.content);

@@ -56,7 +56,7 @@ public class TestHeaderAdapterActivity extends BaseActivity<ActivityTestAdapterB
 
     @Override
     public void initListener() {
-        mTitleBar.setOnRightClickListener(v -> {
+        mTitleBar.setOnRightTextClickListener(v -> {
             StringBuilder sb = new StringBuilder();
             sb.append("\n");
             if (mSelectedList.size() == 0) {

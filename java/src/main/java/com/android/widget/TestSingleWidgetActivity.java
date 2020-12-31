@@ -22,7 +22,7 @@ public class TestSingleWidgetActivity extends BaseActivity_VB<ActivityTestSingle
     @Override
     public void initListener() {
         //标题栏
-        mTitleBar.setOnRightClickListener(v -> ExtraUtil.alert(TestSingleWidgetActivity.this, "本页面主要是查看编写的一些单一控件的样式"));
+        mTitleBar.setOnRightTextClickListener(v -> ExtraUtil.alert(TestSingleWidgetActivity.this, "本页面主要是查看编写的一些单一控件的样式"));
         //加载框
         binding.loadingBtn1.setOnClickListener(v -> {
             LoadingDialog dialog = new LoadingDialog(this);

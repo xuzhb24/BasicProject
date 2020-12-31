@@ -263,37 +263,49 @@ public class TitleBar extends FrameLayout {
         view.requestLayout();
     }
 
-    private OnLeftClickListener mOnLeftClickListener;
-    private OnRightClickListener mOnRightClickListener;
+    private OnLeftIconClickListener mOnLeftIconClickListener;
+    private OnLeftTextClickListener mOnLeftTextClickListener;
+    private OnRightIconClickListener mOnRightIconClickListener;
+    private OnRightTextClickListener mOnRightTextClickListener;
 
-    //点击左侧图标/文本回调
-    public void setOnLeftClickListener(OnLeftClickListener listener) {
-        this.mOnLeftClickListener = listener;
-        mLeftFl.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnLeftClickListener.onLeftClick(v);
-            }
-        });
+    //点击左侧图标回调
+    public void setOnLeftIconClickListener(OnLeftIconClickListener listener) {
+        this.mOnLeftIconClickListener = listener;
+        mLeftIv.setOnClickListener(v -> mOnLeftIconClickListener.onClick(v));
     }
 
-    //点击右侧图标/文本回调
-    public void setOnRightClickListener(OnRightClickListener listener) {
-        this.mOnRightClickListener = listener;
-        mRightTv.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mOnRightClickListener.onRightClick(v);
-            }
-        });
+    //点击左侧文本回调
+    public void setOnLeftTextClickListener(OnLeftTextClickListener listener) {
+        this.mOnLeftTextClickListener = listener;
+        mLeftTv.setOnClickListener(v -> mOnLeftTextClickListener.onClick(v));
     }
 
-    public interface OnLeftClickListener {
-        void onLeftClick(View v);
+    //点击右侧图标回调
+    public void setOnRightIconClickListener(OnRightIconClickListener listener) {
+        this.mOnRightIconClickListener = listener;
+        mRightIv.setOnClickListener(v -> mOnRightIconClickListener.onClick(v));
     }
 
-    public interface OnRightClickListener {
-        void onRightClick(View v);
+    //点击右侧文本回调
+    public void setOnRightTextClickListener(OnRightTextClickListener listener) {
+        this.mOnRightTextClickListener = listener;
+        mRightTv.setOnClickListener(v -> mOnRightTextClickListener.onClick(v));
+    }
+
+    public interface OnLeftIconClickListener {
+        void onClick(View v);
+    }
+
+    public interface OnLeftTextClickListener {
+        void onClick(View v);
+    }
+
+    public interface OnRightIconClickListener {
+        void onClick(View v);
+    }
+
+    public interface OnRightTextClickListener {
+        void onClick(View v);
     }
 
 }

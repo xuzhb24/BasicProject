@@ -8,8 +8,15 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.webkit.*;
+import android.webkit.GeolocationPermissions;
+import android.webkit.JavascriptInterface;
+import android.webkit.ValueCallback;
+import android.webkit.WebChromeClient;
+import android.webkit.WebSettings;
+import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
+
 import com.android.base.MainActivity;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.BuildConfig;
@@ -201,7 +208,7 @@ public class CommonWebviewActivity extends BaseActivity<ActivityCommonWebviewBin
 
     @Override
     public void initListener() {
-        mTitleBar.setOnLeftClickListener(v -> {
+        mTitleBar.setOnLeftIconClickListener(v -> {
             goPageBack();
         });
         if (BuildConfig.DEBUG) {

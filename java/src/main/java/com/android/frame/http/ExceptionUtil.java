@@ -1,11 +1,13 @@
 package com.android.frame.http;
 
+import android.os.NetworkOnMainThreadException;
 import android.text.TextUtils;
 
 import com.android.util.NetworkUtil;
 
 import org.json.JSONException;
 
+import java.net.ConnectException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.text.ParseException;
@@ -22,12 +24,12 @@ public class ExceptionUtil {
         if (t instanceof UnknownHostException) {
             return "网络不可用";
         }
+        if (t instanceof SocketTimeoutException) {
+            return "请求网络超时";
+        }
         if (!TextUtils.isEmpty(t.getMessage()) && t.getMessage().contains("HTTP 504 Unsatisfiable Request (only-if-cached)")
                 && !NetworkUtil.isConnected()) {
             return "网络不可用";  //这种情况主要是修改某些接口设置了缓存而且缓存失效后的提示信息
-        }
-        if (t instanceof SocketTimeoutException) {
-            return "请求网络超时";
         }
         if (t instanceof HttpException) {
             return convertStatusCode((HttpException) t);
@@ -35,7 +37,13 @@ public class ExceptionUtil {
         if (t instanceof ParseException || t instanceof JSONException) {
             return "数据解析错误";
         }
-        return "未知错误，" + t.getMessage();
+        if (t instanceof NetworkOnMainThreadException) {
+            return "调用错误，在主线程中请求网络";
+        }
+        if (t instanceof ConnectException) {
+            return "连接服务器异常";
+        }
+        return TextUtils.isEmpty(t.getMessage()) ? t.toString() : t.getMessage();
     }
 
     private static String convertStatusCode(HttpException e) {
