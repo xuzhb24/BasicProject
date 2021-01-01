@@ -7,7 +7,7 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ImageSpan;
 import android.view.ViewGroup;
 
-import com.android.frame.mvc.viewBinding.BaseActivity_VB;
+import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.java.databinding.ActivityTestAdapterBinding;
 import com.android.util.ExtraUtil;
@@ -25,7 +25,7 @@ import java.util.List;
  * Created by xuzhb on 2020/2/5
  * Desc:
  */
-public class TestAppListActivity extends BaseActivity_VB<ActivityTestAdapterBinding> {
+public class TestAppListActivity extends BaseActivity<ActivityTestAdapterBinding> {
 
     private AppAdapter mAdapter;
 
@@ -33,13 +33,13 @@ public class TestAppListActivity extends BaseActivity_VB<ActivityTestAdapterBind
     public void handleView(Bundle savedInstanceState) {
         mTitleBar.setTitleText("已安装应用列表");
         binding.srl.setEnabled(false);
-        showLoading("正在加载...", true);
+        showLoadingDialog("正在加载...", true);
         mAdapter = new AppAdapter(this, new ArrayList<>());
         binding.rv.setAdapter(mAdapter);
         new Thread(() -> {
             List<AppInfo> list = AppUtil.getAppInfoList(this);
             runOnUiThread(() -> {
-                dismissLoading();
+                loadFinish(false);
                 mAdapter.setData(list);
             });
         }).start();

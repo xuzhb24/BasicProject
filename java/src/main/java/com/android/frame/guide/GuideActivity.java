@@ -9,7 +9,7 @@ import android.widget.RadioGroup;
 import androidx.viewpager.widget.ViewPager;
 
 import com.android.base.MainActivity;
-import com.android.frame.mvc.viewBinding.BaseActivity_VB;
+import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.java.databinding.ActivityGuideBinding;
 import com.android.util.SizeUtil;
@@ -22,7 +22,7 @@ import java.util.List;
  * Created by xuzhb on 2020/7/4
  * Desc:引导页
  */
-public class GuideActivity extends BaseActivity_VB<ActivityGuideBinding> {
+public class GuideActivity extends BaseActivity<ActivityGuideBinding> {
 
     private int[] mLayoutIds = new int[]{R.layout.layout_guide_one, R.layout.layout_guide_two, R.layout.layout_guide_three};
 

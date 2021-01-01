@@ -75,10 +75,22 @@ class TestMvcFragment : BaseFragment<FragmentTestMvcBinding>() {
     }
 
     private fun showWeatherInfo(city: String) {
+        val tip = "下拉刷新获取更多城市天气\n\n"
         ApiHelper.getWeatherByQuery(city)
             .subscribe(object : CustomObserver<BaseResponse<WeatherBean>>(this, false, true) {
                 override fun onSuccess(response: BaseResponse<WeatherBean>) {
-                    binding.tv.text = JsonUtil.formatJson(Gson().toJson(response))
+                    binding.tv.text = tip + JsonUtil.formatJson(Gson().toJson(response))
+                }
+
+                override fun onFailure(
+                    view: IBaseView?,
+                    message: String,
+                    isError: Boolean,
+                    t: Throwable?,
+                    response: BaseResponse<WeatherBean>?
+                ) {
+                    super.onFailure(view, message, isError, t, response)
+                    binding.tv.text = tip
                 }
             })
     }

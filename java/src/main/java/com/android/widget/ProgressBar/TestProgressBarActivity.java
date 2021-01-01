@@ -3,14 +3,14 @@ package com.android.widget.ProgressBar;
 import android.graphics.Color;
 import android.os.Bundle;
 
-import com.android.frame.mvc.viewBinding.BaseActivity_VB;
+import com.android.frame.mvc.BaseActivity;
 import com.android.java.databinding.ActivityTestProgressBarBinding;
 
 /**
  * Created by xuzhb on 2020/7/11
  * Desc:
  */
-public class TestProgressBarActivity extends BaseActivity_VB<ActivityTestProgressBarBinding> {
+public class TestProgressBarActivity extends BaseActivity<ActivityTestProgressBarBinding> {
     @Override
     public void handleView(Bundle savedInstanceState) {
         int[] rindColorArray = new int[]{Color.parseColor("#0888FF"), Color.parseColor("#6CD0FF")};

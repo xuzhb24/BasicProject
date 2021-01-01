@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.android.frame.mvc.viewBinding.BaseActivity_VB;
+import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.java.databinding.ActivityTestBitmapBinding;
 import com.android.util.LayoutParamsUtil;
@@ -17,7 +17,7 @@ import com.android.util.SizeUtil;
  * Created by xuzhb on 2020/5/30
  * Desc:
  */
-public class TestBitmapActivity extends BaseActivity_VB<ActivityTestBitmapBinding> {
+public class TestBitmapActivity extends BaseActivity<ActivityTestBitmapBinding> {
 
     @Override
     public void handleView(Bundle savedInstanceState) {

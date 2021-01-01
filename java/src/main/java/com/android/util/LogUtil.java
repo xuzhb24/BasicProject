@@ -50,7 +50,7 @@ public class LogUtil {
         }
     };
 
-    public static void e(String tag, Exception e) {
+    public static void e(String tag, Throwable e) {
         Writer writer = new StringWriter();
         e.printStackTrace(new PrintWriter(writer));
         log(tag, writer.toString(), Error);

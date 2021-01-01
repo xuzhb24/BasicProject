@@ -7,8 +7,8 @@ import android.view.ViewGroup;
 import com.android.frame.TestLeakActivity;
 import com.android.frame.guide.GuideActivity;
 import com.android.frame.http.AATest.TestRetrofitActivity;
+import com.android.frame.mvc.AATest.TestActivityMvc;
 import com.android.frame.mvc.BaseFragment;
-import com.android.frame.mvc.viewBinding.AATest.TestMvcActivity;
 import com.android.frame.mvp.AATest.activity.TestMvpActivity;
 import com.android.java.databinding.FragmentFrameBinding;
 
@@ -46,13 +46,13 @@ public class FrameFragment extends BaseFragment<FragmentFrameBinding> {
         binding.retrofitTv.setOnClickListener(v -> {
             startActivity(TestRetrofitActivity.class);
         });
+        //MVC框架
+        binding.mvcTv.setOnClickListener(v -> {
+            startActivity(TestActivityMvc.class);
+        });
         //MVP框架
         binding.mvpTv.setOnClickListener(v -> {
             startActivity(TestMvpActivity.class);
-        });
-        //MVC框架
-        binding.mvcTv.setOnClickListener(v -> {
-            startActivity(TestMvcActivity.class);
         });
         //引导页
         binding.guideTv.setOnClickListener(v -> {

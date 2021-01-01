@@ -6,6 +6,7 @@ import com.android.frame.http.model.BaseResponse
 import com.android.frame.mvc.AATest.entity.WeatherBean
 import com.android.frame.mvc.AATest.server.ApiHelper
 import com.android.frame.mvc.BaseActivity
+import com.android.frame.mvc.IBaseView
 import com.android.frame.mvc.extra.http.CustomObserver
 import com.android.util.JsonUtil
 import com.google.gson.Gson
@@ -36,10 +37,22 @@ class TestMvcActivity : BaseActivity<ActivityTestMvcBinding>() {
     }
 
     private fun showWeatherInfo(city: String) {
+        val tip = "下拉刷新获取更多城市天气\n\n"
         ApiHelper.getWeatherByQuery(city)
             .subscribe(object : CustomObserver<BaseResponse<WeatherBean>>(this) {
                 override fun onSuccess(response: BaseResponse<WeatherBean>) {
-                    binding.tv.text = JsonUtil.formatJson(Gson().toJson(response))
+                    binding.tv.text = tip + JsonUtil.formatJson(Gson().toJson(response))
+                }
+
+                override fun onFailure(
+                    view: IBaseView?,
+                    message: String,
+                    isError: Boolean,
+                    t: Throwable?,
+                    response: BaseResponse<WeatherBean>?
+                ) {
+                    super.onFailure(view, message, isError, t, response)
+                    binding.tv.text = tip
                 }
             })
     }

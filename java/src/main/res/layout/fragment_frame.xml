@@ -51,16 +51,16 @@
                 android:text="测试Retrofit" />
 
             <TextView
-                android:id="@+id/mvp_tv"
-                style="@style/ItemSingleTextStyle"
-                android:layout_marginTop="10dp"
-                android:text="MVP框架" />
-
-            <TextView
                 android:id="@+id/mvc_tv"
                 style="@style/ItemSingleTextStyle"
                 android:layout_marginTop="10dp"
                 android:text="MVC框架" />
+
+            <TextView
+                android:id="@+id/mvp_tv"
+                style="@style/ItemSingleTextStyle"
+                android:layout_marginTop="10dp"
+                android:text="MVP框架" />
 
             <TextView
                 android:id="@+id/guide_tv"

@@ -3,7 +3,7 @@ package com.android.widget;
 import android.os.Bundle;
 import android.text.TextUtils;
 
-import com.android.frame.mvc.viewBinding.BaseActivity_VB;
+import com.android.frame.mvc.BaseActivity;
 import com.android.java.databinding.ActivityTestSingleWidgetBinding;
 import com.android.util.ExtraUtil;
 import com.android.widget.LoadingDialog.LoadingDialog;
@@ -12,7 +12,7 @@ import com.android.widget.LoadingDialog.LoadingDialog;
  * Created by xuzhb on 2019/10/20
  * Desc:
  */
-public class TestSingleWidgetActivity extends BaseActivity_VB<ActivityTestSingleWidgetBinding> {
+public class TestSingleWidgetActivity extends BaseActivity<ActivityTestSingleWidgetBinding> {
 
     @Override
     public void handleView(Bundle savedInstanceState) {
