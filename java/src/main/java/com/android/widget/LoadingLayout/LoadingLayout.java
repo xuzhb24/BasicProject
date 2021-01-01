@@ -107,7 +107,7 @@ public class LoadingLayout extends LinearLayout {
         if (attrs != null) {
             parseAttributes(context, attrs);
         }
-//        loadStart();
+        setLoadState(STATE_HIDE);
     }
 
     private void initView(Context context) {
