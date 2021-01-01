@@ -85,6 +85,8 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
         mUrl = intent.getStringExtra(EXTRA_URL)
         isTitleFixed = intent.getBooleanExtra(EXTRA_IS_TITLE_FIXED, false)
         mTitleBar?.titleText = mTitle  //设置标题
+//        showLoadingDialog()  //显示加载框
+        showLoadingLayout()
         createWebView()        //创建WebView
         initWebView()          //设置WebView属性
         initWebViewClient()    //设置WebViewClient
@@ -93,8 +95,6 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
 
     override fun refreshData() {
         if (!TextUtils.isEmpty(mUrl)) {
-//            showLoadingDialog()  //显示加载框
-            showLoadingLayout()
             mWebView!!.loadUrl(mUrl)  //加载网页
         }
     }

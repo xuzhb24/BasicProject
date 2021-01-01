@@ -57,7 +57,7 @@
         <activity android:name="com.android.frame.permission.PermissionRequestActivity" />
         <activity android:name="com.android.frame.permission.PermissionFrameActivity" />
         <!--通用WebView-->
-        <activity android:name="com.android.frame.WebView.CommonWebviewActivity" />
+        <activity android:name="com.android.frame.mvc.WebviewActivity" />
         <!--测试Retrofit-->
         <activity android:name="com.android.frame.http.AATest.TestRetrofitActivity" />
         <activity android:name="com.android.frame.http.AATest.WangYiNewsWebviewActivity" />

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.android.basicproject.R
 import com.android.basicproject.databinding.FragmentTestMvcListBinding
+import com.android.frame.http.AATest.WangYiNewsWebviewActivity
 import com.android.frame.http.model.BaseListResponse
 import com.android.frame.mvc.AATest.adapter.NewsListAdapter
 import com.android.frame.mvc.AATest.entity.NewsListBean
@@ -53,7 +54,8 @@ class TestMvcListFragment : BaseListFragment<NewsListBean, FragmentTestMvcListBi
     override fun initListener() {
         //Item点击事件
         mAdapter.setOnItemClickListener { adapter, view, position ->
-            showToast("点击了第${position}项")
+            val bean = mAdapter.getItem(position)
+            WangYiNewsWebviewActivity.start(mContext, "", bean.path)
         }
         //Item内子View的点击事件
         mAdapter.addChildClickViewIds(R.id.image_iv)

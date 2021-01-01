@@ -36,7 +36,7 @@ import java.io.File;
  */
 public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
 
-    private static final String TAG = "WebviewActivity1";
+    private static final String TAG = "WebviewActivity";
     private static final String EXTRA_TITLE = "EXTRA_TITLE";
     private static final String EXTRA_URL = "EXTRA_URL";
     private static final String EXTRA_IS_TITLE_FIXED = "EXTRA_IS_TITLE_FIXED";
