@@ -105,7 +105,7 @@ class LoadingLayout @JvmOverloads constructor(
             failActionText = ta.getString(R.styleable.LoadingLayout_failActionText) ?: ""
             ta.recycle()
         }
-//        loadStart()
+        setLoadState(STATE_HIDE)
     }
 
     //开始加载
