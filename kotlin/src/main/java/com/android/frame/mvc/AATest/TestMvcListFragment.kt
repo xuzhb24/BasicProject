@@ -35,7 +35,7 @@ class TestMvcListFragment : BaseListFragment<NewsListBean, FragmentTestMvcListBi
     override fun loadData(page: Int, showLoadLayout: Boolean, showLoadingDialog: Boolean) {
         ApiHelper.getWangYiNewsByField("$page", "${getLoadSize()}")
             .subscribe(object : CustomObserver<BaseListResponse<NewsListBean>>(
-                this, false, page == 1  //第一次加载时才显示加载框
+                this, false, isFirstLoad()  //第一次加载时才显示加载框
             ) {
                 override fun onSuccess(response: BaseListResponse<NewsListBean>) {
                     if (page < 3) {

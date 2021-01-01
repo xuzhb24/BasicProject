@@ -49,7 +49,12 @@ class TestMvcFragment : BaseFragment<FragmentTestMvcBinding>() {
     private fun saveWeatherInfo(city: String) {
         ApiHelper.getWeatherByQuery(city)
             //不显示加载状态，不显示加载弹窗，不处理加载完成的逻辑（needLoadFinish设为false，因为这个接口不参与UI界面的显示，让主接口处理加载状态）
-            .subscribe(object : CustomObserver<BaseResponse<WeatherBean>>(this, false, false, needLoadFinish = false) {
+            .subscribe(object : CustomObserver<BaseResponse<WeatherBean>>(
+                this,
+                false,
+                false,
+                needLoadFinish = false
+            ) {
                 override fun onSuccess(response: BaseResponse<WeatherBean>) {
                     println("TestMvcFragment 请求成功，可以保存数据了，${Gson().toJson(response)}")
                 }
@@ -71,7 +76,7 @@ class TestMvcFragment : BaseFragment<FragmentTestMvcBinding>() {
 
     private fun showWeatherInfo(city: String) {
         ApiHelper.getWeatherByQuery(city)
-            .subscribe(object : CustomObserver<BaseResponse<WeatherBean>>(this) {
+            .subscribe(object : CustomObserver<BaseResponse<WeatherBean>>(this, false, true) {
                 override fun onSuccess(response: BaseResponse<WeatherBean>) {
                     binding.tv.text = JsonUtil.formatJson(Gson().toJson(response))
                 }
