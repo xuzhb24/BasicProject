@@ -36,7 +36,7 @@ import java.io.File;
  */
 public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
 
-    private static final String TAG = "WebviewActivity";
+    private static final String TAG = "WebviewActivity1";
     private static final String EXTRA_TITLE = "EXTRA_TITLE";
     private static final String EXTRA_URL = "EXTRA_URL";
     private static final String EXTRA_IS_TITLE_FIXED = "EXTRA_IS_TITLE_FIXED";
@@ -94,6 +94,8 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
         mUrl = getIntent().getStringExtra(EXTRA_URL);
         isTitleFixed = getIntent().getBooleanExtra(EXTRA_IS_TITLE_FIXED, false);
         mTitleBar.setTitleText(mTitle);  //设置标题
+//        showLoadingDialog();  //显示加载框
+        showLoadingLayout();
         createWebView();                 //创建WebView
         initWebView();                   //设置WebView属性
         initWebViewClient();             //设置WebViewClient
@@ -103,8 +105,6 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
     @Override
     protected void refreshData() {
         if (!TextUtils.isEmpty(mUrl)) {
-//            showLoadingDialog();  //显示加载框
-            showLoadingLayout();
             mWebView.loadUrl(mUrl);  //加载网页
         }
     }

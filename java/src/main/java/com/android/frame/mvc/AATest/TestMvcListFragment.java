@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
+import com.android.frame.http.AATest.WangYiNewsWebviewActivity;
 import com.android.frame.http.model.BaseListResponse;
 import com.android.frame.mvc.AATest.adapter.NewsListAdapter;
 import com.android.frame.mvc.AATest.entity.NewsListBean;
@@ -64,7 +65,8 @@ public class TestMvcListFragment extends BaseListFragment<NewsListBean, Fragment
     public void initListener() {
         //Item点击事件
         mAdapter.setOnItemClickListener((adapter, view, position) -> {
-            showToast("点击了第" + position + "项");
+            NewsListBean bean = mAdapter.getItem(position);
+            WangYiNewsWebviewActivity.start(mContext, "", bean.getPath());
         });
         //Item内子View的点击事件
         mAdapter.addChildClickViewIds(R.id.image_iv);

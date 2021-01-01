@@ -3,13 +3,14 @@ package com.android.frame.http.AATest;
 import android.content.Context;
 import android.content.Intent;
 import android.view.KeyEvent;
-import com.android.frame.WebView.CommonWebviewActivity;
+
+import com.android.frame.mvc.WebviewActivity;
 
 /**
  * Create by xuzhb on 2020/1/21
  * Desc
  */
-public class WangYiNewsWebviewActivity extends CommonWebviewActivity {
+public class WangYiNewsWebviewActivity extends WebviewActivity {
 
     public static void start(Context context, String title, String url) {
         Intent intent = new Intent();
