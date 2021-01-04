@@ -9,7 +9,7 @@ import com.android.frame.guide.GuideActivity;
 import com.android.frame.http.AATest.TestRetrofitActivity;
 import com.android.frame.mvc.AATest.TestActivityMvc;
 import com.android.frame.mvc.BaseFragment;
-import com.android.frame.mvp.AATest.activity.TestMvpActivity;
+import com.android.frame.mvp.AATest.TestActivityMvp;
 import com.android.java.databinding.FragmentFrameBinding;
 
 /**
@@ -52,7 +52,7 @@ public class FrameFragment extends BaseFragment<FragmentFrameBinding> {
         });
         //MVP框架
         binding.mvpTv.setOnClickListener(v -> {
-            startActivity(TestMvpActivity.class);
+            startActivity(TestActivityMvp.class);
         });
         //引导页
         binding.guideTv.setOnClickListener(v -> {

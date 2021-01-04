@@ -8,13 +8,34 @@ import java.util.List;
  */
 public interface IBaseListView<T> extends IBaseView {
 
-    //一次加载的个数
-    int getLoadSize();
-
-    //获取当前加载的页码
+    /**
+     * 获取当前加载的页码
+     */
     int getCurrentPage();
 
-    //显示数据
+    /**
+     * 设置当前加载的页码
+     */
+    void setCurrentPage(int page);
+
+    /**
+     * 获取加载的起始页码
+     */
+    int getFirstPage();
+
+    /**
+     * 是否是首次加载
+     */
+    boolean isFirstLoad();
+
+    /**
+     * 获取一页加载的个数
+     */
+    int getLoadSize();
+
+    /**
+     * 显示数据
+     */
     void showData(int page, List<T> list);
 
 }

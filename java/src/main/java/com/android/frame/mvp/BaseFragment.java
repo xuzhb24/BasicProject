@@ -15,15 +15,22 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import androidx.viewbinding.ViewBinding;
 
 import com.android.base.BaseApplication;
-import com.android.frame.mvp.extra.LoadingDialog.LoadingDialog;
 import com.android.java.R;
+import com.android.util.CheckFastClickUtil;
+import com.android.util.LogUtil;
 import com.android.util.NetReceiver;
 import com.android.util.NetworkUtil;
 import com.android.util.ToastUtil;
+import com.android.widget.LoadingDialog.LoadingDialog;
+import com.android.widget.LoadingLayout.LoadingLayout;
+import com.android.widget.TitleBar;
+import com.scwang.smartrefresh.layout.SmartRefreshLayout;
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.header.ClassicsHeader;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -32,42 +39,36 @@ import io.reactivex.disposables.Disposable;
  * Created by xuzhb on 2020/1/5
  * Desc:基类Fragment
  */
-public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, P extends BasePresenter<V>> extends Fragment
-        implements IBaseView, SwipeRefreshLayout.OnRefreshListener {
+public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, P extends BasePresenter<V>> extends Fragment implements IBaseView, OnRefreshListener {
+
+    private static final String TAG = "BaseFragment";
 
     protected VB binding;
     protected P mPresenter;
 
     //防止RxJava内存泄漏
-    private CompositeDisposable mCompositeDisposable = new CompositeDisposable();
-
-    //加载框
-    private LoadingDialog mLoadingDialog;
-    //通用的下拉刷新组件，需在布局文件中固定id名为swipe_refresh_layout
-    private SwipeRefreshLayout mSwipeRefreshLayout;
+    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
+    //加载弹窗
+    protected LoadingDialog mLoadingDialog;
+    //通用加载状态布局，需在布局文件中固定id名为loading_layout
+    protected LoadingLayout mLoadingLayout;
+    //通用标题栏，需在布局文件中固定id名为title_bar
+    protected TitleBar mTitleBar;
+    //通用下拉刷新组件，需在布局文件中固定id名为smart_refresh_layout
+    protected SmartRefreshLayout mSmartRefreshLayout;
     //通用的RecyclerView组件，需在布局文件中固定id名为R.id.recycler_view
     protected RecyclerView mRecyclerView;
 
-    //网路异常的布局
+    //通用网络异常的布局
     private FrameLayout mNetErrorFl;
     private NetReceiver mNetReceiver;
 
-    private FragmentActivity mActivity;
-    private Context mContext;
+    protected FragmentActivity mActivity;
+    protected Context mContext;
 
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        //第一次加载时，setUserVisibleHint会比onAttach先回调，此时布局为null;
-        //之后切换Fragment时，当Fragment变得可见或可见时都会回调setUserVisibleHint，此时布局不为null
-        if (binding != null) {
-            if (isVisibleToUser) {
-                onVisible();
-            } else {
-                onInvisible();
-            }
-        }
-    }
+    protected boolean isRefreshing = false;          //是否正在下拉刷新
+    protected boolean hasDataLoaded = false;         //是否加载过数据，不管加载成功或失败
+    protected boolean hasDataLoadedSuccess = false;  //是否成功加载过数据，设置这个变量的原因是加载状态布局一般只会在第一次加载时显示，当加载成功过一次就不再显示
 
     @Override
     public void onAttach(Context context) {
@@ -89,34 +90,29 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
         return binding.getRoot();
     }
 
-    //初始化一些通用控件，如加载框、SwipeRefreshLayout、网络错误提示布局
+    //初始化一些通用控件，如加载框、SmartRefreshLayout、网络错误提示布局
     protected void initBaseView() {
-        mLoadingDialog = new LoadingDialog(getContext(), R.style.LoadingDialogStyle);
-        //获取布局中的SwipeRefreshLayout组件，重用BaseCompatActivity的下拉刷新逻辑
-        //注意布局中SwipeRefreshLayout的id命名为swipe_refresh_layout，否则mSwipeRefreshLayout为null
-        //如果SwipeRefreshLayout里面只包含RecyclerView，可引用<include layout="@layout/layout_recycler_view" />
-        mSwipeRefreshLayout = binding.getRoot().findViewById(R.id.swipe_refresh_layout);
-        //如果当前布局文件不包含id为swipe_refresh_layout的组件则不执行下面的逻辑
-        if (mSwipeRefreshLayout != null) {
-            mSwipeRefreshLayout.setOnRefreshListener(this);
-            mSwipeRefreshLayout.setColorSchemeColors(getResources().getColor(R.color.colorAccent));
+        mTitleBar = binding.getRoot().findViewById(R.id.title_bar);
+        mLoadingDialog = new LoadingDialog(mContext, R.style.LoadingDialogStyle);
+        //获取布局中的加载状态布局
+        mLoadingLayout = binding.getRoot().findViewById(R.id.loading_layout);
+        if (mLoadingLayout != null) {
+            mLoadingLayout.setOnFailListener(() -> mPresenter.refreshData());
+        }
+        //获取布局中的SmartRefreshLayout组件，重用BaseActivity的下拉刷新逻辑
+        //注意布局中SmartRefreshLayout的id命名为smart_refresh_layout，否则mSmartRefreshLayout为null
+        //如果SmartRefreshLayout里面只包含RecyclerView，可引用<include layout="@layout/layout_list" />
+        mSmartRefreshLayout = binding.getRoot().findViewById(R.id.smart_refresh_layout);
+        //如果当前布局文件不包含id为smart_refresh_layout的组件则不执行下面的逻辑
+        if (mSmartRefreshLayout != null) {
+            mSmartRefreshLayout.setRefreshHeader(new ClassicsHeader(mContext));
+            mSmartRefreshLayout.setEnableLoadMore(false);
+            mSmartRefreshLayout.setOnRefreshListener(this);
         }
         //获取布局中的RecyclerView组件，注意布局中RecyclerView的id命名为recycler_view，否则mRecyclerView为null
-        mRecyclerView = mRecyclerView.findViewById(R.id.recycler_view);
+        mRecyclerView = binding.getRoot().findViewById(R.id.recycler_view);
         //在当前布局的合适位置引用<include layout="@layout/layout_net_error" />，则当网络出现错误时会进行相应的提示
         mNetErrorFl = binding.getRoot().findViewById(R.id.net_error_fl);
-
-        /*
-         * 完整的一次下拉刷新过程
-         * 1、在布局文件中包含id为swipe_refresh_layout的SwipeRefreshLayout组件；
-         * 2、下拉时SwipeRefreshLayout的onRefresh()调用BasePresenter的loadData()重新加载数据；
-         * 3、请求数据结束或请求数据异常调用IBaseView的loadFinish()收起SwipeRefreshLayout的刷新头部，完成一次下拉刷新；
-         * 所以实现下拉刷新只需要：
-         * 1、在布局文件中包含id为swipe_refresh_layout的SwipeRefreshLayout组件；
-         * 2、重写BasePresenter的loadData()方法；
-         * 3、在刷新结束时调用IBaseView的loadFinish()方法收起刷新头部，而在自定义Observer类CustomObserver中已经实现了
-         *    这部分逻辑，在请求数据结束或请求数据出现异常时会调用IBaseView的loadFinish()
-         */
     }
 
     @Override
@@ -124,6 +120,28 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
         super.onViewCreated(view, savedInstanceState);
         handleView(savedInstanceState);
         initListener();
+        if (!needLazyLoadData()) {
+            LogUtil.i(TAG, getClass().getName() + " 正在加载数据（非懒加载）");
+            mPresenter.refreshData();  //不实现懒加载，即一开始创建页面即加载数据
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtil.i(TAG, getClass().getName() + " onResume");
+        if (needLazyLoadData() && !hasDataLoaded) {
+            LogUtil.i(TAG, getClass().getName() + " 正在加载数据（懒加载）");
+            //刷新数据
+            mPresenter.refreshData();
+            hasDataLoaded = true;
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LogUtil.i(TAG, getClass().getName() + " onPause");
     }
 
     //执行onCreate接下来的逻辑
@@ -138,14 +156,10 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
     //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
     public abstract P getPresenter();
 
-    //页面可见且布局不为null时回调
-    protected void onVisible() {
-
-    }
-
-    //页面不可见且布局不为null时回调
-    protected void onInvisible() {
-
+    //是否需要懒加载，返回true表示切换到页面时才会加载数据，主要用在ViewPager切换中，
+    //注意FragmentPagerAdapter使用BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+    protected boolean needLazyLoadData() {
+        return true;
     }
 
     @Override
@@ -153,8 +167,10 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
         super.onDestroyView();
         unregisterNetReceiver();
         //销毁加载框
-        mLoadingDialog.dismiss();
-        mLoadingDialog = null;
+        if (mLoadingDialog != null) {
+            mLoadingDialog.dismiss();
+            mLoadingDialog = null;
+        }
 
         //解绑activity和presenter
         mPresenter.detachView();
@@ -162,30 +178,71 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onDetach() {
+        super.onDetach();
         //取消所有正在执行的订阅
         mCompositeDisposable.clear();
     }
 
     @Override
-    public void showLoading() {
-        showLoading("", false);
+    public void showLoadingDialog() {
+        showLoadingDialog("加载中", true);
     }
 
-    //显示加载框
     @Override
-    public void showLoading(String message, boolean cancelable) {
+    public void showLoadingDialog(String message, boolean cancelable) {
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> mLoadingDialog.show(message, cancelable));
+            getActivity().runOnUiThread(() -> {
+                if (mLoadingDialog != null) {
+                    mLoadingDialog.show(message, cancelable);
+                }
+            });
         }
     }
 
-    //取消加载框
     @Override
-    public void dismissLoading() {
+    public void showLoadingLayout() {
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> mLoadingDialog.dismiss());
+            getActivity().runOnUiThread(() -> {
+                if (!isRefreshing && !hasDataLoadedSuccess && mLoadingLayout != null) {  //下拉刷新或者加载成功过都不显示加载状态
+                    mLoadingLayout.loadStart();
+                }
+            });
+        }
+    }
+
+    @Override
+    public LoadingLayout getLoadingLayout() {
+        return mLoadingLayout;
+    }
+
+    @Override
+    public void loadFinish(boolean isError) {
+        if (getActivity() != null) {
+            getActivity().runOnUiThread(() -> {
+                if (!isError) {
+                    hasDataLoadedSuccess = true;
+                }
+                showNetErrorLayout();
+                if (mLoadingLayout != null) {
+                    if (isError && !hasDataLoadedSuccess) {  //数据加载失败，且当前页面无数据
+                        mLoadingLayout.loadFail();
+                    } else {
+                        mLoadingLayout.loadComplete();
+                    }
+                }
+                //取消加载弹窗
+                if (mLoadingDialog != null) {
+                    mLoadingDialog.dismiss();
+                }
+                //完成下拉刷新动作
+                if (mSmartRefreshLayout != null) {
+                    if (isRefreshing) {
+                        mSmartRefreshLayout.finishRefresh(!isError);
+                    }
+                    isRefreshing = false;
+                }
+            });
         }
     }
 
@@ -199,25 +256,8 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
     @Override
     public void showToast(CharSequence text, boolean isCenter, boolean longToast) {
         if (getActivity() != null) {
-            getActivity().runOnUiThread(() -> ToastUtil.showToast(text, getActivity().getApplicationContext(), isCenter, longToast));
-        }
-    }
-
-    //数据加载失败
-    @Override
-    public void loadFail() {
-        showNetErrorLayout();
-    }
-
-    //完成数据加载，收起下拉刷新组件SwipeRefreshLayout的刷新头部
-    @Override
-    public void loadFinish() {
-        if (getActivity() != null) {
-            //如果布局文件中不包含id为swipe_refresh_layout的控件，则swipeRefreshLayout为null
             getActivity().runOnUiThread(() -> {
-                if (mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing()) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
+                ToastUtil.showToast(text, getActivity().getApplicationContext(), isCenter, longToast);
             });
         }
     }
@@ -227,7 +267,9 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
     public void gotoLogin() {
         BaseApplication.getInstance().finishAllActivities();
         Intent intent = new Intent();
-        intent.setAction("登录页的action");
+        String action = mContext.getPackageName() + ".login";  //登录页的action
+        LogUtil.i(TAG, "LoginActivity action：" + action);
+        intent.setAction(action);
         startActivity(intent);
     }
 
@@ -239,13 +281,17 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
 
     //下拉刷新
     @Override
-    public void onRefresh() {
-        mPresenter.loadData();  //重新加载数据
-        dismissLoading();  //下拉时就不显示加载框了
+    public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+        isRefreshing = true;
+        mPresenter.refreshData();  //重新加载数据
+        if (mLoadingDialog != null) {
+            mLoadingDialog.dismiss();  //下拉时就不显示加载框了
+        }
     }
 
     //网络断开连接提示
     public void showNetErrorLayout() {
+        //如果当前布局文件中不包含layout_net_error则netErrorFl为null，此时不执行下面的逻辑
         if (getActivity() != null) {
             getActivity().runOnUiThread(() -> {
                 if (mNetErrorFl != null) {
@@ -262,6 +308,9 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
 
     //携带数据启动指定的Activity
     protected void startActivity(Class clazz, Bundle extras) {
+        if (CheckFastClickUtil.isFastClick()) {  //防止快速点击启动两个Activity
+            return;
+        }
         if (getActivity() != null) {
             Intent intent = new Intent();
             if (extras != null) {
@@ -279,6 +328,9 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
 
     //携带数据启动指定的Activity并接受返回的结果
     protected void startActivityForResult(Class clazz, Bundle extras, int requestCode) {
+        if (CheckFastClickUtil.isFastClick()) {  //防止快速点击启动两个Activity
+            return;
+        }
         if (getActivity() != null) {
             Intent intent = new Intent();
             if (extras != null) {

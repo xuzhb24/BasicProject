@@ -67,9 +67,10 @@
         <activity android:name="com.android.frame.mvc.AATest.TestMvcActivity" />
         <activity android:name="com.android.frame.mvc.AATest.TestMvcListActivity" />
         <!--MVP框架-->
-        <activity android:name="com.android.frame.mvp.AATest.activity.TestMvpActivity" />
-        <activity android:name="com.android.frame.mvp.AATest.activity.weather.WeatherActivity" />
-        <activity android:name="com.android.frame.mvp.AATest.activity.newslist.NewsListActivity" />
+        <activity android:name="com.android.frame.mvp.AATest.TestActivityMvp" />
+        <activity android:name="com.android.frame.mvp.AATest.TestFragmentMvp" />
+        <activity android:name="com.android.frame.mvp.AATest.notListType.TestMvpActivity" />
+        <activity android:name="com.android.frame.mvp.AATest.listType.TestMvpListActivity" />
         <!--通用WebView-->
         <activity android:name="com.android.frame.mvc.WebviewActivity" />
         <!--引导页-->
