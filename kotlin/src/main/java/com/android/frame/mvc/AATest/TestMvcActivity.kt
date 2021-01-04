@@ -24,6 +24,7 @@ class TestMvcActivity : BaseActivity<ActivityTestMvcBinding>() {
     )
 
     override fun handleView(savedInstanceState: Bundle?) {
+        mTitleBar?.titleText = "基类Activity(MVC)"
     }
 
     override fun initListener() {

@@ -43,6 +43,7 @@ class TestMvcListActivity : BaseListActivity<NewsListBean, ActivityTestMvcListBi
 //    }
 
     override fun handleView(savedInstanceState: Bundle?) {
+        mTitleBar?.titleText = "列表Activity(MVC)"
     }
 
     override fun initListener() {

@@ -14,11 +14,11 @@ class TestFragmentMvc : BaseActivity<ActivityTestFragmentBinding>() {
     override fun handleView(savedInstanceState: Bundle?) {
         when (intent.getIntExtra("fragment_type", 1)) {
             1 -> {
-                mTitleBar?.titleText = "基类Fragment"
+                mTitleBar?.titleText = "基类Fragment(MVC)"
                 supportFragmentManager.beginTransaction().add(R.id.content_fl, TestMvcFragment.newInstance()).commit()
             }
             2 -> {
-                mTitleBar?.titleText = "列表Fragment"
+                mTitleBar?.titleText = "列表Fragment(MVC)"
                 supportFragmentManager.beginTransaction().add(R.id.content_fl, TestMvcListFragment.newInstance()).commit()
             }
         }
