@@ -36,7 +36,7 @@ public abstract class BaseListFragment<T, VB extends ViewBinding> extends BaseFr
         if (mAdapter instanceof LoadMoreModule) {  //上拉加载更多
             mAdapter.getLoadMoreModule().setLoadMoreView(new CustomLoadMoreView());
             mAdapter.getLoadMoreModule().setOnLoadMoreListener(() -> {
-                loadData(mCurrentPage, mLoadingLayout != null, mLoadingLayout == null && isFirstLoad());
+                loadData(mCurrentPage);
             });
         }
         if (mRecyclerView != null) {
@@ -46,6 +46,13 @@ public abstract class BaseListFragment<T, VB extends ViewBinding> extends BaseFr
 
     //获取页面对应的adapter，注意adapter需要实现LoadMoreModule接口才能集成上拉加载更多的逻辑，如果没有实现就会当成普通的adapter进行处理，不能上拉加载更多
     public abstract BaseQuickAdapter<T, BaseViewHolder> getAdapter();
+
+    //分页加载
+    protected void loadData(int page) {
+        loadData(page,
+                mLoadingLayout != null,   //默认当前布局包含LoadingLayout时才用LoadingLayout来显示加载状态
+                mLoadingLayout == null && isFirstLoad());  //默认当前无加载状态布局且第一次加载时才显示加载弹窗
+    }
 
     //分页加载
     protected void loadData(int page, boolean showLoadLayout, boolean showLoadingDialog) {
@@ -70,7 +77,7 @@ public abstract class BaseListFragment<T, VB extends ViewBinding> extends BaseFr
     protected void refreshData() {
         //加载第一页的数据
         mCurrentPage = getFirstPage();
-        loadData(mCurrentPage, mLoadingLayout != null, mLoadingLayout == null && isFirstLoad());
+        loadData(mCurrentPage);
     }
 
     @Override

@@ -16,11 +16,11 @@ public class TestFragmentMvc extends BaseActivity<ActivityTestFragmentBinding> {
     public void handleView(Bundle savedInstanceState) {
         switch (getIntent().getIntExtra("fragment_type", 1)) {
             case 1:
-                mTitleBar.setTitleText("基类Fragment");
+                mTitleBar.setTitleText("基类Fragment(MVC)");
                 getSupportFragmentManager().beginTransaction().add(R.id.content_fl, TestMvcFragment.newInstance()).commit();
                 break;
             case 2:
-                mTitleBar.setTitleText("列表Fragment");
+                mTitleBar.setTitleText("列表Fragment(MVC)");
                 getSupportFragmentManager().beginTransaction().add(R.id.content_fl, TestMvcListFragment.newInstance()).commit();
                 break;
         }

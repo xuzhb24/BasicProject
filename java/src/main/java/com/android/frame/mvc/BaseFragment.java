@@ -87,7 +87,7 @@ public abstract class BaseFragment<VB extends ViewBinding> extends Fragment impl
         return binding.getRoot();
     }
 
-    //初始化一些通用控件，如加载框、SwipeRefreshLayout、网络错误提示布局
+    //初始化一些通用控件，如加载框、SmartRefreshLayout、网络错误提示布局
     protected void initBaseView() {
         mTitleBar = binding.getRoot().findViewById(R.id.title_bar);
         mLoadingDialog = new LoadingDialog(mContext, R.style.LoadingDialogStyle);

@@ -80,7 +80,7 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         refreshData();
     }
 
-    //初始化一些通用控件，如加载框、SwipeRefreshLayout、网络错误提示布局
+    //初始化一些通用控件，如加载框、SmartRefreshLayout、网络错误提示布局
     protected void initBaseView() {
         mTitleBar = findViewById(R.id.title_bar);
         mLoadingDialog = new LoadingDialog(this, R.style.LoadingDialogStyle);

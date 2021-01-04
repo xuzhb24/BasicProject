@@ -27,6 +27,7 @@ public class TestMvcActivity extends BaseActivity<ActivityTestMvcBinding> {
 
     @Override
     public void handleView(Bundle savedInstanceState) {
+        mTitleBar.setTitleText("基类Activity(MVC)");
     }
 
     @Override

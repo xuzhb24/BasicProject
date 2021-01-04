@@ -1,5 +1,7 @@
 package com.android.frame.mvc.extra.http;
 
+import androidx.annotation.Nullable;
+
 import com.android.frame.http.ExceptionUtil;
 import com.android.frame.http.model.BaseListResponse;
 import com.android.frame.http.model.BaseResponse;
@@ -133,7 +135,7 @@ public abstract class CustomObserver<T> implements Observer<T> {
      * @param t        onError中异常Throwable
      * @param response onNext中接口非成功请求时返回的结果
      */
-    protected void onFailure(IBaseView view, String message, boolean isError, Throwable t, T response) {
+    protected void onFailure(IBaseView view, String message, boolean isError, @Nullable Throwable t, @Nullable T response) {
         if (view != null) {
             view.showToast(message);
         }

@@ -1,7 +1,5 @@
 package com.android.frame.mvc.AATest.entity;
 
-import com.android.frame.mvp.AATest.bean.WeatherBeanMvp;
-
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,17 +9,17 @@ import java.util.List;
  */
 public class WeatherBean implements Serializable {
 
-    private WeatherBeanMvp.YesterdayBean yesterday;
+    private YesterdayBean yesterday;
     private String city;
-    private List<WeatherBeanMvp.ForecastBean> forecast;
+    private List<ForecastBean> forecast;
     private String ganmao;
     private String wendu;
 
-    public WeatherBeanMvp.YesterdayBean getYesterday() {
+    public YesterdayBean getYesterday() {
         return yesterday;
     }
 
-    public void setYesterday(WeatherBeanMvp.YesterdayBean yesterday) {
+    public void setYesterday(YesterdayBean yesterday) {
         this.yesterday = yesterday;
     }
 
@@ -33,11 +31,11 @@ public class WeatherBean implements Serializable {
         this.city = city;
     }
 
-    public List<WeatherBeanMvp.ForecastBean> getForecast() {
+    public List<ForecastBean> getForecast() {
         return forecast;
     }
 
-    public void setForecast(List<WeatherBeanMvp.ForecastBean> forecast) {
+    public void setForecast(List<ForecastBean> forecast) {
         this.forecast = forecast;
     }
 

@@ -52,7 +52,7 @@ public class TestMvcListActivity extends BaseListActivity<NewsListBean, Activity
 
     @Override
     public void handleView(Bundle savedInstanceState) {
-
+        mTitleBar.setTitleText("列表Activity(MVC)");
     }
 
     @Override
