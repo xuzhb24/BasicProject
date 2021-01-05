@@ -30,7 +30,7 @@ public class BaseListPresenter<T, V extends IBaseListView<T>> extends BasePresen
         );
     }
 
-    //分页加载数据，showLoading：是否显示加载框
+    //分页加载
     public void loadData(int page, boolean showLoadLayout, boolean showLoadingDialog) {
         if (loadDataFromServer(page) != null) {
             loadDataFromServer(page)

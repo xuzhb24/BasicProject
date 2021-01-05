@@ -22,8 +22,8 @@ open class BasePresenter<V : IBaseView> {
         return mView != null
     }
 
-    //加载数据
-    open fun loadData() {
+    //加载数据，进入页面时默认就会进行加载，请务必重写refreshData，当加载失败点击重试或者下拉刷新时会调用这个方法
+    open fun refreshData() {
 
     }
 

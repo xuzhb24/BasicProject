@@ -28,7 +28,7 @@ object ApiHelper {
             .compose(SchedulerUtil.ioToMain())
     }
 
-    fun getWangYiNewsByField(page: String, count: String): Observable<BaseListResponse<NewsListBean>> {
+    fun getWangYiNewsByField(page: Int, count: Int): Observable<BaseListResponse<NewsListBean>> {
         return createService(Config.NEWS_URL)
             .getWangYiNewsByField(page, count)
             .delay(1, TimeUnit.SECONDS)  //模拟延迟一段时间后请求到数据的情况

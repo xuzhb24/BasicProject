@@ -184,11 +184,13 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
         mCompositeDisposable.clear();
     }
 
+    //显示加载弹窗
     @Override
     public void showLoadingDialog() {
         showLoadingDialog("加载中", true);
     }
 
+    //显示加载弹窗
     @Override
     public void showLoadingDialog(String message, boolean cancelable) {
         if (getActivity() != null) {
@@ -200,6 +202,7 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
         }
     }
 
+    //显示加载状态布局
     @Override
     public void showLoadingLayout() {
         if (getActivity() != null) {
@@ -211,11 +214,13 @@ public abstract class BaseFragment<VB extends ViewBinding, V extends IBaseView, 
         }
     }
 
+    //获取加载状态布局
     @Override
     public LoadingLayout getLoadingLayout() {
         return mLoadingLayout;
     }
 
+    //数据加载完成
     @Override
     public void loadFinish(boolean isError) {
         if (getActivity() != null) {

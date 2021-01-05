@@ -27,14 +27,14 @@ class TestMvcListFragment : BaseListFragment<NewsListBean, FragmentTestMvcListBi
 
     //第一种写法
 //    override fun loadDataFromServer(page: Int): Observable<BaseListResponse<NewsListBean>>? {
-//        return ApiHelper.getWangYiNewsByField("$page", "${getLoadSize()}")
+//        return ApiHelper.getWangYiNewsByField(page, getLoadSize())
 //    }
 
     //第二种写法
     //如果只是从服务器获取并展示列表数据，那么采用第一种写法重写loadDataFromServer返回相应的接口即可
     //但如果有需要处理其他逻辑，那么就需要重写loadData，并且在获取到数据后调用showData展示列表数据
     override fun loadData(page: Int, showLoadLayout: Boolean, showLoadingDialog: Boolean) {
-        ApiHelper.getWangYiNewsByField("$page", "${getLoadSize()}")
+        ApiHelper.getWangYiNewsByField(page, getLoadSize())
             .subscribe(object : CustomObserver<BaseListResponse<NewsListBean>>(
                 this, false, isFirstLoad()  //第一次加载时才显示加载框
             ) {

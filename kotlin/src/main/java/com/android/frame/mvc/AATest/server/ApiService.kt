@@ -17,6 +17,6 @@ interface ApiService {
     //获取网易新闻，@Field，POST请求
     @FormUrlEncoded
     @POST("getWangYiNews")
-    fun getWangYiNewsByField(@Field("page") page: String, @Field("count") count: String): Observable<ResponseBody>
+    fun getWangYiNewsByField(@Field("page") page: Int, @Field("count") count: Int): Observable<ResponseBody>
 
 }

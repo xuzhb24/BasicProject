@@ -184,6 +184,7 @@ public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, 
         });
     }
 
+    //获取加载状态布局
     @Override
     public LoadingLayout getLoadingLayout() {
         return mLoadingLayout;

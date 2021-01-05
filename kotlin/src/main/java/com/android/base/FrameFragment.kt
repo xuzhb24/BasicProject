@@ -10,7 +10,7 @@ import com.android.frame.guide.GuideActivity
 import com.android.frame.http.AATest.TestRetrofitActivity
 import com.android.frame.mvc.AATest.TestActivityMvc
 import com.android.frame.mvc.BaseFragment
-import com.android.frame.mvp.AATest.activity.TestMvpActivity
+import com.android.frame.mvp.AATest.TestActivityMvp
 import com.android.frame.permission.PermissionFrameActivity
 import com.android.frame.permission.PermissionRequestActivity
 
@@ -52,7 +52,7 @@ class FrameFragment : BaseFragment<FragmentFrameBinding>() {
         }
         //MVP框架
         binding.mvpTv.setOnClickListener {
-            startActivity(TestMvpActivity::class.java)
+            startActivity(TestActivityMvp::class.java)
         }
         //zxing扫码
         binding.zxingTv.setOnClickListener {
