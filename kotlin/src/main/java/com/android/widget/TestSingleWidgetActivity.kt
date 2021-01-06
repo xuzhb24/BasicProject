@@ -34,7 +34,7 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
                 .show()
         }
         //展开/收起的TextView
-        binding.expandTv1.contentText = "这是可以展开收起的文本，${createExpandText(160)}这是可以展开收起的文本"
+        binding.expandTv1.contentText = "这是可以展开收起的文本，${createExpandText(360)}"
         binding.expandTv1.setOnTextClickListener(object : ExpandTextView.OnTextClickListener {
             override fun onContentTextClick(isExpand: Boolean) {
                 binding.expandTv1.contentText = createExpandText(Random.nextInt(160))
@@ -44,6 +44,7 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
                 binding.expandTv1.isExpand = !isExpand
             }
         })
+        binding.expandTv2.contentText = createExpandText(200)
         binding.expandTv2.setOnTextClickListener(object : ExpandTextView.OnTextClickListener {
             override fun onContentTextClick(isExpand: Boolean) {
                 showToast(if (isExpand) "已展开" else "已收起")

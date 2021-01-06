@@ -354,6 +354,7 @@
         <!--        <attr name="labelTextColor" format="color" />-->
         <attr name="labelMarginLeft" format="dimension" />
         <attr name="labelMarginRight" format="dimension" />
+        <attr name="boundsAlign" format="boolean" />
 
         <attr name="maxShowLines" />
         <attr name="lineSpacing" />

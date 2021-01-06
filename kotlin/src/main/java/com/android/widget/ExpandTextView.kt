@@ -27,7 +27,7 @@ class ExpandTextView @JvmOverloads constructor(
 ) : View(context, attrs, defStyleAttr) {
 
     companion object {
-        private val DEFAULT_MAX_SHOW_LINES = 2
+        private val DEFAULT_MAX_SHOW_LINES = 3
         private val DEFAULT_LINE_SPACING = SizeUtil.dp2px(2f)
         private val DEFAULT_CONTENT_SUFFIX_TEXT = "..."
         private val DEFAULT_CONTENT_TEXT_SIZE = SizeUtil.sp2px(15f)
@@ -38,6 +38,7 @@ class ExpandTextView @JvmOverloads constructor(
         private val DEFAULT_LABEL_TEXT_COLOR = Color.BLACK
         private val DEFAULT_LABEL_MARGIN_LEFT = SizeUtil.dp2px(5f)
         private val DEFAULT_LABEL_MARGIN_RIGHT = SizeUtil.dp2px(5f)
+        private val DEFAULT_BOUNDS_ALIGN = true
     }
 
     var maxShowLines: Int = DEFAULT_MAX_SHOW_LINES  //收起状态时最多显示的文本行数
@@ -58,6 +59,7 @@ class ExpandTextView @JvmOverloads constructor(
     var labelTextColor: Int = DEFAULT_LABEL_TEXT_COLOR           //展开/收起标签的文本字体颜色
     var labelMarginLeft: Float = DEFAULT_LABEL_MARGIN_LEFT       //展开/收起标签的左边距
     var labelMarginRight: Float = DEFAULT_LABEL_MARGIN_RIGHT     //展开/收起标签的右边距
+    var boundsAlign: Boolean = DEFAULT_BOUNDS_ALIGN              //文本是否两端分散对齐
 
     //当前是否是展开状态
     var isExpand = false
@@ -96,6 +98,7 @@ class ExpandTextView @JvmOverloads constructor(
         labelTextColor = ta.getColor(R.styleable.ExpandTextView_labelTextColor, DEFAULT_LABEL_TEXT_COLOR)
         labelMarginLeft = ta.getDimension(R.styleable.ExpandTextView_labelMarginLeft, DEFAULT_LABEL_MARGIN_LEFT)
         labelMarginRight = ta.getDimension(R.styleable.ExpandTextView_labelMarginRight, DEFAULT_LABEL_MARGIN_RIGHT)
+        boundsAlign = ta.getBoolean(R.styleable.ExpandTextView_boundsAlign, DEFAULT_BOUNDS_ALIGN)
         ta.recycle()
     }
 
@@ -150,7 +153,11 @@ class ExpandTextView @JvmOverloads constructor(
                 val currentLineText = contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i))
                 val currentLineStaticLayout = getStaticLayout(currentLineText, mContentPaint, width)
                 height += currentLineStaticLayout.height
-                canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
+                if (boundsAlign && i != lineCount - 1) {
+                    drawAlignText(canvas, currentLineText, getBaseLine(mContentPaint, height), mContentPaint)
+                } else {
+                    canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
+                }
                 height += lineSpacing
             }
         } else {
@@ -199,7 +206,11 @@ class ExpandTextView @JvmOverloads constructor(
                         }
                     } else {  //普通行
                         height += currentLineStaticLayout.height
-                        canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
+                        if (boundsAlign) {
+                            drawAlignText(canvas, currentLineText, getBaseLine(mContentPaint, height), mContentPaint)
+                        } else {
+                            canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
+                        }
                         height += lineSpacing
                     }
                 }
@@ -267,11 +278,51 @@ class ExpandTextView @JvmOverloads constructor(
                         }
                     } else {  //普通行
                         height += currentLineStaticLayout.height
-                        canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
+                        if (boundsAlign) {
+                            drawAlignText(canvas, currentLineText, getBaseLine(mContentPaint, height), mContentPaint)
+                        } else {
+                            canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
+                        }
                         height += lineSpacing
                     }
                 }
             }
+        }
+    }
+
+    //绘制文本，两端分散对齐
+    private fun drawAlignText(
+        canvas: Canvas,
+        lindText: String,
+        lineY: Float,
+        paint: TextPaint
+    ) {
+        var lineText = lindText
+        var x = 0f
+        if (lineText.length > 3 && lineText[0] == ' ' && lineText[1] == ' ') {
+            val blanks = "  "
+            canvas.drawText(blanks, x, lineY, paint)
+            val bw = StaticLayout.getDesiredWidth(blanks, paint)
+            x += bw
+            lineText = lineText.substring(3)
+        }
+        val gapCount = lineText.length - 1
+        var i = 0
+        if (lineText.length > 2 && lineText[0].toInt() == 12288 && lineText[1].toInt() == 12288) {
+            val substring = lineText.substring(0, 2)
+            val cw = StaticLayout.getDesiredWidth(substring, paint)
+            canvas.drawText(substring, x, lineY, paint)
+            x += cw
+            i += 2
+        }
+        val textWidth = paint.measureText(lineText)
+        val d = (width - textWidth) / gapCount
+        while (i < lineText.length) {
+            val c = lineText[i].toString()
+            val cw = StaticLayout.getDesiredWidth(c, paint)
+            canvas.drawText(c, x, lineY, paint)
+            x += cw + d
+            i++
         }
     }
 

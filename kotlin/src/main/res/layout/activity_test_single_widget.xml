@@ -61,8 +61,8 @@
                 android:layout_marginTop="10dp"
                 android:layout_marginRight="10dp"
                 android:background="#33000000"
+                app:boundsAlign="false"
                 app:contentSuffixText="----"
-                app:contentText="一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十一二三四五六七八九十"
                 app:contentTextColor="#333333"
                 app:contentTextSize="16sp"
                 app:labelExpandText="点击展开"
@@ -72,7 +72,7 @@
                 app:labelTextColor="@color/colorPrimary"
                 app:labelTextSize="12sp"
                 app:lineSpacing="10dp"
-                app:maxShowLines="3" />
+                app:maxShowLines="2" />
 
             <View style="@style/SingleWidgetDividerLineStyle" />
 
