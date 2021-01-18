@@ -41,6 +41,7 @@ import androidx.annotation.IntRange;
 import com.android.base.BaseApplication;
 import com.android.util.FileUtil;
 import com.android.util.IOUtil;
+import com.android.util.LogUtil;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -51,6 +52,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 
 /**
  * Create by xuzhb on 2019/10/11
@@ -170,7 +172,7 @@ public class BitmapUtil {
     }
 
     //保存图片到系统相册，返回true表示保存成功，false表示保存失败
-    public static boolean saveImageToGallery(Context context, Bitmap bitmap, String bitmapName) {
+    public static boolean saveBitmapToGallery(Context context, Bitmap bitmap, String bitmapName) {
         if (bitmap == null) {
             return false;
         }
@@ -181,29 +183,63 @@ public class BitmapUtil {
         }
         String fileName = bitmapName + ".jpg";
         File file = new File(appDir, fileName);
+        FileOutputStream fos = null;
         try {
-            FileOutputStream fos = new FileOutputStream(file);
+            fos = new FileOutputStream(file);
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
             fos.flush();
             fos.close();
-            // 其次把文件插入到系统图库
-//            MediaStore.Images.Media.insertImage(context.getContentResolver(), file.getAbsolutePath(), fileName, null);  //使用这个方法会同时生成两张图片
-
             ContentValues values = new ContentValues();
             values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
             values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
             context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-        } catch (FileNotFoundException e) {
+            //最后通知图库更新
+            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
             return false;
-        } catch (IOException e) {
-            e.printStackTrace();
+        } finally {
+            IOUtil.closeIO(fos);
+        }
+    }
+
+    //保存图片文件到系统相册，返回true表示保存成功，false表示保存失败
+    public static boolean saveImageFileToGallery(Context context, File srcFile, String imageName) {
+        if (!FileUtil.isFile(srcFile)) {
             return false;
         }
-        // 最后通知图库更新
-        context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-        return true;
+        // 首先保存图片
+        File destDir = new File(Environment.getExternalStorageDirectory(), "extra_picture");  //图片存储路径
+        if (!destDir.exists()) {
+            destDir.mkdir();
+        }
+        String mimeType = getMimeType(srcFile.getAbsolutePath());
+        String fileName = imageName + "." + mimeType;
+        File destFile = new File(destDir, fileName);
+        FileInputStream fis = null;
+        OutputStream os = null;
+        try {
+            fis = new FileInputStream(srcFile);
+            os = new BufferedOutputStream(new FileOutputStream(destFile, false));
+            byte data[] = new byte[1024];
+            int len;
+            while ((len = fis.read(data, 0, 1024)) != -1) {
+                os.write(data, 0, len);
+            }
+            ContentValues values = new ContentValues();
+            values.put(MediaStore.Images.Media.DATA, destFile.getAbsolutePath());
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/" + mimeType);
+            context.getApplicationContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+            //最后通知图库更新
+            context.getApplicationContext().sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(destFile)));
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        } finally {
+            IOUtil.closeIO(fis, os);
+        }
     }
 
     //通过BitmapFactory.decodeFile从文件中获取Bitmap
@@ -926,6 +962,21 @@ public class BitmapUtil {
         return path.endsWith(".PNG") || path.endsWith(".JPG")
                 || path.endsWith(".JPEG") || path.endsWith(".BMP")
                 || path.endsWith(".GIF");
+    }
+
+    //获取图片类型
+    public static String getMimeType(String filePath) {
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(filePath, options);
+        String mimeType = options.outMimeType;
+        if (TextUtils.isEmpty(mimeType)) {
+            mimeType = "";
+        } else {
+            mimeType = mimeType.substring(6);
+        }
+        LogUtil.i("MimeType", mimeType);
+        return mimeType;
     }
 
     //获取图片类型

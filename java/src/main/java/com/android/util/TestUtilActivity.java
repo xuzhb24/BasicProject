@@ -1174,7 +1174,7 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 "设置屏幕跟随系统状态", "获取屏幕信息");
         btn1.setOnClickListener(v -> {
             Bitmap bitmap = ScreenUtil.captureWithStatusBar(this);
-            if (BitmapUtil.saveImageToGallery(this, bitmap, "截屏带状态栏")) {
+            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "截屏带状态栏")) {
                 showToast("保存成功！");
             } else {
                 showToast("保存失败");
@@ -1182,7 +1182,7 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
         });
         btn2.setOnClickListener(v -> {
             Bitmap bitmap = ScreenUtil.captureWithoutStatusBar(this);
-            if (BitmapUtil.saveImageToGallery(this, bitmap, "截屏不带状态栏")) {
+            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "截屏不带状态栏")) {
                 showToast("保存成功！");
             } else {
                 showToast("保存失败");
