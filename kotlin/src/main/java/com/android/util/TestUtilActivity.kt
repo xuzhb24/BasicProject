@@ -1489,7 +1489,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         )
         btn1.setOnClickListener {
             val bitmap = ScreenUtil.captureWithStatusBar(this)
-            if (BitmapUtil.saveImageToGallery(this, bitmap, "截屏带状态栏")) {
+            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "截屏带状态栏")) {
                 showToast("保存成功！")
             } else {
                 showToast("保存失败！")
@@ -1497,7 +1497,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         }
         btn2.setOnClickListener {
             val bitmap = ScreenUtil.captureWithoutStatusBar(this)
-            if (BitmapUtil.saveImageToGallery(this, bitmap, "截屏不带状态栏")) {
+            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "截屏不带状态栏")) {
                 showToast("保存成功！")
             } else {
                 showToast("保存失败！")

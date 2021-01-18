@@ -19,12 +19,14 @@ import android.renderscript.Element
 import android.renderscript.RenderScript
 import android.renderscript.RenderScript.RSMessageHandler
 import android.renderscript.ScriptIntrinsicBlur
+import android.text.TextUtils
 import android.view.View
 import androidx.annotation.FloatRange
 import androidx.annotation.IntRange
 import com.android.base.BaseApplication
 import com.android.util.FileUtil
 import com.android.util.IOUtil
+import com.android.util.LogUtil
 import java.io.*
 
 /**
@@ -135,7 +137,7 @@ object BitmapUtil {
     }
 
     //保存图片到系统相册，返回true表示保存成功，false表示保存失败
-    fun saveImageToGallery(
+    fun saveBitmapToGallery(
         context: Context,
         bitmap: Bitmap?,
         bitmapName: String = System.currentTimeMillis().toString()  //存储的图片名称
@@ -150,29 +152,67 @@ object BitmapUtil {
         }
         val fileName = "${bitmapName}.jpg"
         val file = File(appDir, fileName)
+        var fos: FileOutputStream? = null
         try {
-            val fos = FileOutputStream(file)
+            fos = FileOutputStream(file)
             bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
             fos.flush()
             fos.close()
-            // 其次把文件插入到系统图库
-//            MediaStore.Images.Media.insertImage(context.contentResolver, file.absolutePath, fileName, null)  //使用这个方法会同时生成两张图片
-
             val values = ContentValues()
             values.put(MediaStore.Images.Media.DATA, file.absolutePath)
             values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-
-        } catch (e: FileNotFoundException) {
+            context.applicationContext.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            // 最后通知图库更新
+            context.applicationContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
+            return true
+        } catch (e: Exception) {
             e.printStackTrace()
             return false
-        } catch (e: IOException) {
-            e.printStackTrace()
+        } finally {
+            IOUtil.closeIO(fos)
+        }
+    }
+
+    //保存图片文件到系统相册，返回true表示保存成功，false表示保存失败
+    fun saveImageFileToGallery(
+        context: Context,
+        srcFile: File?,
+        imageName: String = System.currentTimeMillis().toString()  //存储的图片名称
+    ): Boolean {
+        if (!FileUtil.isFile(srcFile)) {
             return false
         }
-        // 最后通知图库更新
-        context.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
-        return true
+        // 首先保存图片
+        val destDir = File(Environment.getExternalStorageDirectory(), "extra_picture") //图片存储路径
+        if (!destDir.exists()) {
+            destDir.mkdir()
+        }
+        val mimeType: String = getMimeType(srcFile!!.absolutePath)
+        val fileName = "$imageName.$mimeType"
+        val destFile = File(destDir, fileName)
+        var fis: FileInputStream? = null
+        var os: OutputStream? = null
+        try {
+            fis = FileInputStream(srcFile)
+            os = BufferedOutputStream(FileOutputStream(destFile, false))
+            val data = ByteArray(1024)
+            var len: Int
+            while (fis.read(data, 0, 1024).also { len = it } != -1) {
+                os.write(data, 0, len)
+            }
+            val values = ContentValues()
+            values.put(MediaStore.Images.Media.DATA, destFile.absolutePath)
+            values.put(MediaStore.Images.Media.MIME_TYPE, "image/$mimeType")
+            context.applicationContext.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+            //最后通知图库更新
+            context.applicationContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(destFile)))
+            return true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            return false
+        } finally {
+            IOUtil.closeIO(fis, os)
+        }
     }
 
     //通过BitmapFactory.decodeFile从文件中获取Bitmap
@@ -930,6 +970,20 @@ object BitmapUtil {
         return (path.endsWith(".PNG") || path.endsWith(".JPG")
                 || path.endsWith(".JPEG") || path.endsWith(".BMP")
                 || path.endsWith(".GIF"))
+    }
+
+    //获取图片类型
+    fun getMimeType(filePath: String?): String {
+        if (TextUtils.isEmpty(filePath)) {
+            return "";
+        }
+        val options = BitmapFactory.Options()
+        options.inJustDecodeBounds = true
+        BitmapFactory.decodeFile(filePath, options)
+        var mimeType = options.outMimeType
+        mimeType = if (TextUtils.isEmpty(mimeType)) "" else mimeType.substring(6)
+        LogUtil.i("MimeType", mimeType)
+        return mimeType
     }
 
     //获取图片类型

@@ -236,7 +236,7 @@ class PermissionRequestActivity : Activity() {
     private fun testSaveToFile() {
         //IO操作放子线程
         thread(start = true) {
-            val flag = BitmapUtil.saveImageToGallery(
+            val flag = BitmapUtil.saveBitmapToGallery(
                 this,
                 BitmapFactory.decodeResource(resources, R.mipmap.ic_logo)
             )

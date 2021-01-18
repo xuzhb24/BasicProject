@@ -57,7 +57,7 @@ class TestCodeUtilActivity : BaseActivity<ActivityTestCodeUtilBinding>() {
                 showToast("请先生成二维码")
                 return@setOnClickListener
             }
-            val flag = BitmapUtil.saveImageToGallery(
+            val flag = BitmapUtil.saveBitmapToGallery(
                 this,
                 (iv.drawable as BitmapDrawable).bitmap,
                 System.currentTimeMillis().toString()
