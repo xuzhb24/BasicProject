@@ -9,6 +9,7 @@ import com.android.java.databinding.FragmentWidgetBinding;
 import com.android.universal.TestSystemWidgetActivity;
 import com.android.widget.Dialog.TestDialogActivity;
 import com.android.widget.LoadingLayout.TestLoadingLayoutActivity;
+import com.android.widget.PhotoViewer.PhotoViewActivity;
 import com.android.widget.PicGetterDialog.AATest.TestPicGetterDialogActivity;
 import com.android.widget.PopupWindow.AATest.TestPopupWindowActivity;
 import com.android.widget.ProgressBar.TestProgressBarActivity;
@@ -71,6 +72,10 @@ public class WidgetFragment extends BaseFragment<FragmentWidgetBinding> {
         //加载状态布局
         binding.loadingTv.setOnClickListener(v -> {
             startActivity(TestLoadingLayoutActivity.class);
+        });
+        //图片查看器
+        binding.photoTv.setOnClickListener(v -> {
+            PhotoViewActivity.start(getActivity());
         });
     }
 

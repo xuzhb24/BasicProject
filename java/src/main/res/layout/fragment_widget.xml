@@ -68,6 +68,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="加载状态布局" />
 
+            <TextView
+                android:id="@+id/photo_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="图片查看器" />
+
         </LinearLayout>
     </ScrollView>
 

@@ -102,6 +102,8 @@
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity android:name="com.android.widget.LoadingLayout.TestLoadingLayoutActivity" />
+        <!--图片查看器-->
+        <activity android:name="com.android.widget.PhotoViewer.PhotoViewActivity" />
 
         <!--工具篇-->
         <!--实现沉浸式状态栏-->
