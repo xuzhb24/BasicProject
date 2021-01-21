@@ -330,6 +330,7 @@
         <attr name="failSrc" format="reference" />
         <attr name="failDescText" format="string" />
         <attr name="failActionText" format="string" />
+        <attr name="intercept" format="boolean" />
     </declare-styleable>
 
     <!--仿iOS菊花加载-->

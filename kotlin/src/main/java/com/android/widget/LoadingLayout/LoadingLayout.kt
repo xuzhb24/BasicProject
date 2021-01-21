@@ -72,6 +72,7 @@ class LoadingLayout @JvmOverloads constructor(
             field = value
             setActionText(mActionBtn, value)
         }
+    private var intercept: Boolean = true  //是否拦截点击事件，为true时底下的View无法收到点击事件
 
     //获取根布局，以便设置布局的LayoutParams
     fun getRootLayout(): LinearLayout = mRootLayout
@@ -103,6 +104,7 @@ class LoadingLayout @JvmOverloads constructor(
             failSrc = ta.getDrawable(R.styleable.LoadingLayout_failSrc) ?: resources.getDrawable(R.drawable.ic_load_fail)
             failDescText = ta.getString(R.styleable.LoadingLayout_failDescText) ?: ""
             failActionText = ta.getString(R.styleable.LoadingLayout_failActionText) ?: ""
+            intercept = ta.getBoolean(R.styleable.LoadingLayout_intercept, true)
             ta.recycle()
         }
         setLoadState(STATE_HIDE)
@@ -205,7 +207,7 @@ class LoadingLayout @JvmOverloads constructor(
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
-        return true  //拦截点击事件
+        return intercept  //拦截点击事件
     }
 
 }
