@@ -40,6 +40,7 @@ public class LoadingLayout extends LinearLayout {
     private Drawable failSrc;        //加载失败的图片
     private String failDescText;     //加载失败的文本描述
     private String failActionText;   //重试的文本描述
+    private boolean intercept;       //是否拦截点击事件，为true时底下的View无法收到点击事件
 
     public void setLoadingSrc(Drawable loadingSrc) {
         this.loadingSrc = loadingSrc;
@@ -140,6 +141,7 @@ public class LoadingLayout extends LinearLayout {
         }
         failDescText = ta.getString(R.styleable.LoadingLayout_failDescText);
         failActionText = ta.getString(R.styleable.LoadingLayout_failActionText);
+        intercept = ta.getBoolean(R.styleable.LoadingLayout_intercept, true);
         ta.recycle();
     }
 
@@ -250,6 +252,6 @@ public class LoadingLayout extends LinearLayout {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        return true;  //拦截点击事件
+        return intercept;  //拦截点击事件
     }
 }
