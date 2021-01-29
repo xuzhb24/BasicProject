@@ -8,7 +8,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
         <!--ConstraintLayout-->
         <TextView
             style="@style/SystemWidgetTextStyle"
@@ -144,6 +143,47 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <!--CardView-->
+        <TextView
+            style="@style/SystemWidgetTextStyle"
+            android:text="CardView" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="15dp"
+            app:cardBackgroundColor="@color/white"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            app:cardUseCompatPadding="true"
+            app:contentPadding="8dp">
+
+            <!--
+            app:cardElevation：z轴的阴影
+            app:cardMaxElevation：z轴的最大高度值
+            app:cardBackgroundColor：卡片的背景色
+            app:cardCornerRadius：圆角大小
+            app:contentPadding：内容的padding
+            app:contentPaddingLeft：内容的左padding
+            app:contentPaddingTop：内容的上padding
+            app:contentPaddingRight：内容的右padding
+            app:contentPaddingBottom：内容的底padding
+            app:contentPaddingStart：内容与边距的间隔起始
+            app:contentPaddingEnd：内容与边距的间隔终止
+            app:cardUseCompatPadding：设置内边距，V21以上的版本和之前的版本仍旧具有一样的计算方式
+            app:cardPreventCornerOverlap：在V20和之前的版本中添加内边距，这个属性为了防止内容和边角的重叠
+            -->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="测试\n卡片\n效果"
+                android:textSize="32sp" />
+
+        </androidx.cardview.widget.CardView>
+
 
     </LinearLayout>
 
