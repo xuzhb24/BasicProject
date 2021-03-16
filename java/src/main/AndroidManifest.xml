@@ -29,6 +29,8 @@
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <!--悬浮窗-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <uses-permission
         android:name="android.permission.PACKAGE_USAGE_STATS"
@@ -104,6 +106,16 @@
         <activity android:name="com.android.widget.LoadingLayout.TestLoadingLayoutActivity" />
         <!--图片查看器-->
         <activity android:name="com.android.widget.PhotoViewer.PhotoViewActivity" />
+        <!--悬浮窗权限申请-->
+        <activity
+            android:name="com.android.widget.FloatWindow.NeedPermission.FloatActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="standard"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
+        <!--悬浮窗-->
+        <activity android:name="com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageOneActivity" />
+        <activity android:name="com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageTwoActivity" />
+        <activity android:name="com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageThreeActivity" />
 
         <!--工具篇-->
         <!--实现沉浸式状态栏-->

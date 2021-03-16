@@ -8,6 +8,7 @@ import com.android.frame.mvc.BaseFragment;
 import com.android.java.databinding.FragmentWidgetBinding;
 import com.android.universal.TestSystemWidgetActivity;
 import com.android.widget.Dialog.TestDialogActivity;
+import com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageOneActivity;
 import com.android.widget.LoadingLayout.TestLoadingLayoutActivity;
 import com.android.widget.PhotoViewer.PhotoViewActivity;
 import com.android.widget.PicGetterDialog.AATest.TestPicGetterDialogActivity;
@@ -76,6 +77,10 @@ public class WidgetFragment extends BaseFragment<FragmentWidgetBinding> {
         //图片查看器
         binding.photoTv.setOnClickListener(v -> {
             PhotoViewActivity.start(getActivity());
+        });
+        //悬浮窗(申请权限)
+        binding.floatTv1.setOnClickListener(v -> {
+            startActivity(TestFloatPageOneActivity.class);
         });
     }
 

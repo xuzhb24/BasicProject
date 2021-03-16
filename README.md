@@ -141,6 +141,11 @@ BaseDialog：基类的Dialog
 CommonDialog：通用的Dialog，可以实现不同布局的Dialog
 ConfirmDialog：常见单/双按钮的Dialog
 ~~~
+* ### FloatWindow：悬浮窗
+~~~
+NeedPermission：需要申请悬浮窗权限才能创建的悬浮窗
+NoPermission：无需申请权限的应用内全局悬浮窗
+~~~
 * ### LetterIndexBar：通讯录字母索引
 * ### LineChart：图表相关
 ~~~

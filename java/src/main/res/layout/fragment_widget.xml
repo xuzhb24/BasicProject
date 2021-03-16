@@ -73,6 +73,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="图片查看器" />
 
+            <TextView
+                android:id="@+id/float_tv1"
+                style="@style/ItemSingleTextStyle"
+                android:text="悬浮窗(申请权限)" />
+
         </LinearLayout>
     </ScrollView>
 
