@@ -113,9 +113,11 @@
             android:launchMode="standard"
             android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <!--悬浮窗-->
+        <activity android:name="com.android.widget.FloatWindow.TestFloatActivity" />
         <activity android:name="com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageOneActivity" />
         <activity android:name="com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageTwoActivity" />
         <activity android:name="com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageThreeActivity" />
+        <activity android:name="com.android.widget.FloatWindow.NoPermission.AATest.TestFloatPageActivity" />
 
         <!--工具篇-->
         <!--实现沉浸式状态栏-->

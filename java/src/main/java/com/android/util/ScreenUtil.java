@@ -12,6 +12,7 @@ import android.view.Surface;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.android.base.BaseApplication;
 import com.android.util.StatusBar.StatusBarUtil;
 
 /**
@@ -21,8 +22,18 @@ import com.android.util.StatusBar.StatusBarUtil;
 public class ScreenUtil {
 
     //获取屏幕宽度，单位像素
+    public static int getScreenWidth() {
+        return getScreenWidth(BaseApplication.getInstance());
+    }
+
+    //获取屏幕宽度，单位像素
     public static int getScreenWidth(Context context) {
         return getDisplayMetrics(context).widthPixels;
+    }
+
+    //获取屏幕高度，单位像素
+    public static int getScreenHeight() {
+        return getScreenHeight(BaseApplication.getInstance());
     }
 
     //获取屏幕高度，单位像素

@@ -28,6 +28,7 @@ public class IFloatWindowImpl implements IFloatWindow {
 
     private int mScaledTouchSlop;      //系统最小滑动距离
     private int mX, mY;                //当前的X、Y坐标
+    private int mOriginX, mOriginY;    //原始坐标
     private boolean isShow;            //是否显示
     private boolean isInit = false;    //是否已添加
     private boolean isRemove = false;  //是否被移除
@@ -148,8 +149,8 @@ public class IFloatWindowImpl implements IFloatWindow {
         mLayoutParams.width = mBuilder.mWidth;
         mLayoutParams.height = mBuilder.mHeight;
         mLayoutParams.gravity = mBuilder.mGravity;
-        mLayoutParams.x = mX = mBuilder.mXOffset;
-        mLayoutParams.y = mY = mBuilder.mYOffset;
+        mLayoutParams.x = mX = mOriginX = mBuilder.mXOffset;
+        mLayoutParams.y = mY = mOriginY = mBuilder.mYOffset;
         mWindowManager.addView(mBuilder.mView, mLayoutParams);
     }
 
@@ -211,8 +212,8 @@ public class IFloatWindowImpl implements IFloatWindow {
                                         startAnimator();
                                         break;
                                     case MoveType.back:
-                                        PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", getX(), mBuilder.mXOffset);
-                                        PropertyValuesHolder pvhY = PropertyValuesHolder.ofInt("y", getY(), mBuilder.mYOffset);
+                                        PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", getX(), mOriginX);
+                                        PropertyValuesHolder pvhY = PropertyValuesHolder.ofInt("y", getY(), mOriginY);
                                         mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhX, pvhY);
                                         mAnimator.addUpdateListener(animation -> {
                                             int x = (int) animation.getAnimatedValue("x");

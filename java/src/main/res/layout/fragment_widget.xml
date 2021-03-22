@@ -74,9 +74,9 @@
                 android:text="图片查看器" />
 
             <TextView
-                android:id="@+id/float_tv1"
+                android:id="@+id/float_tv"
                 style="@style/ItemSingleTextStyle"
-                android:text="悬浮窗(申请权限)" />
+                android:text="悬浮窗" />
 
         </LinearLayout>
     </ScrollView>
