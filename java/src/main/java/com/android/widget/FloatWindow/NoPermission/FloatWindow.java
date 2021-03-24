@@ -8,7 +8,6 @@ import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -24,7 +23,6 @@ import androidx.core.view.ViewCompat;
 
 import com.android.util.LogUtil;
 import com.android.util.ScreenUtil;
-import com.android.util.SizeUtil;
 import com.android.widget.ViewHolder;
 
 /**
@@ -56,6 +54,7 @@ public class FloatWindow implements IFloatWindow {
     private int mMoveType = MoveType.slide;
     private int mSlideLeftMargin;
     private int mSlideRightMargin;
+    private boolean isShowing = true;
     private Context mContext;
     private View mView;
     @LayoutRes
@@ -202,6 +201,7 @@ public class FloatWindow implements IFloatWindow {
         }
         initTouchEvent();
         container.addView(mView);
+        mView.setVisibility(isShowing ? View.VISIBLE : View.GONE);
     }
 
     private void initTouchEvent() {
@@ -297,6 +297,7 @@ public class FloatWindow implements IFloatWindow {
         if (mView == null) {
             return;
         }
+        isShowing = true;
         mView.setVisibility(View.VISIBLE);
     }
 
@@ -305,6 +306,7 @@ public class FloatWindow implements IFloatWindow {
         if (mView == null) {
             return;
         }
+        isShowing = false;
         mView.setVisibility(View.GONE);
     }
 
