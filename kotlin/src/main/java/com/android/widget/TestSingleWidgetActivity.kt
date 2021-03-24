@@ -138,6 +138,9 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
             }
 
         })
+        binding.alignTv.setOnClickListener {
+            binding.alignTv.text = createExpandText(200)
+        }
     }
 
     private fun createExpandText(count: Int): String {
