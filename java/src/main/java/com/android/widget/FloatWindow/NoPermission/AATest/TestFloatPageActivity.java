@@ -3,11 +3,14 @@ package com.android.widget.FloatWindow.NoPermission.AATest;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Gravity;
+import android.widget.FrameLayout;
 
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.java.databinding.ActivityCommonLayoutBinding;
 import com.android.util.CommonLayoutUtil;
+import com.android.util.SizeUtil;
 import com.android.widget.FloatWindow.NoPermission.FloatWindow;
 import com.android.widget.FloatWindow.NoPermission.MoveType;
 import com.android.widget.FloatWindow.NoPermission.ScreenType;
@@ -39,9 +42,13 @@ public class TestFloatPageActivity extends BaseActivity<ActivityCommonLayoutBind
     protected void onResume() {
         super.onResume();
         //绑定悬浮窗
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.END | Gravity.BOTTOM;
+        params.bottomMargin = SizeUtil.dp2pxInt(300);
         FloatWindow.get()
                 .setView(R.layout.layout_float)
                 .setContentViewId(R.id.content_iv)
+                .setLayoutParams(params)
                 .setMoveType(MoveType.active, 100, -100)
                 .setOnViewListener((holder, view) -> {
                     holder.setOnClickListener(R.id.content_iv, v1 -> {

@@ -45,22 +45,21 @@ public class FloatWindow implements IFloatWindow {
         return SingleTonHolder.holder;
     }
 
-    private static final int INITIAL_VALUE = -9999;
-
-    private int mScaledTouchSlop;      //系统最小滑动距离
-    private int mX = INITIAL_VALUE;
-    private int mY = INITIAL_VALUE;
-    private int mOriginX, mOriginY;    //原始坐标
+    private int mScaledTouchSlop;  //系统最小滑动距离
+    private float mX;
+    private float mY;
+    private float mOriginX, mOriginY;  //原始坐标
     private int mMoveType = MoveType.slide;
-    private int mSlideLeftMargin;
-    private int mSlideRightMargin;
+    private float mSlideLeftMargin;
+    private float mSlideRightMargin;
     private boolean isShowing = true;
+    private boolean isFirstTouchDown = true;
     private Context mContext;
     private View mView;
     @LayoutRes
     private int mLayoutId;
     @IdRes
-    int mContentViewId = -1;
+    private int mContentViewId = -1;
     private ViewGroup.LayoutParams mLayoutParams;
     private ValueAnimator mAnimator;
     private TimeInterpolator mInterpolator;
@@ -80,6 +79,7 @@ public class FloatWindow implements IFloatWindow {
     }
 
     //设置主要操作的控件Id，提供这个方法主要是为了避免整个布局最大的控件设置了点击事件后无法拖动的现象
+    @Override
     public FloatWindow setContentViewId(@IdRes int contentViewId) {
         mContentViewId = contentViewId;
         return this;
@@ -92,7 +92,7 @@ public class FloatWindow implements IFloatWindow {
     }
 
     @Override
-    public FloatWindow setMoveType(int moveType, int slideLeftMargin, int slideRightMargin) {
+    public FloatWindow setMoveType(int moveType, float slideLeftMargin, float slideRightMargin) {
         mMoveType = moveType;
         mSlideLeftMargin = slideLeftMargin;
         mSlideRightMargin = slideRightMargin;
@@ -106,53 +106,6 @@ public class FloatWindow implements IFloatWindow {
         return this;
     }
 
-    @Override
-    public FloatWindow setX(int x) {
-        mX = x;
-        if (mView != null) {
-            mView.setX(x);
-        }
-        return this;
-    }
-
-    @Override
-    public FloatWindow setX(int screenType, float ratio) {
-        int x = (int) ((screenType == ScreenType.width ?
-                ScreenUtil.getScreenWidth() :
-                ScreenUtil.getScreenHeight()) * ratio);
-        setX(x);
-        return this;
-    }
-
-    @Override
-    public FloatWindow setY(int y) {
-        mY = y;
-        if (mView != null) {
-            mView.setY(y);
-        }
-        return this;
-    }
-
-    @Override
-    public FloatWindow setY(int screenType, float ratio) {
-        int y = (int) ((screenType == ScreenType.width ?
-                ScreenUtil.getScreenWidth() :
-                ScreenUtil.getScreenHeight()) * ratio);
-        setY(y);
-        return this;
-    }
-
-    @Override
-    public FloatWindow setXY(int x, int y) {
-        mX = x;
-        mY = y;
-        if (mView != null) {
-            mView.setX(x);
-            mView.setY(y);
-        }
-        return this;
-    }
-
     public FloatWindow setOnViewListener(OnViewListener listener) {
         mOnViewListener = listener;
         return this;
@@ -161,18 +114,18 @@ public class FloatWindow implements IFloatWindow {
     @Override
     public void attach(Activity activity) {
         LogUtil.i(TAG, "attach activity:" + activity.getClass().getName());
+        mContext = activity.getApplicationContext();
+        mScaledTouchSlop = ViewConfiguration.get(mContext).getScaledTouchSlop();
         if (isAttachedToWindow()) {
             return;
         }
-        FrameLayout container = getActivityContainer(activity);
         if (mView == null && mLayoutId == 0) {
             throw new IllegalArgumentException("View has not been initialize!");
         }
         if (mView == null) {
-            mView = LayoutInflater.from(container.getContext().getApplicationContext()).inflate(mLayoutId, null);
+            mView = LayoutInflater.from(mContext).inflate(mLayoutId, null);
         }
-        mContext = activity.getApplicationContext();
-        mScaledTouchSlop = ViewConfiguration.get(mContext).getScaledTouchSlop();
+        FrameLayout container = getActivityContainer(activity);
         if (mView.getParent() == container) {
             LogUtil.i(TAG, "View has setted");
             return;
@@ -181,21 +134,23 @@ public class FloatWindow implements IFloatWindow {
             LogUtil.i(TAG, "remove view");
             ((ViewGroup) mView.getParent()).removeView(mView);
         }
-        mLayoutParams = getDefaultParams();
-        mView.setLayoutParams(mLayoutParams);
-        if (mX != INITIAL_VALUE) {
-            mView.setX(mX);
-        } else {
-            mX = (int) mView.getX();
+        if (isFirstTouchDown) {  //第一次添加
+            if (mLayoutParams == null) {
+                mLayoutParams = getDefaultParams();
+            }
+            mView.setLayoutParams(mLayoutParams);
+        } else {  //移动过
+            if (mMoveType == MoveType.inactive || mMoveType == MoveType.back) {  //View的最终位置不会发生变化
+                if (mLayoutParams == null) {
+                    mLayoutParams = getDefaultParams();
+                }
+                mView.setLayoutParams(mLayoutParams);
+            } else {
+                mView.setLayoutParams(getDefaultParams());
+                mView.setX(mX);
+                mView.setY(mY);
+            }
         }
-        if (mY != INITIAL_VALUE) {
-            mView.setY(mY);
-        } else {
-            mY = (int) mView.getY();
-        }
-        mOriginX = (int) mView.getX();
-        mOriginY = (int) mView.getY();
-        LogUtil.i(TAG, "mX:" + mX + " mY:" + mY);
         if (mOnViewListener != null) {
             mOnViewListener.onView(new ViewHolder(mView), mView);
         }
@@ -219,14 +174,19 @@ public class FloatWindow implements IFloatWindow {
                 layout.setOnTouchListener(new View.OnTouchListener() {
 
                     float downX, downY, upX, upY, lastX, lastY, offsetX, offsetY;
-                    int newX, newY;
-                    boolean isClick = false;
+                    float newX, newY;
+                    boolean isClick = true;
 
                     @Override
                     public boolean onTouch(View v, MotionEvent event) {
                         switch (event.getAction()) {
                             case MotionEvent.ACTION_DOWN:
                                 LogUtil.i(TAG, "ACTION_DOWN,isClick:" + isClick);
+                                if (isFirstTouchDown) {
+                                    mOriginX = mX = mView.getX();
+                                    mOriginY = mY = mView.getY();
+                                    isFirstTouchDown = false;
+                                }
                                 downX = event.getRawX();
                                 downY = event.getRawY();
                                 lastX = event.getRawX();
@@ -236,8 +196,8 @@ public class FloatWindow implements IFloatWindow {
                             case MotionEvent.ACTION_MOVE:
                                 offsetX = event.getRawX() - lastX;
                                 offsetY = event.getRawY() - lastY;
-                                newX = (int) (getX() + offsetX);
-                                newY = (int) (getY() + offsetY);
+                                newX = getX() + offsetX;
+                                newY = getY() + offsetY;
                                 setXY(newX, newY);
                                 lastX = event.getRawX();
                                 lastY = event.getRawY();
@@ -249,24 +209,24 @@ public class FloatWindow implements IFloatWindow {
                                 isClick = (Math.abs(upX - downX) > mScaledTouchSlop) || (Math.abs(upY - downY) > mScaledTouchSlop);
                                 switch (mMoveType) {
                                     case MoveType.slide:
-                                        int startX = (int) getX();
-                                        int endX = (startX * 2 + v.getWidth() > ScreenUtil.getScreenWidth(mContext)) ?
-                                                ScreenUtil.getScreenWidth(mContext) - v.getWidth() - mSlideRightMargin :
+                                        float startX = getX();
+                                        float endX = (startX * 2 + v.getWidth() > ScreenUtil.getScreenWidth()) ?
+                                                ScreenUtil.getScreenWidth() - v.getWidth() - mSlideRightMargin :
                                                 mSlideLeftMargin;
-                                        mAnimator = ObjectAnimator.ofInt(startX, endX);
+                                        mAnimator = ObjectAnimator.ofFloat(startX, endX);
                                         mAnimator.addUpdateListener(animation -> {
-                                            int x = (int) animation.getAnimatedValue();
+                                            float x = (float) animation.getAnimatedValue();
                                             setX(x);
                                         });
                                         startAnimator();
                                         break;
                                     case MoveType.back:
-                                        PropertyValuesHolder pvhX = PropertyValuesHolder.ofInt("x", (int) getX(), mOriginX);
-                                        PropertyValuesHolder pvhY = PropertyValuesHolder.ofInt("y", (int) getY(), mOriginY);
+                                        PropertyValuesHolder pvhX = PropertyValuesHolder.ofFloat("x", getX(), mOriginX);
+                                        PropertyValuesHolder pvhY = PropertyValuesHolder.ofFloat("y", getY(), mOriginY);
                                         mAnimator = ObjectAnimator.ofPropertyValuesHolder(pvhX, pvhY);
                                         mAnimator.addUpdateListener(animation -> {
-                                            int x = (int) animation.getAnimatedValue("x");
-                                            int y = (int) animation.getAnimatedValue("y");
+                                            float x = (float) animation.getAnimatedValue("x");
+                                            float y = (float) animation.getAnimatedValue("y");
                                             setXY(x, y);
                                         });
                                         startAnimator();
@@ -284,9 +244,8 @@ public class FloatWindow implements IFloatWindow {
     @Override
     public void detach(Activity activity) {
         LogUtil.i(TAG, "detach activity:" + activity.getClass().getName());
-        FrameLayout container = getActivityContainer(activity);
         if (isAttachedToWindow()) {
-            container.removeView(mView);
+            getActivityContainer(activity).removeView(mView);
             mOnViewListener = null;
             mView = null;
         }
@@ -308,6 +267,44 @@ public class FloatWindow implements IFloatWindow {
         }
         isShowing = false;
         mView.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void setX(float x) {
+        mX = x;
+        if (mView != null) {
+            mView.setX(x);
+        }
+    }
+
+    @Override
+    public void setX(int screenType, float ratio) {
+        float x = (screenType == ScreenType.width ? ScreenUtil.getScreenWidth() : ScreenUtil.getScreenHeight()) * ratio;
+        setX(x);
+    }
+
+    @Override
+    public void setY(float y) {
+        mY = y;
+        if (mView != null) {
+            mView.setY(y);
+        }
+    }
+
+    @Override
+    public void setY(int screenType, float ratio) {
+        float y = (screenType == ScreenType.width ? ScreenUtil.getScreenWidth() : ScreenUtil.getScreenHeight()) * ratio;
+        setY(y);
+    }
+
+    @Override
+    public void setXY(float x, float y) {
+        mX = x;
+        mY = y;
+        if (mView != null) {
+            mView.setX(x);
+            mView.setY(y);
+        }
     }
 
     @Override
@@ -338,10 +335,7 @@ public class FloatWindow implements IFloatWindow {
     }
 
     private FrameLayout.LayoutParams getDefaultParams() {
-        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
-//        params.gravity = Gravity.END | Gravity.BOTTOM;
-//        params.bottomMargin = SizeUtil.dp2pxInt(300);
-        return params;
+        return new FrameLayout.LayoutParams(FrameLayout.LayoutParams.WRAP_CONTENT, FrameLayout.LayoutParams.WRAP_CONTENT);
     }
 
     private boolean isAttachedToWindow() {

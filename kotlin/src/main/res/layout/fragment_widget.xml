@@ -73,6 +73,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="字母通讯录" />
 
+            <TextView
+                android:id="@+id/float_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="悬浮窗" />
+
         </LinearLayout>
     </ScrollView>
 

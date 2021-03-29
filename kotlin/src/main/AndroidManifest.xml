@@ -109,6 +109,9 @@
         <activity android:name="com.android.widget.LoadingLayout.TestLoadingLayoutActivity" />
         <!--字母通讯录-->
         <activity android:name="com.android.widget.LetterIndexBar.TestLetterIndexBarActivity" />
+        <!--悬浮窗-->
+        <activity android:name="com.android.widget.FloatWindow.TestFloatActivity" />
+        <activity android:name="com.android.widget.FloatWindow.NoPermission.AATest.TestFloatPageActivity" />
 
         <!--工具篇-->
         <!--实现沉浸式状态栏-->

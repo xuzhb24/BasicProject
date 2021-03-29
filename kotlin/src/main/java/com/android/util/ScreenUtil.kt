@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.util.DisplayMetrics
 import android.view.Surface
 import android.view.WindowManager
+import com.android.base.BaseApplication
 import com.android.util.StatusBar.StatusBarUtil
 
 /**
@@ -18,7 +19,13 @@ import com.android.util.StatusBar.StatusBarUtil
 object ScreenUtil {
 
     //获取屏幕宽度，单位像素
+    fun getScreenWidth() = getScreenWidth(BaseApplication.instance)
+
+    //获取屏幕宽度，单位像素
     fun getScreenWidth(context: Context): Int = getDisplayMetrics(context).widthPixels
+
+    //获取屏幕高度，单位像素
+    fun getScreenHeight() = getScreenHeight(BaseApplication.instance)
 
     //获取屏幕高度，单位像素
     fun getScreenHeight(context: Context): Int = getDisplayMetrics(context).heightPixels
@@ -32,10 +39,12 @@ object ScreenUtil {
     }
 
     //判断是否是横屏
-    fun isLandscape(context: Context) = context.applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
+    fun isLandscape(context: Context) =
+        context.applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_LANDSCAPE
 
     //判断是否是竖屏
-    fun isPortrait(context: Context) = context.applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
+    fun isPortrait(context: Context) =
+        context.applicationContext.resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT
 
     //在代码中设置屏幕为横屏
     fun setLandscape(activity: Activity) {

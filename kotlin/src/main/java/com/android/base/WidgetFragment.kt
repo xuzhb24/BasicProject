@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import com.android.basicproject.databinding.FragmentWidgetBinding
 import com.android.frame.mvc.BaseFragment
 import com.android.universal.TestSystemWidgetActivity
+import com.android.widget.FloatWindow.TestFloatActivity
 import com.android.widget.LetterIndexBar.TestLetterIndexBarActivity
 import com.android.widget.LineChart.TestLineChartActivity
 import com.android.widget.LoadingLayout.TestLoadingLayoutActivity
@@ -71,6 +72,10 @@ class WidgetFragment : BaseFragment<FragmentWidgetBinding>() {
         //字母通讯录
         binding.letterTv.setOnClickListener {
             startActivity(TestLetterIndexBarActivity::class.java)
+        }
+        //悬浮窗
+        binding.floatTv.setOnClickListener {
+            startActivity(TestFloatActivity::class.java)
         }
     }
 

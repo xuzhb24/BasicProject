@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 
@@ -19,33 +20,13 @@ public interface IFloatWindow {
 
     FloatWindow setView(@LayoutRes int layoutId);
 
+    FloatWindow setContentViewId(@IdRes int contentViewId);
+
     FloatWindow setLayoutParams(ViewGroup.LayoutParams params);
 
-    FloatWindow setMoveType(@MoveType.moveType int moveType, int slideLeftMargin, int slideRightMargin);
+    FloatWindow setMoveType(@MoveType.moveType int moveType, float slideLeftMargin, float slideRightMargin);
 
     FloatWindow setMoveStyle(long duration, @NonNull TimeInterpolator interpolator);
-
-    FloatWindow setX(int x);
-
-    /**
-     * 更新x坐标
-     *
-     * @param screenType 以屏幕宽度或屏幕高度为基准
-     * @param ratio      占比
-     */
-    FloatWindow setX(@ScreenType.screenType int screenType, float ratio);
-
-    FloatWindow setY(int y);
-
-    /**
-     * 更新y坐标
-     *
-     * @param screenType 以屏幕宽度或屏幕高度为基准
-     * @param ratio      占比
-     */
-    FloatWindow setY(@ScreenType.screenType int screenType, float ratio);
-
-    FloatWindow setXY(int x, int y);
 
     void attach(Activity activity);
 
@@ -54,6 +35,28 @@ public interface IFloatWindow {
     void show();
 
     void hide();
+
+    void setX(float x);
+
+    /**
+     * 更新x坐标
+     *
+     * @param screenType 以屏幕宽度或屏幕高度为基准
+     * @param ratio      占比
+     */
+    void setX(@ScreenType.screenType int screenType, float ratio);
+
+    void setY(float y);
+
+    /**
+     * 更新y坐标
+     *
+     * @param screenType 以屏幕宽度或屏幕高度为基准
+     * @param ratio      占比
+     */
+    void setY(@ScreenType.screenType int screenType, float ratio);
+
+    void setXY(float x, float y);
 
     float getX();
 
