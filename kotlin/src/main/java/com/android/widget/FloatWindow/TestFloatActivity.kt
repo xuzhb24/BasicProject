@@ -4,6 +4,7 @@ import android.os.Bundle
 import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.initCommonLayout
+import com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageOneActivity
 import com.android.widget.FloatWindow.NoPermission.AATest.TestFloatPageActivity
 
 /**
@@ -17,7 +18,9 @@ class TestFloatActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     }
 
     override fun initListener() {
-        binding.btn1.setOnClickListener { }
+        binding.btn1.setOnClickListener {
+            startActivity(TestFloatPageOneActivity::class.java)
+        }
         binding.btn2.setOnClickListener {
             TestFloatPageActivity.start(this, 1)
         }

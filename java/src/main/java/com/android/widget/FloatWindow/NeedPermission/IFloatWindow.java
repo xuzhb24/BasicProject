@@ -42,6 +42,8 @@ public interface IFloatWindow {
 
     View getView();
 
+    //使用FloatWindow.destroy()来取消弹窗，不要手动调用下面的方法
+    @Deprecated
     void dismiss();
 
 }

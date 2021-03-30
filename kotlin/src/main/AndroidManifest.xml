@@ -31,6 +31,8 @@
     <uses-permission android:name="android.permission.SEND_SMS" />
     <uses-permission android:name="android.permission.READ_CONTACTS" />
     <uses-permission android:name="android.permission.READ_SMS" />
+    <!--悬浮窗-->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
 
     <application
         android:name="com.android.base.BaseApplication"
@@ -109,8 +111,17 @@
         <activity android:name="com.android.widget.LoadingLayout.TestLoadingLayoutActivity" />
         <!--字母通讯录-->
         <activity android:name="com.android.widget.LetterIndexBar.TestLetterIndexBarActivity" />
+        <!--悬浮窗权限申请-->
+        <activity
+            android:name="com.android.widget.FloatWindow.NeedPermission.FloatActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:launchMode="standard"
+            android:windowSoftInputMode="stateHidden|stateAlwaysHidden" />
         <!--悬浮窗-->
         <activity android:name="com.android.widget.FloatWindow.TestFloatActivity" />
+        <activity android:name="com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageOneActivity" />
+        <activity android:name="com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageTwoActivity" />
+        <activity android:name="com.android.widget.FloatWindow.NeedPermission.AATest.TestFloatPageThreeActivity" />
         <activity android:name="com.android.widget.FloatWindow.NoPermission.AATest.TestFloatPageActivity" />
 
         <!--工具篇-->

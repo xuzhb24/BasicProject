@@ -23,7 +23,7 @@ import com.android.widget.FloatWindow.NeedPermission.ScreenType;
  */
 public class TestFloatPageOneActivity extends BaseActivity<ActivityCommonLayoutBinding> {
 
-    private static final String TAG = "TestFloatAActivity";
+    private static final String TAG = "TestFloatPageOneActivity";
 
     @Override
     public void handleView(Bundle savedInstanceState) {

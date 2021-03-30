@@ -62,7 +62,7 @@ public class MIUI {
     //Android6.0以下申请权限
     public static void request(Context context, OnPermissionListener listener) {
         if (FloatPermissionUtil.hasPermission(context)) {
-            mOnPermissionListener.onSuccess();
+            listener.onSuccess();
             return;
         }
         if (mOnPermissionListenerList == null || mOnPermissionListenerList.isEmpty()) {
@@ -86,7 +86,7 @@ public class MIUI {
             };
             request(context);
         }
-        mOnPermissionListenerList.add(mOnPermissionListener);
+        mOnPermissionListenerList.add(listener);
     }
 
     private static void request(final Context context) {
