@@ -10,6 +10,7 @@ import com.android.widget.FloatWindow.TestFloatActivity
 import com.android.widget.LetterIndexBar.TestLetterIndexBarActivity
 import com.android.widget.LineChart.TestLineChartActivity
 import com.android.widget.LoadingLayout.TestLoadingLayoutActivity
+import com.android.widget.PhotoViewer.PhotoViewActivity
 import com.android.widget.PicGetterDialog.AATest.TestPicGetterDialogActivity
 import com.android.widget.PieChart.TestPieChartActivity
 import com.android.widget.PopupWindow.AATest.TestPopupWindowActivity
@@ -72,6 +73,22 @@ class WidgetFragment : BaseFragment<FragmentWidgetBinding>() {
         //字母通讯录
         binding.letterTv.setOnClickListener {
             startActivity(TestLetterIndexBarActivity::class.java)
+        }
+        //图片查看器
+        binding.photoTv.setOnClickListener {
+            val array = arrayOf(
+                "aaaaa",
+                "http://img.netbian.com/file/2021/0104/small69c4b125db64882f56f71843e0d633f11609692082.jpg",
+                "http://img.netbian.com/file/2020/1223/small344fb01bb934cac4882d77f29d5ec5751608736763.jpg",
+                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1730713693,2130926401&fm=26&gp=0.jpg",
+                "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2202780618,895893289&fm=26&gp=0.jpg",
+                "http:sslancvan",
+                "https://img.zcool.cn/community/01233056fb62fe32f875a9447400e1.jpg",
+                "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1833567670,2009341108&fm=26&gp=0.jpg",
+                "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3225163326,3627210682&fm=26&gp=0.jpg",
+                "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3200450391,4154446234&fm=26&gp=0.jpg"
+            )
+            activity?.let { PhotoViewActivity.start(it, array) }
         }
         //悬浮窗
         binding.floatTv.setOnClickListener {

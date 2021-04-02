@@ -111,6 +111,8 @@
         <activity android:name="com.android.widget.LoadingLayout.TestLoadingLayoutActivity" />
         <!--字母通讯录-->
         <activity android:name="com.android.widget.LetterIndexBar.TestLetterIndexBarActivity" />
+        <!--图片查看器-->
+        <activity android:name="com.android.widget.PhotoViewer.PhotoViewActivity" />
         <!--悬浮窗权限申请-->
         <activity
             android:name="com.android.widget.FloatWindow.NeedPermission.FloatActivity"
