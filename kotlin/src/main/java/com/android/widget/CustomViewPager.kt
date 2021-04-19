@@ -31,11 +31,14 @@ class CustomViewPager @JvmOverloads constructor(
         // return false;//可行,不拦截事件,
         // return true;//不行,子View无法处理事件
         //return super.onInterceptTouchEvent(ev);//不行,会有细微移动
-        return if (isScrollable) {
-            super.onInterceptTouchEvent(ev)
-        } else {
-            false
+        if (isScrollable) {
+            try {
+                return super.onInterceptTouchEvent(ev)
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
         }
+        return false
     }
 
     /**

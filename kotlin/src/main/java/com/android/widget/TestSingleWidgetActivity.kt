@@ -75,6 +75,10 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
         binding.loadingBtn3.setOnClickListener {
             LoadingDialog(this).show("", false)
         }
+        //两端对齐的TextView
+        binding.alignTv.setOnClickListener {
+            binding.alignTv.text = createExpandText(200)
+        }
         //密码输入框
         with(binding.passwordEdittext) {
             setOnTextChangeListener {
@@ -138,9 +142,6 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
             }
 
         })
-        binding.alignTv.setOnClickListener {
-            binding.alignTv.text = createExpandText(200)
-        }
     }
 
     private fun createExpandText(count: Int): String {
@@ -150,7 +151,7 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
             "p", "l", "k", "i", "n", "m", "G", "H", "J", "I", "L", "C", "V", "B"
             , "你", "我", "他", "天", "地", "动", "进", "啊", "去", "改", "酒",
             "一", "会", "年", "收", "好", "嗯", "这", "有",
-            "\r", "\n", "\r\n", "\t", "，", "！", "%", "@"
+            /*"\r", "\n", "\r\n", "\t",*/ "，", "！", "%", "@"
         )
         val sb = StringBuilder()
         for (i in 0 until count) {
