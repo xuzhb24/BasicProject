@@ -51,10 +51,13 @@ public class CustomViewPager extends ViewPager {
         // return true;//不行,子View无法处理事件
         //return super.onInterceptTouchEvent(ev);//不行,会有细微移动
         if (mIsScrollable) {
-            return super.onInterceptTouchEvent(ev);
-        } else {
-            return false;
+            try {
+                return super.onInterceptTouchEvent(ev);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+        return false;
     }
 
     /**
