@@ -263,3 +263,11 @@ ThreadPoolUtil：线程池工具类
 
 ## 公共库 universal
 * ### TestSystemWidgetActivity、TestSystemWidgetFragment：记录一些系统自带控件的使用
+
+## 一些好用的开源库
+* ### [轮播图 youth.banner](https://github.com/youth5201314/banner)
+* ### [RecyclerView适配器 BaseRecyclerViewAdapterHelper](https://github.com/CymChad/BaseRecyclerViewAdapterHelper)
+* ### [下拉刷新框架 SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)
+* ### [导航栏切换 MagicIndicator](https://github.com/hackware1993/MagicIndicator)
+* ### [换肤框架 Android-skin-support](https://github.com/ximsfei/Android-skin-support)
+* ### [仿iOS时间选择器 Android-PickerView](https://github.com/Bigkoo/Android-PickerView)
