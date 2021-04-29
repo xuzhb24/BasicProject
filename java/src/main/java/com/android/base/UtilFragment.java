@@ -167,6 +167,10 @@ public class UtilFragment extends BaseFragment<FragmentUtilBinding> {
         binding.downloadTv.setOnClickListener(v -> {
             CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_APK_DOWNLOAD);
         });
+        //SpannableString工具
+        binding.spannableTv.setOnClickListener(v -> {
+            CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_SPANNABLE_STRING);
+        });
     }
 
     @Override

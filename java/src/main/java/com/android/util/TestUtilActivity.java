@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.BlurMaskFilter;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
@@ -22,10 +23,13 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.os.IBinder;
 import android.text.InputType;
+import android.text.Layout;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.text.style.ImageSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
@@ -35,6 +39,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.android.frame.mvc.BaseActivity;
@@ -104,6 +109,7 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
     public static final String TEST_LOCATION = "TEST_LOCATION";
     public static final String TEST_NETWORK = "TEST_NETWORK";
     public static final String TEST_APK_DOWNLOAD = "TEST_APK_DOWNLOAD";
+    public static final String TEST_SPANNABLE_STRING = "TEST_SPANNABLE_STRING";
 
     private LinearLayout ll;
     private InputLayout il;
@@ -227,6 +233,9 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 break;
             case TEST_APK_DOWNLOAD:
                 testApkDownload();
+                break;
+            case TEST_SPANNABLE_STRING:
+                testSpannableString();
                 break;
         }
     }
@@ -1897,6 +1906,82 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
         btn2.setOnClickListener(v -> {
             apkDownloadUtil.downLoadApk("https://ugc-download-2.imfir.cn/92d9763a68537b42d156507779b3a63635cf3909.apk?auth_key=1594538420-0-0-abce665cfe38f8e444a000dd9411587c");
         });
+    }
+
+    //SpannableString
+    private void testSpannableString() {
+        CommonLayoutUtil.initCommonLayout(this, "测试SpannableString", false, true);
+        SpannableStringBuilder builder = new SpannableStringUtil.Builder()
+                .appendLine("测试SpannableStringUtils").setBackgroundColor(Color.LTGRAY).setBold().setForegroundColor(Color.YELLOW).setAlignment(Layout.Alignment.ALIGN_CENTER)
+                .append("测试")
+                .append("前景色").setForegroundColor(Color.GREEN)
+                .appendLine("背景色").setBackgroundColor(Color.LTGRAY)
+                .appendLine("测试首行缩进").setLeadingMargin(30, 50)
+                .appendLine("测试引用").setQuoteColor(Color.BLUE, 10, 10)
+                .appendLine("测试列表项").setBullet(Color.GREEN, 30, 10)
+                .appendLine("测试32dp字体").setFontSize(36, true)
+                .append("测试")
+                .appendLine("2倍字体").setFontProportion(2)
+                .append("测试")
+                .appendLine("横向2倍字体").setFontXProportion(2)
+                .append("测试")
+                .append("删除线").setStrikethrough()
+                .appendLine("下划线").setUnderline()
+                .append("测试")
+                .append("上标").setSuperscript()
+                .appendLine("下标").setSubscript()
+                .append("测试")
+                .append("粗体").setBold()
+                .append("斜体").setItalic()
+                .appendLine("粗斜体").setBoldItalic()
+                .appendLine("monospace font").setFontFamily("monospace")
+                .appendLine("测试自定义字体").setTypeface(Typeface.createFromAsset(getAssets(), "fonts/fonts.ttf"))
+                .appendLine("测试相反对齐").setAlignment(Layout.Alignment.ALIGN_OPPOSITE)
+                .appendLine("测试居中对齐").setAlignment(Layout.Alignment.ALIGN_CENTER)
+                .append("测试小图对齐").setBackgroundColor(Color.LTGRAY)
+                .append("").setResourceId(R.drawable.ic_check, SpannableStringUtil.ALIGN_TOP)
+                .append("").setResourceId(R.drawable.ic_check, SpannableStringUtil.ALIGN_CENTER)
+                .append("").setResourceId(R.drawable.ic_check, SpannableStringUtil.ALIGN_BASELINE)
+                .append("").setResourceId(R.drawable.ic_check, SpannableStringUtil.ALIGN_BOTTOM)
+                .appendLine("end").setBackgroundColor(Color.LTGRAY)
+                .appendLine("测试正常对齐").setAlignment(Layout.Alignment.ALIGN_NORMAL)
+                .append("测试顶部对齐").setBackgroundColor(Color.GREEN)
+                .append("image").setResourceId(R.drawable.shape_spannable_block, SpannableStringUtil.ALIGN_TOP)
+                .appendLine("end").setBackgroundColor(Color.GREEN)
+                .append("居中对齐").setBackgroundColor(Color.LTGRAY)
+                .append("").setResourceId(R.drawable.shape_spannable_block, SpannableStringUtil.ALIGN_CENTER)
+                .appendLine("end").setBackgroundColor(Color.LTGRAY)
+                .append("Baseline对齐").setBackgroundColor(Color.GREEN)
+                .append("").setResourceId(R.drawable.shape_spannable_block, SpannableStringUtil.ALIGN_BASELINE)
+                .appendLine("end").setBackgroundColor(Color.GREEN)
+                .append("底部对齐").setBackgroundColor(Color.LTGRAY)
+                .append("").setResourceId(R.drawable.shape_spannable_block, SpannableStringUtil.ALIGN_BOTTOM)
+                .appendLine("end").setBackgroundColor(Color.LTGRAY)
+                .append("测试")
+                .appendLine("点击事件").setClickSpan(new ClickableSpan() {
+                    @Override
+                    public void onClick(@NonNull View widget) {
+                        showToast("点击事件");
+                    }
+
+                    @Override
+                    public void updateDrawState(TextPaint ds) {
+                        ds.setColor(Color.BLUE);
+                        ds.setUnderlineText(false);
+                    }
+                })
+                .append("测试")
+                .appendLine("Url").setUrl("https://www.baidu.com/")
+                .append("测试")
+                .append("模糊").setBlur(3, BlurMaskFilter.Blur.NORMAL)
+                .create();
+        //应点击事件的话必须设置以下属性
+        binding.tv.setMovementMethod(LinkMovementMethod.getInstance());
+        binding.tv.setTextSize(25);
+        binding.tv.setTextColor(Color.BLACK);
+        binding.tv.setLineSpacing(0,1);  //设置lineSpacingExtra后有可能会影响图文垂直对齐
+        System.out.println("");
+        binding.tv.setText(builder);
     }
 
     @Override
