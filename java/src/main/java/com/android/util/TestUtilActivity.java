@@ -111,6 +111,7 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
     public static final String TEST_APK_DOWNLOAD = "TEST_APK_DOWNLOAD";
     public static final String TEST_SPANNABLE_STRING = "TEST_SPANNABLE_STRING";
     public static final String TEST_CPU = "TEST_CPU";
+    public static final String TEST_VIBRATION = "TEST_VIBRATION";
 
     private LinearLayout ll;
     private InputLayout il;
@@ -240,6 +241,9 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 break;
             case TEST_CPU:
                 testCPU();
+                break;
+            case TEST_VIBRATION:
+                testVibration();
                 break;
         }
     }
@@ -2001,6 +2005,21 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 .append("\nCPU当前频率：").append(CPUUtil.getCurCpuFrequency(this))
                 .append("\nCPU核心数：").append(CPUUtil.getCoreNumbers());
         binding.tv.setText(sb.toString());
+    }
+
+    //震动工具
+    private void testVibration() {
+        CommonLayoutUtil.initCommonLayout(this, "震动工具", "震动5秒", "pattern模式震动", "取消震动");
+        binding.btn1.setOnClickListener(v -> {
+            VibrationUtil.vibrate(this, 5000);
+        });
+        binding.btn2.setOnClickListener(v -> {
+            long[] pattern = new long[]{100, 500, 1000, 2000, 1000, 5000};
+            VibrationUtil.vibrate(this, pattern, -1);
+        });
+        binding.btn3.setOnClickListener(v -> {
+            VibrationUtil.cancel(this);
+        });
     }
 
     @Override

@@ -175,6 +175,10 @@ public class UtilFragment extends BaseFragment<FragmentUtilBinding> {
         binding.cpuTv.setOnClickListener(v -> {
             CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_CPU);
         });
+        //震动工具
+        binding.vibrationTv.setOnClickListener(v -> {
+            CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_VIBRATION);
+        });
     }
 
     @Override

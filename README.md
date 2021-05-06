@@ -229,6 +229,7 @@ ThreadPoolUtil：线程池工具类
 * ### CacheUtil：磁盘缓存工具类
 * ### CheckFastClickUtil：快速点击检测工具
 * ### CleanUtil：应用文件清除工具类
+* ### CPUUtil：CPU工具类
 * ### CrashHandler：崩溃异常监听
 * ### DataDueUtil：数据缓存是否过期
 * ### DateUtil：时间相关工具类
@@ -260,6 +261,7 @@ ThreadPoolUtil：线程池工具类
 * ### StringUtil：字符串工具类
 * ### ToastUtil：自定义Toast
 * ### TransformUtil：转换工具
+* ### VibrationUtil：震动相关工具类
 * ### ZipUtil：压缩工具类
 
 ## 公共库 universal

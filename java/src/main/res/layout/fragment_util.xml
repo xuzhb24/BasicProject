@@ -208,6 +208,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="CPU工具" />
 
+            <TextView
+                android:id="@+id/vibration_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="震动工具" />
+
         </LinearLayout>
     </ScrollView>
 
