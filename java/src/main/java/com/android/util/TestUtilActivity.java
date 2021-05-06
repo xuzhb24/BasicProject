@@ -1999,7 +1999,6 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 .append("\nCPU最大频率：").append(CPUUtil.getMaxCpuFrequency(this))
                 .append("\nCPU最小频率：").append(CPUUtil.getMinCpuFrequency(this))
                 .append("\nCPU当前频率：").append(CPUUtil.getCurCpuFrequency(this))
-                .append("\nCPU名字：").append(CPUUtil.getCpuName())
                 .append("\nCPU核心数：").append(CPUUtil.getCoreNumbers());
         binding.tv.setText(sb.toString());
     }

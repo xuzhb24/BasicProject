@@ -26,7 +26,7 @@ public class CPUUtil {
 
     //获取手机CPU序列号(16位)
     public static String getCPUSerial() {
-        String str, cpuSerialNum = "0000000000000000";
+        String str, cpuSerial = "0000000000000000";
         try {
             //读取CPU信息
             Process pp = Runtime.getRuntime().exec("cat/proc/cpuinfo");
@@ -36,10 +36,10 @@ public class CPUUtil {
             for (int i = 1; i < 100; i++) {
                 str = input.readLine();
                 if (str != null) {
-                    // 查找到序列号所在行
+                    //查找到序列号所在行
                     if (str.contains("Serial")) {
-                        // 提取序列号
-                        cpuSerialNum = str.substring(str.indexOf(':') + 1).trim();
+                        //提取序列号
+                        cpuSerial = str.substring(str.indexOf(':') + 1).trim();
                         break;
                     }
                 } else {
@@ -49,7 +49,7 @@ public class CPUUtil {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return cpuSerialNum;
+        return cpuSerial;
     }
 
     //获取CPU信息
@@ -134,24 +134,6 @@ public class CPUUtil {
             e.printStackTrace();
         }
         return "unknown";
-    }
-
-    //获取CPU名字
-    public static String getCpuName() {
-        BufferedReader br = null;
-        try {
-            br = new BufferedReader(new FileReader("/proc/cpuinfo"), 8192);
-            String line = br.readLine();
-            String[] array = line.split(":\\s+", 2);
-            if (array.length > 1) {
-                return array[1];
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        } finally {
-            IOUtil.closeIO(br);
-        }
-        return null;
     }
 
     //获取CPU核心数

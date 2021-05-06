@@ -97,6 +97,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_LOCATION = "TEST_LOCATION"
         const val TEST_NETWORK = "TEST_NETWORK"
         const val TEST_APK_DOWNLOAD = "TEST_APK_DOWNLOAD"
+        const val TEST_CPU = "TEST_CPU"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -132,6 +133,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_LOCATION -> testLocation()
             TEST_NETWORK -> testNetwork()
             TEST_APK_DOWNLOAD -> testApkDownload()
+            TEST_CPU -> testCPU()
         }
     }
 
@@ -1850,6 +1852,21 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         btn2.setOnClickListener {
             apkDownloadUtil.downLoadApk("https://ugc-download-2.imfir.cn/92d9763a68537b42d156507779b3a63635cf3909.apk?auth_key=1594538420-0-0-abce665cfe38f8e444a000dd9411587c")
         }
+    }
+
+    //CPU工具
+    private fun testCPU() {
+        initCommonLayout(this, "CPU工具", false, true)
+        val sb = StringBuilder()
+        sb.append("虚拟机数量：").append(CPUUtil.getProcessorsCount())
+            .append("\nCPU序列号：").append(CPUUtil.getCPUSerial())
+            .append("\nCPU信息：").append(CPUUtil.getCpuInfo())
+            .append("\nCPU型号：").append(CPUUtil.getCpuModel())
+            .append("\nCPU最大频率：").append(CPUUtil.getMaxCpuFrequency(this))
+            .append("\nCPU最小频率：").append(CPUUtil.getMinCpuFrequency(this))
+            .append("\nCPU当前频率：").append(CPUUtil.getCurCpuFrequency(this))
+            .append("\nCPU核心数：").append(CPUUtil.getCoreNumbers())
+        binding.tv.text = sb.toString()
     }
 
     override fun onDestroy() {

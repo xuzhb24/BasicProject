@@ -152,6 +152,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.downloadTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_APK_DOWNLOAD)
         }
+        //CPU工具
+        binding.cpuTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CPU)
+        }
     }
 
     override fun initListener() {
