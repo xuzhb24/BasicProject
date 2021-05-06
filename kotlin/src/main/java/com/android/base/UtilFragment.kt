@@ -156,6 +156,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.cpuTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CPU)
         }
+        //震动工具
+        binding.vibrationTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_VIBRATION)
+        }
     }
 
     override fun initListener() {

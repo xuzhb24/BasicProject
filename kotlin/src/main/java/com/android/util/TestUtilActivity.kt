@@ -98,6 +98,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_NETWORK = "TEST_NETWORK"
         const val TEST_APK_DOWNLOAD = "TEST_APK_DOWNLOAD"
         const val TEST_CPU = "TEST_CPU"
+        const val TEST_VIBRATION = "TEST_VIBRATION"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -134,6 +135,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_NETWORK -> testNetwork()
             TEST_APK_DOWNLOAD -> testApkDownload()
             TEST_CPU -> testCPU()
+            TEST_VIBRATION -> testVibration()
         }
     }
 
@@ -1867,6 +1869,21 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .append("\nCPU当前频率：").append(CPUUtil.getCurCpuFrequency(this))
             .append("\nCPU核心数：").append(CPUUtil.getCoreNumbers())
         binding.tv.text = sb.toString()
+    }
+
+    //震动工具
+    private fun testVibration() {
+        initCommonLayout(this, "震动工具", "震动5秒", "pattern模式震动", "取消震动")
+        binding.btn1.setOnClickListener {
+            VibrationUtil.vibrate(this, 5000)
+        }
+        binding.btn2.setOnClickListener {
+            val pattern: LongArray = longArrayOf(100L, 500L, 1000L, 2000L, 1000L, 5000L)
+            VibrationUtil.vibrate(this, pattern, -1)
+        }
+        binding.btn3.setOnClickListener {
+            VibrationUtil.cancel(this)
+        }
     }
 
     override fun onDestroy() {
