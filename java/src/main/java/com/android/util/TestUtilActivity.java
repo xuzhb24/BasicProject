@@ -110,6 +110,7 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
     public static final String TEST_NETWORK = "TEST_NETWORK";
     public static final String TEST_APK_DOWNLOAD = "TEST_APK_DOWNLOAD";
     public static final String TEST_SPANNABLE_STRING = "TEST_SPANNABLE_STRING";
+    public static final String TEST_CPU = "TEST_CPU";
 
     private LinearLayout ll;
     private InputLayout il;
@@ -236,6 +237,9 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 break;
             case TEST_SPANNABLE_STRING:
                 testSpannableString();
+                break;
+            case TEST_CPU:
+                testCPU();
                 break;
         }
     }
@@ -1979,9 +1983,25 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
         binding.tv.setMovementMethod(LinkMovementMethod.getInstance());
         binding.tv.setTextSize(25);
         binding.tv.setTextColor(Color.BLACK);
-        binding.tv.setLineSpacing(0,1);  //设置lineSpacingExtra后有可能会影响图文垂直对齐
+        binding.tv.setLineSpacing(0, 1);  //设置lineSpacingExtra后有可能会影响图文垂直对齐
         System.out.println("");
         binding.tv.setText(builder);
+    }
+
+    //CPU工具
+    private void testCPU() {
+        CommonLayoutUtil.initCommonLayout(this, "CPU工具", false, true);
+        StringBuilder sb = new StringBuilder();
+        sb.append("虚拟机数量：").append(CPUUtil.getProcessorsCount())
+                .append("\nCPU序列号：").append(CPUUtil.getCPUSerial())
+                .append("\nCPU信息：").append(CPUUtil.getCpuInfo())
+                .append("\nCPU型号：").append(CPUUtil.getCpuModel())
+                .append("\nCPU最大频率：").append(CPUUtil.getMaxCpuFrequency(this))
+                .append("\nCPU最小频率：").append(CPUUtil.getMinCpuFrequency(this))
+                .append("\nCPU当前频率：").append(CPUUtil.getCurCpuFrequency(this))
+                .append("\nCPU名字：").append(CPUUtil.getCpuName())
+                .append("\nCPU核心数：").append(CPUUtil.getCoreNumbers());
+        binding.tv.setText(sb.toString());
     }
 
     @Override

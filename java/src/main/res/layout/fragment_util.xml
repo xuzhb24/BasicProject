@@ -203,6 +203,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="SpannableString工具" />
 
+            <TextView
+                android:id="@+id/cpu_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="CPU工具" />
+
         </LinearLayout>
     </ScrollView>
 
