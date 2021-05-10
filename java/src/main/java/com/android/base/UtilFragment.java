@@ -183,6 +183,10 @@ public class UtilFragment extends BaseFragment<FragmentUtilBinding> {
         binding.audioTv.setOnClickListener(v -> {
             CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_AUDIO);
         });
+        //亮度工具
+        binding.brightnessTv.setOnClickListener(v -> {
+            CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_BRIGHTNESS);
+        });
     }
 
     @Override

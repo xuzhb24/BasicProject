@@ -114,6 +114,7 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
     public static final String TEST_CPU = "TEST_CPU";
     public static final String TEST_VIBRATION = "TEST_VIBRATION";
     public static final String TEST_AUDIO = "TEST_AUDIO";
+    public static final String TEST_BRIGHTNESS = "TEST_BRIGHTNESS";
 
     private LinearLayout ll;
     private InputLayout il;
@@ -249,6 +250,9 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 break;
             case TEST_AUDIO:
                 testAudio();
+                break;
+            case TEST_BRIGHTNESS:
+                testBrightness();
                 break;
         }
     }
@@ -2111,6 +2115,55 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
         }
         sb.append("-").append(AudioUtil.getStreamMaxVolume(streamType)).append("\n");
         return sb.toString();
+    }
+
+    //亮度工具
+    private void testBrightness() {
+        CommonLayoutUtil.initCommonLayout(this, "亮度工具", true, true,
+                "开启自动调节亮度", "设置屏幕亮度", "设置窗口亮度");
+        il.setInputTextHint("请输入设置的亮度值，如50（范围0-255）");
+        il.setInputTextType(InputType.TYPE_CLASS_NUMBER);
+        showBrightness();
+        btn1.setOnClickListener(v -> {
+            if (BrightnessUtil.setAutoBrightnessEnabled(this, true)) {
+                showToast("已开启");
+            }
+        });
+        btn2.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(il.getInputText())) {
+                showToast("请先输入要设置的亮度值");
+                return;
+            }
+            int value = Integer.parseInt(il.getInputText());
+            if (value >= 0 && value <= 255) {
+                BrightnessUtil.setBrightness(this, value);
+                showBrightness();
+            } else {
+                showToast("输入有误！");
+                il.setInputText("");
+            }
+        });
+        btn3.setOnClickListener(v -> {
+            if (TextUtils.isEmpty(il.getInputText())) {
+                showToast("请先输入要设置的亮度值");
+                return;
+            }
+            int value = Integer.parseInt(il.getInputText());
+            if (value >= 0 && value <= 255) {
+                BrightnessUtil.setWindowBrightness(getWindow(), value);
+                showBrightness();
+            } else {
+                showToast("输入有误！");
+                il.setInputText("");
+            }
+        });
+    }
+
+    private void showBrightness() {
+        String sb = "是否开启自动调节亮度：" + BrightnessUtil.isAutoBrightnessEnabled() +
+                "\n屏幕亮度：" + BrightnessUtil.getBrightness() +
+                "\n窗口亮度：" + BrightnessUtil.getWindowBrightness(getWindow());
+        tv.setText(sb);
     }
 
     @Override
