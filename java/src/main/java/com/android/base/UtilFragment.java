@@ -179,6 +179,10 @@ public class UtilFragment extends BaseFragment<FragmentUtilBinding> {
         binding.vibrationTv.setOnClickListener(v -> {
             CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_VIBRATION);
         });
+        //音频管理工具
+        binding.audioTv.setOnClickListener(v -> {
+            CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_AUDIO);
+        });
     }
 
     @Override

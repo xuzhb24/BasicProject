@@ -16,6 +16,7 @@ import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.media.AudioManager;
 import android.net.ConnectivityManager;
 import android.net.TrafficStats;
 import android.os.Build;
@@ -112,6 +113,7 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
     public static final String TEST_SPANNABLE_STRING = "TEST_SPANNABLE_STRING";
     public static final String TEST_CPU = "TEST_CPU";
     public static final String TEST_VIBRATION = "TEST_VIBRATION";
+    public static final String TEST_AUDIO = "TEST_AUDIO";
 
     private LinearLayout ll;
     private InputLayout il;
@@ -244,6 +246,9 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 break;
             case TEST_VIBRATION:
                 testVibration();
+                break;
+            case TEST_AUDIO:
+                testAudio();
                 break;
         }
     }
@@ -1984,12 +1989,12 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 .append("模糊").setBlur(3, BlurMaskFilter.Blur.NORMAL)
                 .create();
         //应点击事件的话必须设置以下属性
-        binding.tv.setMovementMethod(LinkMovementMethod.getInstance());
-        binding.tv.setTextSize(25);
-        binding.tv.setTextColor(Color.BLACK);
-        binding.tv.setLineSpacing(0, 1);  //设置lineSpacingExtra后有可能会影响图文垂直对齐
+        tv.setMovementMethod(LinkMovementMethod.getInstance());
+        tv.setTextSize(25);
+        tv.setTextColor(Color.BLACK);
+        tv.setLineSpacing(0, 1);  //设置lineSpacingExtra后有可能会影响图文垂直对齐
         System.out.println("");
-        binding.tv.setText(builder);
+        tv.setText(builder);
     }
 
     //CPU工具
@@ -2004,22 +2009,108 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 .append("\nCPU最小频率：").append(CPUUtil.getMinCpuFrequency(this))
                 .append("\nCPU当前频率：").append(CPUUtil.getCurCpuFrequency(this))
                 .append("\nCPU核心数：").append(CPUUtil.getCoreNumbers());
-        binding.tv.setText(sb.toString());
+        tv.setText(sb.toString());
     }
 
     //震动工具
     private void testVibration() {
         CommonLayoutUtil.initCommonLayout(this, "震动工具", "震动5秒", "pattern模式震动", "取消震动");
-        binding.btn1.setOnClickListener(v -> {
+        btn1.setOnClickListener(v -> {
             VibrationUtil.vibrate(this, 5000);
         });
-        binding.btn2.setOnClickListener(v -> {
+        btn2.setOnClickListener(v -> {
             long[] pattern = new long[]{100, 500, 1000, 2000, 1000, 5000};
             VibrationUtil.vibrate(this, pattern, -1);
         });
-        binding.btn3.setOnClickListener(v -> {
+        btn3.setOnClickListener(v -> {
             VibrationUtil.cancel(this);
         });
+    }
+
+    //音频管理工具
+    private void testAudio() {
+        CommonLayoutUtil.initCommonLayout(this, "音频管理工具", false, true,
+                "设置媒体音量静音", "调低媒体音量", "调高媒体音量", "设置闹钟音量为5", "调低闹钟音量", "调高闹钟音量",
+                "设置铃声静音模式", "设置铃声正常模式");
+        showAudioInfo();
+        btn1.setOnClickListener(v -> {
+            AudioUtil.setStreamMuteByMusic(true);
+            showAudioInfo();
+        });
+        btn2.setOnClickListener(v -> {
+            AudioUtil.adjustVolumeLower();
+            showAudioInfo();
+        });
+        btn3.setOnClickListener(v -> {
+            AudioUtil.adjustVolumeRaise();
+            showAudioInfo();
+        });
+        btn4.setOnClickListener(v -> {
+            AudioUtil.setStreamVolume(AudioManager.STREAM_ALARM, 5);
+            showAudioInfo();
+        });
+        btn5.setOnClickListener(v -> {
+            AudioUtil.adjustStreamVolumeLower(AudioManager.STREAM_ALARM);
+            showAudioInfo();
+        });
+        btn6.setOnClickListener(v -> {
+            AudioUtil.adjustStreamVolumeRaise(AudioManager.STREAM_ALARM);
+            showAudioInfo();
+        });
+        btn7.setOnClickListener(v -> {
+            AudioUtil.ringerSilent();
+            showAudioInfo();
+        });
+        btn8.setOnClickListener(v -> {
+            AudioUtil.ringerNormal();
+            showAudioInfo();
+        });
+    }
+
+    private void showAudioInfo() {
+        String sb = getStreamVolume(AudioManager.STREAM_RING) + getStreamVolume(AudioManager.STREAM_ALARM) +
+                getStreamVolume(AudioManager.STREAM_MUSIC) + getStreamVolume(AudioManager.STREAM_VOICE_CALL) +
+                getStreamVolume(AudioManager.STREAM_SYSTEM) + getStreamVolume(AudioManager.STREAM_NOTIFICATION) +
+                "当前音频模式：" + AudioUtil.getMode() +
+                "\t\t当前铃声模式：" + AudioUtil.getRingerMode() +
+                "\n是否打开扬声器：" + AudioUtil.isSpeakerphoneOn() +
+                "\t\t麦克风是否静音：" + AudioUtil.isMicrophoneMute() +
+                "\n是否有音乐活跃：" + AudioUtil.isMusicActive() +
+                "\t\t是否插入了耳机：" + AudioUtil.isWiredHeadsetOn();
+        tv.setText(sb);
+    }
+
+    private String getStreamVolume(int streamType) {
+        String type = "";
+        switch (streamType) {
+            case AudioManager.STREAM_VOICE_CALL:
+                type = "通话音量";
+                break;
+            case AudioManager.STREAM_SYSTEM:
+                type = "系统音量";
+                break;
+            case AudioManager.STREAM_RING:
+                type = "来电音量";
+                break;
+            case AudioManager.STREAM_MUSIC:
+                type = "媒体音量";
+                break;
+            case AudioManager.STREAM_ALARM:
+                type = "闹钟音量";
+                break;
+            case AudioManager.STREAM_NOTIFICATION:
+                type = "通知音量";
+                break;
+        }
+        StringBuilder sb = new StringBuilder();
+        sb.append(type).append("：").append(AudioUtil.getStreamVolume(streamType)).append("\t\t音量范围：");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            sb.append(AudioUtil.getStreamMinVolume(streamType));
+        } else {
+            sb.append("0");
+        }
+        sb.append("-").append(AudioUtil.getStreamMaxVolume(streamType)).append("\n");
+        return sb.toString();
     }
 
     @Override
