@@ -193,6 +193,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="音频管理工具" />
 
+            <TextView
+                android:id="@+id/brightness_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="亮度工具" />
+
         </LinearLayout>
     </ScrollView>
 

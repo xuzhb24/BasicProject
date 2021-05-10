@@ -101,6 +101,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_CPU = "TEST_CPU"
         const val TEST_VIBRATION = "TEST_VIBRATION"
         const val TEST_AUDIO = "TEST_AUDIO"
+        const val TEST_BRIGHTNESS = "TEST_BRIGHTNESS"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -139,6 +140,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_CPU -> testCPU()
             TEST_VIBRATION -> testVibration()
             TEST_AUDIO -> testAudio()
+            TEST_BRIGHTNESS -> testBrightness()
         }
     }
 
@@ -1960,6 +1962,56 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         }
         sb.append("-").append(AudioUtil.getStreamMaxVolume(streamType)).append("\n")
         return sb.toString()
+    }
+
+    private fun testBrightness() {
+        initCommonLayout(
+            this, "亮度工具", true, true,
+            "开启自动调节亮度", "设置屏幕亮度", "设置窗口亮度"
+        )
+        il.inputTextHint = "请输入设置的亮度值，如50（范围0-255）"
+        il.inputTextType = InputType.TYPE_CLASS_NUMBER
+        showBrightness()
+        btn1.setOnClickListener {
+            if (BrightnessUtil.setAutoBrightnessEnabled(this, true)) {
+                showToast("已开启")
+            }
+        }
+        btn2.setOnClickListener {
+            if (TextUtils.isEmpty(il.inputText)) {
+                showToast("请先输入要设置的亮度值")
+                return@setOnClickListener
+            }
+            val value = il.inputText.toInt()
+            if (value in 0..255) {
+                BrightnessUtil.setBrightness(this, value)
+                showBrightness()
+            } else {
+                showToast("输入有误！")
+                il.inputText = ""
+            }
+        }
+        btn3.setOnClickListener {
+            if (TextUtils.isEmpty(il.inputText)) {
+                showToast("请先输入要设置的亮度值")
+                return@setOnClickListener
+            }
+            val value = il.inputText.toInt()
+            if (value in 0..255) {
+                BrightnessUtil.setWindowBrightness(window, value)
+                showBrightness()
+            } else {
+                showToast("输入有误！")
+                il.inputText = ""
+            }
+        }
+    }
+
+    private fun showBrightness() {
+        val sb = "是否开启自动调节亮度：${BrightnessUtil.isAutoBrightnessEnabled()}" +
+                "\n屏幕亮度：${BrightnessUtil.getBrightness()}" +
+                "\n窗口亮度：${BrightnessUtil.getWindowBrightness(window)}"
+        tv.text = sb
     }
 
     override fun onDestroy() {

@@ -23,7 +23,11 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         fun newInstance() = UtilFragment()
     }
 
-    override fun handleView(savedInstanceState: Bundle?) {
+    override fun handleView(savedInstanceState: Bundle?){
+
+    }
+
+    override fun initListener()  {
         //实现沉浸式状态栏
         binding.statusbarTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_STATUS_BAR)
@@ -164,9 +168,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.audioTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_AUDIO)
         }
-    }
-
-    override fun initListener() {
+        //亮度工具
+        binding.brightnessTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_BRIGHTNESS)
+        }
     }
 
     override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
