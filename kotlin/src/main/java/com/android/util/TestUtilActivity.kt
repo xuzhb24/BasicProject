@@ -10,6 +10,7 @@ import android.database.sqlite.SQLiteOpenHelper
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
+import android.media.AudioManager
 import android.os.Build
 import android.os.Bundle
 import android.os.Environment
@@ -99,6 +100,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_APK_DOWNLOAD = "TEST_APK_DOWNLOAD"
         const val TEST_CPU = "TEST_CPU"
         const val TEST_VIBRATION = "TEST_VIBRATION"
+        const val TEST_AUDIO = "TEST_AUDIO"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -136,6 +138,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_APK_DOWNLOAD -> testApkDownload()
             TEST_CPU -> testCPU()
             TEST_VIBRATION -> testVibration()
+            TEST_AUDIO -> testAudio()
         }
     }
 
@@ -1868,22 +1871,95 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .append("\nCPU最小频率：").append(CPUUtil.getMinCpuFrequency(this))
             .append("\nCPU当前频率：").append(CPUUtil.getCurCpuFrequency(this))
             .append("\nCPU核心数：").append(CPUUtil.getCoreNumbers())
-        binding.tv.text = sb.toString()
+        tv.text = sb.toString()
     }
 
     //震动工具
     private fun testVibration() {
         initCommonLayout(this, "震动工具", "震动5秒", "pattern模式震动", "取消震动")
-        binding.btn1.setOnClickListener {
+        btn1.setOnClickListener {
             VibrationUtil.vibrate(this, 5000)
         }
-        binding.btn2.setOnClickListener {
+        btn2.setOnClickListener {
             val pattern: LongArray = longArrayOf(100L, 500L, 1000L, 2000L, 1000L, 5000L)
             VibrationUtil.vibrate(this, pattern, -1)
         }
-        binding.btn3.setOnClickListener {
+        btn3.setOnClickListener {
             VibrationUtil.cancel(this)
         }
+    }
+
+    //音频管理工具
+    private fun testAudio() {
+        initCommonLayout(
+            this, "音频管理工具", false, true,
+            "设置媒体音量静音", "调低媒体音量", "调高媒体音量", "设置闹钟音量为5", "调低闹钟音量", "调高闹钟音量",
+            "设置铃声静音模式", "设置铃声正常模式"
+        )
+        showAudioInfo()
+        btn1.setOnClickListener {
+            AudioUtil.setStreamMuteByMusic(true)
+            showAudioInfo()
+        }
+        btn2.setOnClickListener {
+            AudioUtil.adjustVolumeLower()
+            showAudioInfo()
+        }
+        btn3.setOnClickListener {
+            AudioUtil.adjustVolumeRaise()
+            showAudioInfo()
+        }
+        btn4.setOnClickListener {
+            AudioUtil.setStreamVolume(AudioManager.STREAM_ALARM, 5)
+            showAudioInfo()
+        }
+        btn5.setOnClickListener {
+            AudioUtil.adjustStreamVolumeLower(AudioManager.STREAM_ALARM)
+            showAudioInfo()
+        }
+        btn6.setOnClickListener {
+            AudioUtil.adjustStreamVolumeRaise(AudioManager.STREAM_ALARM)
+            showAudioInfo()
+        }
+        btn7.setOnClickListener {
+            AudioUtil.ringerSilent()
+            showAudioInfo()
+        }
+        btn8.setOnClickListener {
+            AudioUtil.ringerNormal()
+            showAudioInfo()
+        }
+    }
+
+    private fun showAudioInfo() {
+        val sb = "${getStreamVolume(AudioManager.STREAM_RING)}${getStreamVolume(AudioManager.STREAM_ALARM)}" +
+                "${getStreamVolume(AudioManager.STREAM_MUSIC)}${getStreamVolume(AudioManager.STREAM_VOICE_CALL)}" +
+                "${getStreamVolume(AudioManager.STREAM_SYSTEM)}${getStreamVolume(AudioManager.STREAM_NOTIFICATION)}" +
+                "当前音频模式：${AudioUtil.getMode()}\t\t当前铃声模式：${AudioUtil.getRingerMode()}" +
+                "\n是否打开扬声器：${AudioUtil.isSpeakerphoneOn()}\t\t麦克风是否静音：${AudioUtil.isMicrophoneMute()}" +
+                "\n是否有音乐活跃：${AudioUtil.isMusicActive()}\t\t是否插入了耳机：${AudioUtil.isWiredHeadsetOn()}"
+        tv.text = sb
+    }
+
+    private fun getStreamVolume(streamType: Int): String {
+        val type = when (streamType) {
+            AudioManager.STREAM_VOICE_CALL -> "通话音量"
+            AudioManager.STREAM_SYSTEM -> "系统音量"
+            AudioManager.STREAM_RING -> "来电音量"
+            AudioManager.STREAM_MUSIC -> "媒体音量"
+            AudioManager.STREAM_ALARM -> "闹钟音量"
+            AudioManager.STREAM_NOTIFICATION -> "通知音量"
+            else -> ""
+        }
+        val sb = StringBuilder()
+        sb.append(type).append("：").append(AudioUtil.getStreamVolume(streamType)).append("\t\t音量范围")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            sb.append(AudioUtil.getStreamMinVolume(streamType))
+        } else {
+            sb.append("0")
+        }
+        sb.append("-").append(AudioUtil.getStreamMaxVolume(streamType)).append("\n")
+        return sb.toString()
     }
 
     override fun onDestroy() {

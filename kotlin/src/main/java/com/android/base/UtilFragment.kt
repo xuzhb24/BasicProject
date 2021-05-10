@@ -160,6 +160,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         binding.vibrationTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_VIBRATION)
         }
+        //音频管理工具
+        binding.audioTv.setOnClickListener {
+            jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_AUDIO)
+        }
     }
 
     override fun initListener() {

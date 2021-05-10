@@ -188,6 +188,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="震动工具" />
 
+            <TextView
+                android:id="@+id/audio_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="音频管理工具" />
+
         </LinearLayout>
     </ScrollView>
 
