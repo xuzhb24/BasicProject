@@ -223,6 +223,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="亮度工具" />
 
+            <TextView
+                android:id="@+id/capture_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="截图工具" />
+
         </LinearLayout>
     </ScrollView>
 

@@ -46,6 +46,11 @@ import androidx.annotation.RequiresApi;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.java.databinding.ActivityCommonLayoutBinding;
+import com.android.util.CapturePicture.CapturePictureUtil;
+import com.android.util.CapturePicture.TestCaptureGridViewActivity;
+import com.android.util.CapturePicture.TestCaptureListViewActivity;
+import com.android.util.CapturePicture.TestCaptureRecyclerViewActivity;
+import com.android.util.CapturePicture.TestCaptureWebViewActivity;
 import com.android.util.StatusBar.TestStatusBarUtilActivity;
 import com.android.util.activity.ActivityUtil;
 import com.android.util.activity.TestJumpActivity;
@@ -115,6 +120,7 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
     public static final String TEST_VIBRATION = "TEST_VIBRATION";
     public static final String TEST_AUDIO = "TEST_AUDIO";
     public static final String TEST_BRIGHTNESS = "TEST_BRIGHTNESS";
+    public static final String TEST_CAPTURE = "TEST_CAPTURE";
 
     private LinearLayout ll;
     private InputLayout il;
@@ -253,6 +259,9 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 break;
             case TEST_BRIGHTNESS:
                 testBrightness();
+                break;
+            case TEST_CAPTURE:
+                testCapture();
                 break;
         }
     }
@@ -1200,19 +1209,11 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 "设置屏幕跟随系统状态", "获取屏幕信息");
         btn1.setOnClickListener(v -> {
             Bitmap bitmap = ScreenUtil.captureWithStatusBar(this);
-            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "截屏带状态栏")) {
-                showToast("保存成功！");
-            } else {
-                showToast("保存失败");
-            }
+            saveBitmapToGallery(bitmap, "截屏带状态栏");
         });
         btn2.setOnClickListener(v -> {
             Bitmap bitmap = ScreenUtil.captureWithoutStatusBar(this);
-            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "截屏不带状态栏")) {
-                showToast("保存成功！");
-            } else {
-                showToast("保存失败");
-            }
+            saveBitmapToGallery(bitmap, "截屏不带状态栏");
         });
         btn3.setOnClickListener(v -> {
             ScreenUtil.setLandscape(this);
@@ -2164,6 +2165,59 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
                 "\n屏幕亮度：" + BrightnessUtil.getBrightness() +
                 "\n窗口亮度：" + BrightnessUtil.getWindowBrightness(getWindow());
         tv.setText(sb);
+    }
+
+    //截图工具
+    private void testCapture() {
+        CommonLayoutUtil.initCommonLayout(this, "截图工具", "截屏（带状态栏）", "截屏（不带状态栏）",
+                "WebView截图", "View截图", "ViewCache截图", "ScrollView截图", "ListView截图", "GridView截图", "RecyclerView截图");
+        btn1.setOnClickListener(v -> {
+            Bitmap bitmap = CapturePictureUtil.captureWithStatusBar(this);
+            saveBitmapToGallery(bitmap, "截屏带状态栏");
+        });
+        btn2.setOnClickListener(v -> {
+            Bitmap bitmap = CapturePictureUtil.captureWithoutStatusBar(this);
+            saveBitmapToGallery(bitmap, "截屏不带状态栏");
+        });
+        btn3.setOnClickListener(v -> {
+            startActivity(TestCaptureWebViewActivity.class);
+        });
+        btn4.setOnClickListener(v -> {
+            Bitmap bitmap = CapturePictureUtil.captureByView(v);
+            saveBitmapToGallery(bitmap, "View截图");
+        });
+        btn5.setOnClickListener(v -> {
+            Bitmap bitmap = CapturePictureUtil.captureByViewCache(v);
+            saveBitmapToGallery(bitmap, "ViewCache截图");
+        });
+        btn6.setOnClickListener(v -> {
+            Bitmap bitmap = CapturePictureUtil.captureByScrollView(binding.sv);
+            saveBitmapToGallery(bitmap, "ScrollView截图");
+        });
+        btn7.setOnClickListener(v -> {
+            startActivity(TestCaptureListViewActivity.class);
+        });
+        btn8.setOnClickListener(v -> {
+            startActivity(TestCaptureGridViewActivity.class);
+        });
+        btn9.setOnClickListener(v -> {
+            startActivity(TestCaptureRecyclerViewActivity.class);
+        });
+    }
+
+    //保存图片到相册
+    private void saveBitmapToGallery(Bitmap bitmap, String bitmapName) {
+        if (!PermissionUtil.requestPermissions(this, 1,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+            showToast("请先允许权限");
+            return;
+        }
+        if (BitmapUtil.saveBitmapToGallery(this, bitmap, bitmapName)) {
+            showToast("保存成功，请在相册查看");
+        } else {
+            showToast("保存失败");
+        }
     }
 
     @Override

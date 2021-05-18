@@ -187,6 +187,10 @@ public class UtilFragment extends BaseFragment<FragmentUtilBinding> {
         binding.brightnessTv.setOnClickListener(v -> {
             CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_BRIGHTNESS);
         });
+        //截图工具
+        binding.captureTv.setOnClickListener(v -> {
+            CommonLayoutUtil.jumpToTestUtilActivity(mActivity, TestUtilActivity.TEST_CAPTURE);
+        });
     }
 
     @Override

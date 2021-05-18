@@ -131,6 +131,10 @@
         <activity android:name="com.android.util.bitmap.TestBitmapActivity" />
         <activity android:name="com.android.util.permission.TestPermissionActivity" />
         <activity android:name="com.android.util.glide.TestGlideActivity" />
+        <activity android:name="com.android.util.CapturePicture.TestCaptureWebViewActivity" />
+        <activity android:name="com.android.util.CapturePicture.TestCaptureListViewActivity" />
+        <activity android:name="com.android.util.CapturePicture.TestCaptureGridViewActivity" />
+        <activity android:name="com.android.util.CapturePicture.TestCaptureRecyclerViewActivity" />
 
         <service android:name="com.android.util.service.TestService" />
         <service android:name="com.android.util.location.LocationService" />

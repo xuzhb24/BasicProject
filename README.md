@@ -226,7 +226,10 @@ ThreadPoolUtil：线程池工具类
 ~~~
 * ### AlertDialogUtil：AlertDialog工具类
 * ### ApkDownloadUtil：APK下载工具类
+* ### AudioUtil：音频管理工具类，调整音量和控制响铃模式
+* ### BrightnessUtil：亮度相关工具类
 * ### CacheUtil：磁盘缓存工具类
+* ### CapturePictureUtil：截图工具类
 * ### CheckFastClickUtil：快速点击检测工具
 * ### CleanUtil：应用文件清除工具类
 * ### CPUUtil：CPU工具类
