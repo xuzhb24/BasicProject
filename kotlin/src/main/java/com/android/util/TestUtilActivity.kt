@@ -7,6 +7,7 @@ import android.content.Intent
 import android.content.ServiceConnection
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
+import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.graphics.Typeface
@@ -37,6 +38,7 @@ import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.mvc.BaseActivity
+import com.android.util.CapturePicture.*
 import com.android.util.StatusBar.TestStatusBarUtilActivity
 import com.android.util.activity.ActivityUtil
 import com.android.util.activity.TestJumpActivity
@@ -102,6 +104,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         const val TEST_VIBRATION = "TEST_VIBRATION"
         const val TEST_AUDIO = "TEST_AUDIO"
         const val TEST_BRIGHTNESS = "TEST_BRIGHTNESS"
+        const val TEST_CAPTURE = "TEST_CAPTURE"
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
@@ -141,6 +144,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             TEST_VIBRATION -> testVibration()
             TEST_AUDIO -> testAudio()
             TEST_BRIGHTNESS -> testBrightness()
+            TEST_CAPTURE -> testCapture()
         }
     }
 
@@ -1498,19 +1502,11 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         )
         btn1.setOnClickListener {
             val bitmap = ScreenUtil.captureWithStatusBar(this)
-            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "截屏带状态栏")) {
-                showToast("保存成功！")
-            } else {
-                showToast("保存失败！")
-            }
+            saveBitmapToGallery(bitmap, "截屏带状态栏")
         }
         btn2.setOnClickListener {
             val bitmap = ScreenUtil.captureWithoutStatusBar(this)
-            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "截屏不带状态栏")) {
-                showToast("保存成功！")
-            } else {
-                showToast("保存失败！")
-            }
+            saveBitmapToGallery(bitmap, "截屏不带状态栏")
         }
         btn3.setOnClickListener {
             ScreenUtil.setLandscape(this)
@@ -2012,6 +2008,66 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 "\n屏幕亮度：${BrightnessUtil.getBrightness()}" +
                 "\n窗口亮度：${BrightnessUtil.getWindowBrightness(window)}"
         tv.text = sb
+    }
+
+    private fun testCapture() {
+        initCommonLayout(
+            this, "截图工具", "截屏（带状态栏）", "截屏（不带状态栏）",
+            "WebView截图", "View截图", "ViewCache截图", "ScrollView截图", "ListView截图", "GridView截图", "RecyclerView截图"
+        )
+        btn1.setOnClickListener {
+            val bitmap = CapturePictureUtil.captureWithStatusBar(this)
+            saveBitmapToGallery(bitmap, "截屏带状态栏")
+        }
+        btn2.setOnClickListener {
+            val bitmap = CapturePictureUtil.captureWithoutStatusBar(this)
+            saveBitmapToGallery(bitmap, "截屏不带状态栏")
+        }
+        btn3.setOnClickListener {
+            startActivity(TestCaptureWebViewActivity::class.java)
+        }
+        btn4.setOnClickListener {
+            val bitmap = CapturePictureUtil.captureByView(it)
+            saveBitmapToGallery(bitmap, "View截图")
+        }
+        btn5.setOnClickListener {
+            val bitmap = CapturePictureUtil.captureByViewCache(it)
+            saveBitmapToGallery(bitmap, "ViewCache截图")
+        }
+        btn6.setOnClickListener {
+            val bitmap = CapturePictureUtil.captureByScrollView(binding.sv)
+            saveBitmapToGallery(bitmap, "ScrollView截图")
+        }
+        btn7.setOnClickListener {
+            startActivity(TestCaptureListViewActivity::class.java)
+        }
+        btn8.setOnClickListener {
+            startActivity(TestCaptureGridViewActivity::class.java)
+        }
+        btn9.setOnClickListener {
+            startActivity(TestCaptureRecyclerViewActivity::class.java)
+        }
+    }
+
+    //保存图片到相册
+    private fun saveBitmapToGallery(bitmap: Bitmap?, bitmapName: String) {
+        if (bitmap == null) {
+            return
+        }
+        if (!PermissionUtil.requestPermissions(
+                this, 1,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE
+            )
+        ) {
+            showToast("请先允许权限")
+            return
+        }
+        if (BitmapUtil.saveBitmapToGallery(this, bitmap, bitmapName)) {
+            showToast("保存成功，请在相册查看")
+        } else {
+            showToast("保存失败")
+        }
     }
 
     override fun onDestroy() {
