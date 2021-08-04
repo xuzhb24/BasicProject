@@ -29,11 +29,6 @@ public class TestMvpFragment extends BaseFragment<FragmentTestMvcBinding, TestMv
     }
 
     @Override
-    public FragmentTestMvcBinding getViewBinding(LayoutInflater inflater, ViewGroup container) {
-        return FragmentTestMvcBinding.inflate(inflater, container, false);
-    }
-
-    @Override
     public TestMvpPresenter getPresenter() {
         return new TestMvpPresenter(this);
     }

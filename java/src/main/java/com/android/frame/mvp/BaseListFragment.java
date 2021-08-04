@@ -1,5 +1,7 @@
 package com.android.frame.mvp;
 
+import android.view.LayoutInflater;
+
 import androidx.viewbinding.ViewBinding;
 
 import com.android.frame.mvc.extra.RecyclerView.CustomLoadMoreView;
@@ -8,6 +10,9 @@ import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.module.LoadMoreModule;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +24,20 @@ public abstract class BaseListFragment<T, VB extends ViewBinding, V extends IBas
 
     private int mCurrentPage = getFirstPage();  //记录当前页面
     protected BaseQuickAdapter<T, BaseViewHolder> mAdapter;
+
+    @Override
+    protected void initViewBinding() {
+        if (binding == null) {
+            Type superclass = getClass().getGenericSuperclass();
+            Class<VB> vbClass = (Class<VB>) ((ParameterizedType) superclass).getActualTypeArguments()[1];
+            try {
+                Method method = vbClass.getDeclaredMethod("inflate", LayoutInflater.class);
+                binding = (VB) method.invoke(null, getLayoutInflater());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     @Override
     protected void initBaseView() {

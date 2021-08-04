@@ -43,11 +43,6 @@ public class TestMvpListActivity extends BaseListActivity<NewsListBean, Activity
     }
 
     @Override
-    public ActivityTestMvcListBinding getViewBinding() {
-        return ActivityTestMvcListBinding.inflate(getLayoutInflater());
-    }
-
-    @Override
     public TestMvpListPresenter getPresenter() {
         return new TestMvpListPresenter();
     }

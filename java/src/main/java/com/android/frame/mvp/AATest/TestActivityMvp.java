@@ -38,8 +38,4 @@ public class TestActivityMvp extends CommonBaseActivity<ActivityCommonLayoutBind
         });
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
 }

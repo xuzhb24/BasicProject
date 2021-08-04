@@ -3,7 +3,7 @@ package com.android.util.threadPool.AATest;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import com.android.frame.mvp.CommonBaseActivity;
+import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.java.databinding.ActivityCommonLayoutBinding;
 import com.android.util.CommonLayoutUtil;
@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  * Created by xuzhb on 2020/4/5
  * Desc:
  */
-public class TestThreadPoolUtilActivity extends CommonBaseActivity<ActivityCommonLayoutBinding> {
+public class TestThreadPoolUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> {
 
     private static final String TAG = "ThreadPoolLog";
 

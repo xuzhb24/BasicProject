@@ -24,11 +24,6 @@ public class TestMvpActivity extends BaseActivity<ActivityTestMvcBinding, TestMv
     }
 
     @Override
-    public ActivityTestMvcBinding getViewBinding() {
-        return ActivityTestMvcBinding.inflate(getLayoutInflater());
-    }
-
-    @Override
     public TestMvpPresenter getPresenter() {
         return new TestMvpPresenter(this);
     }

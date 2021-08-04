@@ -32,9 +32,4 @@ public class TestFragmentMvp extends CommonBaseActivity<ActivityTestFragmentBind
     public void initListener() {
     }
 
-    @Override
-    public ActivityTestFragmentBinding getViewBinding() {
-        return ActivityTestFragmentBinding.inflate(getLayoutInflater());
-    }
-
 }

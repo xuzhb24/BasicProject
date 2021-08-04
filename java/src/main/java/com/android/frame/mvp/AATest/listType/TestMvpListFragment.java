@@ -50,11 +50,6 @@ public class TestMvpListFragment extends BaseListFragment<NewsListBean, Fragment
     }
 
     @Override
-    public FragmentTestMvcListBinding getViewBinding(LayoutInflater inflater, ViewGroup container) {
-        return FragmentTestMvcListBinding.inflate(inflater, container, false);
-    }
-
-    @Override
     public TestMvpListPresenter getPresenter() {
         return new TestMvpListPresenter();
     }
