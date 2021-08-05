@@ -20,8 +20,6 @@ class TestMvpActivity : BaseActivity<ActivityTestMvcBinding, TestMvpView, TestMv
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityTestMvcBinding.inflate(layoutInflater)
-
     override fun getPresenter() = TestMvpPresenter()
 
     override fun showWeatherInfo(bean: WeatherBean?) {

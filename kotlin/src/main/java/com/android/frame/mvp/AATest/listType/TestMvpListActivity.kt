@@ -36,8 +36,6 @@ class TestMvpListActivity : BaseListActivity<NewsListBean, ActivityTestMvcListBi
         }
     }
 
-    override fun getViewBinding() = ActivityTestMvcListBinding.inflate(layoutInflater)
-
     override fun getPresenter() = TestMvpListPresenter()
 
 }

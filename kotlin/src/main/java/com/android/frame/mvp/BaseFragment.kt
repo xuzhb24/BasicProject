@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.lang.reflect.ParameterizedType
 
 /**
  * Created by xuzhb on 2019/12/29
@@ -79,10 +80,18 @@ abstract class BaseFragment<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = getViewBinding(inflater, container!!)
+        initViewBinding()
         initBaseView()
         initNetReceiver()
         return binding.root
+    }
+
+    //获取ViewBinding，这里通过反射获取
+    protected open fun initViewBinding() {
+        val superclass = javaClass.genericSuperclass
+        val vbClass = (superclass as ParameterizedType).actualTypeArguments[0] as Class<VB>
+        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+        binding = method.invoke(null, layoutInflater) as VB
     }
 
     //初始化一些通用控件，如加载框、SmartRefreshLayout、网络错误提示布局
@@ -139,9 +148,6 @@ abstract class BaseFragment<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
 
     //所有的事件回调均放在该层，如onClickListener等
     abstract fun initListener()
-
-    //获取ViewBinding
-    abstract fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
     abstract fun getPresenter(): P

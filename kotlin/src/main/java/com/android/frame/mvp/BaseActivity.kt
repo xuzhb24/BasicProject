@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.lang.reflect.ParameterizedType
 
 /**
  * Created by xuzhb on 2019/12/29
@@ -66,7 +68,7 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = getViewBinding()
+        initViewBinding()
         setContentView(binding.root)
         BaseApplication.instance.addActivity(this)
         mPresenter = getPresenter()
@@ -78,6 +80,14 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
         initListener()
         //加载数据
         mPresenter?.refreshData()
+    }
+
+    //获取ViewBinding，这里通过反射获取
+    protected open fun initViewBinding() {
+        val superclass = javaClass.genericSuperclass
+        val vbClass = (superclass as ParameterizedType).actualTypeArguments[0] as Class<VB>
+        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+        binding = method.invoke(null, layoutInflater) as VB
     }
 
     //初始化一些通用控件，如加载框、SmartRefreshLayout、网络错误提示布局
@@ -126,9 +136,6 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
 
     //所有的事件回调均放在该层，如onClickListener等
     abstract fun initListener()
-
-    //获取ViewBinding
-    abstract fun getViewBinding(): VB
 
     //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
     abstract fun getPresenter(): P

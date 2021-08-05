@@ -25,9 +25,6 @@ class TestMvpFragment : BaseFragment<FragmentTestMvcBinding, TestMvpView, TestMv
     override fun initListener() {
     }
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentTestMvcBinding.inflate(inflater, container, false)
-
     override fun getPresenter() = TestMvpPresenter()
 
     override fun showWeatherInfo(bean: WeatherBean?) {

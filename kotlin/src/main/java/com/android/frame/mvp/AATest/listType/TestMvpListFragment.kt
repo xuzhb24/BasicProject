@@ -41,9 +41,6 @@ class TestMvpListFragment : BaseListFragment<NewsListBean, FragmentTestMvcListBi
         }
     }
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentTestMvcListBinding.inflate(inflater, container, false)
-
     override fun getPresenter() = TestMvpListPresenter()
 
 }

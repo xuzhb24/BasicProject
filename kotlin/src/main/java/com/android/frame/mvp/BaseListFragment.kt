@@ -1,11 +1,13 @@
 package com.android.frame.mvp
 
+import android.view.LayoutInflater
 import androidx.viewbinding.ViewBinding
 import com.android.frame.mvc.extra.RecyclerView.CustomLoadMoreView
 import com.android.util.LogUtil
 import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
+import java.lang.reflect.ParameterizedType
 
 /**
  * Created by xuzhb on 2020/7/22
@@ -16,6 +18,13 @@ abstract class BaseListFragment<T, VB : ViewBinding, V : IBaseListView<T>, P : B
 
     private var mCurrentPage = getFirstPage()  //记录当前页面
     protected lateinit var mAdapter: BaseQuickAdapter<T, BaseViewHolder>
+
+    override fun initViewBinding() {
+        val superclass = javaClass.genericSuperclass
+        val vbClass = (superclass as ParameterizedType).actualTypeArguments[1] as Class<VB>
+        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+        binding = method.invoke(null, layoutInflater) as VB
+    }
 
     override fun initBaseView() {
         super.initBaseView()

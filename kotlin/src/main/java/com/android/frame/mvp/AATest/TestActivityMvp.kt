@@ -32,6 +32,4 @@ class TestActivityMvp : CommonBaseActivity<ActivityCommonLayoutBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
-
 }
