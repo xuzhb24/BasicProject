@@ -96,8 +96,4 @@ public class TestFloatPageActivity extends BaseActivity<ActivityCommonLayoutBind
         });
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
 }

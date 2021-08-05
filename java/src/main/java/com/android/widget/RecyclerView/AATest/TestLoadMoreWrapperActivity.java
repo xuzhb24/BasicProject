@@ -64,11 +64,6 @@ public class TestLoadMoreWrapperActivity extends BaseActivity<ActivityTestAdapte
     }
 
     @Override
-    public ActivityTestAdapterBinding getViewBinding() {
-        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
-    }
-
-    @Override
     public void onRefresh() {
         mCurrentPage = 1;
         mList.clear();

@@ -46,9 +46,4 @@ public class TestCaptureWebViewActivity extends BaseActivity<ActivityTestCapture
         });
     }
 
-    @Override
-    public ActivityTestCaptureWebviewBinding getViewBinding() {
-        return ActivityTestCaptureWebviewBinding.inflate(getLayoutInflater());
-    }
-
 }

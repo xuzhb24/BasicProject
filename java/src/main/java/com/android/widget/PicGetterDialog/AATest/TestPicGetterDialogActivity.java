@@ -44,11 +44,6 @@ public class TestPicGetterDialogActivity extends BaseActivity<ActivityTestPicGet
         });
     }
 
-    @Override
-    public ActivityTestPicGetterDialogBinding getViewBinding() {
-        return ActivityTestPicGetterDialogBinding.inflate(getLayoutInflater());
-    }
-
     private void showPicGetDialog() {
         if (mPicGetterDialog != null && mPicGetterDialog.getDialog() != null &&
                 mPicGetterDialog.getDialog().isShowing()) {

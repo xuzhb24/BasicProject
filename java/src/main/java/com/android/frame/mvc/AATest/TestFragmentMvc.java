@@ -30,9 +30,4 @@ public class TestFragmentMvc extends BaseActivity<ActivityTestFragmentBinding> {
     public void initListener() {
     }
 
-    @Override
-    public ActivityTestFragmentBinding getViewBinding() {
-        return ActivityTestFragmentBinding.inflate(getLayoutInflater());
-    }
-
 }

@@ -37,9 +37,4 @@ public class TestActivityMvc extends BaseActivity<ActivityCommonLayoutBinding> {
         });
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
 }

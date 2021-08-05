@@ -39,11 +39,6 @@ public class TestMvcFragment extends BaseFragment<FragmentTestMvcBinding> {
     public void initListener() {
     }
 
-    @Override
-    public FragmentTestMvcBinding getViewBinding(LayoutInflater inflater, ViewGroup container) {
-        return FragmentTestMvcBinding.inflate(inflater, container, false);
-    }
-
     //在这里处理从服务器加载和显示数据的逻辑，请务必重写refreshData，当加载失败点击重试时会调用这个方法
     @Override
     protected void refreshData() {

@@ -90,8 +90,4 @@ public class GuideActivity extends BaseActivity<ActivityGuideBinding> {
         });
     }
 
-    @Override
-    public ActivityGuideBinding getViewBinding() {
-        return ActivityGuideBinding.inflate(getLayoutInflater());
-    }
 }

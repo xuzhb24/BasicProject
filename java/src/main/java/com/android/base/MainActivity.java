@@ -123,9 +123,4 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> implements D
 
     }
 
-    @Override
-    public ActivityMainBinding getViewBinding() {
-        return ActivityMainBinding.inflate(getLayoutInflater());
-    }
-
 }

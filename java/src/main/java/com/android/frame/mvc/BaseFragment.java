@@ -32,6 +32,10 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
 
@@ -79,12 +83,24 @@ public abstract class BaseFragment<VB extends ViewBinding> extends Fragment impl
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        if (binding == null) {
-            binding = getViewBinding(inflater, container);
-        }
+        initViewBinding();
         initBaseView();
         initNetReceiver();
         return binding.getRoot();
+    }
+
+    //获取ViewBinding，这里通过反射获取
+    protected void initViewBinding() {
+        if (binding == null) {
+            Type superclass = getClass().getGenericSuperclass();
+            Class<VB> vbClass = (Class<VB>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
+            try {
+                Method method = vbClass.getDeclaredMethod("inflate", LayoutInflater.class);
+                binding = (VB) method.invoke(null, getLayoutInflater());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     //初始化一些通用控件，如加载框、SmartRefreshLayout、网络错误提示布局
@@ -146,9 +162,6 @@ public abstract class BaseFragment<VB extends ViewBinding> extends Fragment impl
 
     //所有的事件回调均放在该层，如onClickListener等
     public abstract void initListener();
-
-    //获取ViewBinding
-    public abstract VB getViewBinding(LayoutInflater inflater, ViewGroup container);
 
     //是否需要懒加载，返回true表示切换到页面时才会加载数据，主要用在ViewPager切换中，
     //注意FragmentPagerAdapter使用BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT

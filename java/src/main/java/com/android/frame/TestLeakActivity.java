@@ -27,10 +27,5 @@ public class TestLeakActivity extends BaseActivity<ActivityCommonLayoutBinding> 
 
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
 }
 

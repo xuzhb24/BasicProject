@@ -296,11 +296,6 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
     }
 
     @Override
-    public ActivityWebviewBinding getViewBinding() {
-        return ActivityWebviewBinding.inflate(getLayoutInflater());
-    }
-
-    @Override
     protected void onDestroy() {
         destroyWebView();
         super.onDestroy();

@@ -271,11 +271,6 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
 
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
     private void testStatusBarUtil() {
         String text1 = "沉浸背景图片";
         String text2 = "状态栏白色，字体和图片黑色";

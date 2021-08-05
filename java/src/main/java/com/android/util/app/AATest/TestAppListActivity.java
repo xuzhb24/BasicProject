@@ -78,11 +78,6 @@ public class TestAppListActivity extends BaseActivity<ActivityTestAdapterBinding
         }));
     }
 
-    @Override
-    public ActivityTestAdapterBinding getViewBinding() {
-        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
-    }
-
     private SpannableStringBuilder getAppInfo(String packageName) {
         SpannableStringBuilder builder = new SpannableStringBuilder();
         builder.append("应用图标： ");

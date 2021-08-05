@@ -51,9 +51,4 @@ public class TestMultiAdapterActivity extends BaseActivity<ActivityTestAdapterBi
 
     }
 
-    @Override
-    public ActivityTestAdapterBinding getViewBinding() {
-        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
-    }
-
 }

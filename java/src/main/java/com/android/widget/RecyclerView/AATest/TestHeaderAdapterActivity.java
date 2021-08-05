@@ -80,9 +80,4 @@ public class TestHeaderAdapterActivity extends BaseActivity<ActivityTestAdapterB
         });
     }
 
-    @Override
-    public ActivityTestAdapterBinding getViewBinding() {
-        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
-    }
-
 }

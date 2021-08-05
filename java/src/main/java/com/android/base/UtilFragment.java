@@ -193,9 +193,4 @@ public class UtilFragment extends BaseFragment<FragmentUtilBinding> {
         });
     }
 
-    @Override
-    public FragmentUtilBinding getViewBinding(LayoutInflater inflater, ViewGroup container) {
-        return FragmentUtilBinding.inflate(inflater, container, false);
-    }
-
 }

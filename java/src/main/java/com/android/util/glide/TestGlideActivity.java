@@ -71,8 +71,4 @@ public class TestGlideActivity extends BaseActivity<ActivityTestGlideBinding> {
 
     }
 
-    @Override
-    public ActivityTestGlideBinding getViewBinding() {
-        return ActivityTestGlideBinding.inflate(getLayoutInflater());
-    }
 }

@@ -72,8 +72,4 @@ public class TestCaptureGridViewActivity extends BaseActivity<ActivityTestCaptur
         });
     }
 
-    @Override
-    public ActivityTestCaptureGridviewBinding getViewBinding() {
-        return ActivityTestCaptureGridviewBinding.inflate(getLayoutInflater());
-    }
 }

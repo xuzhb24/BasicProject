@@ -144,11 +144,6 @@ public class TestThreadPoolUtilActivity extends BaseActivity<ActivityCommonLayou
         });
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
     private void setResult(String result) {
         LogUtil.i(TAG, "setResult:" + result);
         TestThreadPoolUtilActivity activity = mWeakReference.get();

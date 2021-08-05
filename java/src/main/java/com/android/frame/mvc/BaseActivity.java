@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,10 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.header.ClassicsHeader;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
+
+import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -68,7 +73,7 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        binding = getViewBinding();
+        initViewBinding();
         setContentView(binding.getRoot());
         BaseApplication.getInstance().addActivity(this);
         initBaseView();
@@ -78,6 +83,18 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         initListener();
         //加载数据
         refreshData();
+    }
+
+    //获取ViewBinding，这里通过反射获取
+    protected void initViewBinding() {
+        Type superclass = getClass().getGenericSuperclass();
+        Class<VB> vbClass = (Class<VB>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
+        try {
+            Method method = vbClass.getDeclaredMethod("inflate", LayoutInflater.class);
+            binding = (VB) method.invoke(null, getLayoutInflater());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     //初始化一些通用控件，如加载框、SmartRefreshLayout、网络错误提示布局
@@ -128,9 +145,6 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
 
     //所有的事件回调均放在该层，如onClickListener等
     public abstract void initListener();
-
-    //获取ViewBinding
-    public abstract VB getViewBinding();
 
     //加载数据，进入页面时默认就会进行加载，请务必重写refreshData，当加载失败点击重试或者下拉刷新时会调用这个方法
     protected void refreshData() {

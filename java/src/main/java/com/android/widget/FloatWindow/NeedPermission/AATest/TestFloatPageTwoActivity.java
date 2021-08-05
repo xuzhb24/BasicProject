@@ -25,9 +25,4 @@ public class TestFloatPageTwoActivity extends BaseActivity<ActivityCommonLayoutB
         });
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
 }

@@ -45,8 +45,4 @@ public class TestLoadingLayoutActivity extends BaseActivity<ActivityTestLoadingL
         });
     }
 
-    @Override
-    public ActivityTestLoadingLayoutBinding getViewBinding() {
-        return ActivityTestLoadingLayoutBinding.inflate(getLayoutInflater());
-    }
 }

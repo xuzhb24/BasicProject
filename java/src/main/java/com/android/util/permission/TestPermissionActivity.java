@@ -53,11 +53,6 @@ public class TestPermissionActivity extends BaseActivity<ActivityCommonLayoutBin
     }
 
     @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
-    @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         //处理权限申请结果

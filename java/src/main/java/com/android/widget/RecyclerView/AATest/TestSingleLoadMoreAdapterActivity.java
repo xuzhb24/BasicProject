@@ -59,11 +59,6 @@ public class TestSingleLoadMoreAdapterActivity extends BaseActivity<ActivityTest
     }
 
     @Override
-    public ActivityTestAdapterBinding getViewBinding() {
-        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
-    }
-
-    @Override
     public void onRefresh() {
         mCurrentPage = 1;
         mAdapter.setData(new ArrayList<>());

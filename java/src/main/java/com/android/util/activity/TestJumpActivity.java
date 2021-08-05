@@ -35,9 +35,4 @@ public class TestJumpActivity extends BaseActivity<ActivityCommonLayoutBinding> 
         });
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
 }

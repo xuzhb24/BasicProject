@@ -39,11 +39,6 @@ public class TestPopupWindowActivity extends BaseActivity<ActivityTestPopupWindo
         binding.toTopBtn.setOnClickListener(this::showToTopWIndow);          //向上弹出
     }
 
-    @Override
-    public ActivityTestPopupWindowBinding getViewBinding() {
-        return ActivityTestPopupWindowBinding.inflate(getLayoutInflater());
-    }
-
     //向下弹出
     private void showToBottomWindow1(View view) {
         if (mPopupWindow != null && mPopupWindow.isShowing()) {

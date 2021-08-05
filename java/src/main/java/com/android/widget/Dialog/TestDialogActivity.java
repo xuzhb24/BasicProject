@@ -44,11 +44,6 @@ public class TestDialogActivity extends BaseActivity<ActivityCommonLayoutBinding
         });
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
     //单按钮Dialog
     private void showSingleDialog() {
         ConfirmDialog.newInstance()

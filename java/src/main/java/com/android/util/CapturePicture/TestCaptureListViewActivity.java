@@ -73,9 +73,4 @@ public class TestCaptureListViewActivity extends BaseActivity<ActivityTestCaptur
         });
     }
 
-    @Override
-    public ActivityTestCaptureListviewBinding getViewBinding() {
-        return ActivityTestCaptureListviewBinding.inflate(getLayoutInflater());
-    }
-
 }

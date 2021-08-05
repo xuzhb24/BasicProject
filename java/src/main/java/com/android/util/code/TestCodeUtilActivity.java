@@ -81,9 +81,4 @@ public class TestCodeUtilActivity extends BaseActivity<ActivityTestCodeUtilBindi
         });
     }
 
-    @Override
-    public ActivityTestCodeUtilBinding getViewBinding() {
-        return ActivityTestCodeUtilBinding.inflate(getLayoutInflater());
-    }
-
 }

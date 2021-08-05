@@ -64,11 +64,6 @@ public class TestSingleWidgetActivity extends BaseActivity<ActivityTestSingleWid
         binding.inputLayout.setOnTextClearListener(() -> showToast("文本被清空了"));
     }
 
-    @Override
-    public ActivityTestSingleWidgetBinding getViewBinding() {
-        return ActivityTestSingleWidgetBinding.inflate(getLayoutInflater());
-    }
-
     private String createExpandText(int count) {
         String[] array = new String[]{
                 "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",

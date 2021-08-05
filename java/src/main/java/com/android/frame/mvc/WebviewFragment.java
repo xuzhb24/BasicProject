@@ -279,11 +279,6 @@ public class WebviewFragment extends BaseFragment<FragmentWebviewBinding> {
     }
 
     @Override
-    public FragmentWebviewBinding getViewBinding(LayoutInflater inflater, ViewGroup container) {
-        return FragmentWebviewBinding.inflate(inflater, container, false);
-    }
-
-    @Override
     public void onDestroy() {
         destroyWebView();
         super.onDestroy();

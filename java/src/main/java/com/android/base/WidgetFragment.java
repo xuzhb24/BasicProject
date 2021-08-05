@@ -96,9 +96,4 @@ public class WidgetFragment extends BaseFragment<FragmentWidgetBinding> {
         });
     }
 
-    @Override
-    public FragmentWidgetBinding getViewBinding(LayoutInflater inflater, ViewGroup container) {
-        return FragmentWidgetBinding.inflate(inflater, container, false);
-    }
-
 }

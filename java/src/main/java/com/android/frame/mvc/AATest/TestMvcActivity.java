@@ -34,11 +34,6 @@ public class TestMvcActivity extends BaseActivity<ActivityTestMvcBinding> {
     public void initListener() {
     }
 
-    @Override
-    public ActivityTestMvcBinding getViewBinding() {
-        return ActivityTestMvcBinding.inflate(getLayoutInflater());
-    }
-
     //在这里处理从服务器加载和显示数据的逻辑，请务必重写refreshData，当加载失败点击重试时会调用这个方法
     @Override
     protected void refreshData() {

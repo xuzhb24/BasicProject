@@ -63,9 +63,4 @@ public class TestStatusBarUtilActivity extends BaseActivity<ActivityCommonLayout
 
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
 }

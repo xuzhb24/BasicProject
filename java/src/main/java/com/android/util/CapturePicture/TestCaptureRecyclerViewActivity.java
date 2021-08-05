@@ -88,11 +88,6 @@ public class TestCaptureRecyclerViewActivity extends BaseActivity<ActivityTestCa
         });
     }
 
-    @Override
-    public ActivityTestCaptureRecyclerviewBinding getViewBinding() {
-        return ActivityTestCaptureRecyclerviewBinding.inflate(getLayoutInflater());
-    }
-
     private String createExpandText(int count) {
         String[] array = new String[]{
                 "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",

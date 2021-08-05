@@ -64,11 +64,6 @@ public class TestMultiLoadMoreAdapterActivity extends BaseActivity<ActivityTestA
     }
 
     @Override
-    public ActivityTestAdapterBinding getViewBinding() {
-        return ActivityTestAdapterBinding.inflate(getLayoutInflater());
-    }
-
-    @Override
     public void onRefresh() {
         mCurrentPage = 1;
         mCurrentDate = DateUtil.getDistanceDateByDay(1, DateUtil.Y_M_D);

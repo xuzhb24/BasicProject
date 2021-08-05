@@ -77,8 +77,4 @@ public class TestMvcListFragment extends BaseListFragment<NewsListBean, Fragment
         });
     }
 
-    @Override
-    public FragmentTestMvcListBinding getViewBinding(LayoutInflater inflater, ViewGroup container) {
-        return FragmentTestMvcListBinding.inflate(inflater, container, false);
-    }
 }

@@ -60,9 +60,4 @@ public class FrameFragment extends BaseFragment<FragmentFrameBinding> {
         });
     }
 
-    @Override
-    public FragmentFrameBinding getViewBinding(LayoutInflater inflater, ViewGroup container) {
-        return FragmentFrameBinding.inflate(inflater, container, false);
-    }
-
 }

@@ -71,9 +71,4 @@ public class TestMvcListActivity extends BaseListActivity<NewsListBean, Activity
         });
     }
 
-    @Override
-    public ActivityTestMvcListBinding getViewBinding() {
-        return ActivityTestMvcListBinding.inflate(getLayoutInflater());
-    }
-
 }

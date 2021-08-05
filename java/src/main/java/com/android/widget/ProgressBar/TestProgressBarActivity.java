@@ -24,8 +24,4 @@ public class TestProgressBarActivity extends BaseActivity<ActivityTestProgressBa
 
     }
 
-    @Override
-    public ActivityTestProgressBarBinding getViewBinding() {
-        return ActivityTestProgressBarBinding.inflate(getLayoutInflater());
-    }
 }

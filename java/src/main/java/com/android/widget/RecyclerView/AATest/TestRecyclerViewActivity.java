@@ -46,9 +46,4 @@ public class TestRecyclerViewActivity extends BaseActivity<ActivityCommonLayoutB
         });
     }
 
-    @Override
-    public ActivityCommonLayoutBinding getViewBinding() {
-        return ActivityCommonLayoutBinding.inflate(getLayoutInflater());
-    }
-
 }
