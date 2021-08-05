@@ -4,6 +4,7 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.lang.reflect.ParameterizedType
 
 /**
  * Created by xuzhb on 2019/8/31
@@ -64,7 +66,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IBaseView, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = getViewBinding()
+        initViewBinding()
         setContentView(binding.root)
         BaseApplication.instance.addActivity(this)
         initBaseView()
@@ -74,6 +76,14 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IBaseView, 
         initListener()
         //加载数据
         refreshData()
+    }
+
+    //获取ViewBinding，这里通过反射获取
+    protected open fun initViewBinding() {
+        val superclass = javaClass.genericSuperclass
+        val vbClass = (superclass as ParameterizedType).actualTypeArguments[0] as Class<VB>
+        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+        binding = method.invoke(null, layoutInflater) as VB
     }
 
     //初始化一些通用控件，如加载弹窗、加载状态布局、SmartRefreshLayout、网络错误提示布局
@@ -122,9 +132,6 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IBaseView, 
 
     //所有的事件回调均放在该层，如onClickListener等
     abstract fun initListener()
-
-    //获取ViewBinding
-    abstract fun getViewBinding(): VB
 
     //加载数据，进入页面时默认就会进行加载，请务必重写refreshData，当加载失败点击重试或者下拉刷新时会调用这个方法
     protected open fun refreshData() {

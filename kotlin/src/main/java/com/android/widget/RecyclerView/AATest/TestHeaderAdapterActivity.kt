@@ -55,5 +55,4 @@ class TestHeaderAdapterActivity : BaseActivity<ActivityTestAdapterBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
 }

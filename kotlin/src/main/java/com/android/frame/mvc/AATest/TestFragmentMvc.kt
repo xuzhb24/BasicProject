@@ -27,6 +27,4 @@ class TestFragmentMvc : BaseActivity<ActivityTestFragmentBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityTestFragmentBinding.inflate(layoutInflater)
-
 }

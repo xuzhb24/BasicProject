@@ -64,7 +64,4 @@ class FrameFragment : BaseFragment<FragmentFrameBinding>() {
         }
     }
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentFrameBinding.inflate(inflater, container, false)
-
 }

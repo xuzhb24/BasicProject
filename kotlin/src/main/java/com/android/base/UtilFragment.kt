@@ -178,7 +178,4 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         }
     }
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentUtilBinding.inflate(inflater, container, false)
-
 }

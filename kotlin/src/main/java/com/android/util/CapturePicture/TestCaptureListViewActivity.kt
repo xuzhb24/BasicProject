@@ -59,6 +59,4 @@ class TestCaptureListViewActivity : BaseActivity<ActivityTestCaptureListviewBind
         }
     }
 
-    override fun getViewBinding() = ActivityTestCaptureListviewBinding.inflate(layoutInflater)
-
 }

@@ -96,8 +96,6 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), DontSwipeBack {
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityMainBinding.inflate(layoutInflater)
-
     //再按一次退出程序
     private var mLastPressTime: Long = 0
 

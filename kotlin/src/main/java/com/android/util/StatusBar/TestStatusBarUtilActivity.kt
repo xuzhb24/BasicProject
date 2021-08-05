@@ -65,6 +65,4 @@ class TestStatusBarUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
-
 }

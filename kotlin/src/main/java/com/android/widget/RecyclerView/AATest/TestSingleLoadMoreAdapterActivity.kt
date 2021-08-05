@@ -51,8 +51,6 @@ class TestSingleLoadMoreAdapterActivity : BaseActivity<ActivityTestAdapterBindin
         }
     }
 
-    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
-
     override fun onRefresh() {
         mCurrentPage = 1
         mAdapter.setData(mutableListOf())

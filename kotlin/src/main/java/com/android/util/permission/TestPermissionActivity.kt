@@ -47,8 +47,6 @@ class TestPermissionActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
-
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         //处理权限申请结果

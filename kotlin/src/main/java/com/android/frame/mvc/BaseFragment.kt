@@ -24,6 +24,7 @@ import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import java.lang.reflect.ParameterizedType
 
 /**
  * Created by xuzhb on 2019/9/7
@@ -75,10 +76,18 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IBaseView, OnRefresh
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = getViewBinding(inflater, container!!)
+        initViewBinding()
         initBaseView()
         initNetReceiver()
         return binding.root
+    }
+
+    //获取ViewBinding，这里通过反射获取
+    protected open fun initViewBinding() {
+        val superclass = javaClass.genericSuperclass
+        val vbClass = (superclass as ParameterizedType).actualTypeArguments[0] as Class<VB>
+        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+        binding = method.invoke(null, layoutInflater) as VB
     }
 
     //初始化一些通用控件，如加载弹窗、加载状态布局、SmartRefreshLayout、网络错误提示布局
@@ -135,9 +144,6 @@ abstract class BaseFragment<VB : ViewBinding> : Fragment(), IBaseView, OnRefresh
 
     //所有的事件回调均放在该层，如onClickListener等
     abstract fun initListener()
-
-    //获取ViewBinding
-    abstract fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
     //是否需要懒加载，返回true表示切换到页面时才会加载数据，主要用在ViewPager切换中，
     //注意FragmentPagerAdapter使用BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT

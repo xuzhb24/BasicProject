@@ -53,5 +53,4 @@ class TestFooterAdapterActivity : BaseActivity<ActivityTestAdapterBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
 }

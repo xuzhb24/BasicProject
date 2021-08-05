@@ -94,6 +94,4 @@ class TestFloatPageActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
-
 }

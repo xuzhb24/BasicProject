@@ -49,8 +49,6 @@ class TestPopupWindowActivity : BaseActivity<ActivityTestPopupWindowBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityTestPopupWindowBinding.inflate(layoutInflater)
-
     //向下弹出
     private fun showToBottomWindow1(view: View) {
         if (mPopupWindow != null && mPopupWindow!!.isShowing)

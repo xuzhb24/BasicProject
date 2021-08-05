@@ -59,6 +59,4 @@ class TestCaptureGridViewActivity : BaseActivity<ActivityTestCaptureGridviewBind
         }
     }
 
-    override fun getViewBinding() = ActivityTestCaptureGridviewBinding.inflate(layoutInflater)
-
 }

@@ -30,6 +30,4 @@ class TestProgressBarActivity : BaseActivity<ActivityTestProgressBarBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityTestProgressBarBinding.inflate(layoutInflater)
-
 }

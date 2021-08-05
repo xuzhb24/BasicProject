@@ -274,9 +274,6 @@ class WebviewFragment : BaseFragment<FragmentWebviewBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentWebviewBinding.inflate(inflater, container, false)
-
     override fun onDestroy() {
         destroyWebView()
         super.onDestroy()

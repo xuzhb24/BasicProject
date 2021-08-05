@@ -76,8 +76,6 @@ class TestRetrofitActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
-
     //获取天气信息，@Query，GET请求
     private fun getWeatherByQuery(city: String) {
         RetrofitFactory.instance.createService(ApiService::class.java, UrlConstant.WEATHER_URL)

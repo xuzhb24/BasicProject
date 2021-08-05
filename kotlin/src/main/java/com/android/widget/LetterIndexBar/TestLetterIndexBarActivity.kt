@@ -39,6 +39,4 @@ class TestLetterIndexBarActivity : BaseActivity<ActivityTestLetterIndexBarBindin
         })
     }
 
-    override fun getViewBinding() = ActivityTestLetterIndexBarBinding.inflate(layoutInflater)
-
 }

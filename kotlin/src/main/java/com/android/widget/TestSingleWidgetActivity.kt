@@ -196,6 +196,4 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
         }
     }
 
-    override fun getViewBinding() = ActivityTestSingleWidgetBinding.inflate(layoutInflater)
-
 }

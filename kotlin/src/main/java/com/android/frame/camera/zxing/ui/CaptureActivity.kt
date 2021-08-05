@@ -64,6 +64,10 @@ open class CaptureActivity<VB : ViewBinding> : BaseActivity<VB>(), SurfaceHolder
         mInactivityTimer = InactivityTimer(this)
     }
 
+    override fun initViewBinding() {
+        binding = ActivityCaptureBinding.inflate(layoutInflater) as VB
+    }
+
     override fun handleView(savedInstanceState: Bundle?) {
 
     }
@@ -104,8 +108,6 @@ open class CaptureActivity<VB : ViewBinding> : BaseActivity<VB>(), SurfaceHolder
             light_iv.isSelected = isLightOn
         }
     }
-
-    override fun getViewBinding(): VB = ActivityCaptureBinding.inflate(layoutInflater) as VB
 
     override fun onResume() {
         super.onResume()

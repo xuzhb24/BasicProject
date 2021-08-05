@@ -99,7 +99,4 @@ class WidgetFragment : BaseFragment<FragmentWidgetBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentWidgetBinding.inflate(inflater, container, false)
-
 }

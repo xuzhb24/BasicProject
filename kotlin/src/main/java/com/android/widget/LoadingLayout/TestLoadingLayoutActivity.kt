@@ -43,5 +43,4 @@ class TestLoadingLayoutActivity : BaseActivity<ActivityTestLoadingLayoutBinding>
         }
     }
 
-    override fun getViewBinding() = ActivityTestLoadingLayoutBinding.inflate(layoutInflater)
 }

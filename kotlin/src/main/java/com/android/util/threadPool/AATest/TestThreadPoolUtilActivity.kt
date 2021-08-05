@@ -141,8 +141,6 @@ class TestThreadPoolUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
-
     private fun setResult(result: String) {
         LogUtil.i(TAG, "setResult:$result")
         val activity = mWeakReference?.get()

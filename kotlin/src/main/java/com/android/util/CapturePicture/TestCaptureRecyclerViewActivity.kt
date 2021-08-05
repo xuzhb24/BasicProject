@@ -72,8 +72,6 @@ class TestCaptureRecyclerViewActivity : BaseActivity<ActivityTestCaptureRecycler
         }
     }
 
-    override fun getViewBinding() = ActivityTestCaptureRecyclerviewBinding.inflate(layoutInflater)
-
     private fun createExpandText(count: Int): String {
         var array = arrayOf(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",

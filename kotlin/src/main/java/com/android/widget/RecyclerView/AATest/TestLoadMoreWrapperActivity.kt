@@ -56,8 +56,6 @@ class TestLoadMoreWrapperActivity : BaseActivity<ActivityTestAdapterBinding>(), 
         }
     }
 
-    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
-
     //下拉刷新
     override fun onRefresh() {
         mCurrentPage = 1

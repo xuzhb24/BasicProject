@@ -67,6 +67,4 @@ class TestGlideActivity : BaseActivity<ActivityTestGlideBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityTestGlideBinding.inflate(layoutInflater)
-
 }

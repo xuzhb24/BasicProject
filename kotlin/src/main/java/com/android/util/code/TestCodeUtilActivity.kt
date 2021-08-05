@@ -70,6 +70,4 @@ class TestCodeUtilActivity : BaseActivity<ActivityTestCodeUtilBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityTestCodeUtilBinding.inflate(layoutInflater)
-
 }

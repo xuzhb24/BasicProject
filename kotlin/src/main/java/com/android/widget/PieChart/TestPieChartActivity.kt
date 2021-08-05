@@ -29,6 +29,4 @@ class TestPieChartActivity : BaseActivity<ActivityTestPieChartBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityTestPieChartBinding.inflate(layoutInflater)
-
 }

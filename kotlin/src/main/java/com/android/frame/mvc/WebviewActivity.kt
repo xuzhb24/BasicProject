@@ -297,8 +297,6 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityWebviewBinding.inflate(layoutInflater)
-
     override fun onDestroy() {
         destroyWebView()
         super.onDestroy()

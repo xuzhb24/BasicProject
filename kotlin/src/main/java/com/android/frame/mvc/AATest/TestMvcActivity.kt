@@ -30,8 +30,6 @@ class TestMvcActivity : BaseActivity<ActivityTestMvcBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityTestMvcBinding.inflate(layoutInflater)
-
     //在这里处理从服务器加载和显示数据的逻辑，请务必重写refreshData，当加载失败点击重试时会调用这个方法
     override fun refreshData() {
         showWeatherInfo(mCities[Random.nextInt(mCities.size)])

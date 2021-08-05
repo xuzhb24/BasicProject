@@ -150,8 +150,6 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
 
     override fun initListener() {}
 
-    override fun getViewBinding() = ActivityCommonLayoutBinding.inflate(layoutInflater)
-
     private fun testStatusBarUtil() {
         val text1 = "沉浸背景图片"
         val text2 = "状态栏白色，字体和图片黑色"

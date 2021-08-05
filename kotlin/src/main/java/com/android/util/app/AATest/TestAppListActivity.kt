@@ -71,8 +71,6 @@ class TestAppListActivity : BaseActivity<ActivityTestAdapterBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
-
     private fun getAppInfo(packageName: String): SpannableStringBuilder {
         val builder = SpannableStringBuilder()
         builder.append("应用图标： ")

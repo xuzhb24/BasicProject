@@ -24,7 +24,7 @@ class TestBitmapActivity : BaseActivity<ActivityTestBitmapBinding>() {
         setImage(BitmapUtil.scale(getSrc(), 0.5f, 0.5f, true))
         setImage(BitmapUtil.scale(getSrc(), SizeUtil.dp2pxInt(150f), SizeUtil.dp2pxInt(150f), true))
         //裁剪
-        setImage(BitmapUtil.clip(getSrc(), 150, 150, 250, 250, true))
+        setImage(BitmapUtil.clip(getSrc(), 150, 150, 200, 200, true))
         //倾斜
         setImage(BitmapUtil.skew(getSrc(), 0.2f, 0.2f, 0f, 0f, true))
         //旋转
@@ -67,7 +67,5 @@ class TestBitmapActivity : BaseActivity<ActivityTestBitmapBinding>() {
 
     override fun initListener() {
     }
-
-    override fun getViewBinding() = ActivityTestBitmapBinding.inflate(layoutInflater)
 
 }

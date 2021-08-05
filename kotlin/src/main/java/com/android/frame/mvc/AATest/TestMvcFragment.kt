@@ -35,9 +35,6 @@ class TestMvcFragment : BaseFragment<FragmentTestMvcBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding(inflater: LayoutInflater, container: ViewGroup?) =
-        FragmentTestMvcBinding.inflate(inflater, container, false)
-
     //在这里处理从服务器加载和显示数据的逻辑，请务必重写refreshData，当加载失败点击重试时会调用这个方法
     override fun refreshData() {
         //模拟一个页面多个接口请求的情况，假设其中一个接口不参与UI显示的逻辑，只保存数据

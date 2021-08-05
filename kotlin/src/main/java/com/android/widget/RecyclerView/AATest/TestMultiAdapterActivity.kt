@@ -46,6 +46,4 @@ class TestMultiAdapterActivity : BaseActivity<ActivityTestAdapterBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityTestAdapterBinding.inflate(layoutInflater)
-
 }

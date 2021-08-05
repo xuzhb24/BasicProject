@@ -78,6 +78,4 @@ class GuideActivity : BaseActivity<ActivityGuideBinding>() {
         }
     }
 
-    override fun getViewBinding() = ActivityGuideBinding.inflate(layoutInflater)
-
 }

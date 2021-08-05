@@ -1,5 +1,6 @@
 package com.android.frame.mvc
 
+import android.view.LayoutInflater
 import androidx.viewbinding.ViewBinding
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.http.model.BaseListResponse
@@ -10,6 +11,7 @@ import com.chad.library.adapter.base.BaseQuickAdapter
 import com.chad.library.adapter.base.module.LoadMoreModule
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 import io.reactivex.Observable
+import java.lang.reflect.ParameterizedType
 
 /**
  * Created by xuzhb on 2020/7/28
@@ -19,6 +21,13 @@ abstract class BaseListFragment<T, VB : ViewBinding> : BaseFragment<VB>() {
 
     private var mCurrentPage = getFirstPage()  //记录当前页面
     protected lateinit var mAdapter: BaseQuickAdapter<T, BaseViewHolder>
+
+    override fun initViewBinding() {
+        val superclass = javaClass.genericSuperclass
+        val vbClass = (superclass as ParameterizedType).actualTypeArguments[1] as Class<VB>
+        val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
+        binding = method.invoke(null, layoutInflater) as VB
+    }
 
     override fun initBaseView() {
         super.initBaseView()

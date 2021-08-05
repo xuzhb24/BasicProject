@@ -42,6 +42,4 @@ class TestCaptureWebViewActivity : BaseActivity<ActivityTestCaptureWebviewBindin
         }
     }
 
-    override fun getViewBinding() = ActivityTestCaptureWebviewBinding.inflate(layoutInflater)
-
 }

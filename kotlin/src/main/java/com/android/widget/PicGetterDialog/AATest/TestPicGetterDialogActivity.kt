@@ -84,6 +84,4 @@ class TestPicGetterDialogActivity : BaseActivity<ActivityTestPicGetterDialogBind
         dialog.showAtCenter(supportFragmentManager)
     }
 
-    override fun getViewBinding() = ActivityTestPicGetterDialogBinding.inflate(layoutInflater)
-
 }

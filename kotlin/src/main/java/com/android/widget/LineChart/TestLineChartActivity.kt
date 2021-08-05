@@ -71,6 +71,4 @@ class TestLineChartActivity : BaseActivity<ActivityTestLineChartBinding>() {
     override fun initListener() {
     }
 
-    override fun getViewBinding() = ActivityTestLineChartBinding.inflate(layoutInflater)
-
 }

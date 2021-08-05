@@ -20,6 +20,10 @@ class ScanActivity : CaptureActivity<ActivityScanBinding>() {
         StatusBarUtil.darkMode(this, Color.BLACK, 0f, false)
     }
 
+    override fun initViewBinding() {
+        binding = ActivityScanBinding.inflate(layoutInflater)
+    }
+
     override fun handleView(savedInstanceState: Bundle?) {
         back_Iv.setOnClickListener { finish() }
         album_tv.setOnClickListener { openAlbum() }
@@ -39,7 +43,5 @@ class ScanActivity : CaptureActivity<ActivityScanBinding>() {
         }
         grid_iv.setAnimation(animation)
     }
-
-    override fun getViewBinding() = ActivityScanBinding.inflate(layoutInflater)
 
 }
