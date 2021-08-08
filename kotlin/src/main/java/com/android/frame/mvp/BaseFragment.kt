@@ -80,9 +80,9 @@ abstract class BaseFragment<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        initViewBinding()
-        initBaseView()
-        initNetReceiver()
+        initViewBinding()  //获取ViewBinding
+        initBaseView()     //初始化一些通用控件
+        initNetReceiver()  //监听网络变化
         return binding.root
     }
 
@@ -119,8 +119,8 @@ abstract class BaseFragment<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        handleView(savedInstanceState)
-        initListener()
+        handleView(savedInstanceState)  //执行onCreate接下来的逻辑
+        initListener()  //所有的事件回调均放在该层，如onClickListener等
         if (!needLazyLoadData()) {
             LogUtil.i(TAG, "${javaClass.name} 正在加载数据（非懒加载）")
             mPresenter?.refreshData()  //不实现懒加载，即一开始创建页面即加载数据

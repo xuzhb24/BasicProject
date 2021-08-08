@@ -1,8 +1,6 @@
 package com.android.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import com.android.basicproject.databinding.FragmentFrameBinding
 import com.android.frame.TestLeakActivity
 import com.android.frame.camera.zxing.AATest.TestZXingActivity
@@ -11,6 +9,7 @@ import com.android.frame.http.AATest.TestRetrofitActivity
 import com.android.frame.mvc.AATest.TestActivityMvc
 import com.android.frame.mvc.BaseFragment
 import com.android.frame.mvp.AATest.TestActivityMvp
+import com.android.frame.mvvm.AATest.TestActivityMvvm
 import com.android.frame.permission.PermissionFrameActivity
 import com.android.frame.permission.PermissionRequestActivity
 
@@ -53,6 +52,10 @@ class FrameFragment : BaseFragment<FragmentFrameBinding>() {
         //MVP框架
         binding.mvpTv.setOnClickListener {
             startActivity(TestActivityMvp::class.java)
+        }
+        //MVVM框架
+        binding.mvvmTv.setOnClickListener {
+            startActivity(TestActivityMvvm::class.java)
         }
         //zxing扫码
         binding.zxingTv.setOnClickListener {

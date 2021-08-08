@@ -17,9 +17,9 @@ abstract class CustomObserver<T>(
     private val mView: IBaseView,
     private val showLoadLayout: Boolean = true,      //是否显示加载状态布局
     private val showLoadingDialog: Boolean = false,  //是否显示加载弹窗
-    private val message: String = "加载中",
-    private val cancelable: Boolean = true,
-    private val needLoadFinish: Boolean = true  //是否需要集成加载完成的逻辑，配置这个参数是为了解决当一个页面存在多个接口请求时，只让主接口控制加载完成的逻辑
+    private val message: String = "加载中",          //加载弹窗的提示文本
+    private val cancelable: Boolean = true,          //加载弹窗是否可以点击取消
+    private val needLoadFinish: Boolean = true       //是否需要集成加载完成的逻辑，配置这个参数是为了解决当一个页面存在多个接口请求时，只让主接口控制加载完成的逻辑
 ) : Observer<T> {
 
     private var mWeakReference: WeakReference<IBaseView> = WeakReference(mView)
@@ -91,16 +91,16 @@ abstract class CustomObserver<T>(
 
     /**
      * 接口请求失败(onNext中返回状态码非成功码)或者网络异常(执行到onError中)执行的回调
-     * @param message  异常信息
-     * @param isError  是否在onError中执行，返回false时表示在onNext中执行，注意下面t和response一定有一个为空
-     * @param t        onError中异常Throwable
-     * @param response onNext中接口非成功请求时返回的结果
+     * @param message      异常信息
+     * @param isException  是否在onError中执行，返回false时表示在onNext中执行，注意下面t和response一定有一个为空
+     * @param exception    onError中异常Throwable
+     * @param response     onNext中接口非成功请求时返回的结果
      */
     protected open fun onFailure(
         view: IBaseView?,
         message: String,
-        isError: Boolean,
-        t: Throwable?,
+        isException: Boolean,
+        exception: Throwable?,
         response: T?
     ) {
         view?.showToast(message)

@@ -1,21 +1,22 @@
-package com.android.frame.mvp
+package com.android.frame.mvvm
 
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.net.ConnectivityManager
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.android.base.BaseApplication
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.util.*
-import com.android.util.StatusBar.StatusBarUtil
 import com.android.widget.LoadingDialog.LoadingDialog
 import com.android.widget.LoadingLayout.LoadingLayout
 import com.android.widget.TitleBar
@@ -23,25 +24,23 @@ import com.scwang.smartrefresh.layout.SmartRefreshLayout
 import com.scwang.smartrefresh.layout.api.RefreshLayout
 import com.scwang.smartrefresh.layout.header.ClassicsHeader
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
 import java.lang.reflect.ParameterizedType
 
 /**
- * Created by xuzhb on 2019/12/29
- * Desc:基类Activity(MVP)
+ * Created by xuzhb on 2021/8/5
+ * Desc:基类Fragment(MVVM)
  */
-abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V>> : AppCompatActivity(),
-    IBaseView, OnRefreshListener {
+abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<VB>> : Fragment(), IBaseView, OnRefreshListener {
+
+    companion object {
+        private const val TAG = "BaseFragment"
+    }
 
     protected lateinit var binding: VB
-    protected var mPresenter: P? = null
-
-    //防止RxJava内存泄漏
-    protected var mCompositeDisposable = CompositeDisposable()
+    protected lateinit var viewModel: VM
 
     //加载弹窗
-    protected var mLoadingDialog: com.android.widget.LoadingDialog.LoadingDialog? = null
+    protected var mLoadingDialog: LoadingDialog? = null
 
     //通用加载状态布局，需在布局文件中固定id名为loading_layout
     protected var mLoadingLayout: LoadingLayout? = null
@@ -59,73 +58,105 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
     private var mNetErrorFl: FrameLayout? = null
     private var mNetReceiver: NetReceiver? = null
 
+    protected lateinit var mContext: Context
+
     protected var isRefreshing = false          //是否正在下拉刷新
+    protected var hasDataLoaded = false         //是否加载过数据，不管加载成功或失败
     protected var hasDataLoadedSuccess = false  //是否成功加载过数据，设置这个变量的原因是加载状态布局一般只会在第一次加载时显示，当加载成功过一次就不再显示
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initViewBinding()  //获取ViewBinding
-        setContentView(binding.root)
-        BaseApplication.instance.addActivity(this)
-        mPresenter = getPresenter()
-        mPresenter?.attachView(this as V)
-        initBaseView()     //初始化一些通用控件
-        initBar()          //初始化状态栏
-        initNetReceiver()  //监听网络变化
-        handleView(savedInstanceState)  //执行onCreate接下来的逻辑
-        initListener()     //所有的事件回调均放在该层，如onClickListener等
-        //加载数据
-        mPresenter?.refreshData()
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mContext = context
     }
 
-    //获取ViewBinding，这里通过反射获取
-    protected open fun initViewBinding() {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        initViewBindingAndViewModel()  //获取ViewBinding和ViewModel
+        initBaseView()     //初始化一些通用控件
+        initNetReceiver()  //监听网络变化
+        return binding.root
+    }
+
+    //获取ViewBinding和ViewModel，这里通过反射获取
+    protected open fun initViewBindingAndViewModel() {
         val superclass = javaClass.genericSuperclass
         val vbClass = (superclass as ParameterizedType).actualTypeArguments[0] as Class<VB>
+        val vmClass = (superclass as ParameterizedType).actualTypeArguments[1] as Class<VM>
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         binding = method.invoke(null, layoutInflater) as VB
+        viewModel = ViewModelProvider(this).get(vmClass)
+        viewModel.bind(binding)
+        viewModel.observe(this, this)
     }
 
-    //初始化一些通用控件，如加载框、SmartRefreshLayout、网络错误提示布局
+    //初始化一些通用控件，如加载弹窗、加载状态布局、SmartRefreshLayout、网络错误提示布局
     protected open fun initBaseView() {
-        mTitleBar = findViewById(R.id.title_bar)
-        mLoadingDialog = LoadingDialog(this, R.style.LoadingDialogStyle)
+        mTitleBar = binding.root.findViewById(R.id.title_bar)
+        mLoadingDialog = LoadingDialog(context!!, R.style.LoadingDialogStyle)
         //获取布局中的加载状态布局
-        mLoadingLayout = findViewById(R.id.loading_layout)
-        mLoadingLayout?.setOnFailListener { mPresenter?.refreshData() }
+        mLoadingLayout = binding.root.findViewById(R.id.loading_layout)
+        mLoadingLayout?.setOnFailListener { refreshData() }
         //获取布局中的SmartRefreshLayout组件，重用BaseActivity的下拉刷新逻辑
         //注意布局中SmartRefreshLayout的id命名为smart_refresh_layout，否则mSmartRefreshLayout为null
         //如果SmartRefreshLayout里面只包含RecyclerView，可引用<include layout="@layout/layout_list" />
-        mSmartRefreshLayout = findViewById(R.id.smart_refresh_layout)
+        mSmartRefreshLayout = binding.root.findViewById(R.id.smart_refresh_layout)
         //如果当前布局文件不包含id为smart_refresh_layout的组件则不执行下面的逻辑
         mSmartRefreshLayout?.let {
-            it.setRefreshHeader(ClassicsHeader(this))
+            it.setRefreshHeader(ClassicsHeader(context!!))
             it.setEnableLoadMore(false)
             it.setOnRefreshListener(this)
         }
         //获取布局中的RecyclerView组件，注意布局中RecyclerView的id命名为recycler_view，否则mRecyclerView为null
-        mRecyclerView = findViewById(R.id.recycler_view)
+        mRecyclerView = binding.root.findViewById(R.id.recycler_view)
         //在当前布局的合适位置引用<include layout="@layout/layout_net_error" />，则当网络出现错误时会进行相应的提示
-        mNetErrorFl = findViewById(R.id.net_error_fl)
+        mNetErrorFl = binding.root.findViewById(R.id.net_error_fl)
     }
 
-    //实现默认的沉浸式状态栏样式，特殊的Activity可以通过重写该方法改变状态栏样式，如颜色等
-    protected open fun initBar() {
-        if (mTitleBar != null) {  //如果当前布局包含id为title_bar的标题栏控件，以该控件为基准实现沉浸式状态栏
-            StatusBarUtil.darkModeAndPadding(this, mTitleBar!!)
-            if (isBarBack()) {
-                mTitleBar?.setOnLeftIconClickListener {
-                    finish()
-                }
-            }
-        } else {  //以ContentView为基准实现沉浸式状态栏，颜色是整个布局的背景色
-            val content: ViewGroup = findViewById(android.R.id.content)
-            StatusBarUtil.darkModeAndPadding(this, content)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        initViewModelObserver()  //监听BaseViewMode的数据变化
+        handleView(savedInstanceState)  //执行onCreate接下来的逻辑
+        initListener()  //所有的事件回调均放在该层，如onClickListener等
+        if (!needLazyLoadData()) {
+            LogUtil.i(TAG, "${javaClass.name} 正在加载数据（非懒加载）")
+            refreshData()  //不实现懒加载，即一开始创建页面即加载数据
         }
     }
 
-    //点击标题栏左侧图标是否退出Activity，默认true
-    protected open fun isBarBack(): Boolean = true
+    //监听BaseViewMode的数据变化
+    protected open fun initViewModelObserver() {
+        //加载状态布局
+        viewModel.showLoadLayoutData.observe(this, Observer {
+            showLoadingLayout()
+        })
+        //加载弹窗
+        viewModel.showLoadingDialogData.observe(this, Observer {
+            showLoadingDialog(it.message, it.cancelable)
+        })
+        //加载完成的逻辑
+        viewModel.loadFinishErrorData.observe(this, Observer {
+            loadFinish(it)
+        })
+    }
+
+    override fun onResume() {
+        super.onResume()
+        LogUtil.i(TAG, "${javaClass.name} onResume")
+        if (needLazyLoadData() && !hasDataLoaded) {
+            LogUtil.i(TAG, "${javaClass.name} 正在加载数据（懒加载）")
+            //刷新数据
+            refreshData()
+            hasDataLoaded = true
+        }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        LogUtil.i(TAG, "${javaClass.name} onPause")
+    }
 
     //执行onCreate接下来的逻辑
     abstract fun handleView(savedInstanceState: Bundle?)
@@ -133,48 +164,42 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
     //所有的事件回调均放在该层，如onClickListener等
     abstract fun initListener()
 
-    //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
-    abstract fun getPresenter(): P
+    //是否需要懒加载，返回true表示切换到页面时才会加载数据，主要用在ViewPager切换中，
+    //注意FragmentPagerAdapter使用BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT
+    protected open fun needLazyLoadData() = true
 
-    override fun onDestroy() {
-        super.onDestroy()
+    //加载数据，进入页面时默认就会进行加载，请务必重写refreshData，当加载失败点击重试或者下拉刷新时会调用这个方法
+    protected open fun refreshData() {
+
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
         unregisterNetReceiver()
         //销毁加载框
         mLoadingDialog?.dismiss()
         mLoadingDialog = null
-
-        //解绑activity和presenter
-        mPresenter?.detachView()
-        mPresenter = null
-
-        //取消所有正在执行的订阅
-        mCompositeDisposable.clear()
-
-        BaseApplication.instance.removeActivity(this)
     }
 
     //显示加载弹窗
     override fun showLoadingDialog(message: String, cancelable: Boolean) {
-        runOnUiThread {
+        activity?.runOnUiThread {
             mLoadingDialog?.show(message, cancelable)
         }
     }
 
     //显示加载状态布局
     override fun showLoadingLayout() {
-        runOnUiThread {
+        activity?.runOnUiThread {
             if (!isRefreshing && !hasDataLoadedSuccess) {  //下拉刷新或者加载成功过都不显示加载状态
                 mLoadingLayout?.loadStart()
             }
         }
     }
 
-    //获取加载状态布局
-    override fun getLoadingLayout() = mLoadingLayout
-
     //数据加载完成
     override fun loadFinish(isError: Boolean) {
-        runOnUiThread {
+        activity?.runOnUiThread {
             if (!isError) {
                 hasDataLoadedSuccess = true
             }
@@ -198,7 +223,7 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
 
     //显示Toast
     override fun showToast(text: CharSequence, isCenter: Boolean, longToast: Boolean) {
-        runOnUiThread {
+        activity?.runOnUiThread {
             ToastUtil.showToast(text, isCenter, longToast)
         }
     }
@@ -207,30 +232,25 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
     override fun gotoLogin() {
         BaseApplication.instance.finishAllActivities()
         val intent = Intent()
-        val action = "${packageName}.login"  //登录页的action
-        LogUtil.i("BaseActivity", "LoginActivity action：$action")
+        val action = "${BaseApplication.instance.packageName}.login"
+        LogUtil.i(TAG, "LoginActivity action：$action")
         intent.action = action
         startActivity(intent)
-    }
-
-    //RxJava建立订阅关系，方便Activity销毁时取消订阅关系防止内存泄漏
-    override fun addDisposable(d: Disposable) {
-        mCompositeDisposable.add(d)
     }
 
     //下拉刷新
     override fun onRefresh(refreshLayout: RefreshLayout) {
         isRefreshing = true
-        mPresenter?.refreshData()  //重新加载数据
+        refreshData()              //重新加载数据
         mLoadingDialog?.dismiss()  //下拉时就不显示加载框了
     }
 
     //网络断开连接提示
     fun showNetErrorLayout() {
         //如果当前布局文件中不包含layout_net_error则netErrorFl为null，此时不执行下面的逻辑
-        runOnUiThread {
+        activity?.runOnUiThread {
             mNetErrorFl?.visibility =
-                if (NetworkUtil.isConnected(applicationContext)) View.GONE else View.VISIBLE
+                if (NetworkUtil.isConnected(activity!!)) View.GONE else View.VISIBLE
         }
     }
 
@@ -239,12 +259,14 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
         if (CheckFastClickUtil.isFastClick()) {  //防止快速点击启动两个Activity
             return
         }
-        val intent = Intent()
-        extras?.let {
-            intent.putExtras(it)
+        activity?.let {
+            val intent = Intent()
+            extras?.let {
+                intent.putExtras(it)
+            }
+            intent.setClass(it, clazz)
+            startActivity(intent)
         }
-        intent.setClass(this, clazz)
-        startActivity(intent)
     }
 
     //启动指定的Activity并接收返回的结果
@@ -256,12 +278,14 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
         if (CheckFastClickUtil.isFastClick()) {  //防止快速点击启动两个Activity
             return
         }
-        val intent = Intent()
-        extras?.let {
-            intent.putExtras(it)
+        activity?.let {
+            val intent = Intent()
+            extras?.let {
+                intent.putExtras(it)
+            }
+            intent.setClass(it, clazz)
+            startActivityForResult(clazz, requestCode)
         }
-        intent.setClass(this, clazz)
-        startActivityForResult(intent, requestCode)
     }
 
     //注册广播动态监听网络变化
@@ -274,7 +298,7 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
         val filter = IntentFilter()
         filter.addAction(ConnectivityManager.CONNECTIVITY_ACTION)
         mNetReceiver = NetReceiver()
-        registerReceiver(mNetReceiver, filter)
+        context?.registerReceiver(mNetReceiver, filter)
         mNetReceiver!!.setOnNetChangeListener {
             showNetErrorLayout()
         }
@@ -285,13 +309,8 @@ abstract class BaseActivity<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
         if (mNetErrorFl == null) {
             return
         }
-        unregisterReceiver(mNetReceiver)
+        context?.unregisterReceiver(mNetReceiver)
         mNetReceiver = null
     }
 
-    override fun dispatchTouchEvent(ev: MotionEvent?): Boolean {
-        //屏幕顶部中间区域双击获取当前Activity类名，只在debug环境下有效
-        parseActivity(this, ev)
-        return super.dispatchTouchEvent(ev)
-    }
 }

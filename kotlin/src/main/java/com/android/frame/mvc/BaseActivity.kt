@@ -33,10 +33,6 @@ import java.lang.reflect.ParameterizedType
  */
 abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IBaseView, OnRefreshListener {
 
-    companion object {
-        private const val TAG = "BaseActivity"
-    }
-
     protected lateinit var binding: VB
 
     //防止RxJava内存泄漏
@@ -66,14 +62,14 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IBaseView, 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initViewBinding()
+        initViewBinding()  //获取ViewBinding
         setContentView(binding.root)
         BaseApplication.instance.addActivity(this)
-        initBaseView()
-        initBar()
-        initNetReceiver()
-        handleView(savedInstanceState)
-        initListener()
+        initBaseView()     //初始化一些通用控件
+        initBar()          //初始化状态栏
+        initNetReceiver()  //监听网络变化
+        handleView(savedInstanceState)  //执行onCreate接下来的逻辑
+        initListener()     //所有的事件回调均放在该层，如onClickListener等
         //加载数据
         refreshData()
     }
@@ -203,7 +199,7 @@ abstract class BaseActivity<VB : ViewBinding> : AppCompatActivity(), IBaseView, 
         BaseApplication.instance.finishAllActivities()
         val intent = Intent()
         val action = "${packageName}.login"  //登录页的action
-        LogUtil.i(TAG, "LoginActivity action：$action")
+        LogUtil.i("BaseActivity", "LoginActivity action：$action")
         intent.action = action
         startActivity(intent)
     }
