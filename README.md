@@ -126,8 +126,22 @@ BaseListPresenter：列表数据对应的基类Presenter
 CommonBaseActivity：不需要额外声明View和Presenter的Activity的父类
 CommonBaseFragment：不需要额外声明View和Presenter的Fragment的父类
 extra.http.CustomObserver：Rxjava自定义Observer，加入加载状态布局、加载弹窗、网络错误的处理
-extra.RecyclerView.CustomLoadMoreView：BaseQuickAdapter中自定义加载更多的脚布局
-extra.RecyclerView.LoadMoreAdapter：实现上拉加载更多的Adapter，继承至BaseQuickAdapter
+~~~
+* ### mvvm：MVVM框架封装
+~~~
+BaseActivity：基类Activity
+BaseFragment：基类Fragment
+BaseListActivity：列表数据对应的基类Activity
+BaseListFragment：列表数据对应的基类Fragment
+IBaseView：基类Activity和基类Fragment共同调用的方法集合
+IBaseListView：列表数据对应的基类Activity和基类Fragment共同调用的方法集合
+BaseViewModel：基类ViewModel
+BaseViewModelWithData：基类ViewModel的进一步封装，默认包含一个接口请求
+BaseListViewModel：列表数据对应的基类ViewModel
+CommonBaseActivity：不需要额外声明ViewModel的Activity的父类
+CommonBaseFragment：不需要额外声明ViewModel的Fragment的父类
+extra.LiveDataEntity.DialogConfig：加载对话框配置信息
+extra.LiveDataEntity.ErrorResponse：接口请求失败结果封装
 ~~~
 * ### permission：权限动态申请示例
 ~~~
