@@ -7,7 +7,7 @@ import java.lang.reflect.ParameterizedType
 
 /**
  * Created by xuzhb on 2021/8/7
- * Desc:
+ * Desc:不需要额外声明ViewModel的Fragment的父类
  */
 abstract class CommonBaseFragment<VB : ViewBinding> : BaseFragment<VB, BaseViewModel<VB>>(), IBaseView {
 

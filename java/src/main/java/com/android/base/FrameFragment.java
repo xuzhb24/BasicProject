@@ -1,8 +1,6 @@
 package com.android.base;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 
 import com.android.frame.TestLeakActivity;
 import com.android.frame.guide.GuideActivity;
@@ -10,6 +8,7 @@ import com.android.frame.http.AATest.TestRetrofitActivity;
 import com.android.frame.mvc.AATest.TestActivityMvc;
 import com.android.frame.mvc.BaseFragment;
 import com.android.frame.mvp.AATest.TestActivityMvp;
+import com.android.frame.mvvm.AATest.TestActivityMvvm;
 import com.android.java.databinding.FragmentFrameBinding;
 
 /**
@@ -53,6 +52,10 @@ public class FrameFragment extends BaseFragment<FragmentFrameBinding> {
         //MVP框架
         binding.mvpTv.setOnClickListener(v -> {
             startActivity(TestActivityMvp.class);
+        });
+        //MVVM框架
+        binding.mvvmTv.setOnClickListener(v -> {
+            startActivity(TestActivityMvvm.class);
         });
         //引导页
         binding.guideTv.setOnClickListener(v -> {

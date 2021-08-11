@@ -46,8 +46,6 @@ import io.reactivex.disposables.Disposable;
  */
 public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActivity implements IBaseView, OnRefreshListener {
 
-    private static final String TAG = "BaseActivity";
-
     protected VB binding;
 
     //防止RxJava内存泄漏
@@ -73,14 +71,14 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initViewBinding();
+        initViewBinding();  //获取ViewBinding
         setContentView(binding.getRoot());
         BaseApplication.getInstance().addActivity(this);
-        initBaseView();
-        initBar();
-        initNetReceiver();
-        handleView(savedInstanceState);
-        initListener();
+        initBaseView();     //初始化一些通用控件
+        initBar();          //初始化状态栏
+        initNetReceiver();  //监听网络变化
+        handleView(savedInstanceState);  //执行onCreate接下来的逻辑
+        initListener();     //所有的事件回调均放在该层，如onClickListener等
         //加载数据
         refreshData();
     }
@@ -242,7 +240,7 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         BaseApplication.getInstance().finishAllActivities();
         Intent intent = new Intent();
         String action = getPackageName() + ".login";  //登录页的action
-        LogUtil.i(TAG, "LoginActivity action：" + action);
+        LogUtil.i("BaseActivity", "LoginActivity action：" + action);
         intent.setAction(action);
         startActivity(intent);
     }
@@ -340,4 +338,5 @@ public abstract class BaseActivity<VB extends ViewBinding> extends AppCompatActi
         ExtraUtil.parseActivity(this, ev);
         return super.dispatchTouchEvent(ev);
     }
+
 }

@@ -83,9 +83,9 @@ public abstract class BaseFragment<VB extends ViewBinding> extends Fragment impl
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        initViewBinding();
-        initBaseView();
-        initNetReceiver();
+        initViewBinding();  //获取ViewBinding
+        initBaseView();     //初始化一些通用控件
+        initNetReceiver();  //监听网络变化
         return binding.getRoot();
     }
 
@@ -131,8 +131,8 @@ public abstract class BaseFragment<VB extends ViewBinding> extends Fragment impl
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        handleView(savedInstanceState);
-        initListener();
+        handleView(savedInstanceState);  //执行onCreate接下来的逻辑
+        initListener();  //所有的事件回调均放在该层，如onClickListener等
         if (!needLazyLoadData()) {
             LogUtil.i(TAG, getClass().getName() + " 正在加载数据（非懒加载）");
             refreshData();  //不实现懒加载，即一开始创建页面即加载数据

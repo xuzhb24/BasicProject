@@ -1,4 +1,4 @@
-package com.android.frame.mvp;
+package com.android.frame.mvvm;
 
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -13,6 +13,7 @@ import android.widget.FrameLayout;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
@@ -37,20 +38,15 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.disposables.Disposable;
-
 /**
- * Created by xuzhb on 2020/1/5
- * Desc:基类Activity
+ * Created by xuzhb on 2021/8/9
+ * Desc:基类Activity(MVVM)
  */
-public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, P extends BasePresenter<V>> extends AppCompatActivity implements IBaseView, OnRefreshListener {
+public abstract class BaseActivity<VB extends ViewBinding, VM extends BaseViewModel<VB>> extends AppCompatActivity implements IBaseView, OnRefreshListener {
 
     protected VB binding;
-    protected P mPresenter;
+    protected VM viewModel;
 
-    //防止RxJava内存泄漏
-    protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();
     //加载弹窗
     protected LoadingDialog mLoadingDialog;
     //通用加载状态布局，需在布局文件中固定id名为loading_layout
@@ -72,27 +68,30 @@ public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        initViewBinding();  //获取ViewBinding
+        initViewBindingAndViewModel();  //获取ViewBinding和ViewModel
         setContentView(binding.getRoot());
         BaseApplication.getInstance().addActivity(this);
-        mPresenter = getPresenter();
-        mPresenter.attachView((V) this);
         initBaseView();     //初始化一些通用控件
         initBar();          //初始化状态栏
         initNetReceiver();  //监听网络变化
+        initViewModelObserver();  //监听BaseViewMode的数据变化
         handleView(savedInstanceState);  //执行onCreate接下来的逻辑
         initListener();     //所有的事件回调均放在该层，如onClickListener等
         //加载数据
-        mPresenter.refreshData();
+        refreshData();
     }
 
-    //获取ViewBinding，这里通过反射获取
-    protected void initViewBinding() {
+    //获取ViewBinding和ViewModel，这里通过反射获取
+    protected void initViewBindingAndViewModel() {
         Type superclass = getClass().getGenericSuperclass();
         Class<VB> vbClass = (Class<VB>) ((ParameterizedType) superclass).getActualTypeArguments()[0];
+        Class<VM> vmClass = (Class<VM>) ((ParameterizedType) superclass).getActualTypeArguments()[1];
         try {
             Method method = vbClass.getDeclaredMethod("inflate", LayoutInflater.class);
             binding = (VB) method.invoke(null, getLayoutInflater());
+            viewModel = new ViewModelProvider(this).get(vmClass);
+            viewModel.bind(binding);
+            viewModel.observe(this, this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -105,7 +104,7 @@ public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, 
         //获取布局中的加载状态布局
         mLoadingLayout = findViewById(R.id.loading_layout);
         if (mLoadingLayout != null) {
-            mLoadingLayout.setOnFailListener(() -> mPresenter.refreshData());
+            mLoadingLayout.setOnFailListener(this::refreshData);
         }
         //获取布局中的SmartRefreshLayout组件，重用BaseActivity的下拉刷新逻辑
         //注意布局中SmartRefreshLayout的id命名为smart_refresh_layout，否则mSmartRefreshLayout为null
@@ -141,14 +140,30 @@ public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, 
         return true;
     }
 
+    //监听BaseViewMode的数据变化
+    protected void initViewModelObserver() {
+        //加载状态布局
+        viewModel.showLoadLayoutData.observe(this, show -> {
+            showLoadingLayout();
+        });
+        //加载弹窗
+        viewModel.showLoadingDialogData.observe(this, config -> {
+            showLoadingDialog(config.getMessage(), config.isCancelable());
+        });
+        //加载完成的逻辑
+        viewModel.loadFinishErrorData.observe(this, this::loadFinish);
+    }
+
     //执行onCreate接下来的逻辑
     public abstract void handleView(Bundle savedInstanceState);
 
     //所有的事件回调均放在该层，如onClickListener等
     public abstract void initListener();
 
-    //获取Activity对应的Presenter，对于不需要额外声明Presenter的Activity，可以选择继承CommonBaseActivity
-    public abstract P getPresenter();
+    //加载数据，进入页面时默认就会进行加载，请务必重写refreshData，当加载失败点击重试或者下拉刷新时会调用这个方法
+    protected void refreshData() {
+
+    }
 
     @Override
     protected void onDestroy() {
@@ -159,13 +174,6 @@ public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, 
             mLoadingDialog.dismiss();
             mLoadingDialog = null;
         }
-
-        //解绑activity和presenter
-        mPresenter.detachView();
-        mPresenter = null;
-
-        //取消所有正在执行的订阅
-        mCompositeDisposable.clear();
 
         BaseApplication.getInstance().removeActivity(this);
     }
@@ -194,12 +202,6 @@ public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, 
                 mLoadingLayout.loadStart();
             }
         });
-    }
-
-    //获取加载状态布局
-    @Override
-    public LoadingLayout getLoadingLayout() {
-        return mLoadingLayout;
     }
 
     //数据加载完成
@@ -256,17 +258,11 @@ public abstract class BaseActivity<VB extends ViewBinding, V extends IBaseView, 
         startActivity(intent);
     }
 
-    //RxJava建立订阅关系，方便Activity销毁时取消订阅关系防止内存泄漏
-    @Override
-    public void addDisposable(Disposable d) {
-        mCompositeDisposable.add(d);
-    }
-
     //下拉刷新
     @Override
     public void onRefresh(@NonNull RefreshLayout refreshLayout) {
         isRefreshing = true;
-        mPresenter.refreshData();  //重新加载数据
+        refreshData();  //重新加载数据
         if (mLoadingDialog != null) {
             mLoadingDialog.dismiss();  //下拉时就不显示加载框了
         }

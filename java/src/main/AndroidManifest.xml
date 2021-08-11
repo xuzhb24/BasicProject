@@ -74,6 +74,11 @@
         <activity android:name="com.android.frame.mvp.AATest.TestFragmentMvp" />
         <activity android:name="com.android.frame.mvp.AATest.notListType.TestMvpActivity" />
         <activity android:name="com.android.frame.mvp.AATest.listType.TestMvpListActivity" />
+        <!--MVVM框架-->
+        <activity android:name="com.android.frame.mvvm.AATest.TestActivityMvvm" />
+        <activity android:name="com.android.frame.mvvm.AATest.TestFragmentMvvm" />
+        <activity android:name="com.android.frame.mvvm.AATest.notListType.TestMvvmActivity" />
+        <activity android:name="com.android.frame.mvvm.AATest.listType.TestMvvmListActivity" />
         <!--通用WebView-->
         <activity android:name="com.android.frame.mvc.WebviewActivity" />
         <!--引导页-->

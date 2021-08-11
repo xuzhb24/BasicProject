@@ -27,6 +27,7 @@ open class BaseListViewModel<T, VB : ViewBinding> : BaseViewModel<VB>() {
         }
     }
 
+    //从服务器按页加载数据
     open fun loadDataFromServer(page: Int, count: Int): (suspend CoroutineScope.() -> BaseListResponse<T>)? = null
 
 }

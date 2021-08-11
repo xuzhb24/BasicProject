@@ -130,12 +130,12 @@ public abstract class CustomObserver<T> implements Observer<T> {
     /**
      * 接口请求失败(onNext中返回状态码非成功码)或者网络异常(执行到onError中)执行的回调
      *
-     * @param message  异常信息
-     * @param isError  是否在onError中执行，返回false时表示在onNext中执行，注意下面t和response一定有一个为空
-     * @param t        onError中异常Throwable
-     * @param response onNext中接口非成功请求时返回的结果
+     * @param message     异常信息
+     * @param isException 是否在onError中执行，返回false时表示在onNext中执行，注意下面t和response一定有一个为空
+     * @param exception   onError中异常Throwable
+     * @param response    onNext中接口非成功请求时返回的结果
      */
-    protected void onFailure(IBaseView view, String message, boolean isError, @Nullable Throwable t, @Nullable T response) {
+    protected void onFailure(IBaseView view, String message, boolean isException, @Nullable Throwable exception, @Nullable T response) {
         if (view != null) {
             view.showToast(message);
         }

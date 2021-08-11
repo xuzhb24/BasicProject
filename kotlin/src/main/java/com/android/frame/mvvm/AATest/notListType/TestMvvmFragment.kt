@@ -21,7 +21,6 @@ class TestMvvmFragment : BaseFragment<FragmentTestMvcBinding, TestMvvmFragmentVi
     )
 
     override fun handleView(savedInstanceState: Bundle?) {
-        mTitleBar?.titleText = "基类Activity(MVVM)"
     }
 
     override fun initListener() {
