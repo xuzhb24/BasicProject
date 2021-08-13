@@ -27,4 +27,9 @@ public interface IBaseListView<T> extends IBaseView {
      */
     void showData(int page, List<T> list);
 
+    /**
+     * 处理数据
+     */
+    List<T> convertData(List<T> response);
+
 }

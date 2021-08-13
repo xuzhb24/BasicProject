@@ -158,7 +158,7 @@ public abstract class BaseListFragment<T, VB extends ViewBinding, VM extends Bas
     //一页加载的个数
     @Override
     public int getLoadSize() {
-        return 10;
+        return 15;
     }
 
     //是否是首次加载
@@ -190,7 +190,8 @@ public abstract class BaseListFragment<T, VB extends ViewBinding, VM extends Bas
     }
 
     //可以通过重写这个方法处理返回的列表数据
-    protected List<T> convertData(List<T> response) {
+    @Override
+    public List<T> convertData(List<T> response) {
         return response;
     }
 
