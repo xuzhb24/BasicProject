@@ -25,7 +25,7 @@ import io.reactivex.Observable;
  * Created by xuzhb on 2020/12/31
  * Desc:列表数据对应的基类Activity，和CustomObserver配合使用
  */
-public abstract class BaseListActivity<T, VB extends ViewBinding> extends BaseActivity<VB> {
+public abstract class BaseListActivity<T, VB extends ViewBinding> extends BaseActivity<VB> implements IBaseListView<T> {
 
     private int mCurrentPage = getFirstPage();  //记录当前页面
     protected BaseQuickAdapter<T, BaseViewHolder> mAdapter;
@@ -154,22 +154,26 @@ public abstract class BaseListActivity<T, VB extends ViewBinding> extends BaseAc
     }
 
     //加载的起始页
-    protected int getFirstPage() {
+    @Override
+    public int getFirstPage() {
         return 0;
     }
 
     //一页加载的个数
-    protected int getLoadSize() {
-        return 10;
+    @Override
+    public int getLoadSize() {
+        return 15;
     }
 
     //是否是首次加载
-    protected boolean isFirstLoad() {
+    @Override
+    public boolean isFirstLoad() {
         return mCurrentPage == getFirstPage();
     }
 
     //展示列表数据
-    protected void showData(int page, List<T> list) {
+    @Override
+    public void showData(int page, List<T> list) {
         List<T> data = convertData(list);
         LogUtil.i("showData", "conver list size：" + (data == null ? -1 : data.size()));
         if (isFirstLoad()) {  //首次加载
@@ -190,7 +194,8 @@ public abstract class BaseListActivity<T, VB extends ViewBinding> extends BaseAc
     }
 
     //可以通过重写这个方法处理返回的列表数据
-    protected List<T> convertData(List<T> response) {
+    @Override
+    public List<T> convertData(List<T> response) {
         return response;
     }
 
