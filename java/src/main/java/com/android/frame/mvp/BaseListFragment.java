@@ -148,7 +148,7 @@ public abstract class BaseListFragment<T, VB extends ViewBinding, V extends IBas
     //获取一页加载的个数
     @Override
     public int getLoadSize() {
-        return 10;
+        return 15;
     }
 
     //展示列表数据

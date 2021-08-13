@@ -71,4 +71,9 @@ public class TestMvcListActivity extends BaseListActivity<NewsListBean, Activity
         });
     }
 
+    @Override
+    public int getFirstPage() {
+        return 1;
+    }
+
 }

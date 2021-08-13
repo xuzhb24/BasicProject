@@ -1,8 +1,6 @@
 package com.android.frame.mvc.AATest;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 
 import com.android.frame.http.AATest.WangYiNewsWebviewActivity;
 import com.android.frame.http.model.BaseListResponse;
@@ -75,6 +73,11 @@ public class TestMvcListFragment extends BaseListFragment<NewsListBean, Fragment
                 showToast("点击了第" + position + "项的图片");
             }
         });
+    }
+
+    @Override
+    public int getFirstPage() {
+        return 1;
     }
 
 }
