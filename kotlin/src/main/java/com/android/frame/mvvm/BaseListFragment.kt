@@ -123,7 +123,7 @@ abstract class BaseListFragment<T, VB : ViewBinding, VM : BaseListViewModel<T, V
     override fun getFirstPage(): Int = 0
 
     //一页加载的个数
-    override fun getLoadSize(): Int = 10
+    override fun getLoadSize(): Int = 15
 
     //是否是首次加载
     override fun isFirstLoad() = mCurrentPage == getFirstPage()
@@ -150,7 +150,7 @@ abstract class BaseListFragment<T, VB : ViewBinding, VM : BaseListViewModel<T, V
     }
 
     //可以通过重写这个方法处理返回的列表数据
-    protected open fun convertData(response: MutableList<T>?): MutableList<T>? {
+    override fun convertData(response: MutableList<T>?): MutableList<T>? {
         return response
     }
 

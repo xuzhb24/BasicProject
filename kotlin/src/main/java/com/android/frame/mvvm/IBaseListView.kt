@@ -25,4 +25,9 @@ interface IBaseListView<T> : IBaseView {
      */
     fun showData(page: Int, list: MutableList<T>?)
 
+    /**
+     * 处理数据
+     */
+    fun convertData(response: MutableList<T>?): MutableList<T>?
+
 }
