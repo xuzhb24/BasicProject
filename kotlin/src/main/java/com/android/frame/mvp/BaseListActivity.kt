@@ -104,7 +104,7 @@ abstract class BaseListActivity<T, VB : ViewBinding, V : IBaseListView<T>, P : B
     override fun isFirstLoad(): Boolean = mCurrentPage == getFirstPage()
 
     //获取一页加载的个数
-    override fun getLoadSize(): Int = 10
+    override fun getLoadSize(): Int = 15
 
     //展示列表数据
     override fun showData(page: Int, list: MutableList<T>?) {

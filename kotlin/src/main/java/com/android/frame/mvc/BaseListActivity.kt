@@ -17,7 +17,7 @@ import java.lang.reflect.ParameterizedType
  * Created by xuzhb on 2020/7/28
  * Desc:列表数据对应的基类Activity，和CustomObserver配合使用
  */
-abstract class BaseListActivity<T, VB : ViewBinding> : BaseActivity<VB>() {
+abstract class BaseListActivity<T, VB : ViewBinding> : BaseActivity<VB>(), IBaseListView<T> {
 
     private var mCurrentPage = getFirstPage()  //记录当前页面
     protected lateinit var mAdapter: BaseQuickAdapter<T, BaseViewHolder>
@@ -118,16 +118,16 @@ abstract class BaseListActivity<T, VB : ViewBinding> : BaseActivity<VB>() {
     }
 
     //加载的起始页
-    protected open fun getFirstPage(): Int = 0
+    override fun getFirstPage(): Int = 0
 
     //一页加载的个数
-    protected open fun getLoadSize(): Int = 10
+    override fun getLoadSize(): Int = 15
 
     //是否是首次加载
-    protected open fun isFirstLoad() = mCurrentPage == getFirstPage()
+    override fun isFirstLoad() = mCurrentPage == getFirstPage()
 
     //展示列表数据
-    protected open fun showData(page: Int, list: MutableList<T>?) {
+    override fun showData(page: Int, list: MutableList<T>?) {
         val data = convertData(list)
         LogUtil.i("showData", "conver list size：${data?.size ?: -1}")
         if (isFirstLoad()) {  //首次加载
@@ -148,7 +148,7 @@ abstract class BaseListActivity<T, VB : ViewBinding> : BaseActivity<VB>() {
     }
 
     //可以通过重写这个方法处理返回的列表数据
-    protected open fun convertData(response: MutableList<T>?): MutableList<T>? {
+    override fun convertData(response: MutableList<T>?): MutableList<T>? {
         return response
     }
 
