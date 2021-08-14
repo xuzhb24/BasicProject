@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import android.webkit.GeolocationPermissions;
 import android.webkit.ValueCallback;
@@ -62,6 +61,11 @@ public class WebviewFragment extends BaseFragment<FragmentWebviewBinding> {
         if (getArguments() != null) {
             mUrl = getArguments().getString(EXTRA_URL);
         }
+    }
+
+    @Override
+    protected void initViewBinding() {
+        binding = FragmentWebviewBinding.inflate(getLayoutInflater());
     }
 
     @Override

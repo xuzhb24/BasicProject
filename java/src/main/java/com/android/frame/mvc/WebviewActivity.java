@@ -61,6 +61,11 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
     }
 
     @Override
+    protected void initViewBinding() {
+        binding = ActivityWebviewBinding.inflate(getLayoutInflater());
+    }
+
+    @Override
     protected void initBar() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //保证WebView的输入框不被软键盘遮挡
         if (mTitleBar != null) {
@@ -94,8 +99,6 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
         mUrl = getIntent().getStringExtra(EXTRA_URL);
         isTitleFixed = getIntent().getBooleanExtra(EXTRA_IS_TITLE_FIXED, false);
         mTitleBar.setTitleText(mTitle);  //设置标题
-//        showLoadingDialog();  //显示加载框
-        showLoadingLayout();
         createWebView();                 //创建WebView
         initWebView();                   //设置WebView属性
         initWebViewClient();             //设置WebViewClient
@@ -105,6 +108,8 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
     @Override
     protected void refreshData() {
         if (!TextUtils.isEmpty(mUrl)) {
+//            showLoadingDialog();  //显示加载框
+            showLoadingLayout();
             mWebView.loadUrl(mUrl);  //加载网页
         }
     }
