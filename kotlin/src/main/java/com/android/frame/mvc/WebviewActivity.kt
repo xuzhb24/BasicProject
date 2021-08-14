@@ -53,6 +53,10 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
     protected var mWebView: WebView? = null
     private var hasReceivedError = false   //是否加载失败
 
+    override fun initViewBinding() {
+        binding = ActivityWebviewBinding.inflate(layoutInflater)
+    }
+
     override fun initBar() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)  //保证WebView的输入框不被软键盘遮挡
         mTitleBar?.let {
@@ -85,8 +89,6 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
         mUrl = intent.getStringExtra(EXTRA_URL)
         isTitleFixed = intent.getBooleanExtra(EXTRA_IS_TITLE_FIXED, false)
         mTitleBar?.titleText = mTitle  //设置标题
-//        showLoadingDialog()  //显示加载框
-        showLoadingLayout()
         createWebView()        //创建WebView
         initWebView()          //设置WebView属性
         initWebViewClient()    //设置WebViewClient
@@ -95,6 +97,8 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
 
     override fun refreshData() {
         if (!TextUtils.isEmpty(mUrl)) {
+//            showLoadingDialog()  //显示加载框
+            showLoadingLayout()
             mWebView!!.loadUrl(mUrl)  //加载网页
         }
     }

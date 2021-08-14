@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
-import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.webkit.*
 import android.widget.LinearLayout
@@ -49,6 +48,10 @@ class WebviewFragment : BaseFragment<FragmentWebviewBinding>() {
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mUrl = arguments?.getString(EXTRA_URL) ?: ""
+    }
+
+    override fun initViewBinding() {
+        binding = FragmentWebviewBinding.inflate(layoutInflater)
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
