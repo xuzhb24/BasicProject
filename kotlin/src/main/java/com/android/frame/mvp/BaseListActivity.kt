@@ -98,7 +98,7 @@ abstract class BaseListActivity<T, VB : ViewBinding, V : IBaseListView<T>, P : B
     }
 
     //获取加载的起始页码
-    override fun getFirstPage(): Int = 0
+    override fun getFirstPage(): Int = 1
 
     //是否是首次加载
     override fun isFirstLoad(): Boolean = mCurrentPage == getFirstPage()

@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit
 object ApiHelper {
 
     fun getWeatherByQuery(city: String): Observable<BaseResponse<WeatherBean>> {
-        return createService(Config.WEATHER_URL)
+        return createService(Config.WEATHER_URL, cache = true)
             .getWeatherByQuery(city)
             .delay(1, TimeUnit.SECONDS)  //模拟延迟一段时间后请求到数据的情况
             .map(WeatherFunction())

@@ -26,7 +26,10 @@ class TestMvvmFragmentViewModel : BaseViewModel<FragmentTestMvcBinding>() {
     private val mSuccessData2 = MutableLiveData<BaseResponse<WeatherBean>>()
     private val mErrorData2 = MutableLiveData<ErrorResponse<BaseResponse<WeatherBean>>>()
 
+    private var mCity = ""
+
     fun showWeatherInfo(city: String) {  //主接口或者页面最后一个接口请求，由它来控制加载完成的逻辑
+        mCity = city
         launch({ ApiHelper.getWeatherByQuery(city) }, mSuccessData, mErrorData, false, true, "处理中")
     }
 
@@ -42,7 +45,7 @@ class TestMvvmFragmentViewModel : BaseViewModel<FragmentTestMvcBinding>() {
         })
         mErrorData.observe(owner, Observer {
             ToastUtil.showToast(it.message, true)
-            binding.tv.text = tip
+            binding.tv.text = tip + "获取\"" + mCity + "\"天气情况失败"
         })
         mSuccessData2.observe(owner, Observer {
             println("TestMvvmFragment 请求成功，可以保存数据了，${Gson().toJson(it)}")

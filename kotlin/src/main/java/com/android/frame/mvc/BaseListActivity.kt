@@ -118,7 +118,7 @@ abstract class BaseListActivity<T, VB : ViewBinding> : BaseActivity<VB>(), IBase
     }
 
     //加载的起始页
-    override fun getFirstPage(): Int = 0
+    override fun getFirstPage(): Int = 1
 
     //一页加载的个数
     override fun getLoadSize(): Int = 15

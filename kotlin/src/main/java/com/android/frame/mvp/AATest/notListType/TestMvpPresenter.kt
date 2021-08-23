@@ -29,7 +29,7 @@ class TestMvpPresenter : BasePresenter<TestMvpView>() {
             mModel.getWeatherInfo(city)
                 .subscribe(object : CustomObserver<BaseResponse<WeatherBean>>(it) {
                     override fun onSuccess(response: BaseResponse<WeatherBean>) {
-                        it.showWeatherInfo(response.data)
+                        it.showWeatherInfo(city, response.data)
                     }
 
                     override fun onFailure(
@@ -40,7 +40,7 @@ class TestMvpPresenter : BasePresenter<TestMvpView>() {
                         response: BaseResponse<WeatherBean>?
                     ) {
                         super.onFailure(view, message, isError, t, response)
-                        it.showWeatherInfo(null)
+                        it.showWeatherInfo(city, null)
                     }
                 })
         }

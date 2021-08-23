@@ -14,7 +14,10 @@ import com.google.gson.Gson
  */
 class TestMvvmActivityViewModel : BaseViewModelWithData<BaseResponse<WeatherBean>, ActivityTestMvcBinding>() {
 
+    private var mCity = ""
+
     fun showWeatherInfo(city: String) {
+        mCity = city
         launchMain({ ApiHelper.getWeatherByQuery(city) })
     }
 
@@ -26,7 +29,7 @@ class TestMvvmActivityViewModel : BaseViewModelWithData<BaseResponse<WeatherBean
     override fun onFailure(message: String, isException: Boolean, exception: Throwable?, response: BaseResponse<WeatherBean>?) {
         super.onFailure(message, isException, exception, response)
         val tip = "下拉刷新获取更多城市天气\n\n"
-        binding.tv.text = tip
+        binding.tv.text = tip + "获取\"" + mCity + "\"天气情况失败"
     }
 
 }

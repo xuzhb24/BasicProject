@@ -1,8 +1,6 @@
 package com.android.frame.mvc.AATest
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
 import com.android.basicproject.databinding.FragmentTestMvcBinding
 import com.android.frame.http.model.BaseResponse
 import com.android.frame.mvc.AATest.entity.WeatherBean
@@ -87,7 +85,7 @@ class TestMvcFragment : BaseFragment<FragmentTestMvcBinding>() {
                     response: BaseResponse<WeatherBean>?
                 ) {
                     super.onFailure(view, message, isError, t, response)
-                    binding.tv.text = tip
+                    binding.tv.text = tip + "获取\"" + city + "\"天气情况失败"
                 }
             })
     }

@@ -51,7 +51,7 @@ class TestMvcActivity : BaseActivity<ActivityTestMvcBinding>() {
                     response: BaseResponse<WeatherBean>?
                 ) {
                     super.onFailure(view, message, isError, t, response)
-                    binding.tv.text = tip
+                    binding.tv.text = tip +"获取\"" + city + "\"天气情况失败"
                 }
             })
     }

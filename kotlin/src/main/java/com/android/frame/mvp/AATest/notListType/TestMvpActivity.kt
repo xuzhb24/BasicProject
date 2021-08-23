@@ -22,12 +22,12 @@ class TestMvpActivity : BaseActivity<ActivityTestMvcBinding, TestMvpView, TestMv
 
     override fun getPresenter() = TestMvpPresenter()
 
-    override fun showWeatherInfo(bean: WeatherBean?) {
+    override fun showWeatherInfo(city: String, bean: WeatherBean?) {
         val tip = "下拉刷新获取更多城市天气\n\n"
         if (bean != null) {  //获取数据成功
             binding.tv.text = tip + JsonUtil.formatJson(Gson().toJson(bean))
         } else {  //获取数据失败
-            binding.tv.text = tip
+            binding.tv.text = tip + "获取\"" + city + "\"天气情况失败"
         }
     }
 }

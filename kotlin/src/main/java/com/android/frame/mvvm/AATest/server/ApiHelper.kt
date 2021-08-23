@@ -18,7 +18,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object ApiHelper {
 
     suspend fun getWeatherByQuery(city: String): BaseResponse<WeatherBean> {
-        return createService(Config.WEATHER_URL, WeatherConverterFactory.create()).getWeatherByQuery(city)
+        return createService(Config.WEATHER_URL, WeatherConverterFactory.create(), cache = true).getWeatherByQuery(city)
     }
 
     suspend fun getWangYiNewsByField(page: Int, count: Int): BaseListResponse<NewsListBean> {
