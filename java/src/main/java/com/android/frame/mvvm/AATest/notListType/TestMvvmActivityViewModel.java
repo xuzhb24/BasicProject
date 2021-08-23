@@ -16,7 +16,10 @@ import com.google.gson.Gson;
  */
 public class TestMvvmActivityViewModel extends BaseViewModelWithData<BaseResponse<WeatherBean>, ActivityTestMvcBinding> {
 
+    private String mCity;
+
     public void showWeatherInfo(String city) {
+        mCity = city;
         launchMain(ApiHelper.getWeatherByQuery(city));
     }
 
@@ -30,6 +33,6 @@ public class TestMvvmActivityViewModel extends BaseViewModelWithData<BaseRespons
     protected void onFailure(String message, boolean isException, @Nullable @org.jetbrains.annotations.Nullable Throwable exception, @Nullable @org.jetbrains.annotations.Nullable BaseResponse<WeatherBean> response) {
         super.onFailure(message, isException, exception, response);
         String tip = "下拉刷新获取更多城市天气\n\n";
-        binding.tv.setText(tip);
+        binding.tv.setText(tip + "获取\"" + mCity + "\"天气情况失败");
     }
 }

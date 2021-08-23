@@ -156,7 +156,7 @@ public abstract class BaseListActivity<T, VB extends ViewBinding> extends BaseAc
     //加载的起始页
     @Override
     public int getFirstPage() {
-        return 0;
+        return 1;
     }
 
     //一页加载的个数

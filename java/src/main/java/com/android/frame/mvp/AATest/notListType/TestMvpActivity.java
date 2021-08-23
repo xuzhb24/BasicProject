@@ -29,12 +29,12 @@ public class TestMvpActivity extends BaseActivity<ActivityTestMvcBinding, TestMv
     }
 
     @Override
-    public void showWeatherInfo(WeatherBean bean) {
+    public void showWeatherInfo(String city, WeatherBean bean) {
         String tip = "下拉刷新获取更多城市天气\n\n";
         if (bean != null) {  //获取数据成功
             binding.tv.setText(tip + JsonUtil.formatJson(new Gson().toJson(bean)));
         } else {  //获取数据失败
-            binding.tv.setText(tip);
+            binding.tv.setText(tip + "获取\"" + city + "\"天气情况失败");
         }
     }
 }

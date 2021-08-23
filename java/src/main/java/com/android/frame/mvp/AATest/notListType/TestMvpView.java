@@ -9,6 +9,6 @@ import com.android.frame.mvp.IBaseView;
  */
 public interface TestMvpView extends IBaseView {
 
-    void showWeatherInfo(WeatherBean bean);
+    void showWeatherInfo(String city, WeatherBean bean);
 
 }

@@ -39,13 +39,13 @@ public class TestMvpPresenter extends BasePresenter<TestMvpView> {
                 .subscribe(new CustomObserver<BaseResponse<WeatherBean>>(mView) {
                     @Override
                     public void onSuccess(BaseResponse<WeatherBean> response) {
-                        mView.showWeatherInfo(response.getData());
+                        mView.showWeatherInfo(city, response.getData());
                     }
 
                     @Override
                     protected void onFailure(IBaseView view, String message, boolean isError, @Nullable Throwable t, @Nullable BaseResponse<WeatherBean> response) {
                         super.onFailure(view, message, isError, t, response);
-                        mView.showWeatherInfo(null);
+                        mView.showWeatherInfo(city, null);
                     }
                 });
     }

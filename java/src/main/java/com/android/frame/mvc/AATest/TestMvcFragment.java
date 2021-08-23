@@ -78,7 +78,7 @@ public class TestMvcFragment extends BaseFragment<FragmentTestMvcBinding> {
                     @Override
                     protected void onFailure(IBaseView view, String message, boolean isError, Throwable t, BaseResponse<WeatherBean> response) {
                         super.onFailure(view, message, isError, t, response);
-                        binding.tv.setText(tip);
+                        binding.tv.setText(tip + "获取\"" + city + "\"天气情况失败");
                     }
                 });
     }

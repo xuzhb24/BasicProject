@@ -19,7 +19,7 @@ import io.reactivex.Observable;
 public class TestMvpModel {
 
     public Observable<BaseResponse<WeatherBean>> getWeatherInfo(String city) {
-        return RetrofitFactory.getInstance().createService(ApiService.class, Config.WEATHER_URL)
+        return RetrofitFactory.getInstance().createService(ApiService.class, Config.WEATHER_URL, true)
                 .getWeatherByQuery(city)
                 .delay(1, TimeUnit.SECONDS)  //模拟延迟一段时间后请求到数据的情况
                 .map(new WeatherFunction())

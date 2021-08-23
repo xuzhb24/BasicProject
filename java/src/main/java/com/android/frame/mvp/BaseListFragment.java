@@ -136,7 +136,7 @@ public abstract class BaseListFragment<T, VB extends ViewBinding, V extends IBas
     //获取加载的起始页码
     @Override
     public int getFirstPage() {
-        return 0;
+        return 1;
     }
 
     //是否是首次加载

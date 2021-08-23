@@ -21,23 +21,23 @@ import retrofit2.Converter;
 public class ApiHelper {
 
     public static Observable<BaseResponse<WeatherBean>> getWeatherByQuery(String city) {
-        return createService(Config.WEATHER_URL, WeatherConverterFactory.create())
+        return createService(Config.WEATHER_URL, WeatherConverterFactory.create(), true)
                 .getWeatherByQuery(city)
                 .delay(1, TimeUnit.SECONDS)  //模拟延迟一段时间后请求到数据的情况
                 .compose(SchedulerUtil.ioToMain());
     }
 
     public static Observable<BaseListResponse<NewsListBean>> getWangYiNewsByField(int page, int count) {
-        return createService(Config.NEWS_URL, NewsConverterFactory.create())
+        return createService(Config.NEWS_URL, NewsConverterFactory.create(), false)
                 .getWangYiNewsByField(page, count)
                 .delay(1, TimeUnit.SECONDS)  //模拟延迟一段时间后请求到数据的情况
                 .compose(SchedulerUtil.ioToMain());
     }
 
-    private static ApiService createService(String baseUrl, Converter.Factory factory) {
+    private static ApiService createService(String baseUrl, Converter.Factory factory, boolean cache) {
         return RetrofitFactory.getInstance().createService(
                 ApiService.class, baseUrl, factory,
-                null, 30, false);
+                null, 30, cache);
     }
 
 }

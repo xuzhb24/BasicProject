@@ -21,7 +21,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 public class ApiHelper {
 
     public static Observable<BaseResponse<WeatherBean>> getWeatherByQuery(String city) {
-        return createService(Config.WEATHER_URL)
+        return createService(Config.WEATHER_URL, true)
                 .getWeatherByQuery(city)
                 .delay(1, TimeUnit.SECONDS)  //模拟延迟一段时间后请求到数据的情况
                 .map(new WeatherFunction())
@@ -29,17 +29,17 @@ public class ApiHelper {
     }
 
     public static Observable<BaseListResponse<NewsListBean>> getWangYiNewsByField(int page, int count) {
-        return createService(Config.NEWS_URL)
+        return createService(Config.NEWS_URL, false)
                 .getWangYiNewsByField(page, count)
                 .delay(1, TimeUnit.SECONDS)  //模拟延迟一段时间后请求到数据的情况
                 .map(new NewsFunction())
                 .compose(SchedulerUtil.ioToMain());
     }
 
-    private static ApiService createService(String baseUrl) {
+    private static ApiService createService(String baseUrl, boolean cache) {
         return RetrofitFactory.getInstance().createService(
                 ApiService.class, baseUrl, GsonConverterFactory.create(),
-                null, 30, false);
+                null, 30, cache);
     }
 
 }

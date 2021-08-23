@@ -26,8 +26,11 @@ public class TestMvvmFragmentViewModel extends BaseViewModel<FragmentTestMvcBind
     private MutableLiveData<BaseResponse<WeatherBean>> mSuccessData2 = new MutableLiveData<>();
     private MutableLiveData<ErrorResponse<BaseResponse<WeatherBean>>> mErrorData2 = new MutableLiveData<>();
 
+    private String mCity;
+
     //主接口或者页面最后一个接口请求，由它来控制加载完成的逻辑
     public void showWeatherInfo(String city) {
+        mCity = city;
         launch(ApiHelper.getWeatherByQuery(city), mSuccessData, mErrorData, false, true, "处理中", true, true);
     }
 
@@ -45,13 +48,12 @@ public class TestMvvmFragmentViewModel extends BaseViewModel<FragmentTestMvcBind
         });
         mErrorData.observe(owner, it -> {
             ToastUtil.showToast(it.getMessage());
-            binding.tv.setText(tip);
+            binding.tv.setText(tip + "获取\"" + mCity + "\"天气情况失败");
         });
         mSuccessData2.observe(owner, it -> {
             System.out.println("TestMvvmFragment 请求成功，可以保存数据了，" + tip + JsonUtil.formatJson(new Gson().toJson(it)));
         });
         mErrorData2.observe(owner, it -> {
-            ToastUtil.showToast(it.getMessage());
             System.out.println("TestMvvmFragment 请求失败，" + it.getMessage());
         });
     }

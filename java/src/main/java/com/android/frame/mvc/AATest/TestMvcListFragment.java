@@ -75,9 +75,4 @@ public class TestMvcListFragment extends BaseListFragment<NewsListBean, Fragment
         });
     }
 
-    @Override
-    public int getFirstPage() {
-        return 1;
-    }
-
 }
