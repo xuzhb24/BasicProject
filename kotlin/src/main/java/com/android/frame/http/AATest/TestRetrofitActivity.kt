@@ -7,6 +7,7 @@ import com.android.frame.http.AATest.bean.WeatherBean
 import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
+import com.android.frame.http.function.RetryWithDelay
 import com.android.frame.http.interceptor.MaxRetryInterceptor
 import com.android.frame.mvc.BaseActivity
 import com.android.util.JsonUtil
@@ -33,7 +34,7 @@ class TestRetrofitActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             this, "测试Retrofit",
             "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取网易新闻(@Field POST)",
             "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)",
-            "缓存GET请求", "清除缓存文件", "最多重试3次",
+            "缓存GET请求", "清除缓存文件", "最多重试3次", "最多重试3次，每次间隔5秒请求",
             showInputLayout = true
         )
         val city = "北京"
@@ -73,6 +74,9 @@ class TestRetrofitActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         }
         btn9.setOnClickListener {
             testMaxRetry(il.inputText.trim())
+        }
+        btn10.setOnClickListener {
+            testRetryWithDelay(il.inputText.trim())
         }
     }
 
@@ -241,6 +245,17 @@ class TestRetrofitActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             UrlConstant.WEATHER_URL,
             interceptor = MaxRetryInterceptor(3)
         ).getWeatherByQuery(city)
+            .compose(SchedulerUtil.ioToMain())
+            .subscribe(WeatherObserver())
+    }
+
+    //最多重试3次，每次间隔5秒
+    private fun testRetryWithDelay(city: String) {
+        RetrofitFactory.instance.createService(
+            ApiService::class.java,
+            UrlConstant.WEATHER_URL
+        ).getWeatherByQuery(city)
+            .retryWhen(RetryWithDelay(3, 5000))
             .compose(SchedulerUtil.ioToMain())
             .subscribe(WeatherObserver())
     }
