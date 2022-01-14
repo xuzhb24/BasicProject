@@ -7,6 +7,7 @@ import com.android.frame.http.AATest.bean.WeatherBean;
 import com.android.frame.http.ExceptionUtil;
 import com.android.frame.http.RetrofitFactory;
 import com.android.frame.http.SchedulerUtil;
+import com.android.frame.http.function.RetryWithDelay;
 import com.android.frame.http.interceptor.MaxRetryInterceptor;
 import com.android.frame.mvc.BaseActivity;
 import com.android.java.databinding.ActivityCommonLayoutBinding;
@@ -40,7 +41,7 @@ public class TestRetrofitActivity extends BaseActivity<ActivityCommonLayoutBindi
         CommonLayoutUtil.initCommonLayout(this, "测试Retrofit", true, false,
                 "获取天气信息(@Query GET)", "获取天气信息(@QueryMap GET)", "获取网易新闻(@Field POST)",
                 "获取网易新闻(@FieldMap POST)", "获取网易新闻(@Body POST)", "访问百度网址(GET)",
-                "缓存GET请求", "清除缓存文件", "最多重试3次");
+                "缓存GET请求", "清除缓存文件", "最多重试3次", "最多重试3次，每次间隔5秒请求");
         String city = "北京";
         binding.il.setInputText(city);
         binding.il.getEditText().setSelection(city.length());  //将光标移至文字末尾
@@ -83,6 +84,10 @@ public class TestRetrofitActivity extends BaseActivity<ActivityCommonLayoutBindi
         binding.btn9.setOnClickListener(v -> {
             String city = binding.il.getInputText().trim();
             testMaxRetry(city);
+        });
+        binding.btn10.setOnClickListener(v -> {
+            String city = binding.il.getInputText().trim();
+            testRetryWithDelay(city);
         });
     }
 
@@ -268,6 +273,15 @@ public class TestRetrofitActivity extends BaseActivity<ActivityCommonLayoutBindi
         RetrofitFactory.getInstance().createService(ApiService.class, UrlConstant.WEATHER_URL,
                 GsonConverterFactory.create(), new MaxRetryInterceptor(3), 30, false)
                 .getWeatherByQuery(city)
+                .compose(SchedulerUtil.ioToMain())
+                .subscribe(WeatherObserver());
+    }
+
+    //最多重试3次，每次间隔5秒
+    private void testRetryWithDelay(String city) {
+        RetrofitFactory.getInstance().createService(ApiService.class, UrlConstant.WEATHER_URL)
+                .getWeatherByQuery(city)
+                .retryWhen(new RetryWithDelay(3, 5000))
                 .compose(SchedulerUtil.ioToMain())
                 .subscribe(WeatherObserver());
     }
