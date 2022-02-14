@@ -1,18 +1,14 @@
 package com.android.frame.mvvm.AATest.listType;
 
-import com.android.frame.http.model.BaseListResponse;
 import com.android.frame.mvc.AATest.entity.NewsListBean;
 import com.android.frame.mvvm.AATest.server.ApiHelper;
 import com.android.frame.mvvm.BaseListViewModel;
-import com.android.java.databinding.FragmentTestMvcListBinding;
-
-import io.reactivex.Observable;
 
 /**
  * Created by xuzhb on 2021/8/9
  * Desc:
  */
-public class TestMvvmListFragmentViewModel extends BaseListViewModel<NewsListBean, FragmentTestMvcListBinding> {
+public class TestMvvmListFragmentViewModel extends BaseListViewModel<NewsListBean> {
 
     //第一种写法
 //    @Override
@@ -26,7 +22,7 @@ public class TestMvvmListFragmentViewModel extends BaseListViewModel<NewsListBea
     //在里面调用showData展示列表数据
     @Override
     public void loadData(int page, int count, boolean showLoadLayout, boolean showLoadingDialog) {
-        launch(ApiHelper.getWangYiNewsByField(page, count), successData, errorData, false, page == 0);
+        launch(ApiHelper.getWangYiNewsByField(page, count), successData, errorData, false, page == 1);
     }
 
 }

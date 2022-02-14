@@ -40,7 +40,7 @@ public class TestMvvmListFragment extends BaseListFragment<NewsListBean, Fragmen
         });
         //获取列表数据失败
         viewModel.errorData.observe(this, it -> {
-            showToast(it.getMessage());  //提示错误信息
+            showToast("请求异常，" + it.getMessage());  //提示错误信息
         });
     }
 

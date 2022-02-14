@@ -1,12 +1,7 @@
 package com.android.frame.mvvm;
 
-import android.app.Activity;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.LifecycleOwner;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
-import androidx.viewbinding.ViewBinding;
 
 import com.android.frame.http.ExceptionUtil;
 import com.android.frame.http.model.BaseListResponse;
@@ -26,30 +21,14 @@ import io.reactivex.disposables.Disposable;
  * Created by xuzhb on 2021/8/9
  * Desc:基类ViewModel
  */
-public class BaseViewModel<VB extends ViewBinding> extends ViewModel {
+public class BaseViewModel extends ViewModel {
 
     private static final String TAG = "BaseViewModel";
 
-    protected VB binding;
     protected CompositeDisposable mCompositeDisposable = new CompositeDisposable();        //防止RxJava内存泄漏
     public MutableLiveData<Boolean> showLoadLayoutData = new MutableLiveData<>();          //是否显示加载状态布局，前提是当前布局包含加载控件，如果不包含，此参数无效
     public MutableLiveData<DialogConfig> showLoadingDialogData = new MutableLiveData<>();  //是否显示加载弹窗
     public MutableLiveData<Boolean> loadFinishErrorData = new MutableLiveData<>();         //是否加载失败
-
-    //绑定ViewBinding和ViewModel
-    public void bind(VB binding) {
-        this.binding = binding;
-    }
-
-    //Activity中监听
-    public void observe(Activity activity, LifecycleOwner owner) {
-
-    }
-
-    //Fragment中监听
-    public void observe(Fragment fragment, LifecycleOwner owner) {
-
-    }
 
     //接口请求
     public <T> void launch(

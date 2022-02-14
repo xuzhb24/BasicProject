@@ -4,7 +4,6 @@ import com.android.frame.http.model.BaseListResponse;
 import com.android.frame.mvc.AATest.entity.NewsListBean;
 import com.android.frame.mvvm.AATest.server.ApiHelper;
 import com.android.frame.mvvm.BaseListViewModel;
-import com.android.java.databinding.ActivityTestMvcListBinding;
 
 import io.reactivex.Observable;
 
@@ -12,7 +11,7 @@ import io.reactivex.Observable;
  * Created by xuzhb on 2021/8/9
  * Desc:
  */
-public class TestMvvmListActivityViewModel extends BaseListViewModel<NewsListBean, ActivityTestMvcListBinding> {
+public class TestMvvmListActivityViewModel extends BaseListViewModel<NewsListBean> {
 
     //第一种写法
     @Override

@@ -21,7 +21,7 @@ import java.util.List;
  * Created by xuzhb on 2021/8/9
  * Desc:列表数据对应的基类Fragment(MVVM)
  */
-public abstract class BaseListFragment<T, VB extends ViewBinding, VM extends BaseListViewModel<T, VB>> extends BaseFragment<VB, VM> implements IBaseListView<T> {
+public abstract class BaseListFragment<T, VB extends ViewBinding, VM extends BaseListViewModel<T>> extends BaseFragment<VB, VM> implements IBaseListView<T> {
 
     protected int mCurrentPage = getFirstPage();  //记录当前页面
     protected BaseQuickAdapter<T, BaseViewHolder> mAdapter;
@@ -35,8 +35,6 @@ public abstract class BaseListFragment<T, VB extends ViewBinding, VM extends Bas
             Method method = vbClass.getDeclaredMethod("inflate", LayoutInflater.class);
             binding = (VB) method.invoke(null, getLayoutInflater());
             viewModel = new ViewModelProvider(this).get(vmClass);
-            viewModel.bind(binding);
-            viewModel.observe(this, this);
         } catch (Exception e) {
             e.printStackTrace();
         }

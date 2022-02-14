@@ -42,7 +42,7 @@ import java.lang.reflect.Type;
  * Created by xuzhb on 2021/8/9
  * Desc:基类Activity(MVVM)
  */
-public abstract class BaseActivity<VB extends ViewBinding, VM extends BaseViewModel<VB>> extends AppCompatActivity implements IBaseView, OnRefreshListener {
+public abstract class BaseActivity<VB extends ViewBinding, VM extends BaseViewModel> extends AppCompatActivity implements IBaseView, OnRefreshListener {
 
     protected VB binding;
     protected VM viewModel;
@@ -90,8 +90,6 @@ public abstract class BaseActivity<VB extends ViewBinding, VM extends BaseViewMo
             Method method = vbClass.getDeclaredMethod("inflate", LayoutInflater.class);
             binding = (VB) method.invoke(null, getLayoutInflater());
             viewModel = new ViewModelProvider(this).get(vmClass);
-            viewModel.bind(binding);
-            viewModel.observe(this, this);
         } catch (Exception e) {
             e.printStackTrace();
         }

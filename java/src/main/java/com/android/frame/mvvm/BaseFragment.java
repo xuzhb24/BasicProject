@@ -40,7 +40,7 @@ import java.lang.reflect.Type;
  * Created by xuzhb on 2021/8/9
  * Desc:基类Fragment(MVVM)
  */
-public abstract class BaseFragment<VB extends ViewBinding, VM extends BaseViewModel<VB>> extends Fragment implements IBaseView, OnRefreshListener {
+public abstract class BaseFragment<VB extends ViewBinding, VM extends BaseViewModel> extends Fragment implements IBaseView, OnRefreshListener {
 
     private static final String TAG = "BaseFragment";
 
@@ -93,8 +93,6 @@ public abstract class BaseFragment<VB extends ViewBinding, VM extends BaseViewMo
                 Method method = vbClass.getDeclaredMethod("inflate", LayoutInflater.class);
                 binding = (VB) method.invoke(null, getLayoutInflater());
                 viewModel = new ViewModelProvider(this).get(vmClass);
-                viewModel.bind(binding);
-                viewModel.observe(this, this);
             } catch (Exception e) {
                 e.printStackTrace();
             }

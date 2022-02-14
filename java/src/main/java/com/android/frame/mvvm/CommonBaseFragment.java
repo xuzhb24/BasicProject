@@ -13,7 +13,7 @@ import java.lang.reflect.Type;
  * Created by xuzhb on 2021/8/9
  * Desc:不需要额外声明ViewModel的Fragment的父类
  */
-public abstract class CommonBaseFragment<VB extends ViewBinding> extends BaseFragment<VB, BaseViewModel<VB>> implements IBaseView {
+public abstract class CommonBaseFragment<VB extends ViewBinding> extends BaseFragment<VB, BaseViewModel> implements IBaseView {
 
     @Override
     protected void initViewBindingAndViewModel() {
@@ -23,8 +23,6 @@ public abstract class CommonBaseFragment<VB extends ViewBinding> extends BaseFra
             Method method = vbClass.getDeclaredMethod("inflate", LayoutInflater.class);
             binding = (VB) method.invoke(null, getLayoutInflater());
             viewModel = new ViewModelProvider(this).get(BaseViewModel.class);
-            viewModel.bind(binding);
-            viewModel.observe(this, this);
         } catch (Exception e) {
             e.printStackTrace();
         }

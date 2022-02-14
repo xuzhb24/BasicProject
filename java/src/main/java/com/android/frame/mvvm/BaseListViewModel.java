@@ -1,7 +1,6 @@
 package com.android.frame.mvvm;
 
 import androidx.lifecycle.MutableLiveData;
-import androidx.viewbinding.ViewBinding;
 
 import com.android.frame.http.model.BaseListResponse;
 import com.android.frame.mvvm.extra.LiveDataEntity.ErrorResponse;
@@ -12,7 +11,7 @@ import io.reactivex.Observable;
  * Created by xuzhb on 2021/8/9
  * Desc:列表数据对应的基类ViewModel
  */
-public class BaseListViewModel<T, VB extends ViewBinding> extends BaseViewModel<VB> {
+public class BaseListViewModel<T> extends BaseViewModel {
 
     public MutableLiveData<BaseListResponse<T>> successData = new MutableLiveData<>();
     public MutableLiveData<ErrorResponse<BaseListResponse<T>>> errorData = new MutableLiveData<>();
