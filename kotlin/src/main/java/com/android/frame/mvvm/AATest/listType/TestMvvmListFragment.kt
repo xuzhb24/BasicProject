@@ -32,7 +32,7 @@ class TestMvvmListFragment : BaseListFragment<NewsListBean, FragmentTestMvcListB
         })
         //获取列表数据失败
         viewModel.errorData.observe(this, Observer {
-            showToast(it.message)  //提示错误信息
+            showToast("请求异常，${it.message}")  //提示错误信息
         })
     }
 

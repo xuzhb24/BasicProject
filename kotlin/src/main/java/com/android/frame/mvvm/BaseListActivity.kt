@@ -15,7 +15,7 @@ import java.lang.reflect.ParameterizedType
  * Created by xuzhb on 2021/8/7
  * Desc:列表数据对应的基类Activity(MVVM)
  */
-abstract class BaseListActivity<T, VB : ViewBinding, VM : BaseListViewModel<T, VB>> : BaseActivity<VB, VM>(), IBaseListView<T> {
+abstract class BaseListActivity<T, VB : ViewBinding, VM : BaseListViewModel<T>> : BaseActivity<VB, VM>(), IBaseListView<T> {
 
     protected var mCurrentPage = getFirstPage()  //记录当前页面
     protected lateinit var mAdapter: BaseQuickAdapter<T, BaseViewHolder>
@@ -27,8 +27,6 @@ abstract class BaseListActivity<T, VB : ViewBinding, VM : BaseListViewModel<T, V
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         binding = method.invoke(null, layoutInflater) as VB
         viewModel = ViewModelProvider(this).get(vmClass)
-        viewModel.bind(binding)
-        viewModel.observe(this, this)
     }
 
     override fun initViewModelObserver() {

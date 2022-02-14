@@ -1,12 +1,8 @@
 package com.android.frame.mvvm
 
-import android.app.Activity
-import androidx.fragment.app.Fragment
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.viewbinding.ViewBinding
 import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.model.BaseListResponse
 import com.android.frame.http.model.BaseResponse
@@ -20,27 +16,11 @@ import kotlinx.coroutines.launch
  * Created by xuzhb on 2021/8/5
  * Desc:基类ViewModel
  */
-open class BaseViewModel<VB : ViewBinding> : ViewModel() {
+open class BaseViewModel : ViewModel() {
 
-    protected lateinit var binding: VB
     var showLoadLayoutData = MutableLiveData<Boolean>()          //是否显示加载状态布局，前提是当前布局包含加载控件，如果不包含，此参数无效
     var showLoadingDialogData = MutableLiveData<DialogConfig>()  //是否显示加载弹窗
     var loadFinishErrorData = MutableLiveData<Boolean>()         //是否加载失败
-
-    //绑定ViewBinding和ViewModel
-    fun bind(binding: VB) {
-        this.binding = binding
-    }
-
-    //Activity中监听
-    open fun observe(activity: Activity, owner: LifecycleOwner) {
-
-    }
-
-    //Fragment中监听
-    open fun observe(fragment: Fragment, owner: LifecycleOwner) {
-
-    }
 
     //接口请求，加入加载状态布局、加载弹窗、网络错误的处理
     fun <T> launch(

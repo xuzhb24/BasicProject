@@ -9,16 +9,14 @@ import java.lang.reflect.ParameterizedType
  * Created by xuzhb on 2021/8/6
  * Desc:不需要额外声明ViewModel的Activity的父类
  */
-abstract class CommonBaseActivity<VB : ViewBinding> : BaseActivity<VB, BaseViewModel<VB>>(), IBaseView {
+abstract class CommonBaseActivity<VB : ViewBinding> : BaseActivity<VB, BaseViewModel>(), IBaseView {
 
     override fun initViewBindingAndViewModel() {
         val superclass = javaClass.genericSuperclass
         val vbClass = (superclass as ParameterizedType).actualTypeArguments[0] as Class<VB>
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         binding = method.invoke(null, layoutInflater) as VB
-        viewModel = ViewModelProvider(this).get((BaseViewModel<VB>())::class.java)
-        viewModel.bind(binding)
-        viewModel.observe(this, this)
+        viewModel = ViewModelProvider(this).get((BaseViewModel())::class.java)
     }
 
 }

@@ -31,7 +31,7 @@ import java.lang.reflect.ParameterizedType
  * Created by xuzhb on 2021/8/5
  * Desc:基类Activity(MVVM)
  */
-abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel<VB>> : AppCompatActivity(), IBaseView, OnRefreshListener {
+abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel> : AppCompatActivity(), IBaseView, OnRefreshListener {
 
     protected lateinit var binding: VB
     protected lateinit var viewModel: VM
@@ -81,8 +81,6 @@ abstract class BaseActivity<VB : ViewBinding, VM : BaseViewModel<VB>> : AppCompa
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         binding = method.invoke(null, layoutInflater) as VB
         viewModel = ViewModelProvider(this).get(vmClass)
-        viewModel.bind(binding)
-        viewModel.observe(this, this)
     }
 
     //初始化一些通用控件，如加载弹窗、加载状态布局、SmartRefreshLayout、网络错误提示布局

@@ -30,7 +30,7 @@ import java.lang.reflect.ParameterizedType
  * Created by xuzhb on 2021/8/5
  * Desc:基类Fragment(MVVM)
  */
-abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<VB>> : Fragment(), IBaseView, OnRefreshListener {
+abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel> : Fragment(), IBaseView, OnRefreshListener {
 
     companion object {
         private const val TAG = "BaseFragment"
@@ -88,8 +88,6 @@ abstract class BaseFragment<VB : ViewBinding, VM : BaseViewModel<VB>> : Fragment
         val method = vbClass.getDeclaredMethod("inflate", LayoutInflater::class.java)
         binding = method.invoke(null, layoutInflater) as VB
         viewModel = ViewModelProvider(this).get(vmClass)
-        viewModel.bind(binding)
-        viewModel.observe(this, this)
     }
 
     //初始化一些通用控件，如加载弹窗、加载状态布局、SmartRefreshLayout、网络错误提示布局

@@ -1,6 +1,5 @@
 package com.android.frame.mvvm.AATest.listType
 
-import com.android.basicproject.databinding.ActivityTestMvcListBinding
 import com.android.frame.http.model.BaseListResponse
 import com.android.frame.mvc.AATest.entity.NewsListBean
 import com.android.frame.mvvm.AATest.server.ApiHelper
@@ -11,7 +10,7 @@ import kotlinx.coroutines.CoroutineScope
  * Created by xuzhb on 2021/8/7
  * Desc:
  */
-class TestMvvmListActivityViewModel : BaseListViewModel<NewsListBean, ActivityTestMvcListBinding>() {
+class TestMvvmListActivityViewModel : BaseListViewModel<NewsListBean>() {
 
     //第一种写法
     override fun loadDataFromServer(page: Int, count: Int): (suspend CoroutineScope.() -> BaseListResponse<NewsListBean>)? {
