@@ -38,6 +38,28 @@ object ToastUtil {
         toast.show()
     }
 
+    fun showToast(
+        text: CharSequence,
+        gravity: Int = Gravity.CENTER,
+        xOffset: Int = 0,
+        yOffset: Int = 0,
+        longToast: Boolean = false,
+        context: Context = BaseApplication.instance
+    ) {
+        val duration = if (longToast) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
+        val toast = Toast.makeText(context.applicationContext, text, duration)
+        val layout = LayoutInflater.from(context.applicationContext).inflate(R.layout.layout_toast, null)
+        val toastTv: TextView = layout.findViewById(R.id.toast_tv)
+        toastTv.setText(text)
+        val toastShape = GradientDrawable()
+        toastShape.setColor(Color.parseColor("#CC1F2735"))
+        toastShape.cornerRadius = SizeUtil.dp2px(3f)
+        layout.background = toastShape
+        toast.setGravity(gravity, xOffset, yOffset)
+        toast.view = layout
+        toast.show()
+    }
+
     fun toast(text: CharSequence, context: Context = BaseApplication.instance) {
         Toast.makeText(context, text, Toast.LENGTH_SHORT).show()
     }
