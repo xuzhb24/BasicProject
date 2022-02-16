@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.android.base.BaseApplication;
 import com.android.java.R;
 
@@ -33,6 +34,21 @@ public class ToastUtil {
         if (isCenter) {
             toast.setGravity(Gravity.CENTER, 0, 0);
         }
+        toast.setView(layout);
+        toast.show();
+    }
+
+    public static void showToast(CharSequence text, Context context, int gravity, int xOffset, int yOffset, boolean longToast) {
+        int duration = Toast.LENGTH_SHORT;
+        if (longToast) {
+            duration = Toast.LENGTH_LONG;
+        }
+        Toast toast = Toast.makeText(context.getApplicationContext(), text, duration);
+        View layout = LayoutInflater.from(context.getApplicationContext()).inflate(R.layout.layout_toast, null);
+        TextView toastTv = layout.findViewById(R.id.toast_tv);
+        toastTv.setText(text);
+        layout.setBackground(DrawableUtil.createSolidShape(SizeUtil.dp2px(3), Color.parseColor("#CC1F2735")));
+        toast.setGravity(gravity, xOffset, yOffset);
         toast.setView(layout);
         toast.show();
     }
