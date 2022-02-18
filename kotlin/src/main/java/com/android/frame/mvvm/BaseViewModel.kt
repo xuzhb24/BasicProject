@@ -9,6 +9,7 @@ import com.android.frame.http.model.BaseResponse
 import com.android.frame.mvvm.extra.LiveDataEntity.DialogConfig
 import com.android.frame.mvvm.extra.LiveDataEntity.ErrorResponse
 import com.android.util.LogUtil
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -21,6 +22,13 @@ open class BaseViewModel : ViewModel() {
     var showLoadLayoutData = MutableLiveData<Boolean>()          //是否显示加载状态布局，前提是当前布局包含加载控件，如果不包含，此参数无效
     var showLoadingDialogData = MutableLiveData<DialogConfig>()  //是否显示加载弹窗
     var loadFinishErrorData = MutableLiveData<Boolean>()         //是否加载失败
+
+    //通过coroutineScope构建器或者由其他协程（如async）启动的协程抛出的异常，不会被try/catch捕获
+    //CoroutineExceptionHandler就是用来处理这类未捕获的异常，保证APP不会崩溃
+    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
+        LogUtil.i("exceptionHandler", throwable.message ?: "")
+        throwable.printStackTrace()
+    }
 
     //接口请求，加入加载状态布局、加载弹窗、网络错误的处理
     fun <T> launch(
@@ -40,7 +48,7 @@ open class BaseViewModel : ViewModel() {
         if (showLoadingDialog) {
             showLoadingDialogData.value = DialogConfig(message, cancelable)  //显示加载弹窗
         }
-        viewModelScope.launch {
+        viewModelScope.launch(exceptionHandler) {
             kotlin.runCatching {
                 val t = block()  //开始请求
                 when (t) {
