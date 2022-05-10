@@ -99,6 +99,14 @@
 
 -keep class org.json.** {*;}
 
+-keep class * implements androidx.viewbinding.ViewBinding {
+    *;
+}
+
+-keepclassmembers public class * extends androidx.lifecycle.ViewModel {
+    public <init>(...);
+}
+
 -dontwarn  android.os.ServiceManager
 #---------------------------------end---------------------------------
 
