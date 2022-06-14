@@ -9,6 +9,8 @@ import java.util.*
  */
 object JsonUtil {
 
+    private const val TAG = "JsonUtil"
+
     //格式化Json字符串
     fun formatJson(strJson: String): String {
         // 计数tab的个数
@@ -63,6 +65,15 @@ object JsonUtil {
             sbTab.append('\t')
         }
         return sbTab.toString()
+    }
+
+    fun printString(strJson: String, tag: String = TAG) {
+        val space = "==============================="
+        LogUtil.logLongTag(tag, " \n$space\n${formatJson(strJson)}\n$space")
+    }
+
+    fun printObject(obj: Any, tag: String = TAG) {
+        printString(Gson().toJson(obj), tag)
     }
 
     //Json字符串转换为ArrayList对象
