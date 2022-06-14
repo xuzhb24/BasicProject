@@ -1,10 +1,14 @@
 package com.android.util;
 
+import com.google.gson.Gson;
+
 /**
  * Created by xuzhb on 2019/10/27
  * Desc:JSON工具类
  */
 public class JsonUtil {
+
+    private static final String TAG = "JsonUtil";
 
     //格式化Json字符串
     public static String formatJson(String strJson) {
@@ -59,6 +63,23 @@ public class JsonUtil {
             sbTab.append('\t');
         }
         return sbTab.toString();
+    }
+
+    public static void printString(String strJson) {
+        printString(TAG, strJson);
+    }
+
+    public static void printString(String tag, String strJson) {
+        String space = "===============================";
+        LogUtil.logLongTag(tag, " \n" + space + "\n" + formatJson(strJson) + "\n" + space);
+    }
+
+    public static void printObject(Object obj) {
+        printObject(TAG, obj);
+    }
+
+    public static void printObject(String tag, Object obj) {
+        printString(tag, new Gson().toJson(obj));
     }
 
 }
