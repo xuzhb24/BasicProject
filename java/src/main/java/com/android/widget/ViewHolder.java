@@ -75,6 +75,18 @@ public class ViewHolder {
         return this;
     }
 
+    //显示View
+    public ViewHolder setVisible(@IdRes int viewId, boolean isVisible) {
+        getView(viewId).setVisibility(isVisible ? View.VISIBLE : View.INVISIBLE);
+        return this;
+    }
+
+    //隐藏View
+    public ViewHolder setGone(@IdRes int viewId, boolean isGone) {
+        getView(viewId).setVisibility(isGone ? View.GONE : View.VISIBLE);
+        return this;
+    }
+
     //设置View宽度
     public ViewHolder setViewWidth(@IdRes int viewId, int width) {
         setViewParams(viewId, width, -1);

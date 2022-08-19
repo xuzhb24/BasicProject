@@ -51,7 +51,7 @@ public class TestDialogActivity extends BaseActivity<ActivityCommonLayoutBinding
                 .setContent("对不起审核不通过！")
                 .setConfirmText("我知道了")
                 .setOnConfirmListener(dialog -> {
-                    dialog.dismiss();
+                    dialog.dismissAllowingStateLoss();
                     showToast("确定");
                 })
                 .setCancelVisible(false)
@@ -65,11 +65,11 @@ public class TestDialogActivity extends BaseActivity<ActivityCommonLayoutBinding
     private void showMultiDialog() {
         ConfirmDialog.newInstance("提示", "提交成功！", "确定", "取消", true)
                 .setOnConfirmListener(dialog -> {
-                    dialog.dismiss();
+                    dialog.dismissAllowingStateLoss();
                     showToast("确定");
                 })
                 .setOnCancelListener(dialog -> {
-                    dialog.dismiss();
+                    dialog.dismissAllowingStateLoss();
                     showToast("取消");
                 })
                 .setOutsideCancelable(true)
@@ -84,18 +84,18 @@ public class TestDialogActivity extends BaseActivity<ActivityCommonLayoutBinding
                 .setOnViewListener((holder, dialog) -> {
                     holder.setOnClickListener(R.id.weixin_tv, v -> {
                         showToast("微信");
-                        dialog.dismiss();
+                        dialog.dismissAllowingStateLoss();
                     });
                     holder.setOnClickListener(R.id.qq_tv, v -> {
                         showToast("QQ");
-                        dialog.dismiss();
+                        dialog.dismissAllowingStateLoss();
                     });
                     holder.setOnClickListener(R.id.weibo_tv, v -> {
                         showToast("微博");
-                        dialog.dismiss();
+                        dialog.dismissAllowingStateLoss();
                     });
                     holder.setOnClickListener(R.id.cancel_tv, v -> {
-                        dialog.dismiss();
+                        dialog.dismissAllowingStateLoss();
                     });
                 })
                 .setDimAmount(0.3f)
@@ -117,7 +117,7 @@ public class TestDialogActivity extends BaseActivity<ActivityCommonLayoutBinding
                             showToast("请输入文字！");
                         } else {
                             showToast(text);
-                            dialog.dismiss();
+                            dialog.dismissAllowingStateLoss();
                         }
                     });
                     KeyboardUtil.showSoftInputDelay(this, commentEt);
@@ -132,7 +132,7 @@ public class TestDialogActivity extends BaseActivity<ActivityCommonLayoutBinding
                 .setOnViewListener(((holder, dialog) -> {
                     holder.setOnClickListener(R.id.return_tv, v -> {
                         showToast("领取成功！");
-                        dialog.dismiss();
+                        dialog.dismissAllowingStateLoss();
                     });
                 }))
                 .setDimAmount(0.5f)

@@ -1,9 +1,9 @@
 package com.android.widget.Dialog;
 
-import android.app.Dialog;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.fragment.app.DialogFragment;
 
 import com.android.java.R;
 import com.android.widget.ViewHolder;
@@ -109,7 +109,7 @@ public class ConfirmDialog extends BaseDialog {
     }
 
     @Override
-    public void convertView(ViewHolder holder, final Dialog dialog) {
+    public void convertView(ViewHolder holder, final DialogFragment dialog) {
         holder.setText(R.id.title_tv, mTitle)
                 .setText(R.id.content_tv, mContent)
                 .setText(R.id.confirm_tv, mConfirmText);
@@ -132,11 +132,11 @@ public class ConfirmDialog extends BaseDialog {
     }
 
     public interface OnConfirmListener {
-        void onConfirm(Dialog dialog);
+        void onConfirm(DialogFragment dialog);
     }
 
     public interface OnCancelListener {
-        void onCancel(Dialog dialog);
+        void onCancel(DialogFragment dialog);
     }
 
 }

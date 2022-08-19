@@ -1,6 +1,5 @@
 package com.android.widget.Dialog;
 
-import android.app.Dialog;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -19,6 +18,8 @@ import androidx.fragment.app.FragmentManager;
 
 import com.android.java.R;
 import com.android.widget.ViewHolder;
+
+import org.jetbrains.annotations.NotNull;
 
 /**
  * Created by xuzhb on 2019/10/21
@@ -46,9 +47,13 @@ public abstract class BaseDialog extends DialogFragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(mLayoutId, container, false);
-        convertView(new ViewHolder(view), getDialog());  //获取dialog布局的控件
-        return view;
+        return inflater.inflate(mLayoutId, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull @NotNull View view, @Nullable @org.jetbrains.annotations.Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        convertView(new ViewHolder(view), this);  //获取dialog布局的控件
     }
 
     @Override
@@ -58,7 +63,7 @@ public abstract class BaseDialog extends DialogFragment {
     }
 
     //初始化参数
-    private void initParams() {
+    protected void initParams() {
         Window window = getDialog().getWindow();
         if (window != null) {
             WindowManager.LayoutParams params = window.getAttributes();
@@ -131,7 +136,7 @@ public abstract class BaseDialog extends DialogFragment {
     public abstract int getLayoutId();
 
     //处理dialog布局上的控件
-    public abstract void convertView(ViewHolder holder, Dialog dialog);
+    public abstract void convertView(ViewHolder holder, DialogFragment dialog);
 
 }
 
