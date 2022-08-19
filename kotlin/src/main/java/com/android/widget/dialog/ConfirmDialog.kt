@@ -1,8 +1,8 @@
 package com.android.widget.dialog
 
-import android.app.Dialog
 import android.os.Bundle
 import android.text.TextUtils
+import androidx.fragment.app.DialogFragment
 import com.android.basicproject.R
 import com.android.widget.ViewHolder
 
@@ -49,8 +49,8 @@ class ConfirmDialog : BaseDialog() {
     private var mConfirmText: String = "确定"
     private var mCancelText: String = "取消"
     private var mCancelVisible: Boolean = true  //是否显示两个按钮，默认显示两个按钮
-    private var mOnConfirmListener: ((dialog: Dialog?) -> Unit)? = null
-    private var mOnCancelListener: ((dialog: Dialog?) -> Unit)? = null
+    private var mOnConfirmListener: ((dialog: DialogFragment?) -> Unit)? = null
+    private var mOnCancelListener: ((dialog: DialogFragment?) -> Unit)? = null
 
     //设置标题
     fun setTitle(title: String): ConfirmDialog {
@@ -83,13 +83,13 @@ class ConfirmDialog : BaseDialog() {
     }
 
     //点击确定按钮后回调
-    fun setOnConfirmListener(listener: (dialog: Dialog?) -> Unit): ConfirmDialog {
+    fun setOnConfirmListener(listener: (dialog: DialogFragment?) -> Unit): ConfirmDialog {
         this.mOnConfirmListener = listener
         return this
     }
 
     //点击取消按钮后回调
-    fun setOnCancelListener(listener: (dialog: Dialog?) -> Unit): ConfirmDialog {
+    fun setOnCancelListener(listener: (dialog: DialogFragment?) -> Unit): ConfirmDialog {
         this.mOnCancelListener = listener
         return this
     }
@@ -108,7 +108,7 @@ class ConfirmDialog : BaseDialog() {
 
     override fun getLayoutId(): Int = R.layout.dialog_confirm
 
-    override fun convertView(holder: ViewHolder, dialog: Dialog?) {
+    override fun convertView(holder: ViewHolder, dialog: DialogFragment?) {
         holder.setText(R.id.title_tv, mTitle)
             .setText(R.id.content_tv, mContent)
             .setText(R.id.confirm_tv, mConfirmText)

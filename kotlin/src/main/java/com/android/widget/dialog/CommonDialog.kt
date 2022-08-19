@@ -1,7 +1,7 @@
 package com.android.widget.dialog
 
-import android.app.Dialog
 import androidx.annotation.LayoutRes
+import androidx.fragment.app.DialogFragment
 import com.android.widget.ViewHolder
 
 /**
@@ -14,7 +14,7 @@ class CommonDialog : BaseDialog() {
         fun newInstance(): CommonDialog = CommonDialog()
     }
 
-    private var mListener: ((holder: ViewHolder, dialog: Dialog?) -> Unit)? = null
+    private var mListener: ((holder: ViewHolder, dialog: DialogFragment?) -> Unit)? = null
 
     //设置dialog的布局
     fun setLayoutId(@LayoutRes layoutId: Int): CommonDialog {
@@ -23,14 +23,14 @@ class CommonDialog : BaseDialog() {
     }
 
     //设置事件监听
-    fun setOnViewListener(listener: (holder: ViewHolder, dialog: Dialog?) -> Unit): CommonDialog {
+    fun setOnViewListener(listener: (holder: ViewHolder, dialog: DialogFragment?) -> Unit): CommonDialog {
         this.mListener = listener
         return this
     }
 
     override fun getLayoutId(): Int = mLayoutId
 
-    override fun convertView(holder: ViewHolder, dialog: Dialog?) {
+    override fun convertView(holder: ViewHolder, dialog: DialogFragment?) {
         mListener?.invoke(holder, dialog)
     }
 

@@ -74,6 +74,18 @@ class ViewHolder(private var mView: View) {
         return this
     }
 
+    //显示View
+    fun setVisible(@IdRes viewId: Int, isVisible: Boolean): ViewHolder {
+        getView<View>(viewId)?.visibility = if (isVisible) View.VISIBLE else View.INVISIBLE
+        return this
+    }
+
+    //隐藏View
+    fun setGone(@IdRes viewId: Int, isGone: Boolean): ViewHolder {
+        getView<View>(viewId)?.visibility = if (isGone) View.GONE else View.VISIBLE
+        return this
+    }
+
     //设置View宽度
     fun setViewWidth(@IdRes viewId: Int, width: Int): ViewHolder {
         return setViewParams(viewId, width, -1)
