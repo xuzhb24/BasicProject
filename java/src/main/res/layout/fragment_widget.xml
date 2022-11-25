@@ -78,6 +78,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="悬浮窗" />
 
+            <TextView
+                android:id="@+id/webview_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="Webview" />
+
         </LinearLayout>
     </ScrollView>
 

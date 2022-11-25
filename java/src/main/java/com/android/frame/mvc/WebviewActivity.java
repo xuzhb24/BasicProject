@@ -2,12 +2,15 @@ package com.android.frame.mvc;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.webkit.GeolocationPermissions;
@@ -18,7 +21,10 @@ import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+
+import androidx.annotation.NonNull;
 
 import com.android.java.BuildConfig;
 import com.android.java.databinding.ActivityWebviewBinding;
@@ -45,8 +51,13 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
     private String mUrl;
     private boolean isTitleFixed = false;  //传进来的标题是否固定不变
 
+    //图片上传
     private ValueCallback<Uri> mUploadMsg;
     private ValueCallback<Uri[]> mFilePathCallback;
+    //视频全屏播放相关参数
+    private View mCustomView;
+    private FrameLayout mFullscreenContainer;
+    private WebChromeClient.CustomViewCallback mCustomViewCallback;
 
     protected WebView mWebView;
     private boolean hasReceivedError = false;  //是否加载失败
@@ -68,8 +79,8 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
     @Override
     protected void initBar() {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);  //保证WebView的输入框不被软键盘遮挡
+        setStatusBarVisibility(true);
         if (mTitleBar != null) {
-            StatusBarUtil.darkModeAndPadding(this, mTitleBar);
             mTitleBar.setOnLeftIconClickListener(v -> goPageBack());
             if (BuildConfig.DEBUG) {  //长按复制网页地址
                 mTitleBar.setOnLongClickListener(v -> {
@@ -145,7 +156,7 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
         //自适应屏幕
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setLoadWithOverviewMode(true);
-//        mWebView.addJavascriptInterface(new JavaScriptMethods(), "androidjs");  //js调用Android的方法
+        mWebView.addJavascriptInterface(new ImageInterface(this), ImageInterface.INTERFACE_NAME);  //js调用Android的方法
         mWebView.requestFocus();
     }
 
@@ -176,7 +187,7 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
             public void onReceivedError(WebView view, WebResourceRequest request, WebResourceError error) {
                 super.onReceivedError(view, request, error);
                 LogUtil.i(TAG, "onReceivedError,error:" + error);
-                hasReceivedError = true;
+//                hasReceivedError = true;
             }
 
             //页面加载结束时调用
@@ -184,6 +195,13 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 LogUtil.i(TAG, "onPageFinished,url:" + url);
+                //添加监听图片的点击js函数
+                ImageInterface.imageInject(mWebView);
+                //解决ScrollView中嵌套WebView底部留白问题
+                ViewGroup.LayoutParams params = mWebView.getLayoutParams();
+                params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+                mWebView.setLayoutParams(params);
+                //加载完成
                 loadFinish(hasReceivedError);
             }
 
@@ -240,6 +258,27 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
                     mTitleBar.setTitleText(title);
                 }
             }
+
+            //视频全屏播放
+            @Override
+            public View getVideoLoadingProgressView() {
+                FrameLayout frameLayout = new FrameLayout(WebviewActivity.this);
+                frameLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+                return frameLayout;
+            }
+
+            @Override
+            public void onShowCustomView(View view, CustomViewCallback callback) {
+                showCustomView(view, callback);
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);  //横屏
+            }
+
+            @Override
+            public void onHideCustomView() {
+                hideCustomView();
+                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  //横屏
+            }
+
         });
     }
 
@@ -295,6 +334,43 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
         }
     }
 
+    //视频播放全屏
+    private void showCustomView(View view, WebChromeClient.CustomViewCallback callback) {
+        if (mCustomView != null) {
+            callback.onCustomViewHidden();
+            return;
+        }
+        getWindow().getDecorView();
+        FrameLayout decor = (FrameLayout) getWindow().getDecorView();
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        mFullscreenContainer = new FullscreenHolder(this);
+        (mFullscreenContainer).addView(view, params);
+        decor.addView(mFullscreenContainer, params);
+        mCustomView = view;
+        setStatusBarVisibility(false);
+        mCustomViewCallback = callback;
+    }
+
+    //隐藏视频全屏
+    private void hideCustomView() {
+        if (mCustomView == null) {
+            return;
+        }
+        setStatusBarVisibility(true);
+        FrameLayout decor = (FrameLayout) getWindow().getDecorView();
+        decor.removeView(mFullscreenContainer);
+        mFullscreenContainer = null;
+        mCustomView = null;
+        mCustomViewCallback.onCustomViewHidden();
+    }
+
+    private void setStatusBarVisibility(boolean visible) {
+        StatusBarUtil.darkMode(this);
+        if (visible) {
+            StatusBarUtil.setPaddingTop(this, mTitleBar);
+        }
+    }
+
     @Override
     public void initListener() {
 
@@ -325,20 +401,25 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && mWebView != null && mWebView.canGoBack()) {
-                mWebView.goBack();
-                return true;
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (mCustomView != null) {
+                    hideCustomView();
+                    return true;
+                } else if (mWebView != null && mWebView.canGoBack()) {
+                    mWebView.goBack();
+                    return true;
+                }
             }
         }
         return super.onKeyDown(keyCode, event);
     }
 
-    //js调用Android的方法
-//    private class JavaScriptMethods {
-//        @JavascriptInterface
-//        public void toHome() {
-//            startActivity(MainActivity.class);
-//        }
-//    }
+    //视频全屏播放的View
+    private static class FullscreenHolder extends FrameLayout {
+        public FullscreenHolder(@NonNull Context context) {
+            super(context);
+            setBackgroundColor(Color.BLACK);
+        }
+    }
 
 }

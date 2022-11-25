@@ -69,6 +69,7 @@
         <activity android:name="com.android.frame.mvc.AATest.TestFragmentMvc" />
         <activity android:name="com.android.frame.mvc.AATest.TestMvcActivity" />
         <activity android:name="com.android.frame.mvc.AATest.TestMvcListActivity" />
+        <activity android:name="com.android.frame.mvc.AATest.TestWebviewActivity" />
         <!--MVP框架-->
         <activity android:name="com.android.frame.mvp.AATest.TestActivityMvp" />
         <activity android:name="com.android.frame.mvp.AATest.TestFragmentMvp" />
@@ -80,7 +81,11 @@
         <activity android:name="com.android.frame.mvvm.AATest.notListType.TestMvvmActivity" />
         <activity android:name="com.android.frame.mvvm.AATest.listType.TestMvvmListActivity" />
         <!--通用WebView-->
-        <activity android:name="com.android.frame.mvc.WebviewActivity" />
+        <activity
+            android:name="com.android.frame.mvc.WebviewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <!--引导页-->
         <activity android:name="com.android.frame.guide.GuideActivity" />
 

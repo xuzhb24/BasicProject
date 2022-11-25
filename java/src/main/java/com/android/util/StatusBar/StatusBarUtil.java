@@ -253,6 +253,13 @@ public class StatusBarUtil {
         }
     }
 
+    //设置View的paddingTop,增加的值为状态栏高度
+    public static void setPaddingTop(Context context, View view) {
+        if (Build.VERSION.SDK_INT >= MIN_API) {
+            view.setPadding(0, getStatusBarHeight(context), 0, 0);
+        }
+    }
+
     //增加View的paddingTop,增加的值为状态栏高度 (智能判断，并设置高度)
     public static void setPaddingSmart(Context context, View view) {
         if (Build.VERSION.SDK_INT >= MIN_API) {

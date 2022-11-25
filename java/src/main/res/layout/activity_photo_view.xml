@@ -13,24 +13,29 @@
         android:overScrollMode="never"
         android:scrollbars="none" />
 
-    <ImageView
-        android:id="@+id/close_iv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="15dp"
-        android:layout_marginTop="30dp"
-        android:padding="5dp"
-        android:src="@drawable/ic_photo_close" />
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="45dp">
 
-    <TextView
-        android:id="@+id/indicator_tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_margin="35dp"
-        android:textColor="#ffffff"
-        android:textSize="18sp"
-        tool:text="1/9" />
+        <ImageView
+            android:id="@+id/close_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="15dp"
+            android:padding="5dp"
+            android:src="@drawable/ic_photo_close" />
+
+        <TextView
+            android:id="@+id/indicator_tv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="#ffffff"
+            android:textSize="18sp"
+            tool:text="1/9" />
+
+    </FrameLayout>
 
     <ImageView
         android:id="@+id/download_iv"

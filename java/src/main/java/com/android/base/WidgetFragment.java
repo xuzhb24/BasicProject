@@ -1,9 +1,8 @@
 package com.android.base;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.ViewGroup;
 
+import com.android.frame.mvc.AATest.TestWebviewActivity;
 import com.android.frame.mvc.BaseFragment;
 import com.android.java.databinding.FragmentWidgetBinding;
 import com.android.universal.TestSystemWidgetActivity;
@@ -77,22 +76,30 @@ public class WidgetFragment extends BaseFragment<FragmentWidgetBinding> {
         //图片查看器
         binding.photoTv.setOnClickListener(v -> {
             String[] array = {
-                    "aaaaa",
-                    "http://img.netbian.com/file/2021/0104/small69c4b125db64882f56f71843e0d633f11609692082.jpg",
-                    "http://img.netbian.com/file/2020/1223/small344fb01bb934cac4882d77f29d5ec5751608736763.jpg",
-                    "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1730713693,2130926401&fm=26&gp=0.jpg",
-                    "https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2202780618,895893289&fm=26&gp=0.jpg",
-                    "http:sslancvan",
-                    "https://img.zcool.cn/community/01233056fb62fe32f875a9447400e1.jpg",
-                    "https://ss2.bdstatic.com/70cFvnSh_Q1YnxGkpoWK1HF6hhy/it/u=1833567670,2009341108&fm=26&gp=0.jpg",
-                    "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3225163326,3627210682&fm=26&gp=0.jpg",
-                    "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=3200450391,4154446234&fm=26&gp=0.jpg"
+                    //长图
+                    "https://scpic.chinaz.net/files/default/imgs/2022-11-16/7509e2331beb98b0.jpg",
+                    "https://scpic.chinaz.net/files/default/imgs/2022-11-22/c86739e03928a677.jpg",
+                    "https://scpic.chinaz.net/files/pic/pic9/202207/apic41941.jpg",
+                    //超长图
+                    "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimg.zcool.cn%2Fcommunity%2F0137b85ae35f79a801214a613dd49a.jpg%401280w_1l_2o_100sh.jpg&refer=http%3A%2F%2Fimg.zcool.cn&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1671950097&t=c95a4b6e071acddab614067e078f2cc0",
+                    //宽图
+                    "https://scpic.chinaz.net/files/default/imgs/2022-11-16/fd255b6d859a0fd4.jpg",
+                    "https://scpic.chinaz.net/files/default/imgs/2022-11-16/a2ee6eb8dbdb10b8.jpg",
+                    "https://scpic.chinaz.net/files/pic/pic9/202102/apic30744.jpg",
+                    //超宽图
+                    "https://img2.baidu.com/it/u=725214044,4265534792&fm=253&fmt=auto&app=138&f=JPEG?w=2557&h=500",
+                    //无法加载
+                    "http:aaaaa",
             };
-            PhotoViewActivity.start(getActivity(), array);
+            PhotoViewActivity.start(getActivity(), array, 0);
         });
         //悬浮窗(申请权限)
         binding.floatTv.setOnClickListener(v -> {
             startActivity(TestFloatActivity.class);
+        });
+        //Webview
+        binding.webviewTv.setOnClickListener(v -> {
+            startActivity(TestWebviewActivity.class);
         });
     }
 

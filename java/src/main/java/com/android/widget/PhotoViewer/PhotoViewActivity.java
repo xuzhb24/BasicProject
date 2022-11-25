@@ -3,8 +3,11 @@ package com.android.widget.PhotoViewer;
 import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 
@@ -23,7 +26,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -34,27 +36,25 @@ import java.util.List;
  */
 public class PhotoViewActivity extends AppCompatActivity {
 
-    private static final String[] REQUEST_PERMISSION = new String[]{
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-    };
-    private static final int REQUEST_PERMISSION_CODE = 1;
+    private static final String[] REQUEST_PERMISSION = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final String EXTRA_IMAGE_URL_LIST = "EXTRA_IMAGE_URL_LIST";
+    private static final String EXTRA_IMAGE_POSITION = "EXTRA_IMAGE_POSITION";
 
-    public static void start(Activity activity, String[] imageUrlArray) {
+    public static void start(Activity activity, String[] imageUrlArray, int position) {
         if (imageUrlArray == null || imageUrlArray.length == 0) {
             return;
         }
-        start(activity, new ArrayList<>(Arrays.asList(imageUrlArray)));
+        start(activity, new ArrayList<>(Arrays.asList(imageUrlArray)), position);
     }
 
-    public static void start(Activity activity, ArrayList<String> imageUrlList) {
+    public static void start(Activity activity, ArrayList<String> imageUrlList, int position) {
         if (imageUrlList == null || imageUrlList.isEmpty()) {
             return;
         }
         Intent intent = new Intent(activity, PhotoViewActivity.class);
         Bundle bundle = new Bundle();
         bundle.putStringArrayList(EXTRA_IMAGE_URL_LIST, imageUrlList);
+        bundle.putInt(EXTRA_IMAGE_POSITION, position);
         intent.putExtras(bundle);
         activity.startActivity(intent);
         activity.overridePendingTransition(R.anim.scale_center_in, R.anim.alpha_out_300);  //放大进入Activity
@@ -69,17 +69,19 @@ public class PhotoViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = ActivityPhotoViewBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
-        StatusBarUtil.darkMode(this, Color.BLACK, 0, false);
+        StatusBarUtil.darkModeAndPadding(this, binding.rootFl);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            getWindow().setNavigationBarColor(Color.BLACK);
+        }
         mImageUrlList = getIntent().getStringArrayListExtra(EXTRA_IMAGE_URL_LIST);
+        mCurrentPosition = getIntent().getIntExtra(EXTRA_IMAGE_POSITION, -1);
         initPhoto(mImageUrlList);
         //关闭
         binding.closeIv.setOnClickListener(v -> finish());
         //下载
         binding.downloadIv.setOnClickListener(v -> {
-            if (PermissionUtil.requestPermissions(this, REQUEST_PERMISSION_CODE, REQUEST_PERMISSION)) {
-                if (mCurrentPosition != -1) {
-                    downloadPicture(mImageUrlList.get(mCurrentPosition));
-                }
+            if (mCurrentPosition != -1) {
+                downloadPicture(mImageUrlList.get(mCurrentPosition));
             }
         });
     }
@@ -89,8 +91,10 @@ public class PhotoViewActivity extends AppCompatActivity {
             binding.downloadIv.setVisibility(View.GONE);
             return;
         }
-        mCurrentPosition = 0;
-        binding.indicatorTv.setText("1/" + imageUrlList.size());
+        if (mCurrentPosition < 0 || mCurrentPosition >= imageUrlList.size()) {
+            mCurrentPosition = 0;
+        }
+        binding.indicatorTv.setText((mCurrentPosition + 1) + "/" + imageUrlList.size());
         binding.photoVp.setAdapter(new PhotoViewAdapter(this, imageUrlList));
         binding.photoVp.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -108,11 +112,12 @@ public class PhotoViewActivity extends AppCompatActivity {
             }
         });
         binding.photoVp.setOffscreenPageLimit(imageUrlList.size());
+        binding.photoVp.setCurrentItem(mCurrentPosition, false);
     }
 
     //下载并保存图片
     private void downloadPicture(String url) {
-        Glide.with(this).downloadOnly().load(url).into(new CustomTarget<File>() {
+        Glide.with(this).load(url).into(new CustomTarget<Drawable>() {
             @Override
             public void onLoadStarted(@Nullable Drawable placeholder) {
                 super.onLoadStarted(placeholder);
@@ -125,17 +130,14 @@ public class PhotoViewActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onResourceReady(@NonNull File resource, @Nullable Transition<? super File> transition) {
-                boolean isSuccess = BitmapUtil.saveImageFileToGallery(getApplicationContext(), resource, System.currentTimeMillis() + "");
-                if (isSuccess) {
-                    ToastUtil.showToast("保存成功");
-                } else {
-                    ToastUtil.showToast("保存失败");
-                }
+            public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
+                Bitmap bitmap = ((BitmapDrawable) resource).getBitmap();
+                BitmapUtil.saveBitmapToGallery(PhotoViewActivity.this, bitmap, System.currentTimeMillis() + "");
             }
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
+
             }
         });
     }
