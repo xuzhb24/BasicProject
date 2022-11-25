@@ -70,14 +70,8 @@ public class TestCodeUtilActivity extends BaseActivity<ActivityTestCodeUtilBindi
                 showToast("请先生成二维码");
                 return;
             }
-            boolean flag = BitmapUtil.saveBitmapToGallery(this,
-                    ((BitmapDrawable) binding.iv.getDrawable()).getBitmap(),
-                    System.currentTimeMillis() + "");
-            if (flag) {
-                showToast("保存成功！");
-            } else {
-                showToast("保存失败！");
-            }
+            Bitmap bitmap = ((BitmapDrawable) binding.iv.getDrawable()).getBitmap();
+            BitmapUtil.saveBitmapToGallery(this, bitmap, System.currentTimeMillis() + "");
         });
     }
 

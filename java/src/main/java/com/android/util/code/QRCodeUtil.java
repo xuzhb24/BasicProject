@@ -3,6 +3,7 @@ package com.android.util.code;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.text.TextUtils;
+
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -37,6 +38,8 @@ public class QRCodeUtil {
                 for (int x = 0; x < width; x++) {
                     if (matrix.get(x, y)) {
                         pixels[y * width + x] = 0xff000000;
+                    } else {
+                        pixels[y * width + x] = 0xffffffff;
                     }
                 }
             }

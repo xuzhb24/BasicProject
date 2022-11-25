@@ -1,6 +1,7 @@
 package com.android.util.bitmap;
 
 import android.annotation.TargetApi;
+import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
@@ -42,6 +43,8 @@ import com.android.base.BaseApplication;
 import com.android.util.FileUtil;
 import com.android.util.IOUtil;
 import com.android.util.LogUtil;
+import com.android.util.ToastUtil;
+import com.android.util.permission.PermissionUtil;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -171,36 +174,131 @@ public class BitmapUtil {
         return flag;
     }
 
+    //保存图片到系统相册
+    public static void saveBitmapToGallery(Activity activity, Bitmap bitmap, String bitmapName) {
+        LogUtil.i("BitmapUtil", Build.VERSION.SDK_INT + "");
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {  //Android 10以下，需要先申请存储权限
+            if (bitmap == null) {
+                return;
+            }
+            //申请读写权限
+            if (!PermissionUtil.requestReadWritePermissions(activity, 1, 2)) {
+                return;
+            }
+            //开启线程保存图片
+            new Thread(() -> {
+                // 首先保存图片
+                File appDir = new File(Environment.getExternalStorageDirectory(), "extra_picture");  //图片存储路径
+                if (!appDir.exists()) {
+                    appDir.mkdir();
+                }
+                String fileName = bitmapName + ".jpg";
+                File file = new File(appDir, fileName);
+                FileOutputStream fos = null;
+                try {
+                    fos = new FileOutputStream(file);
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                    fos.flush();
+                    fos.close();
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
+                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                    activity.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                    //最后通知图库更新
+                    activity.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                    activity.runOnUiThread(() -> ToastUtil.showToast("图片保存成功"));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    activity.runOnUiThread(() -> ToastUtil.showToast("图片保存失败"));
+                } finally {
+                    IOUtil.closeIO(fos);
+                }
+            }).start();
+        } else {  //Android 10及以上无需申请存储权限
+            new Thread(() -> {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, bitmapName);
+                contentValues.put(MediaStore.Images.Media.DESCRIPTION, "");
+                contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+                contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                //contentValues.put(MediaStore.Images.Media.IS_PENDING,1)
+                Uri external = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+                Uri insertUri = activity.getContentResolver().insert(external, contentValues);
+                OutputStream fos = null;
+                if (insertUri != null) {
+                    try {
+                        fos = activity.getContentResolver().openOutputStream(insertUri);
+                        boolean isSuccess = bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                        activity.runOnUiThread(() -> ToastUtil.showToast(isSuccess ? "图片保存成功" : "图片保存失败"));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        activity.runOnUiThread(() -> ToastUtil.showToast("图片保存失败"));
+                    } finally {
+                        IOUtil.closeIO(fos);
+                    }
+                } else {
+                    activity.runOnUiThread(() -> ToastUtil.showToast("图片保存失败"));
+                }
+            }).start();
+        }
+    }
+
     //保存图片到系统相册，返回true表示保存成功，false表示保存失败
     public static boolean saveBitmapToGallery(Context context, Bitmap bitmap, String bitmapName) {
-        if (bitmap == null) {
-            return false;
-        }
-        // 首先保存图片
-        File appDir = new File(Environment.getExternalStorageDirectory(), "extra_picture");  //图片存储路径
-        if (!appDir.exists()) {
-            appDir.mkdir();
-        }
-        String fileName = bitmapName + ".jpg";
-        File file = new File(appDir, fileName);
-        FileOutputStream fos = null;
-        try {
-            fos = new FileOutputStream(file);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
-            fos.flush();
-            fos.close();
-            ContentValues values = new ContentValues();
-            values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
-            context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-            //最后通知图库更新
-            context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        } finally {
-            IOUtil.closeIO(fos);
+        LogUtil.i("BitmapUtil", Build.VERSION.SDK_INT + "");
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {  //Android 10以下，需要先申请存储权限
+            if (bitmap == null) {
+                return false;
+            }
+            // 首先保存图片
+            File appDir = new File(Environment.getExternalStorageDirectory(), "extra_picture");  //图片存储路径
+            if (!appDir.exists()) {
+                appDir.mkdir();
+            }
+            String fileName = bitmapName + ".jpg";
+            File file = new File(appDir, fileName);
+            FileOutputStream fos = null;
+            try {
+                fos = new FileOutputStream(file);
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+                fos.flush();
+                fos.close();
+                ContentValues values = new ContentValues();
+                values.put(MediaStore.Images.Media.DATA, file.getAbsolutePath());
+                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+                context.getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                //最后通知图库更新
+                context.sendBroadcast(new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)));
+                return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+                return false;
+            } finally {
+                IOUtil.closeIO(fos);
+            }
+        } else {  //Android 10及以上无需申请存储权限
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(MediaStore.Images.Media.DISPLAY_NAME, bitmapName);
+            contentValues.put(MediaStore.Images.Media.DESCRIPTION, "");
+            contentValues.put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES);
+            contentValues.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg");
+            //contentValues.put(MediaStore.Images.Media.IS_PENDING,1)
+            Uri external = MediaStore.Images.Media.EXTERNAL_CONTENT_URI;
+            Uri insertUri = context.getContentResolver().insert(external, contentValues);
+            OutputStream fos = null;
+            if (insertUri != null) {
+                try {
+                    fos = context.getContentResolver().openOutputStream(insertUri);
+                    return bitmap.compress(Bitmap.CompressFormat.JPEG, 90, fos);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    return false;
+                } finally {
+                    IOUtil.closeIO(fos);
+                }
+            } else {
+                return false;
+            }
         }
     }
 

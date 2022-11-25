@@ -1,5 +1,6 @@
 package com.android.util.permission;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -11,6 +12,8 @@ import android.provider.Settings;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import com.android.util.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,6 +37,24 @@ public class PermissionUtil {
         } else {
             return true;
         }
+    }
+
+    //申请读写权限，返回true：申请成功，返回false：申请失败
+    public static boolean requestReadWritePermissions(Activity activity, int requestCode, int settingCode) {
+        String[] permissions = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (!isPermissionGranted(activity, permissions)) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {  //Android 6.0以后权限动态申请
+                if (isPermissionDeniedForever(activity, permissions)) {
+                    activity.runOnUiThread(() -> ToastUtil.showToast("请先允许存储权限"));
+                    //打开应用设置页面
+                    openSettings(activity, activity.getPackageName(), settingCode);
+                } else {
+                    activity.requestPermissions(permissions, requestCode);
+                }
+            }
+            return false;
+        }
+        return true;
     }
 
     //处理权限申请结果，对应Activity中onRequestPermissionsResult()方法

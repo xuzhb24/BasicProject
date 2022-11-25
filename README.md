@@ -1,5 +1,3 @@
-# 让这个库完成50%的通用开发，剩下的50%跟随业务推进
-
 [<font face="微软雅黑" size=5>命名规范</font>](#nameNorm)   
 [<font face="微软雅黑" size=5>代码清单</font>](#codeList)
 

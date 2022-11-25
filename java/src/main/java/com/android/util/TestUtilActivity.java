@@ -2202,17 +2202,7 @@ public class TestUtilActivity extends BaseActivity<ActivityCommonLayoutBinding> 
 
     //保存图片到相册
     private void saveBitmapToGallery(Bitmap bitmap, String bitmapName) {
-        if (!PermissionUtil.requestPermissions(this, 1,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-            showToast("请先允许权限");
-            return;
-        }
-        if (BitmapUtil.saveBitmapToGallery(this, bitmap, bitmapName)) {
-            showToast("保存成功，请在相册查看");
-        } else {
-            showToast("保存失败");
-        }
+        BitmapUtil.saveBitmapToGallery(this, bitmap, bitmapName);
     }
 
     @Override

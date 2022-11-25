@@ -1,6 +1,5 @@
 package com.android.util.CapturePicture;
 
-import android.Manifest;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import com.android.frame.mvc.BaseActivity;
 import com.android.java.R;
 import com.android.java.databinding.ActivityTestCaptureListviewBinding;
 import com.android.util.bitmap.BitmapUtil;
-import com.android.util.permission.PermissionUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,18 +56,8 @@ public class TestCaptureListViewActivity extends BaseActivity<ActivityTestCaptur
     @Override
     public void initListener() {
         mTitleBar.setOnRightTextClickListener(v -> {
-            if (!PermissionUtil.requestPermissions(this, 1,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                showToast("请先允许权限");
-                return;
-            }
             Bitmap bitmap = CapturePictureUtil.captureByListView(binding.listView);
-            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "ListView截图")) {
-                showToast("保存成功，请在相册查看");
-            } else {
-                showToast("保存失败");
-            }
+            BitmapUtil.saveBitmapToGallery(this, bitmap, "ListView截图");
         });
     }
 
