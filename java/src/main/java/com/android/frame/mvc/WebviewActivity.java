@@ -49,6 +49,10 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
     private static final String EXTRA_URL = "EXTRA_URL";
     private static final String EXTRA_IS_TITLE_FIXED = "EXTRA_IS_TITLE_FIXED";
 
+    private static final boolean IMAGE_UPLOAD_ENABLE = true;  //是否开启图片上传功能
+    private static final boolean IMAGE_CLICK_ENABLE = true;   //是否开启图片点击查看功能
+    private static final boolean VIDEO_FULL_ENABLE = true;    //是否开启视频全屏播放功能
+
     private String mTitle;
     private String mUrl;
     private boolean isTitleFixed = false;  //传进来的标题是否固定不变
@@ -154,11 +158,13 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
         settings.setSupportZoom(true);
         settings.setBuiltInZoomControls(true);
         settings.setDisplayZoomControls(false);  //隐藏缩放工具
-        settings.setUseWideViewPort(true);       //支持meta标签的viewport属性
+        settings.setUseWideViewPort(VIDEO_FULL_ENABLE);  //支持meta标签的viewport属性
         //自适应屏幕
         settings.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.SINGLE_COLUMN);
         settings.setLoadWithOverviewMode(true);
-        mWebView.addJavascriptInterface(new ImageInterface(this), ImageInterface.INTERFACE_NAME);  //js调用Android的方法
+        if (IMAGE_CLICK_ENABLE) {
+            mWebView.addJavascriptInterface(new ImageInterface(this), ImageInterface.INTERFACE_NAME);  //js调用Android的方法
+        }
         mWebView.requestFocus();
     }
 
@@ -198,7 +204,9 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
                 super.onPageFinished(view, url);
                 LogUtil.i(TAG, "onPageFinished,url:" + url);
                 //添加监听图片的点击js函数
-                ImageInterface.imageInject(mWebView);
+                if (IMAGE_CLICK_ENABLE) {
+                    ImageInterface.imageInject(mWebView);
+                }
                 //解决ScrollView中嵌套WebView底部留白问题
                 ViewGroup.LayoutParams params = mWebView.getLayoutParams();
                 params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
@@ -226,15 +234,19 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
 
             //Android 4.0 - 5.0
             public void openFileChooser(ValueCallback<Uri> uploadMsg, String acceptType, String capture) {
-                mUploadMsg = uploadMsg;
-                showImageChooseDialog();
+                if (IMAGE_UPLOAD_ENABLE) {
+                    mUploadMsg = uploadMsg;
+                    showImageChooseDialog();
+                }
             }
 
             //Android 5.0以上，包括5.0
             @Override
             public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback, FileChooserParams fileChooserParams) {
-                mFilePathCallback = filePathCallback;
-                showImageChooseDialog();
+                if (IMAGE_UPLOAD_ENABLE) {
+                    mFilePathCallback = filePathCallback;
+                    showImageChooseDialog();
+                }
                 return true;
             }
 
@@ -264,21 +276,33 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
             //视频全屏播放
             @Override
             public View getVideoLoadingProgressView() {
-                FrameLayout frameLayout = new FrameLayout(WebviewActivity.this);
-                frameLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
-                return frameLayout;
+                if (VIDEO_FULL_ENABLE) {
+                    FrameLayout frameLayout = new FrameLayout(WebviewActivity.this);
+                    frameLayout.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT));
+                    return frameLayout;
+                } else {
+                    return super.getVideoLoadingProgressView();
+                }
             }
 
             @Override
             public void onShowCustomView(View view, CustomViewCallback callback) {
-                showCustomView(view, callback);
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);  //横屏
+                if (VIDEO_FULL_ENABLE) {
+                    showCustomView(view, callback);
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);  //横屏
+                } else {
+                    super.onShowCustomView(view, callback);
+                }
             }
 
             @Override
             public void onHideCustomView() {
-                hideCustomView();
-                setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  //横屏
+                if (VIDEO_FULL_ENABLE) {
+                    hideCustomView();
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  //横屏
+                } else {
+                    super.onHideCustomView();
+                }
             }
 
         });
