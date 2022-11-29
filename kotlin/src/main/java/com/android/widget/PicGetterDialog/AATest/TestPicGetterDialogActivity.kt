@@ -1,8 +1,10 @@
 package com.android.widget.PicGetterDialog.AATest
 
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.os.Bundle
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityTestPicGetterDialogBinding
 import com.android.frame.mvc.BaseActivity
@@ -40,8 +42,9 @@ class TestPicGetterDialogActivity : BaseActivity<ActivityTestPicGetterDialogBind
         }
         val options = UCrop.Options()
         options.setToolbarTitle("裁剪图片")
-        options.setToolbarColor(resources.getColor(R.color.colorPrimary))
-        options.setStatusBarColor(resources.getColor(R.color.colorPrimary))
+        options.setToolbarColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
+        options.setStatusBarColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
+        options.setToolbarWidgetColor(Color.WHITE)
         mPicGetterDialog = PicGetterDialog()
         mPicGetterDialog!!.setAnimationStyle(R.style.AnimTranslateBottom)
             .setCropOptions(options)

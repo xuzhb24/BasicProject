@@ -28,7 +28,7 @@ class SPUtil<T>(val context: Context, val spName: String, val key: String, val d
     private fun <T> getValue(key: String, defValue: T): T = with(prefs) {
         val value: Any = when (defValue) {
             is Long -> getLong(key, defValue)
-            is String -> getString(key, defValue)
+            is String -> getString(key, defValue) ?: ""
             is Int -> getInt(key, defValue)
             is Boolean -> getBoolean(key, defValue)
             is Float -> getFloat(key, defValue)

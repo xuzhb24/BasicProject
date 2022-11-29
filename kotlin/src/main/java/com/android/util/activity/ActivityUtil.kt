@@ -79,8 +79,8 @@ object ActivityUtil {
     fun getTopActivityName(context: Context): String {
         val manager = context.applicationContext.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         val info = manager.getRunningTasks(1)[0]
-        val packageName = info.topActivity.packageName
-        val className = info.topActivity.className
+        val packageName = info.topActivity?.packageName
+        val className = info.topActivity?.className
         return "$packageName $className"
     }
 

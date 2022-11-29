@@ -27,12 +27,14 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 
 import com.android.java.BuildConfig;
+import com.android.java.R;
 import com.android.java.databinding.ActivityWebviewBinding;
 import com.android.util.KeyboardUtil;
 import com.android.util.LogUtil;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.widget.PicGetterDialog.OnPicGetterListener;
 import com.android.widget.PicGetterDialog.PicGetterDialog;
+import com.yalantis.ucrop.UCrop;
 
 import java.io.File;
 
@@ -285,41 +287,49 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
     //拍照或从相册选取照片
     private void showImageChooseDialog() {
         PicGetterDialog dialog = new PicGetterDialog();
-        dialog.setOnPicGetterListener(new OnPicGetterListener() {
-            @Override
-            public void onSuccess(Bitmap bitmap, String picPath) {
-                if (TextUtils.isEmpty(picPath)) {
-                    if (mFilePathCallback != null) {
-                        mFilePathCallback.onReceiveValue(new Uri[]{});
-                        mFilePathCallback = null;
-                    } else if (mUploadMsg != null) {
-                        mUploadMsg.onReceiveValue(null);
-                        mUploadMsg = null;
+        UCrop.Options options = new UCrop.Options();
+        options.setToolbarTitle("裁剪图片");
+        options.setToolbarColor(getResources().getColor(R.color.colorPrimary));
+        options.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+        options.setToolbarWidgetColor(Color.WHITE);
+        dialog.setAnimationStyle(R.style.AnimTranslateBottom)
+                .setCropOptions(options)
+                .setMaxCropSize(800, 2400)
+                .setOnPicGetterListener(new OnPicGetterListener() {
+                    @Override
+                    public void onSuccess(Bitmap bitmap, String picPath) {
+                        if (TextUtils.isEmpty(picPath)) {
+                            if (mFilePathCallback != null) {
+                                mFilePathCallback.onReceiveValue(new Uri[]{});
+                                mFilePathCallback = null;
+                            } else if (mUploadMsg != null) {
+                                mUploadMsg.onReceiveValue(null);
+                                mUploadMsg = null;
+                            }
+                        } else {
+                            Uri result = Uri.fromFile(new File(picPath));
+                            if (mFilePathCallback != null) {
+                                mFilePathCallback.onReceiveValue(new Uri[]{result});
+                                mFilePathCallback = null;
+                            } else {
+                                mUploadMsg.onReceiveValue(result);
+                                mUploadMsg = null;
+                            }
+                        }
                     }
-                } else {
-                    Uri result = Uri.fromFile(new File(picPath));
-                    if (mFilePathCallback != null) {
-                        mFilePathCallback.onReceiveValue(new Uri[]{result});
-                        mFilePathCallback = null;
-                    } else {
-                        mUploadMsg.onReceiveValue(result);
-                        mUploadMsg = null;
+
+                    @Override
+                    public void onFailure(String errorMsg) {
+                        dialog.dismiss();
+                        showToast(!TextUtils.isEmpty(errorMsg) ? errorMsg : "发生异常了");
+                        releaseUploadMessage();
                     }
-                }
-            }
 
-            @Override
-            public void onFailure(String errorMsg) {
-                dialog.dismiss();
-                showToast(!TextUtils.isEmpty(errorMsg) ? errorMsg : "发生异常了");
-                releaseUploadMessage();
-            }
-
-            @Override
-            public void onCancel() {
-                releaseUploadMessage();
-            }
-        });
+                    @Override
+                    public void onCancel() {
+                        releaseUploadMessage();
+                    }
+                });
         dialog.show(getSupportFragmentManager());
     }
 

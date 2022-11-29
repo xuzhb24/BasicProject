@@ -1,6 +1,7 @@
 package com.android.widget.PicGetterDialog.AATest;
 
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.ViewGroup;
@@ -53,6 +54,7 @@ public class TestPicGetterDialogActivity extends BaseActivity<ActivityTestPicGet
         options.setToolbarTitle("裁剪图片");
         options.setToolbarColor(getResources().getColor(R.color.colorPrimary));
         options.setStatusBarColor(getResources().getColor(R.color.colorPrimary));
+        options.setToolbarWidgetColor(Color.WHITE);
         mPicGetterDialog = PicGetterDialog.newInstance();
         mPicGetterDialog.setAnimationStyle(R.style.AnimTranslateBottom)
                 .setCropOptions(options)

@@ -11,7 +11,7 @@ import java.nio.channels.FileChannel
 object IOUtil {
 
     //获取操作系统对应的换行符，如java中的\r\n，windows中的\r\n，linux/unix中的\r，mac中的\n
-    private val LINE_SEPARATOR = System.getProperty("line.separator")
+    private val LINE_SEPARATOR = System.getProperty("line.separator") ?: "\r\n"
 
     //将输入流写入文件
     fun writeFileFromInputStream(filePath: String, inputStream: InputStream?, append: Boolean): Boolean =

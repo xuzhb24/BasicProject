@@ -60,12 +60,12 @@ class PhotoView @JvmOverloads constructor(
         mAttacher.setOnViewTapListener(listener)
     }
 
-    override fun setOnLongClickListener(listener: OnLongClickListener) {
-        mAttacher.setOnLongClickListener(listener)
+    override fun setOnLongClickListener(listener: OnLongClickListener?) {
+        listener?.let { mAttacher.setOnLongClickListener(it) }
     }
 
-    override fun setOnClickListener(listener: OnClickListener) {
-        mAttacher.setOnClickListener(listener)
+    override fun setOnClickListener(listener: OnClickListener?) {
+        listener?.let { mAttacher.setOnClickListener(it) }
     }
 
     fun setOnDoubleTapListener(listener: GestureDetector.OnDoubleTapListener) {

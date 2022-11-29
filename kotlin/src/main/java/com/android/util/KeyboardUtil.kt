@@ -39,7 +39,7 @@ object KeyboardUtil {
     fun copyToClipboard(context: Context, data: String) {
         val cm = context.applicationContext.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         val clipData = ClipData.newPlainText(null, data)
-        cm.primaryClip = clipData
+        cm.setPrimaryClip(clipData)
     }
 
 }

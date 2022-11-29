@@ -213,8 +213,12 @@ open class CaptureActivity<VB : ViewBinding> : BaseActivity<VB>(), SurfaceHolder
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == IMAGE_PICKER && resultCode == Activity.RESULT_OK) {
             data?.let {
+                if (it.data == null) {
+                    LogUtil.e(TAG, "未找到图片！")
+                    return
+                }
                 //获取选中图片的路径
-                val cursor = contentResolver.query(it.data, null, null, null, null)
+                val cursor = contentResolver.query(it.data!!, null, null, null, null)
                 cursor?.let {
                     if (it.moveToFirst()) {
                         mPhotoPath = it.getString(it.getColumnIndex(MediaStore.Images.Media.DATA))

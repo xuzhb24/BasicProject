@@ -58,7 +58,7 @@ dependencies {
     //zxing扫码
     api 'com.google.zxing:core:3.3.3'
     //图片裁剪框架uCrop
-    api 'com.yalantis:ucrop:2.2.0'
+    api 'com.github.yalantis:ucrop:2.2.6'
     //底部选择器
     api 'com.contrarywind:Android-PickerView:4.1.8'
     //Banner轮播，https://github.com/youth5201314/banner

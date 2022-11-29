@@ -1461,7 +1461,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                     sb.append(file.absolutePath).append("\n").append("------------------------------------").append("\n")
                 }
             }
-            FileUtil.listFilesInDirectory(externalCacheDir.absolutePath, true)?.let {
+            FileUtil.listFilesInDirectory(externalCacheDir?.absolutePath, true)?.let {
                 for (file in it) {
                     sb.append(file.absolutePath).append("\n").append("------------------------------------").append("\n")
                 }
