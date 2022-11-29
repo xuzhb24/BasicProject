@@ -33,6 +33,8 @@ object QRCodeUtil {
                 for (x in 0 until width) {
                     if (matrix.get(x, y)) {
                         pixels[y * width + x] = -0x1000000
+                    } else {
+                        pixels[y * width + x] = -0x1
                     }
                 }
             }

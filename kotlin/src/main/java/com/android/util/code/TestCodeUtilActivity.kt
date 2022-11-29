@@ -7,8 +7,8 @@ import android.text.TextUtils
 import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityTestCodeUtilBinding
 import com.android.frame.mvc.BaseActivity
-import com.android.util.bitmap.BitmapUtil
 import com.android.util.SizeUtil
+import com.android.util.bitmap.BitmapUtil
 import kotlinx.android.synthetic.main.activity_test_code_util.*
 
 /**
@@ -57,16 +57,7 @@ class TestCodeUtilActivity : BaseActivity<ActivityTestCodeUtilBinding>() {
                 showToast("请先生成二维码")
                 return@setOnClickListener
             }
-            val flag = BitmapUtil.saveBitmapToGallery(
-                this,
-                (iv.drawable as BitmapDrawable).bitmap,
-                System.currentTimeMillis().toString()
-            )
-            if (flag) {
-                showToast("保存成功！")
-            } else {
-                showToast("保存失败！")
-            }
+            BitmapUtil.saveBitmapToGallery(this, (iv.drawable as BitmapDrawable).bitmap, System.currentTimeMillis().toString())
         }
     }
 

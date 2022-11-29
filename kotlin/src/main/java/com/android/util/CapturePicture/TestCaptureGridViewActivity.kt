@@ -41,21 +41,8 @@ class TestCaptureGridViewActivity : BaseActivity<ActivityTestCaptureGridviewBind
 
     override fun initListener() {
         mTitleBar?.setOnRightTextClickListener {
-            if (!PermissionUtil.requestPermissions(
-                    this, 1,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            ) {
-                showToast("请先允许权限")
-                return@setOnRightTextClickListener
-            }
             val bitmap = CapturePictureUtil.captureByGridView(binding.gridView)
-            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "GridView截图")) {
-                showToast("保存成功，请在相册查看")
-            } else {
-                showToast("保存失败")
-            }
+            BitmapUtil.saveBitmapToGallery(this, bitmap, "GridView截图")
         }
     }
 

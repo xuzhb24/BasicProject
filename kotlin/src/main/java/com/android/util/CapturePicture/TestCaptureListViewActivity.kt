@@ -1,6 +1,5 @@
 package com.android.util.CapturePicture
 
-import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,7 +10,6 @@ import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityTestCaptureListviewBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.bitmap.BitmapUtil
-import com.android.util.permission.PermissionUtil
 
 /**
  * Created by xuzhb on 2021/5/13
@@ -41,21 +39,8 @@ class TestCaptureListViewActivity : BaseActivity<ActivityTestCaptureListviewBind
 
     override fun initListener() {
         mTitleBar?.setOnRightTextClickListener {
-            if (!PermissionUtil.requestPermissions(
-                    this, 1,
-                    Manifest.permission.READ_EXTERNAL_STORAGE,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                )
-            ) {
-                showToast("请先允许权限")
-                return@setOnRightTextClickListener
-            }
             val bitmap = CapturePictureUtil.captureByListView(binding.listView)
-            if (BitmapUtil.saveBitmapToGallery(this, bitmap, "ListView截图")) {
-                showToast("保存成功，请在相册查看")
-            } else {
-                showToast("保存失败")
-            }
+            BitmapUtil.saveBitmapToGallery(this, bitmap, "ListView截图")
         }
     }
 

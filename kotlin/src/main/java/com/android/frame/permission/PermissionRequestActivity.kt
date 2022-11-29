@@ -13,12 +13,11 @@ import android.os.Bundle
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import com.android.basicproject.R
-import com.android.util.bitmap.BitmapUtil
 import com.android.util.ToastUtil
+import com.android.util.bitmap.BitmapUtil
 import com.android.util.initCommonLayout
 import com.android.util.jumpToAppSetting
 import kotlinx.android.synthetic.main.activity_common_layout.*
-import kotlin.concurrent.thread
 
 /**
  * Created by xuzhb on 2019/9/3
@@ -234,16 +233,7 @@ class PermissionRequestActivity : Activity() {
 
     //测试方法：保存图片到系统相册，需要写入SD卡的权限，否则无法保存成功
     private fun testSaveToFile() {
-        //IO操作放子线程
-        thread(start = true) {
-            val flag = BitmapUtil.saveBitmapToGallery(
-                this,
-                BitmapFactory.decodeResource(resources, R.mipmap.ic_logo)
-            )
-            runOnUiThread {
-                ToastUtil.showToast(if (flag) "保存成功！" else "保存失败！")
-            }
-        }
+        BitmapUtil.saveBitmapToGallery(this, BitmapFactory.decodeResource(resources, R.mipmap.ic_logo))
     }
 
 }

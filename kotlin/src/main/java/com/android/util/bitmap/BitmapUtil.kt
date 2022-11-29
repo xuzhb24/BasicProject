@@ -1,6 +1,7 @@
 package com.android.util.bitmap
 
 import android.annotation.TargetApi
+import android.app.Activity
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
@@ -27,7 +28,10 @@ import com.android.base.BaseApplication
 import com.android.util.FileUtil
 import com.android.util.IOUtil
 import com.android.util.LogUtil
+import com.android.util.ToastUtil
+import com.android.util.permission.PermissionUtil
 import java.io.*
+import kotlin.concurrent.thread
 
 /**
  * Create by xuzhb on 2019/10/11
@@ -136,8 +140,81 @@ object BitmapUtil {
         return flag
     }
 
-    //保存图片到系统相册，返回true表示保存成功，false表示保存失败
+    //保存图片到系统相册
     fun saveBitmapToGallery(
+        activity: Activity,
+        bitmap: Bitmap?,
+        bitmapName: String = System.currentTimeMillis().toString()  //存储的图片名称
+    ) {
+        if (bitmap == null) {
+            return
+        }
+        LogUtil.i("BitmapUtil", "${Build.VERSION.SDK_INT}")
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {  //Android 10以下，需要先申请存储权限
+            //申请读写权限
+            if (!PermissionUtil.requestReadWritePermissions(activity, 1, 2)) {
+                return
+            }
+            //开启线程保存图片
+            thread(start = true) {
+                // 首先保存图片
+                val appDir = File(Environment.getExternalStorageDirectory(), "extra_picture")  //图片存储路径
+                if (!appDir.exists()) {
+                    appDir.mkdir()
+                }
+                val fileName = "${bitmapName}.jpg"
+                val file = File(appDir, fileName)
+                var fos: FileOutputStream? = null
+                try {
+                    fos = FileOutputStream(file)
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                    fos!!.flush()
+                    fos!!.close()
+                    val values = ContentValues()
+                    values.put(MediaStore.Images.Media.DATA, file.absolutePath)
+                    values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                    activity.applicationContext.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                    // 最后通知图库更新
+                    activity.applicationContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
+                    activity.runOnUiThread { ToastUtil.showToast("图片保存成功", true) }
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    activity.runOnUiThread { ToastUtil.showToast("图片保存失败", true) }
+                } finally {
+                    IOUtil.closeIO(fos)
+                }
+            }
+        } else {  //Android 10及以上无需申请存储权限
+            thread(start = true) {
+                val contentValues = ContentValues().apply {
+                    put(MediaStore.Images.Media.DISPLAY_NAME, bitmapName)
+                    put(MediaStore.Images.Media.DESCRIPTION, "")
+                    put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                    put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+//                    put(MediaStore.Images.Media.IS_PENDING, 1)
+                }
+                val insertUri = activity.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+                var fos: OutputStream? = null
+                if (insertUri != null) {
+                    try {
+                        fos = activity.contentResolver.openOutputStream(insertUri)
+                        val isSuccess = bitmap.compress(CompressFormat.JPEG, 90, fos)
+                        activity.runOnUiThread { ToastUtil.showToast(if (isSuccess) "图片保存成功" else "图片保存失败", true) }
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        activity.runOnUiThread { ToastUtil.showToast("图片保存失败", true) }
+                    } finally {
+                        IOUtil.closeIO(fos)
+                    }
+                } else {
+                    activity.runOnUiThread { ToastUtil.showToast("图片保存失败", true) }
+                }
+            }
+        }
+    }
+
+    //保存图片到系统相册，返回true表示保存成功，false表示保存失败
+    fun saveBitmapToGalleryResult(
         context: Context,
         bitmap: Bitmap?,
         bitmapName: String = System.currentTimeMillis().toString()  //存储的图片名称
@@ -145,31 +222,57 @@ object BitmapUtil {
         if (bitmap == null) {
             return false
         }
-        // 首先保存图片
-        val appDir = File(Environment.getExternalStorageDirectory(), "extra_picture")  //图片存储路径
-        if (!appDir.exists()) {
-            appDir.mkdir()
-        }
-        val fileName = "${bitmapName}.jpg"
-        val file = File(appDir, fileName)
-        var fos: FileOutputStream? = null
-        try {
-            fos = FileOutputStream(file)
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
-            fos.flush()
-            fos.close()
-            val values = ContentValues()
-            values.put(MediaStore.Images.Media.DATA, file.absolutePath)
-            values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
-            context.applicationContext.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
-            // 最后通知图库更新
-            context.applicationContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
-            return true
-        } catch (e: Exception) {
-            e.printStackTrace()
-            return false
-        } finally {
-            IOUtil.closeIO(fos)
+        LogUtil.i("BitmapUtil", "${Build.VERSION.SDK_INT}")
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {  //Android 10以下，需要先申请存储权限
+            // 首先保存图片
+            val appDir = File(Environment.getExternalStorageDirectory(), "extra_picture")  //图片存储路径
+            if (!appDir.exists()) {
+                appDir.mkdir()
+            }
+            val fileName = "${bitmapName}.jpg"
+            val file = File(appDir, fileName)
+            var fos: FileOutputStream? = null
+            try {
+                fos = FileOutputStream(file)
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, fos)
+                fos.flush()
+                fos.close()
+                val values = ContentValues()
+                values.put(MediaStore.Images.Media.DATA, file.absolutePath)
+                values.put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+                context.applicationContext.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values)
+                // 最后通知图库更新
+                context.applicationContext.sendBroadcast(Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE, Uri.fromFile(file)))
+                return true
+            } catch (e: Exception) {
+                e.printStackTrace()
+                return false
+            } finally {
+                IOUtil.closeIO(fos)
+            }
+        } else {  //Android 10及以上无需申请存储权限
+            val contentValues = ContentValues().apply {
+                put(MediaStore.Images.Media.DISPLAY_NAME, bitmapName)
+                put(MediaStore.Images.Media.DESCRIPTION, "")
+                put(MediaStore.Images.Media.RELATIVE_PATH, Environment.DIRECTORY_PICTURES)
+                put(MediaStore.Images.Media.MIME_TYPE, "image/jpeg")
+//                put(MediaStore.Images.Media.IS_PENDING,1)
+            }
+            val insertUri = context.contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues)
+            var fos: OutputStream? = null
+            return if (insertUri != null) {
+                try {
+                    fos = context.contentResolver.openOutputStream(insertUri)
+                    bitmap.compress(CompressFormat.JPEG, 90, fos)
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    false
+                } finally {
+                    IOUtil.closeIO(fos)
+                }
+            } else {
+                false
+            }
         }
     }
 

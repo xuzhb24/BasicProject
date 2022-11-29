@@ -177,10 +177,10 @@ public class BitmapUtil {
     //保存图片到系统相册
     public static void saveBitmapToGallery(Activity activity, Bitmap bitmap, String bitmapName) {
         LogUtil.i("BitmapUtil", Build.VERSION.SDK_INT + "");
+        if (bitmap == null) {
+            return;
+        }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {  //Android 10以下，需要先申请存储权限
-            if (bitmap == null) {
-                return;
-            }
             //申请读写权限
             if (!PermissionUtil.requestReadWritePermissions(activity, 1, 2)) {
                 return;
@@ -246,10 +246,10 @@ public class BitmapUtil {
     //保存图片到系统相册，返回true表示保存成功，false表示保存失败
     public static boolean saveBitmapToGallery(Context context, Bitmap bitmap, String bitmapName) {
         LogUtil.i("BitmapUtil", Build.VERSION.SDK_INT + "");
+        if (bitmap == null) {
+            return false;
+        }
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) {  //Android 10以下，需要先申请存储权限
-            if (bitmap == null) {
-                return false;
-            }
             // 首先保存图片
             File appDir = new File(Environment.getExternalStorageDirectory(), "extra_picture");  //图片存储路径
             if (!appDir.exists()) {
