@@ -299,7 +299,7 @@ public class WebviewActivity extends BaseActivity<ActivityWebviewBinding> {
             public void onHideCustomView() {
                 if (VIDEO_FULL_ENABLE) {
                     hideCustomView();
-                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  //横屏
+                    setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);  //竖屏
                 } else {
                     super.onHideCustomView();
                 }

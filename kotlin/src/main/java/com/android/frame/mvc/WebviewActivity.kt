@@ -2,23 +2,30 @@ package com.android.frame.mvc
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.graphics.Bitmap
+import android.graphics.Color
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.KeyEvent
+import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.webkit.*
+import android.widget.FrameLayout
 import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import com.android.basicproject.BuildConfig
+import com.android.basicproject.R
 import com.android.basicproject.databinding.ActivityWebviewBinding
 import com.android.util.KeyboardUtil
 import com.android.util.LogUtil
 import com.android.util.StatusBar.StatusBarUtil
 import com.android.widget.PicGetterDialog.OnPicGetterListener
 import com.android.widget.PicGetterDialog.PicGetterDialog
+import com.yalantis.ucrop.UCrop
 import java.io.File
 
 /**
@@ -32,6 +39,9 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
         private const val EXTRA_TITLE = "EXTRA_TITLE"
         private const val EXTRA_URL = "EXTRA_URL"
         private const val EXTRA_IS_TITLE_FIXED = "EXTRA_IS_TITLE_FIXED"
+        private const val IMAGE_UPLOAD_ENABLE = true  //是否开启图片上传功能
+        private const val IMAGE_CLICK_ENABLE = true   //是否开启图片点击查看功能
+        private const val VIDEO_FULL_ENABLE = true    //是否开启视频全屏播放功能
 
         fun start(context: Context, title: String, url: String, isTitleFixed: Boolean = false) {
             val intent = Intent()
@@ -47,8 +57,14 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
     private var mUrl: String = ""
     private var isTitleFixed = false  //传进来的标题是否固定不变
 
+    //图片上传
     private var mUploadMsg: ValueCallback<Uri>? = null
     private var mFilePathCallback: ValueCallback<Array<Uri>>? = null
+
+    //视频全屏播放相关参数
+    private var mCustomView: View? = null
+    private var mFullscreenContainer: FrameLayout? = null
+    private var mCustomViewCallback: WebChromeClient.CustomViewCallback? = null
 
     protected var mWebView: WebView? = null
     private var hasReceivedError = false   //是否加载失败
@@ -58,9 +74,9 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
     }
 
     override fun initBar() {
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)  //保证WebView的输入框不被软键盘遮挡
+        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS)  //保证WebView的输入框不被软键盘遮挡
+        setStatusBarVisibility(true)
         mTitleBar?.let {
-            StatusBarUtil.darkModeAndPadding(this, it)
             it.setOnLeftIconClickListener {
                 goPageBack()
             }
@@ -85,8 +101,8 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
-        mTitle = intent.getStringExtra(EXTRA_TITLE)
-        mUrl = intent.getStringExtra(EXTRA_URL)
+        mTitle = intent.getStringExtra(EXTRA_TITLE) ?: ""
+        mUrl = intent.getStringExtra(EXTRA_URL) ?: ""
         isTitleFixed = intent.getBooleanExtra(EXTRA_IS_TITLE_FIXED, false)
         mTitleBar?.titleText = mTitle  //设置标题
         createWebView()        //创建WebView
@@ -132,11 +148,13 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
                 settings.setSupportZoom(true)
                 settings.builtInZoomControls = true
                 settings.displayZoomControls = false  //隐藏缩放工具
-                settings.useWideViewPort = true       //支持meta标签的viewport属性
+                settings.useWideViewPort = VIDEO_FULL_ENABLE  //支持meta标签的viewport属性
                 //自适应屏幕
                 settings.layoutAlgorithm = WebSettings.LayoutAlgorithm.SINGLE_COLUMN
                 settings.loadWithOverviewMode = true
-//                addJavascriptInterface(JavaScriptMethods(), "androidjs")  //js调用Android的方法
+                if (IMAGE_CLICK_ENABLE) {
+                    addJavascriptInterface(ImageInterface(this@WebviewActivity), ImageInterface.INTERFACE_NAME)  //js调用Android的方法
+                }
                 requestFocus()
             }
         }
@@ -169,13 +187,25 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
                 override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                     super.onReceivedError(view, request, error)
                     LogUtil.i(TAG, "onReceivedError,error:$error")
-                    hasReceivedError = true
+//                    hasReceivedError = true
                 }
 
                 //页面加载结束时调用
                 override fun onPageFinished(view: WebView?, url: String?) {
                     super.onPageFinished(view, url)
                     LogUtil.i(TAG, "onPageFinished,url:$url")
+                    mWebView?.let {
+                        //添加监听图片的点击js函数
+                        if (IMAGE_CLICK_ENABLE) {
+                            ImageInterface.imageInject(it)
+                        }
+                        //解决ScrollView中嵌套WebView底部留白问题
+                        //解决ScrollView中嵌套WebView底部留白问题
+                        val params = it.layoutParams
+                        params.height = ViewGroup.LayoutParams.WRAP_CONTENT
+                        it.layoutParams = params
+                    }
+                    //加载完成
                     loadFinish(hasReceivedError)
                 }
 
@@ -206,8 +236,10 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
                     uploadMsg: ValueCallback<Uri>,
                     acceptType: String, capture: String
                 ) {
-                    mUploadMsg = uploadMsg
-                    showImageChooseDialog()
+                    if (IMAGE_UPLOAD_ENABLE) {
+                        mUploadMsg = uploadMsg
+                        showImageChooseDialog()
+                    }
                 }
 
                 //Android 5.0以上，包括5.0
@@ -216,8 +248,10 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
                     filePathCallback: ValueCallback<Array<Uri>>?,
                     fileChooserParams: FileChooserParams?
                 ): Boolean {
-                    mFilePathCallback = filePathCallback
-                    showImageChooseDialog()
+                    if (IMAGE_UPLOAD_ENABLE) {
+                        mFilePathCallback = filePathCallback
+                        showImageChooseDialog()
+                    }
                     return true
                 }
 
@@ -243,6 +277,37 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
                         mTitleBar?.titleText = title
                     }
                 }
+
+                //视频全屏播放
+                override fun getVideoLoadingProgressView(): View? {
+                    return if (VIDEO_FULL_ENABLE) {
+                        FrameLayout(this@WebviewActivity).apply {
+                            layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT)
+                        }
+                    } else {
+                        super.getVideoLoadingProgressView()
+                    }
+                }
+
+                override fun onShowCustomView(view: View?, callback: CustomViewCallback?) {
+                    super.onShowCustomView(view, callback)
+                    if (VIDEO_FULL_ENABLE) {
+                        showCustomView(view, callback)
+                        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE  //横屏
+                    } else {
+                        super.onShowCustomView(view, callback)
+                    }
+                }
+
+                override fun onHideCustomView() {
+                    if (VIDEO_FULL_ENABLE) {
+                        hideCustomView()
+                        requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT  //竖屏
+                    } else {
+                        super.onHideCustomView()
+                    }
+                }
+
             }
         }
     }
@@ -250,40 +315,49 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
     //拍照或从相册选取照片
     private fun showImageChooseDialog() {
         val dialog = PicGetterDialog()
-        dialog.setOnPicGetterListener(object : OnPicGetterListener {
+        val options = UCrop.Options().apply {
+            setToolbarTitle("裁剪图片")
+            setToolbarColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
+            setStatusBarColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
+            setToolbarWidgetColor(Color.WHITE)
+        }
+        dialog.setAnimationStyle(R.style.AnimTranslateBottom)
+            .setCropOptions(options)
+            .setMaxCropSize(800, 2400)
+            .setOnPicGetterListener(object : OnPicGetterListener {
 
-            override fun onSuccess(bitmap: Bitmap?, picPath: String?) {
-                if (TextUtils.isEmpty(picPath)) {
-                    if (mFilePathCallback != null) {
-                        mFilePathCallback!!.onReceiveValue(arrayOf())
-                        mFilePathCallback = null
-                    } else if (mUploadMsg != null) {
-                        mUploadMsg!!.onReceiveValue(null)
-                        mUploadMsg = null
-                    }
-                } else {
-                    val result = Uri.fromFile(File(picPath))
-                    if (mFilePathCallback != null) {
-                        mFilePathCallback!!.onReceiveValue(arrayOf(result))
-                        mFilePathCallback = null
+                override fun onSuccess(bitmap: Bitmap?, picPath: String?) {
+                    if (TextUtils.isEmpty(picPath)) {
+                        if (mFilePathCallback != null) {
+                            mFilePathCallback!!.onReceiveValue(arrayOf())
+                            mFilePathCallback = null
+                        } else if (mUploadMsg != null) {
+                            mUploadMsg!!.onReceiveValue(null)
+                            mUploadMsg = null
+                        }
                     } else {
-                        mUploadMsg!!.onReceiveValue(result)
-                        mUploadMsg = null
+                        val result = Uri.fromFile(File(picPath))
+                        if (mFilePathCallback != null) {
+                            mFilePathCallback!!.onReceiveValue(arrayOf(result))
+                            mFilePathCallback = null
+                        } else {
+                            mUploadMsg!!.onReceiveValue(result)
+                            mUploadMsg = null
+                        }
                     }
                 }
-            }
 
-            override fun onFailure(errorMsg: String?) {
-                dialog.dismiss()
-                showToast(errorMsg ?: "发生异常了")
-                releaseUploadMessage()
-            }
+                override fun onFailure(errorMsg: String?) {
+                    dialog.dismiss()
+                    showToast(errorMsg ?: "发生异常了")
+                    releaseUploadMessage()
+                }
 
-            override fun onCancel() {
-                releaseUploadMessage()
-            }
+                override fun onCancel() {
+                    releaseUploadMessage()
+                }
 
-        })
+            })
         dialog.show(supportFragmentManager)
     }
 
@@ -295,6 +369,43 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
         if (mUploadMsg != null) {
             mUploadMsg!!.onReceiveValue(null)
             mUploadMsg = null
+        }
+    }
+
+    //视频播放全屏
+    private fun showCustomView(view: View?, callback: WebChromeClient.CustomViewCallback?) {
+        if (mCustomView != null) {
+            callback?.onCustomViewHidden()
+            return
+        }
+        window.decorView
+        val decor = window.decorView as FrameLayout
+        val params = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
+        mFullscreenContainer = FullscreenHolder(this)
+        mFullscreenContainer!!.addView(view, params)
+        decor.addView(mFullscreenContainer, params)
+        mCustomView = view
+        setStatusBarVisibility(false)
+        mCustomViewCallback = callback
+    }
+
+    //隐藏视频全屏
+    private fun hideCustomView() {
+        if (mCustomView == null) {
+            return
+        }
+        setStatusBarVisibility(true)
+        val decor = window.decorView as FrameLayout
+        decor.removeView(mFullscreenContainer)
+        mFullscreenContainer = null
+        mCustomView = null
+        mCustomViewCallback?.onCustomViewHidden()
+    }
+
+    private fun setStatusBarVisibility(visible: Boolean) {
+        StatusBarUtil.darkMode(this)
+        if (visible && mTitleBar != null) {
+            StatusBarUtil.setPaddingTop(this, mTitleBar!!)
         }
     }
 
@@ -325,20 +436,24 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
     //back键控制网页后退
     override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
         if (event?.action == KeyEvent.ACTION_DOWN) {
-            if (keyCode == KeyEvent.KEYCODE_BACK && mWebView != null && mWebView!!.canGoBack()) {
-                mWebView!!.goBack()
-                return true
+            if (keyCode == KeyEvent.KEYCODE_BACK) {
+                if (mCustomView != null) {
+                    hideCustomView()
+                    return true
+                } else if (mWebView != null && mWebView!!.canGoBack()) {
+                    mWebView!!.goBack()
+                    return true
+                }
             }
         }
         return super.onKeyDown(keyCode, event)
     }
 
-    //js调用Android的方法
-//    inner class JavaScriptMethods {
-//        @JavascriptInterface
-//        fun toHome() {
-//            startActivity(MainActivity::class.java)
-//        }
-//    }
+    //视频全屏播放的View
+    private class FullscreenHolder(context: Context) : FrameLayout(context) {
+        init {
+            setBackgroundColor(Color.BLACK)
+        }
+    }
 
 }

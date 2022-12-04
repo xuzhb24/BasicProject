@@ -1,10 +1,11 @@
 package com.android.widget.PhotoViewer
 
-import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
@@ -14,11 +15,9 @@ import com.android.basicproject.databinding.ActivityPhotoViewBinding
 import com.android.util.StatusBar.StatusBarUtil
 import com.android.util.ToastUtil
 import com.android.util.bitmap.BitmapUtil
-import com.android.util.permission.PermissionUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
-import java.io.File
 
 /**
  * Created by xuzhb on 2021/3/30
@@ -27,27 +26,24 @@ import java.io.File
 class PhotoViewActivity : AppCompatActivity() {
 
     companion object {
-        private val REQUEST_PERMISSION: Array<String> = arrayOf(
-            Manifest.permission.READ_EXTERNAL_STORAGE,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-        private const val REQUEST_PERMISSION_CODE = 1
         private const val EXTRA_IMAGE_URL_LIST = "EXTRA_IMAGE_URL_LIST"
+        private const val EXTRA_IMAGE_POSITION = "EXTRA_IMAGE_POSITION"
 
-        fun start(activity: Activity, imageUrlArray: Array<String>?) {
+        fun start(activity: Activity, imageUrlArray: Array<String>?, position: Int = 0) {
             if (imageUrlArray.isNullOrEmpty()) {
                 return
             }
-            start(activity, ArrayList(listOf(*imageUrlArray)))
+            start(activity, ArrayList(listOf(*imageUrlArray)), position)
         }
 
-        fun start(activity: Activity, imageUrlList: ArrayList<String>?) {
+        fun start(activity: Activity, imageUrlList: ArrayList<String>?, position: Int = 0) {
             if (imageUrlList.isNullOrEmpty()) {
                 return
             }
             val intent = Intent(activity, PhotoViewActivity::class.java)
             val bundle = Bundle().apply {
                 putStringArrayList(EXTRA_IMAGE_URL_LIST, imageUrlList)
+                putInt(EXTRA_IMAGE_POSITION, position)
             }
             intent.putExtras(bundle)
             activity.startActivity(intent)
@@ -63,8 +59,12 @@ class PhotoViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityPhotoViewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        StatusBarUtil.darkMode(this, Color.BLACK, 0f, false)
+        StatusBarUtil.darkModeAndPadding(this, binding.rootFl)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            window.navigationBarColor = Color.BLACK
+        }
         mImageUrlList = intent.getStringArrayListExtra(EXTRA_IMAGE_URL_LIST)
+        mCurrentPosition = intent.getIntExtra(EXTRA_IMAGE_POSITION, -1)
         initPhoto(mImageUrlList)
         //关闭
         binding.closeIv.setOnClickListener {
@@ -72,10 +72,8 @@ class PhotoViewActivity : AppCompatActivity() {
         }
         //下载
         binding.downloadIv.setOnClickListener {
-            if (PermissionUtil.requestPermissions(this, REQUEST_PERMISSION_CODE, *REQUEST_PERMISSION)) {
-                if (mCurrentPosition != -1 && !mImageUrlList.isNullOrEmpty()) {
-                    downloadPicture(mImageUrlList!![mCurrentPosition])
-                }
+            if (mCurrentPosition != -1 && !mImageUrlList.isNullOrEmpty()) {
+                downloadPicture(mImageUrlList!![mCurrentPosition])
             }
         }
     }
@@ -85,8 +83,10 @@ class PhotoViewActivity : AppCompatActivity() {
             binding.downloadIv.visibility = View.GONE
             return
         }
-        mCurrentPosition = 0
-        binding.indicatorTv.text = "1/${imageUrlList.size}"
+        if (mCurrentPosition < 0 || mCurrentPosition >= imageUrlList.size) {
+            mCurrentPosition = 0
+        }
+        binding.indicatorTv.text = "${mCurrentPosition + 1}/${imageUrlList.size}"
         binding.photoVp.adapter = PhotoViewAdapter(this, imageUrlList)
         binding.photoVp.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
             override fun onPageScrollStateChanged(state: Int) {
@@ -101,11 +101,12 @@ class PhotoViewActivity : AppCompatActivity() {
             }
         })
         binding.photoVp.offscreenPageLimit = imageUrlList.size
+        binding.photoVp.setCurrentItem(mCurrentPosition, false)
     }
 
     //下载并保存图片
     private fun downloadPicture(url: String) {
-        Glide.with(this).downloadOnly().load(url).into(object : CustomTarget<File>() {
+        Glide.with(this).load(url).into(object : CustomTarget<Drawable>() {
 
             override fun onLoadStarted(placeholder: Drawable?) {
                 super.onLoadStarted(placeholder)
@@ -113,38 +114,17 @@ class PhotoViewActivity : AppCompatActivity() {
 
             override fun onLoadFailed(errorDrawable: Drawable?) {
                 super.onLoadFailed(errorDrawable)
-                ToastUtil.showToast("下载失败")
+                ToastUtil.showToast("下载失败", true)
             }
 
             override fun onLoadCleared(placeholder: Drawable?) {
             }
 
-            override fun onResourceReady(resource: File, transition: Transition<in File>?) {
-                val isSuccess = BitmapUtil.saveImageFileToGallery(applicationContext, resource, "${System.currentTimeMillis()}")
-                ToastUtil.showToast(if (isSuccess) "保存成功" else "保存失败")
+            override fun onResourceReady(resource: Drawable, transition: Transition<in Drawable>?) {
+                val bitmap = (resource as BitmapDrawable).bitmap
+                BitmapUtil.saveBitmapToGallery(this@PhotoViewActivity, bitmap, System.currentTimeMillis().toString() + "")
             }
         })
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        PermissionUtil.onRequestPermissionsResult(
-            this, requestCode, permissions, grantResults,
-            object : PermissionUtil.OnPermissionListener {
-                override fun onPermissionGranted() {
-                    if (mCurrentPosition != -1 && !mImageUrlList.isNullOrEmpty()) {
-                        downloadPicture(mImageUrlList!![mCurrentPosition])
-                    }
-                }
-
-                override fun onPermissionDenied(deniedPermissions: Array<String>) {
-                    ToastUtil.showToast("请先允许权限")
-                }
-
-                override fun onPermissionDeniedForever(deniedForeverPermissions: Array<String>) {
-                }
-
-            })
     }
 
     override fun finish() {

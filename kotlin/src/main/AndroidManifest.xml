@@ -60,7 +60,11 @@
         <activity android:name="com.android.frame.permission.PermissionRequestActivity" />
         <activity android:name="com.android.frame.permission.PermissionFrameActivity" />
         <!--通用WebView-->
-        <activity android:name="com.android.frame.mvc.WebviewActivity" />
+        <activity
+            android:name="com.android.frame.mvc.WebviewActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:hardwareAccelerated="true"
+            android:windowSoftInputMode="stateAlwaysHidden|adjustResize" />
         <!--测试Retrofit-->
         <activity android:name="com.android.frame.http.AATest.TestRetrofitActivity" />
         <activity android:name="com.android.frame.http.AATest.WangYiNewsWebviewActivity" />
@@ -73,6 +77,7 @@
         <activity android:name="com.android.frame.mvc.AATest.TestFragmentMvc" />
         <activity android:name="com.android.frame.mvc.AATest.TestMvcActivity" />
         <activity android:name="com.android.frame.mvc.AATest.TestMvcListActivity" />
+        <activity android:name="com.android.frame.mvc.AATest.TestWebviewActivity" />
         <!--MVP框架-->
         <activity android:name="com.android.frame.mvp.AATest.TestActivityMvp" />
         <activity android:name="com.android.frame.mvp.AATest.TestFragmentMvp" />

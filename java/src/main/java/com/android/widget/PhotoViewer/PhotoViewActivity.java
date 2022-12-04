@@ -1,6 +1,5 @@
 package com.android.widget.PhotoViewer;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -21,7 +20,6 @@ import com.android.java.databinding.ActivityPhotoViewBinding;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;
 import com.android.util.bitmap.BitmapUtil;
-import com.android.util.permission.PermissionUtil;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
@@ -36,7 +34,6 @@ import java.util.List;
  */
 public class PhotoViewActivity extends AppCompatActivity {
 
-    private static final String[] REQUEST_PERMISSION = new String[]{Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE};
     private static final String EXTRA_IMAGE_URL_LIST = "EXTRA_IMAGE_URL_LIST";
     private static final String EXTRA_IMAGE_POSITION = "EXTRA_IMAGE_POSITION";
 
@@ -137,29 +134,6 @@ public class PhotoViewActivity extends AppCompatActivity {
 
             @Override
             public void onLoadCleared(@Nullable Drawable placeholder) {
-
-            }
-        });
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        PermissionUtil.onRequestPermissionsResult(this, requestCode, permissions, grantResults, new PermissionUtil.OnPermissionListener() {
-            @Override
-            public void onPermissionGranted() {
-                if (mCurrentPosition != -1) {
-                    downloadPicture(mImageUrlList.get(mCurrentPosition));
-                }
-            }
-
-            @Override
-            public void onPermissionDenied(String[] deniedPermissions) {
-                ToastUtil.showToast("请先允许权限");
-            }
-
-            @Override
-            public void onPermissionDeniedForever(String[] deniedForeverPermissions) {
 
             }
         });
