@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Environment;
 import android.os.Process;
 import android.util.Log;
 
@@ -60,11 +61,15 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
     }
 
     private void saveExceptionToCache(Throwable e) throws Exception {
-        String fileName = mContext.getCacheDir() + "/log/crash.trace";
+        String fileName = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + mContext.getPackageName() + File.separator + "/log/crash.trace";
+        LogUtil.i(TAG, fileName);
         File file = new File(fileName);
         File dir = file.getParentFile();
         if (!dir.exists()) {
             dir.mkdirs();
+        }
+        if (file.exists() && file.length() > 1024 * 1024) {  //大于1Mb时清空
+            file.delete();
         }
         String time = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file, true)));  //追加在文件末尾
