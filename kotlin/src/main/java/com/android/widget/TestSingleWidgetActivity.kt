@@ -91,6 +91,18 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
         binding.petBtn.setOnClickListener {
             binding.passwordEdittext.clearText()
         }
+        //验证码输入框
+        with(binding.verificationCodeEdittext) {
+            setOnTextChangeListener {
+                binding.vcetTv.text = it
+            }
+            setOnTextCompleteListener {
+                showToast(it)
+            }
+        }
+        binding.vcetBtn.setOnClickListener {
+            binding.verificationCodeEdittext.clearText()
+        }
         //搜索框
         with(binding.searchLayout) {
             setOnTextChangedListener { s, start, before, count ->

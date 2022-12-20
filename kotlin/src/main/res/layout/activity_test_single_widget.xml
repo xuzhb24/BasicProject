@@ -126,6 +126,29 @@
 
             <View style="@style/SingleWidgetDividerLineStyle" />
 
+            <!--验证码输入框-->
+            <com.android.widget.VerificationCodeEditText
+                android:id="@+id/verification_code_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/interval_margin"
+                android:background="#33000000"
+                android:textColor="@color/black"
+                android:textStyle=""
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/vcet_tv"
+                style="@style/SingleWidgetStyle" />
+
+            <Button
+                android:id="@+id/vcet_btn"
+                style="@style/SingleWidgetStyle"
+                android:text="清空" />
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
             <!--搜索框-->
             <com.android.widget.SearchLayout
                 android:id="@+id/search_layout"
