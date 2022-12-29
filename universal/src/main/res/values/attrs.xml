@@ -420,4 +420,15 @@
         <attr name="align" format="boolean" />
     </declare-styleable>
 
+    <!--虚线-->
+    <declare-styleable name="DashLine">
+        <attr name="dashWidth" format="dimension" />
+        <attr name="dashGap" format="dimension" />
+        <attr name="dashColor" format="color" />
+        <attr name="orientation">
+            <enum name="horizontal" value="0" />
+            <enum name="vertical" value="1" />
+        </attr>
+    </declare-styleable>
+
 </resources>

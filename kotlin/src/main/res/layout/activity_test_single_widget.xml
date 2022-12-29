@@ -135,8 +135,8 @@
                 android:layout_marginTop="@dimen/interval_margin"
                 android:background="#33000000"
                 android:textColor="@color/black"
-                android:textStyle=""
-                android:textSize="18sp" />
+                android:textSize="18sp"
+                android:textStyle="" />
 
             <TextView
                 android:id="@+id/vcet_tv"
@@ -211,6 +211,44 @@
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal" />
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
+            <com.android.widget.DashLine
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <com.android.widget.DashLine
+                android:layout_width="match_parent"
+                android:layout_height="5dp"
+                android:layout_marginTop="15dp"
+                app:dashColor="#FF923F"
+                app:dashGap="5dp"
+                app:dashWidth="10dp"
+                app:orientation="horizontal" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="150dp"
+                android:layout_marginStart="100dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="100dp">
+
+                <com.android.widget.DashLine
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    app:orientation="vertical" />
+
+                <com.android.widget.DashLine
+                    android:layout_width="5dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="right"
+                    app:dashColor="#FF923F"
+                    app:dashGap="5dp"
+                    app:dashWidth="10dp"
+                    app:orientation="vertical" />
+
+            </FrameLayout>
 
             <View style="@style/SingleWidgetDividerLineStyle" />
 
