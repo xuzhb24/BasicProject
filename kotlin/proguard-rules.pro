@@ -130,6 +130,18 @@
 -dontwarn org.joda.**
 #---------------------------------jdk8 end---------------------------------
 
+#---------------------------------ViewBinding start---------------------------------
+-keep class * implements androidx.viewbinding.ViewBinding {
+    *;
+}
+#---------------------------------ViewBinding end---------------------------------
+
+#---------------------------------ViewModel start---------------------------------
+-keepclassmembers public class * extends androidx.lifecycle.ViewModel {
+    public <init>(...);
+}
+#---------------------------------ViewModel end---------------------------------
+
 #---------------------------------retrofit start---------------------------------
 -dontwarn okio.**
 -dontwarn javax.annotation.**
