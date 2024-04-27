@@ -13,6 +13,9 @@ import android.util.Log;
 
 import com.android.util.LogUtil;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by xuzhb on 2021/4/13
  */
@@ -410,17 +413,10 @@ public class TextLine {
                 String chars_ = mText.subSequence(delta + start, delta + end).toString();
                 LogUtil.i(TAG, "layout drawTextRun mNeedJustify:" + chars_);
                 float[] widths = new float[chars_.length()];
-                if (isNormalString(chars_)) {
-                    mPaint.getTextWidths(chars_, widths);
-                    for (float width : widths) {
-                        charTotalLen += width;
-                    }
-                } else {
-                    for (int i = 0; i < chars_.length(); i++) {
-                        float charWidth = mPaint.measureText(String.valueOf(chars_.charAt(i)));
-                        widths[i] = charWidth;
-                        charTotalLen += charWidth;
-                    }
+                for (int i = 0; i < chars_.length(); i++) {
+                    float charWidth = mPaint.measureText(String.valueOf(chars_.charAt(i)));
+                    widths[i] = charWidth;
+                    charTotalLen += charWidth;
                 }
                 if (mLen > count) {
                     useWidth = mWidth * count / mLen;
@@ -440,7 +436,19 @@ public class TextLine {
                 for (int j = 0; j < count; j++) {
                     String char_ = chars_.substring(j, j + 1);
                     float drawX = charLen + mAddedWidth * j;
-                    c.drawText(char_, drawX, y, wp);
+                    //绘制中文破折号——
+                    if (chars_.contains("——")) {
+                        if (TextUtils.equals(char_, "—") && isDashIndex(chars_, j)) {
+                            drawX = charLen + mAddedWidth * j + mAddedWidth / 2f;
+                            c.drawText("——", drawX, y, wp);
+                        } else if (TextUtils.equals(char_, "—") && isDashIndex(chars_, j - 1)) {
+
+                        } else {
+                            c.drawText(char_, drawX, y, wp);
+                        }
+                    } else {
+                        c.drawText(char_, drawX, y, wp);
+                    }
                     charLen += widths[j];
                     mLastUseExtraWidth += mAddedWidth;
                 }
@@ -450,14 +458,18 @@ public class TextLine {
         }
     }
 
-    private boolean isNormalString(String str) {
-        if (TextUtils.isEmpty(str)) {
-            return true;
-        }
-        if (str.contains("——")) {  //Paint.getTextWidths测量中文破折号——宽度时会出错，导致绘制出错
+    //是否是破折号
+    private boolean isDashIndex(String text, int position) {
+        if (TextUtils.isEmpty(text)) {
             return false;
         }
-        return true;
+        List<Integer> list = new ArrayList<>();
+        int index = text.indexOf("——");
+        while (index >= 0) {
+            list.add(index);
+            index = text.indexOf("——", index + 2);
+        }
+        return list.contains(position);
     }
 
     private void expandMetricsFromPaint(Paint.FontMetricsInt fmi, TextPaint wp) {
