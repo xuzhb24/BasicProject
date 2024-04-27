@@ -46,4 +46,10 @@ object DrawableUtil {
         }
     }
 
+    fun createOvalShape(color: Int, width: Int, height: Int) = GradientDrawable().apply {
+        this.shape = GradientDrawable.OVAL
+        setColor(color)
+        setSize(width, height)
+    }
+
 }

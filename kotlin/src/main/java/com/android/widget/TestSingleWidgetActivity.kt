@@ -120,13 +120,15 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
         }
         //轮播图和自定义指示器
         val imageList: MutableList<String> = mutableListOf(
-            "http://img8.zol.com.cn/bbs/upload/23197/23196119.jpg",
-            "http://pic1.win4000.com/wallpaper/b/55597435bb036.jpg",
-            "http://attach.bbs.miui.com/forum/201306/23/110328s72xxse7lfis9fnd.jpg",
-            "http://attach.bbs.miui.com/forum/201304/25/195151szk8umd8or8fmfa5.jpg",
-            "http://img1.imgtn.bdimg.com/it/u=2391986294,913424495&fm=26&gp=0.jpg"
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage109.360doc.com%2FDownloadImg%2F2021%2F04%2F0713%2F219519055_1_20210407012803425&refer=http%3A%2F%2Fimage109.360doc.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1716798719&t=91456385a0c39fd59a69b300efda9238",
+            "https://img0.baidu.com/it/u=3773090653,2338589126&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500",
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage109.360doc.com%2FDownloadImg%2F2021%2F07%2F0618%2F225751616_7_20210706062610207&refer=http%3A%2F%2Fimage109.360doc.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1716798719&t=5007277c850d975f82a25c37e9dea041",
+            "https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fimage109.360doc.com%2FDownloadImg%2F2021%2F12%2F2921%2F236804917_4_20211229090912536&refer=http%3A%2F%2Fimage109.360doc.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=auto?sec=1716798719&t=b4675bd910a3c35e8c418ddaee52e2ad",
+            "https://img2.baidu.com/it/u=1531076843,2123969899&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500"
         )
-        binding.idicatorLayout.setIndicatorCount(imageList.size)
+        binding.idicatorLayout1.setIndicatorCount(imageList.size)
+        binding.idicatorLayout2.setIndicatorCount(imageList.size)
+        binding.idicatorLayout3.setIndicatorCount(imageList.size)
         binding.banner.setBannerStyle(BannerConfig.NOT_INDICATOR)  //设置banner样式，不显示指示器和标题
 //            .setBannerStyle(BannerConfig.CIRCLE_INDICATOR)
 //            .setIndicatorGravity(Gravity.CENTER)  //设置指示器位置
@@ -150,7 +152,9 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
             }
 
             override fun onPageSelected(p0: Int) {
-                binding.idicatorLayout.setCurrentPosition(p0)
+                binding.idicatorLayout1.setCurrentPosition(p0)
+                binding.idicatorLayout2.setCurrentPosition(p0)
+                binding.idicatorLayout3.setCurrentPosition(p0)
             }
 
         })

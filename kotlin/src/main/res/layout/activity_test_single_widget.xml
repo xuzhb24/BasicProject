@@ -206,11 +206,33 @@
                 app:image_scale_type="fit_xy" />
 
             <com.android.widget.IndicatorLayout
-                android:id="@+id/idicatorLayout"
+                android:id="@+id/idicatorLayout1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="10dp"
                 android:gravity="center_horizontal" />
+
+            <com.android.widget.IndicatorLayout
+                android:id="@+id/idicatorLayout2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:gravity="center_horizontal"
+                app:itemMargin="20dp"
+                app:normalColor="@color/gray"
+                app:normalSize="20dp"
+                app:selectedColor="@color/darkBlue"
+                app:selectedWidth="50dp" />
+
+            <com.android.widget.IndicatorLayout
+                android:id="@+id/idicatorLayout3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_horizontal"
+                app:itemMargin="10dp"
+                app:normalSize="10dp"
+                app:selectedWidth="10dp" />
 
             <View style="@style/SingleWidgetDividerLineStyle" />
 
