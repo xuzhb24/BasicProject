@@ -410,9 +410,17 @@ public class TextLine {
                 String chars_ = mText.subSequence(delta + start, delta + end).toString();
                 LogUtil.i(TAG, "layout drawTextRun mNeedJustify:" + chars_);
                 float[] widths = new float[chars_.length()];
-                mPaint.getTextWidths(chars_, widths);
-                for (float width : widths) {
-                    charTotalLen += width;
+                if (isNormalString(chars_)) {
+                    mPaint.getTextWidths(chars_, widths);
+                    for (float width : widths) {
+                        charTotalLen += width;
+                    }
+                } else {
+                    for (int i = 0; i < chars_.length(); i++) {
+                        float charWidth = mPaint.measureText(String.valueOf(chars_.charAt(i)));
+                        widths[i] = charWidth;
+                        charTotalLen += charWidth;
+                    }
                 }
                 if (mLen > count) {
                     useWidth = mWidth * count / mLen;
@@ -440,6 +448,16 @@ public class TextLine {
                 c.drawText(mText, delta + start, delta + end, x, y, wp);
             }
         }
+    }
+
+    private boolean isNormalString(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return true;
+        }
+        if (str.contains("——")) {  //Paint.getTextWidths测量中文破折号——宽度时会出错，导致绘制出错
+            return false;
+        }
+        return true;
     }
 
     private void expandMetricsFromPaint(Paint.FontMetricsInt fmi, TextPaint wp) {
