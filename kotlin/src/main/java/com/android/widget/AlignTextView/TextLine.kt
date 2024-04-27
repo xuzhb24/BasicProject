@@ -495,17 +495,10 @@ class TextLine {
                 val chars_ = mText?.subSequence(delta + start, delta + end).toString()
                 LogUtil.i(TAG, "layout drawTextRun mNeedJustify:$chars_")
                 val widths = FloatArray(chars_.length)
-                if (isNormalString(chars_)) {
-                    mPaint?.getTextWidths(chars_, widths)
-                    for (width in widths) {
-                        charTotalLen += width.toInt()
-                    }
-                } else {
-                    for (i in chars_.indices) {
-                        val charWidth = mPaint?.measureText(chars_[i].toString()) ?: 0f
-                        widths[i] = charWidth
-                        charTotalLen += charWidth
-                    }
+                for (i in chars_.indices) {
+                    val charWidth = mPaint?.measureText(chars_[i].toString()) ?: 0f
+                    widths[i] = charWidth
+                    charTotalLen += charWidth
                 }
                 if (mLen > count) {
                     useWidth = mWidth * count / mLen
@@ -524,8 +517,20 @@ class TextLine {
                 }
                 for (j in 0 until count) {
                     val char_ = chars_.substring(j, j + 1)
-                    val drawX = charLen + mAddedWidth * j
-                    c.drawText(char_, drawX, y.toFloat(), wp)
+                    var drawX = charLen + mAddedWidth * j
+                    //绘制中文破折号——
+                    if (chars_.contains("——")) {
+                        if (char_ == "—" && isDashIndex(chars_, j)) {
+                            drawX = charLen + mAddedWidth * j + mAddedWidth / 2f
+                            c.drawText("——", drawX, y.toFloat(), wp)
+                        } else if (char_ == "—" && isDashIndex(chars_, j - 1)) {
+
+                        } else {
+                            c.drawText(char_, drawX, y.toFloat(), wp)
+                        }
+                    } else {
+                        c.drawText(char_, drawX, y.toFloat(), wp)
+                    }
                     charLen += widths[j]
                     mLastUseExtraWidth += mAddedWidth
                 }
@@ -535,14 +540,18 @@ class TextLine {
         }
     }
 
-    private fun isNormalString(str: String?): Boolean {
-        if (str.isNullOrBlank()) {
-            return true
-        }
-        if (str.contains("——")) {  //Paint.getTextWidths测量中文破折号——宽度时会出错，导致绘制出错
+    //是否是破折号
+    private fun isDashIndex(text: String?, position: Int): Boolean {
+        if (text.isNullOrBlank()) {
             return false
         }
-        return true
+        val list: MutableList<Int> = mutableListOf()
+        var index = text.indexOf("——")
+        while (index >= 0) {
+            list.add(index)
+            index = text.indexOf("——", index + 2)
+        }
+        return list.contains(position)
     }
 
     private fun expandMetricsFromPaint(fmi: Paint.FontMetricsInt, wp: TextPaint) {
