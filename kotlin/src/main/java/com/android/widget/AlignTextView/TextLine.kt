@@ -491,18 +491,26 @@ class TextLine {
             if (mNeedJustify) {
                 var useWidth = mWidth
                 var charLen = x
-                var charTotalLen = 0
+                var charTotalLen = 0f
                 val chars_ = mText?.subSequence(delta + start, delta + end).toString()
                 LogUtil.i(TAG, "layout drawTextRun mNeedJustify:$chars_")
                 val widths = FloatArray(chars_.length)
-                mPaint?.getTextWidths(chars_, widths)
-                for (width in widths) {
-                    charTotalLen += width.toInt()
+                if (isNormalString(chars_)) {
+                    mPaint?.getTextWidths(chars_, widths)
+                    for (width in widths) {
+                        charTotalLen += width.toInt()
+                    }
+                } else {
+                    for (i in chars_.indices) {
+                        val charWidth = mPaint?.measureText(chars_[i].toString()) ?: 0f
+                        widths[i] = charWidth
+                        charTotalLen += charWidth
+                    }
                 }
                 if (mLen > count) {
                     useWidth = mWidth * count / mLen
                     if (useWidth < charTotalLen) {
-                        useWidth = charTotalLen.toFloat()
+                        useWidth = charTotalLen
                     }
                 }
                 LogUtil.i(TAG, "layout count:$count mLen:$mLen")
@@ -525,6 +533,16 @@ class TextLine {
                 mText?.let { c.drawText(it, delta + start, delta + end, x, y.toFloat(), wp) }
             }
         }
+    }
+
+    private fun isNormalString(str: String?): Boolean {
+        if (str.isNullOrBlank()) {
+            return true
+        }
+        if (str.contains("——")) {  //Paint.getTextWidths测量中文破折号——宽度时会出错，导致绘制出错
+            return false
+        }
+        return true
     }
 
     private fun expandMetricsFromPaint(fmi: Paint.FontMetricsInt, wp: TextPaint) {

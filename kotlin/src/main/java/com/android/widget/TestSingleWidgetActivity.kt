@@ -166,7 +166,7 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
             "a", "b", "c", "d", "e", "f", "t", "g", "q", "w", "e",
             "p", "l", "k", "i", "n", "m", "G", "H", "J", "I", "L", "C", "V", "B"
             , "你", "我", "他", "天", "地", "动", "进", "啊", "去", "改", "酒",
-            "一", "会", "年", "收", "好", "嗯", "这", "有",
+            "一", "会", "年", "收", "好", "嗯", "这", "有", "——",
             /*"\r", "\n", "\r\n", "\t",*/ "，", "！", "%", "@"
         )
         val sb = StringBuilder()
