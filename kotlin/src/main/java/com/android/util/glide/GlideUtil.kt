@@ -22,6 +22,54 @@ import com.bumptech.glide.request.transition.Transition
  */
 object GlideUtil {
 
+    //从网络加载并显示图片，并且根据图片宽高比调整ImageView宽度（ImageView高度固定）
+    fun showImageAndAdjustWidth(
+        iv: ImageView,
+        url: String,
+        defWidth: Int,
+        transformation: BitmapTransformation? = null,
+        @DrawableRes placeResId: Int = -1
+    ) {
+        if (placeResId != -1 && defWidth > 0) {
+            val params = iv.layoutParams
+            params.width = defWidth
+            iv.layoutParams = params
+            showImageFromResource(iv, placeResId, transformation)
+        }
+        Glide.with(iv).asBitmap().load(url).into(object : SimpleTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                val params = iv.layoutParams
+                params.width = (resource.width.toFloat() / resource.height.toFloat() * iv.height).toInt()
+                iv.layoutParams = params
+                showImageFromUrl(iv, url, transformation)
+            }
+        })
+    }
+
+    //从网络加载并显示图片，并且根据图片宽高比调整ImageView高度（ImageView宽度固定）
+    fun showImageAndAdjustHeight(
+        iv: ImageView,
+        url: String,
+        defHeight: Int,
+        transformation: BitmapTransformation? = null,
+        @DrawableRes placeResId: Int = -1
+    ) {
+        if (placeResId != -1 && defHeight > 0) {
+            val params = iv.layoutParams
+            params.height = defHeight
+            iv.layoutParams = params
+            showImageFromResource(iv, placeResId, transformation)
+        }
+        Glide.with(iv).asBitmap().load(url).into(object : SimpleTarget<Bitmap>() {
+            override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
+                val params = iv.layoutParams
+                params.height = (resource.height.toFloat() / resource.width.toFloat() * iv.width).toInt()
+                iv.layoutParams = params
+                showImageFromUrl(iv, url, transformation)
+            }
+        })
+    }
+
     //从网络加载并显示图片
     fun showImageFromUrl(
         iv: ImageView,

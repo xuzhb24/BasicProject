@@ -85,6 +85,20 @@
                 android:layout_marginTop="15dp"
                 android:scaleType="centerCrop" />
 
+            <ImageView
+                android:id="@+id/iv10"
+                android:layout_width="wrap_content"
+                android:layout_height="100dp"
+                android:layout_marginTop="15dp"
+                android:scaleType="centerCrop" />
+
+            <ImageView
+                android:id="@+id/iv11"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:scaleType="fitXY" />
+
         </LinearLayout>
 
     </ScrollView>
