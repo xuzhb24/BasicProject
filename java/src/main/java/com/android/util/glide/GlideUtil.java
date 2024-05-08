@@ -3,6 +3,7 @@ package com.android.util.glide;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import androidx.annotation.DrawableRes;
@@ -25,6 +26,44 @@ import com.bumptech.glide.request.transition.Transition;
  * Desc:Glide工具类
  */
 public class GlideUtil {
+
+    //从网络加载并显示图片，并且根据图片宽高比调整ImageView宽度（ImageView高度固定）
+    public static void showImageAndAdjustWidth(ImageView iv, String url, BitmapTransformation transformation, @DrawableRes int placeResId, int defWidth) {
+        if (placeResId != -1 && defWidth > 0) {
+            ViewGroup.LayoutParams params = iv.getLayoutParams();
+            params.width = defWidth;
+            iv.setLayoutParams(params);
+            showImageFromResource(iv, placeResId, transformation);
+        }
+        Glide.with(iv).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                ViewGroup.LayoutParams params = iv.getLayoutParams();
+                params.width = (int) (resource.getWidth() / (float) resource.getHeight() * iv.getHeight());
+                iv.setLayoutParams(params);
+                showImageFromUrl(iv, url, transformation, -1, -1);
+            }
+        });
+    }
+
+    //从网络加载并显示图片，并且根据图片宽高比调整ImageView高度（ImageView宽度固定）
+    public static void showImageAndAdjustHeight(ImageView iv, String url, BitmapTransformation transformation, @DrawableRes int placeResId, int defHeight) {
+        if (placeResId != -1 && defHeight > 0) {
+            ViewGroup.LayoutParams params = iv.getLayoutParams();
+            params.height = defHeight;
+            iv.setLayoutParams(params);
+            showImageFromResource(iv, placeResId, transformation);
+        }
+        Glide.with(iv).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                ViewGroup.LayoutParams params = iv.getLayoutParams();
+                params.height = (int) (resource.getHeight() / (float) resource.getWidth() * iv.getWidth());
+                iv.setLayoutParams(params);
+                showImageFromUrl(iv, url, transformation, -1, -1);
+            }
+        });
+    }
 
     //从网络加载并显示图片
     public static void showImageFromUrl(ImageView iv, String url, BitmapTransformation transformation, @DrawableRes int placeResId, @DrawableRes int errorResId) {

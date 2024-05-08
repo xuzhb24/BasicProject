@@ -15,7 +15,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
  */
 public class TestGlideActivity extends BaseActivity<ActivityTestGlideBinding> {
 
-    private String imageUrl = "https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3225163326,3627210682&fm=26&gp=0.jpg";
+    private String imageUrl = "https://img2.baidu.com/it/u=1531076843,2123969899&fm=253&fmt=auto&app=138&f=JPEG?w=750&h=500";
 
     @Override
     public void handleView(Bundle savedInstanceState) {
@@ -64,6 +64,13 @@ public class TestGlideActivity extends BaseActivity<ActivityTestGlideBinding> {
         GlideUtil.loadUrlAsBitmap(this, imageUrl, resource -> {
             binding.iv9.setImageBitmap(resource);
         });
+        GlideUtil.showImageAndAdjustWidth(binding.iv10, imageUrl,
+                new RoundedCorners(SizeUtil.dp2pxInt(20f)),
+                R.drawable.ic_bitmap, SizeUtil.dp2pxInt(200f)
+        );
+        GlideUtil.showImageAndAdjustHeight(binding.iv11, imageUrl, null,
+                R.drawable.ic_bitmap, SizeUtil.dp2pxInt(100f)
+        );
     }
 
     @Override
