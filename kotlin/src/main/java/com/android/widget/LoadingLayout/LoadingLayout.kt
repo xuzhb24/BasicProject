@@ -73,6 +73,8 @@ class LoadingLayout @JvmOverloads constructor(
             setActionText(mActionBtn, value)
         }
     private var intercept: Boolean = true  //是否拦截点击事件，为true时底下的View无法收到点击事件
+    private var isStateFixed = false       //设置这个变量的目的是保证在一次加载过程中Empty、Fail、Complete只能设置一次
+    private var hasStateSetted = false     //状态是否设置过
 
     //获取根布局，以便设置布局的LayoutParams
     fun getRootLayout(): LinearLayout = mRootLayout
@@ -112,21 +114,38 @@ class LoadingLayout @JvmOverloads constructor(
 
     //开始加载
     fun loadStart() {
+        isStateFixed = false
+        hasStateSetted = false
         setLoadState(STATE_LOADING)
     }
 
     //无数据
-    fun loadEmpty() {
+    fun loadEmpty(isStateFixed: Boolean = false) {
+        if (this.isStateFixed && hasStateSetted) {
+            return
+        }
+        this.isStateFixed = isStateFixed
+        this.hasStateSetted = true
         setLoadState(STATE_EMPTY)
     }
 
     //加载失败
-    fun loadFail() {
+    fun loadFail(isStateFixed: Boolean = false) {
+        if (this.isStateFixed && hasStateSetted) {
+            return
+        }
+        this.isStateFixed = isStateFixed
+        this.hasStateSetted = true
         setLoadState(STATE_FAIL)
     }
 
     //加载完成，则隐藏
-    fun loadComplete() {
+    fun loadComplete(isStateFixed: Boolean = false) {
+        if (this.isStateFixed && hasStateSetted) {
+            return
+        }
+        this.isStateFixed = isStateFixed
+        this.hasStateSetted = true
         setLoadState(STATE_HIDE)
     }
 
