@@ -65,11 +65,10 @@ public class TestGlideActivity extends BaseActivity<ActivityTestGlideBinding> {
             binding.iv9.setImageBitmap(resource);
         });
         GlideUtil.showImageAndAdjustWidth(binding.iv10, imageUrl,
-                new RoundedCorners(SizeUtil.dp2pxInt(20f)),
-                R.drawable.ic_bitmap, SizeUtil.dp2pxInt(200f)
+                SizeUtil.dp2pxInt(200f), SizeUtil.dp2pxInt(100f), -1, R.drawable.ic_bitmap
         );
-        GlideUtil.showImageAndAdjustHeight(binding.iv11, imageUrl, null,
-                R.drawable.ic_bitmap, SizeUtil.dp2pxInt(100f)
+        GlideUtil.showImageAndAdjustHeight(binding.iv11, imageUrl,
+                SizeUtil.dp2pxInt(200f), SizeUtil.dp2pxInt(100f), R.drawable.ic_bg, -1
         );
     }
 

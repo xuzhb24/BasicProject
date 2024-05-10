@@ -27,40 +27,82 @@ import com.bumptech.glide.request.transition.Transition;
  */
 public class GlideUtil {
 
-    //从网络加载并显示图片，并且根据图片宽高比调整ImageView宽度（ImageView高度固定）
-    public static void showImageAndAdjustWidth(ImageView iv, String url, BitmapTransformation transformation, @DrawableRes int placeResId, int defWidth) {
-        if (placeResId != -1 && defWidth > 0) {
+    /**
+     * 从网络加载并显示图片，并且根据图片宽高比调整ImageView宽度（ImageView高度固定）
+     *
+     * @param defWidth   默认图片宽度
+     * @param defHeight  默认图片高度
+     * @param placeResId 占位图
+     * @param errorResId 错误图
+     */
+    public static void showImageAndAdjustWidth(ImageView iv, String url, int defWidth, int defHeight, @DrawableRes int placeResId, @DrawableRes int errorResId) {
+        if (placeResId != -1 && defWidth > 0 && defHeight > 0) {
             ViewGroup.LayoutParams params = iv.getLayoutParams();
             params.width = defWidth;
+            params.height = defHeight;
             iv.setLayoutParams(params);
-            showImageFromResource(iv, placeResId, transformation);
+            iv.setImageResource(placeResId);
         }
         Glide.with(iv).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 ViewGroup.LayoutParams params = iv.getLayoutParams();
-                params.width = (int) (resource.getWidth() / (float) resource.getHeight() * iv.getHeight());
+                params.width = (int) (resource.getWidth() / (float) resource.getHeight() * defHeight);  //为什么手动传ImageView高度，因为ImageView刚布局时可能测量高度为0
+                params.height = defHeight;
                 iv.setLayoutParams(params);
-                showImageFromUrl(iv, url, transformation, -1, -1);
+                iv.setImageBitmap(Bitmap.createScaledBitmap(resource, params.width, params.height, true));
+            }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                super.onLoadFailed(errorDrawable);
+                if (errorResId != -1 && defWidth > 0 && defHeight > 0) {
+                    ViewGroup.LayoutParams params = iv.getLayoutParams();
+                    params.width = defWidth;
+                    params.height = defHeight;
+                    iv.setLayoutParams(params);
+                    iv.setImageResource(errorResId);
+                }
             }
         });
     }
 
-    //从网络加载并显示图片，并且根据图片宽高比调整ImageView高度（ImageView宽度固定）
-    public static void showImageAndAdjustHeight(ImageView iv, String url, BitmapTransformation transformation, @DrawableRes int placeResId, int defHeight) {
-        if (placeResId != -1 && defHeight > 0) {
+    /**
+     * 从网络加载并显示图片，并且根据图片宽高比调整ImageView高度（ImageView宽度固定）
+     *
+     * @param defWidth   默认图片宽度
+     * @param defHeight  默认图片高度
+     * @param placeResId 占位图
+     * @param errorResId 错误图
+     */
+    public static void showImageAndAdjustHeight(ImageView iv, String url, int defWidth, int defHeight, @DrawableRes int placeResId, @DrawableRes int errorResId) {
+        if (placeResId != -1 && defWidth > 0 && defHeight > 0) {
             ViewGroup.LayoutParams params = iv.getLayoutParams();
+            params.width = defWidth;
             params.height = defHeight;
             iv.setLayoutParams(params);
-            showImageFromResource(iv, placeResId, transformation);
+            iv.setImageResource(placeResId);
         }
         Glide.with(iv).asBitmap().load(url).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
                 ViewGroup.LayoutParams params = iv.getLayoutParams();
-                params.height = (int) (resource.getHeight() / (float) resource.getWidth() * iv.getWidth());
+                params.width = defWidth;
+                params.height = (int) (resource.getHeight() / (float) resource.getWidth() * defWidth);  //为什么手动传ImageView宽度，因为ImageView刚布局时可能测量宽度为0
                 iv.setLayoutParams(params);
-                showImageFromUrl(iv, url, transformation, -1, -1);
+                iv.setImageBitmap(Bitmap.createScaledBitmap(resource, params.width, params.height, true));
+            }
+
+            @Override
+            public void onLoadFailed(@Nullable Drawable errorDrawable) {
+                super.onLoadFailed(errorDrawable);
+                if (errorResId != -1 && defWidth > 0 && defHeight > 0) {
+                    ViewGroup.LayoutParams params = iv.getLayoutParams();
+                    params.width = defWidth;
+                    params.height = defHeight;
+                    iv.setLayoutParams(params);
+                    iv.setImageResource(errorResId);
+                }
             }
         });
     }
