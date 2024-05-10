@@ -22,50 +22,92 @@ import com.bumptech.glide.request.transition.Transition
  */
 object GlideUtil {
 
-    //从网络加载并显示图片，并且根据图片宽高比调整ImageView宽度（ImageView高度固定）
+    /**
+     * 从网络加载并显示图片，并且根据图片宽高比调整ImageView宽度（ImageView高度固定）
+     *
+     * @param defWidth   默认图片宽度
+     * @param defHeight  默认图片高度
+     * @param placeResId 占位图
+     * @param errorResId 错误图
+     */
     fun showImageAndAdjustWidth(
         iv: ImageView,
         url: String,
         defWidth: Int,
-        transformation: BitmapTransformation? = null,
-        @DrawableRes placeResId: Int = -1
+        defHeight: Int,
+        @DrawableRes placeResId: Int = -1,
+        @DrawableRes errorResId: Int = -1
     ) {
-        if (placeResId != -1 && defWidth > 0) {
+        if (placeResId != -1 && defWidth > 0 && defHeight > 0) {
             val params = iv.layoutParams
             params.width = defWidth
+            params.height = defHeight
             iv.layoutParams = params
-            showImageFromResource(iv, placeResId, transformation)
+            iv.setImageResource(placeResId)
         }
         Glide.with(iv).asBitmap().load(url).into(object : SimpleTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 val params = iv.layoutParams
-                params.width = (resource.width.toFloat() / resource.height.toFloat() * iv.height).toInt()
+                params.width = (resource.width.toFloat() / resource.height.toFloat() * defHeight).toInt()  //为什么手动传ImageView高度，因为ImageView刚布局时可能测量高度为0
+                params.height = defHeight
                 iv.layoutParams = params
-                showImageFromUrl(iv, url, transformation)
+                iv.setImageBitmap(Bitmap.createScaledBitmap(resource, params.width, params.height, true))
+            }
+
+            override fun onLoadFailed(errorDrawable: Drawable?) {
+                super.onLoadFailed(errorDrawable)
+                if (errorResId != -1 && defWidth > 0 && defHeight > 0) {
+                    val params = iv.layoutParams
+                    params.width = defWidth
+                    params.height = defHeight
+                    iv.layoutParams = params
+                    iv.setImageResource(errorResId)
+                }
             }
         })
     }
 
-    //从网络加载并显示图片，并且根据图片宽高比调整ImageView高度（ImageView宽度固定）
+    /**
+     * 从网络加载并显示图片，并且根据图片宽高比调整ImageView高度（ImageView宽度固定）
+     *
+     * @param defWidth   默认图片宽度
+     * @param defHeight  默认图片高度
+     * @param placeResId 占位图
+     * @param errorResId 错误图
+     */
     fun showImageAndAdjustHeight(
         iv: ImageView,
         url: String,
+        defWidth: Int,
         defHeight: Int,
-        transformation: BitmapTransformation? = null,
-        @DrawableRes placeResId: Int = -1
+        @DrawableRes placeResId: Int = -1,
+        @DrawableRes errorResId: Int = -1
     ) {
-        if (placeResId != -1 && defHeight > 0) {
+        if (placeResId != -1 && defWidth > 0 && defHeight > 0) {
             val params = iv.layoutParams
+            params.width = defWidth
             params.height = defHeight
             iv.layoutParams = params
-            showImageFromResource(iv, placeResId, transformation)
+            iv.setImageResource(placeResId)
         }
         Glide.with(iv).asBitmap().load(url).into(object : SimpleTarget<Bitmap>() {
             override fun onResourceReady(resource: Bitmap, transition: Transition<in Bitmap>?) {
                 val params = iv.layoutParams
-                params.height = (resource.height.toFloat() / resource.width.toFloat() * iv.width).toInt()
+                params.width = defWidth
+                params.height = (resource.height.toFloat() / resource.width.toFloat() * defWidth).toInt()  //为什么手动传ImageView宽度，因为ImageView刚布局时可能测量宽度为0
                 iv.layoutParams = params
-                showImageFromUrl(iv, url, transformation)
+                iv.setImageBitmap(Bitmap.createScaledBitmap(resource, params.width, params.height, true))
+            }
+
+            override fun onLoadFailed(errorDrawable: Drawable?) {
+                super.onLoadFailed(errorDrawable)
+                if (errorResId != -1 && defWidth > 0 && defHeight > 0) {
+                    val params = iv.layoutParams
+                    params.width = defWidth
+                    params.height = defHeight
+                    iv.layoutParams = params
+                    iv.setImageResource(errorResId)
+                }
             }
         })
     }

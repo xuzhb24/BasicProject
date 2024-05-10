@@ -14,7 +14,7 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
  */
 class TestGlideActivity : BaseActivity<ActivityTestGlideBinding>() {
 
-    private val imageUrl = "https://img2.baidu.com/it/u=3750518885,105706163&fm=253&fmt=auto&app=138&f=JPEG?w=560&h=463"
+    private val imageUrl = "https://img2.baidu.com/it/u=2633882596,2638360418&fm=253&fmt=auto&app=120&f=JPEG?w=3840&h=2400"
 
     override fun handleView(savedInstanceState: Bundle?) {
         //centerCrop（不会拉伸）、圆角20dp、正常显示
@@ -62,14 +62,12 @@ class TestGlideActivity : BaseActivity<ActivityTestGlideBinding>() {
         GlideUtil.loadUrlAsBitmap(this, imageUrl) {
             binding.iv9.setImageBitmap(it)
         }
-        GlideUtil.showImageAndAdjustWidth(
-            binding.iv10, imageUrl, SizeUtil.dp2pxInt(200f),
-            RoundedCorners(SizeUtil.dp2pxInt(20f)), R.drawable.ic_bitmap
-        )
-        GlideUtil.showImageAndAdjustHeight(
-            binding.iv11, imageUrl, SizeUtil.dp2pxInt(100f),
-            null, R.drawable.ic_bitmap
-        )
+        GlideUtil.showImageAndAdjustWidth(binding.iv10, imageUrl,
+                SizeUtil.dp2pxInt(200f), SizeUtil.dp2pxInt(100f), -1, R.drawable.ic_bitmap
+        );
+        GlideUtil.showImageAndAdjustHeight(binding.iv11, imageUrl,
+                SizeUtil.dp2pxInt(200f), SizeUtil.dp2pxInt(100f), R.drawable.ic_bg, -1
+        );
     }
 
     override fun initListener() {
