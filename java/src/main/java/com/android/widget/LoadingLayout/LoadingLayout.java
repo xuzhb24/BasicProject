@@ -41,6 +41,8 @@ public class LoadingLayout extends LinearLayout {
     private String failDescText;     //加载失败的文本描述
     private String failActionText;   //重试的文本描述
     private boolean intercept;       //是否拦截点击事件，为true时底下的View无法收到点击事件
+    private boolean isStateFixed;    //设置这个变量的目的是保证在一次加载过程中Empty、Fail、Complete只能设置一次
+    private boolean hasStateSetted;  //状态是否设置过
 
     public void setLoadingSrc(Drawable loadingSrc) {
         this.loadingSrc = loadingSrc;
@@ -147,21 +149,53 @@ public class LoadingLayout extends LinearLayout {
 
     //开始加载
     public void loadStart() {
+        isStateFixed = false;
+        hasStateSetted = false;
         setLoadState(STATE_LOADING);
     }
 
     //无数据
     public void loadEmpty() {
+        loadEmpty(false);
+    }
+
+    //无数据
+    public void loadEmpty(boolean isStateFixed) {
+        if (this.isStateFixed && hasStateSetted) {
+            return;
+        }
+        this.isStateFixed = isStateFixed;
+        this.hasStateSetted = true;
         setLoadState(STATE_EMPTY);
     }
 
     //加载失败
     public void loadFail() {
+        loadFail(false);
+    }
+
+    //加载失败
+    public void loadFail(boolean isStateFixed) {
+        if (this.isStateFixed && hasStateSetted) {
+            return;
+        }
+        this.isStateFixed = isStateFixed;
+        this.hasStateSetted = true;
         setLoadState(STATE_FAIL);
     }
 
     //加载完成，则隐藏
     public void loadComplete() {
+        loadComplete(false);
+    }
+
+    //加载完成，则隐藏
+    public void loadComplete(boolean isStateFixed) {
+        if (this.isStateFixed && hasStateSetted) {
+            return;
+        }
+        this.isStateFixed = isStateFixed;
+        this.hasStateSetted = true;
         setLoadState(STATE_HIDE);
     }
 
