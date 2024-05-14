@@ -274,6 +274,78 @@
 
             <View style="@style/SingleWidgetDividerLineStyle" />
 
+            <com.android.widget.RoundImageView
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_bitmap"
+                app:corner_radius="20dp"
+                app:width_height_ratio="1" />
+
+            <com.android.widget.RoundImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_bitmap"
+                app:border_color="#FF7F24"
+                app:border_width="10dp"
+                app:corner_radius="20dp"
+                app:is_cover_src="true"
+                app:mask_color="#99db4b3c" />
+
+            <com.android.widget.RoundImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_bitmap"
+                app:border_color="#FF7F24"
+                app:border_width="5dp"
+                app:is_cover_src="true"
+                app:corner_bottom_left_radius="10dp"
+                app:corner_bottom_right_radius="60dp"
+                app:corner_top_left_radius="60dp"
+                app:corner_top_right_radius="10dp" />
+
+            <com.android.widget.RoundImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_bitmap"
+                app:is_circle="true" />
+
+            <com.android.widget.RoundImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:src="@drawable/ic_bitmap"
+                app:border_color="#FF7F24"
+                app:border_width="4dp"
+                app:is_circle="true" />
+
+
+            <com.android.widget.RoundImageView
+                android:layout_width="200dp"
+                android:layout_height="200dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:src="@drawable/ic_bitmap"
+                app:border_color="#008B45"
+                app:border_width="5dp"
+                app:corner_radius="20dp"
+                app:inner_border_color="#FF7F24"
+                app:inner_border_width="5dp"
+                app:is_circle="true"
+                app:is_cover_src="true" />
+
+            <View style="@style/SingleWidgetDividerLineStyle" />
+
         </LinearLayout>
 
     </ScrollView>

@@ -25,6 +25,8 @@
     <attr name="normalTextColor" format="color" />
     <attr name="pressedTextColor" format="color" />
 
+    <attr name="mask_color" format="color" />
+
     <!--标题栏属性-->
     <declare-styleable name="TitleBar">
         <attr name="leftIcon" format="reference" />
@@ -227,7 +229,7 @@
         <attr name="frame_centerY" format="dimension" />
         <attr name="frame_color" format="color" />
         <attr name="frame_stroke_width" format="dimension" />
-        <attr name="mask_color" format="color" />
+        <attr name="mask_color" />
         <attr name="result_point_color" format="color" />
         <attr name="label_text" format="string" />
         <attr name="label_text_color" format="color" />
@@ -438,6 +440,23 @@
         <attr name="itemMargin" format="dimension" />
         <attr name="selectedColor" format="color" />
         <attr name="normalColor" format="color" />
+    </declare-styleable>
+
+    <!--圆角/圆形ImageView-->
+    <declare-styleable name="RoundImageView">
+        <attr name="is_circle" format="boolean" />
+        <attr name="is_cover_src" format="boolean" />
+        <attr name="mask_color" />
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="inner_border_width" format="dimension" />
+        <attr name="inner_border_color" format="color" />
+        <attr name="corner_radius" format="dimension" />
+        <attr name="corner_top_left_radius" format="dimension" />
+        <attr name="corner_top_right_radius" format="dimension" />
+        <attr name="corner_bottom_left_radius" format="dimension" />
+        <attr name="corner_bottom_right_radius" format="dimension" />
+        <attr name="width_height_ratio" format="float" />
     </declare-styleable>
 
 </resources>
