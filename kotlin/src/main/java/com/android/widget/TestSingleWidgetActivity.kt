@@ -2,12 +2,16 @@ package com.android.widget
 
 import android.app.AlertDialog
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.viewpager.widget.ViewPager
 import com.android.basicproject.databinding.ActivityTestSingleWidgetBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil
+import com.android.widget.ExpandTextView.BoldInfo
+import com.android.widget.ExpandTextView.ColorInfo
+import com.android.widget.ExpandTextView.ExpandTextView
 import com.android.widget.LoadingDialog.LoadingDialog
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
@@ -35,6 +39,13 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
         }
         //展开/收起的TextView
         binding.expandTv1.contentText = "这是可以展开收起的文本，${createExpandText(360)}"
+        val boldList: MutableList<BoldInfo> = mutableListOf(BoldInfo(0, 2), BoldInfo(5, 5), BoldInfo(50, 68))
+        val colorList: MutableList<ColorInfo> = mutableListOf(
+            ColorInfo(0, 2, Color.BLUE),
+            ColorInfo(5, 5, Color.GREEN),
+            ColorInfo(50, 68, Color.RED)
+        )
+        binding.expandTv1.setBoldAndColorPosition(boldList, colorList)
         binding.expandTv1.setOnTextClickListener(object : ExpandTextView.OnTextClickListener {
             override fun onContentTextClick(isExpand: Boolean) {
                 binding.expandTv1.contentText = createExpandText(Random.nextInt(160))
@@ -45,6 +56,7 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
             }
         })
         binding.expandTv2.contentText = createExpandText(200)
+        binding.expandTv2.setBoldPosition(BoldInfo(0, 5), BoldInfo(20, 30), BoldInfo(50, 60), BoldInfo(190, 199))
         binding.expandTv2.setOnTextClickListener(object : ExpandTextView.OnTextClickListener {
             override fun onContentTextClick(isExpand: Boolean) {
                 showToast(if (isExpand) "已展开" else "已收起")
@@ -164,8 +176,7 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
         var array = arrayOf(
             "1", "2", "3", "4", "5", "6", "7", "8", "9", "0",
             "a", "b", "c", "d", "e", "f", "t", "g", "q", "w", "e",
-            "p", "l", "k", "i", "n", "m", "G", "H", "J", "I", "L", "C", "V", "B"
-            , "你", "我", "他", "天", "地", "动", "进", "啊", "去", "改", "酒",
+            "p", "l", "k", "i", "n", "m", "G", "H", "J", "I", "L", "C", "V", "B", "你", "我", "他", "天", "地", "动", "进", "啊", "去", "改", "酒",
             "一", "会", "年", "收", "好", "嗯", "这", "有", "——",
             /*"\r", "\n", "\r\n", "\t",*/ "，", "！", "%", "@"
         )

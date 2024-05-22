@@ -44,7 +44,7 @@
 
             <View style="@style/SingleWidgetDividerLineStyle" />
 
-            <com.android.widget.ExpandTextView
+            <com.android.widget.ExpandTextView.ExpandTextView
                 android:id="@+id/expand_tv1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -53,7 +53,7 @@
                 android:background="#33000000"
                 app:labelTextColor="@color/colorPrimary" />
 
-            <com.android.widget.ExpandTextView
+            <com.android.widget.ExpandTextView.ExpandTextView
                 android:id="@+id/expand_tv2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
