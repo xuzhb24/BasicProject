@@ -88,6 +88,8 @@ class ExpandTextView @JvmOverloads constructor(
     private var mMinColorPosition = MAX_VALUE  //记录变色的最小位置
     private var mMaxColorPosition = MIN_VALUE  //记录变色的最大位置
 
+    private var openLog = true
+
     //字体加粗
     fun setBoldPosition(vararg info: BoldInfo) {
         setBoldAndColorPosition(info.toMutableList(), null)
@@ -119,9 +121,11 @@ class ExpandTextView @JvmOverloads constructor(
             }
             mColorInfoList.add(it)
         }
-        LogUtil.i(TAG, "加粗最大位置：$mMaxBoldPosition，最小位置：$mMinBoldPosition；变色最大位置：${mMaxColorPosition}，最小位置：$mMinColorPosition")
-        JsonUtil.printObject(mBoldInfoList, "${TAG}加粗位置列表")
-        JsonUtil.printObject(mColorInfoList, "${TAG}变色位置列表")
+        if (openLog) {
+            LogUtil.i(TAG, "加粗最大位置：$mMaxBoldPosition，最小位置：$mMinBoldPosition；变色最大位置：${mMaxColorPosition}，最小位置：$mMinColorPosition")
+            JsonUtil.printObject(mBoldInfoList, "${TAG}加粗位置列表")
+            JsonUtil.printObject(mColorInfoList, "${TAG}变色位置列表")
+        }
         invalidate()
     }
 
@@ -213,7 +217,7 @@ class ExpandTextView @JvmOverloads constructor(
         if (lineCount <= maxShowLines) {  //当前内容不足以展开
             var height = 0f
             for (i in 0 until lineCount) {
-                val currentLineText = contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i))
+                val currentLineText = replaceBreakLine(contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)))
                 val currentLineStaticLayout = getStaticLayout(currentLineText, mContentPaint, width)
                 height += currentLineStaticLayout.height
                 if (boundsAlign && i != lineCount - 1) {
@@ -227,7 +231,9 @@ class ExpandTextView @JvmOverloads constructor(
                 }
                 height += lineSpacing
                 mAlreadyDrawCount += currentLineText.length
-                LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                if (openLog) {
+                    LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                }
             }
         } else {
             if (isExpand) {  //已展开
@@ -237,7 +243,7 @@ class ExpandTextView @JvmOverloads constructor(
                 var height = 0f
                 for (i in 0 until lineCount) {
                     //获取当前行内容
-                    val currentLineText = contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i))
+                    val currentLineText = replaceBreakLine(contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)))
                     val currentLineStaticLayout = getStaticLayout(currentLineText, mContentPaint, width)
                     if (i == lineCount - 1) {  //最后一行
                         val currentLineWidth = currentLineStaticLayout.getLineWidth(0)
@@ -292,7 +298,9 @@ class ExpandTextView @JvmOverloads constructor(
                         height += lineSpacing
                     }
                     mAlreadyDrawCount += currentLineText.length
-                    LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                    if (openLog) {
+                        LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                    }
                 }
             } else {  //已收起
                 //收起状态多了后缀，后缀需要特殊处理
@@ -302,7 +310,7 @@ class ExpandTextView @JvmOverloads constructor(
                 var height = 0f
                 for (i in 0 until maxShowLines) {
                     //获取当前行内容
-                    val currentLineText = contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i))
+                    val currentLineText = replaceBreakLine(contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)))
                     val currentLineStaticLayout = getStaticLayout(currentLineText, mContentPaint, width)
                     if (i == maxShowLines - 1) {  //最后一行
                         //需要计算后缀的内容信息
@@ -350,7 +358,9 @@ class ExpandTextView @JvmOverloads constructor(
                                 drawNormalText(canvas, currentString, currentWidth, getBaseLine(mContentPaint, tempHeight), mContentPaint)
                                 currentWidth += currentStringStaticLayoutWidth
                                 mAlreadyDrawCount += currentString.length
-                                LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                                if (openLog) {
+                                    LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                                }
                             }
                         }
                     } else {  //普通行
@@ -367,7 +377,9 @@ class ExpandTextView @JvmOverloads constructor(
                         }
                         height += lineSpacing
                         mAlreadyDrawCount += currentLineText.length
-                        LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                        if (openLog) {
+                            LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                        }
                     }
                 }
             }
@@ -408,7 +420,7 @@ class ExpandTextView @JvmOverloads constructor(
             val activeColor = getActiveColor(mAlreadyDrawCount + i)
             paint.color = if (activeColor != -1) activeColor else contentTextColor
             canvas.drawText(c, x, lineY, paint)
-            x += cw + d
+            x += if (d < cw / 2f) cw + d else cw  //注意：如果间距超过字的一半，则不对齐
             i++
         }
     }
@@ -503,7 +515,7 @@ class ExpandTextView @JvmOverloads constructor(
                 //计算展开时的高度
                 for (i in 0 until lineCount) {
                     //获取当前行内容
-                    val currentLineText = contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i))
+                    val currentLineText = replaceBreakLine(contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)))
                     val currentLineStaticLayout = getStaticLayout(currentLineText, mContentPaint, width)
                     if (i == lineCount - 1) {  //最后一行
                         val shrinkStaticLayout = getStaticLayout(labelShrinkText, mLabelPaint, width)
@@ -527,7 +539,7 @@ class ExpandTextView @JvmOverloads constructor(
                 //计算收起时的高度
                 for (i in 0 until maxShowLines) {
                     //获取当前行内容
-                    val currentLineText = contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i))
+                    val currentLineText = replaceBreakLine(contentText.substring(staticLayout.getLineStart(i), staticLayout.getLineEnd(i)))
                     val currentLineStaticLayout = getStaticLayout(currentLineText, mContentPaint, width)
                     if (i == maxShowLines - 1) {  //最后一行
                         val expandStaticLayout = getStaticLayout(labelShrinkText, mLabelPaint, width)
@@ -608,6 +620,13 @@ class ExpandTextView @JvmOverloads constructor(
             }
         }
         return false
+    }
+
+    private fun replaceBreakLine(text: String): String {
+        if (text.endsWith("\n")) {
+            return text.substring(0, text.length - 1) + " "
+        }
+        return text
     }
 
     private fun getStaticLayout(text: String, paint: TextPaint, width: Int): StaticLayout =
