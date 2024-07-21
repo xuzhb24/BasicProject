@@ -39,10 +39,10 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
         }
         //展开/收起的TextView
         binding.expandTv1.contentText = "这是可以展开收起的文本，${createExpandText(360)}"
-        val boldList: MutableList<BoldInfo> = mutableListOf(BoldInfo(0, 2), BoldInfo(5, 5), BoldInfo(50, 68))
+        val boldList: MutableList<BoldInfo> = mutableListOf(BoldInfo(5, 10), BoldInfo(50, 68))
         val colorList: MutableList<ColorInfo> = mutableListOf(
-            ColorInfo(0, 2, Color.BLUE),
-            ColorInfo(5, 5, Color.GREEN),
+            ColorInfo(5, 10, Color.GREEN),
+            ColorInfo(0, 20, Color.BLUE),
             ColorInfo(50, 68, Color.RED)
         )
         binding.expandTv1.setBoldAndColorPosition(boldList, colorList)

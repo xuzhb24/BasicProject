@@ -95,7 +95,7 @@ class ExpandTextView @JvmOverloads constructor(
         setBoldAndColorPosition(info.toMutableList(), null)
     }
 
-    //字体变色
+    //字体变色，当存在多个ColorInfo时，第一个ColorInfo的优先级最高，越往后优先级越低
     fun setColorPosition(vararg info: ColorInfo) {
         setBoldAndColorPosition(null, info.toMutableList())
     }
@@ -223,11 +223,8 @@ class ExpandTextView @JvmOverloads constructor(
                 if (boundsAlign && i != lineCount - 1) {
                     drawAlignText(canvas, currentLineText, getBaseLine(mContentPaint, height), mContentPaint)
                 } else {
-                    if (hasIntersection(mAlreadyDrawCount, mAlreadyDrawCount + currentLineText.length - 1)) {  //需要加粗或变色则逐字绘制
-                        drawNormalText(canvas, currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
-                    } else {
-                        canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
-                    }
+                    val needDrawPerChar = hasIntersection(mAlreadyDrawCount, mAlreadyDrawCount + currentLineText.length - 1)  //需要加粗或变色则逐字绘制
+                    drawNormalText(canvas, currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint, needDrawPerChar)
                 }
                 height += lineSpacing
                 mAlreadyDrawCount += currentLineText.length
@@ -250,11 +247,8 @@ class ExpandTextView @JvmOverloads constructor(
                         if (currentLineWidth + labelMarginLeft + shrinkStaticLayoutWidth > width) {  //标签需要换行处理
                             height += currentLineStaticLayout.height
                             //绘制主内容
-                            if (hasIntersection(mAlreadyDrawCount, mAlreadyDrawCount + currentLineText.length - 1)) {  //需要加粗或变色则逐字绘制
-                                drawNormalText(canvas, currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
-                            } else {
-                                canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
-                            }
+                            val needDrawPerChar = hasIntersection(mAlreadyDrawCount, mAlreadyDrawCount + currentLineText.length - 1)  //需要加粗或变色则逐字绘制
+                            drawNormalText(canvas, currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint, needDrawPerChar)
                             height += lineSpacing
                             mLabelRectF.set(0f, height, shrinkStaticLayoutWidth, height + shrinkStaticLayoutHeight)
                             height += shrinkStaticLayoutHeight
@@ -262,11 +256,8 @@ class ExpandTextView @JvmOverloads constructor(
                         } else {
                             var currentWidth = 0f
                             //绘制主内容
-                            if (hasIntersection(mAlreadyDrawCount, mAlreadyDrawCount + currentLineText.length - 1)) {  //需要加粗或变色则逐字绘制
-                                drawNormalText(canvas, currentLineText, currentWidth, getBaseLine(mContentPaint, height + currentLineStaticLayout.height), mContentPaint)
-                            } else {
-                                canvas.drawText(currentLineText, currentWidth, getBaseLine(mContentPaint, height + currentLineStaticLayout.height), mContentPaint)
-                            }
+                            val needDrawPerChar = hasIntersection(mAlreadyDrawCount, mAlreadyDrawCount + currentLineText.length - 1)  //需要加粗或变色则逐字绘制
+                            drawNormalText(canvas, currentLineText, currentWidth, getBaseLine(mContentPaint, height + currentLineStaticLayout.height), mContentPaint, needDrawPerChar)
                             currentWidth += currentLineWidth
                             currentWidth += labelMarginLeft
                             //绘制展开/收起标签
@@ -289,11 +280,8 @@ class ExpandTextView @JvmOverloads constructor(
                             drawAlignText(canvas, currentLineText, getBaseLine(mContentPaint, height), mContentPaint)
                         } else {
                             //绘制主内容
-                            if (hasIntersection(mAlreadyDrawCount, mAlreadyDrawCount + currentLineText.length - 1)) {  //需要加粗或变色则逐字绘制
-                                drawNormalText(canvas, currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
-                            } else {
-                                canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
-                            }
+                            val needDrawPerChar = hasIntersection(mAlreadyDrawCount, mAlreadyDrawCount + currentLineText.length - 1)  //需要加粗或变色则逐字绘制
+                            drawNormalText(canvas, currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint, needDrawPerChar)
                         }
                         height += lineSpacing
                     }
@@ -316,52 +304,58 @@ class ExpandTextView @JvmOverloads constructor(
                         //需要计算后缀的内容信息
                         val contentSuffixStaticLayout = getStaticLayout(contentSuffixText, mContentPaint, width)
                         val contentSuffixStaticLayoutWidth = contentSuffixStaticLayout.getLineWidth(0)
-                        //主内容可以进行绘制的宽度，labelMarginRight收起时是不生效的
-                        val contentTextWidth =
-                            width - expandStaticLayoutWidth - labelMarginLeft - contentSuffixStaticLayoutWidth - labelMarginRight
+                        //当前文本宽度
+                        val currentTextWidth = currentLineStaticLayout.getLineWidth(0)
+                        //主内容可以进行绘制的最大宽度，labelMarginRight收起时是不生效的
+                        val contentTextMaxWidth = width - expandStaticLayoutWidth - labelMarginLeft - contentSuffixStaticLayoutWidth - labelMarginRight
                         //当前正在绘制的宽度
                         var currentWidth = 0f
                         //临时的一个高度，表达当前主内容的y值
                         val tempHeight = height + currentLineStaticLayout.height
-                        for (text in currentLineText) {
-                            val currentString = text.toString()
-                            val currentStringStaticLayout = getStaticLayout(currentString, mContentPaint, width)
-                            val currentStringStaticLayoutWidth = currentStringStaticLayout.getLineWidth(0)
-                            if (currentWidth + currentStringStaticLayoutWidth > contentTextWidth) {
-                                //这个文字不能继续绘制了，开始绘制标签
-                                //绘制后缀信息
-                                canvas.drawText(
-                                    contentSuffixText,
-                                    currentWidth,
-                                    getBaseLine(mContentPaint, tempHeight),
-                                    mContentPaint
-                                )
-                                currentWidth += contentSuffixStaticLayoutWidth
-                                currentWidth += labelMarginLeft
-                                //绘制展开/收起标签
-                                canvas.drawText(
-                                    labelExpandText,
-                                    currentWidth,
-                                    getBaseLine(mLabelPaint, height + expandStaticLayoutHeight),
-                                    mLabelPaint
-                                )
-                                //设置其响应的区域范围
-                                mLabelRectF.set(
-                                    currentWidth,
-                                    height,
-                                    currentWidth + expandStaticLayoutWidth,
-                                    height + expandStaticLayoutHeight
-                                )
-                                return
-                            } else {
-                                //绘制主内容
-                                drawNormalText(canvas, currentString, currentWidth, getBaseLine(mContentPaint, tempHeight), mContentPaint)
-                                currentWidth += currentStringStaticLayoutWidth
-                                mAlreadyDrawCount += currentString.length
-                                if (openLog) {
-                                    LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                        if (currentTextWidth > contentTextMaxWidth) {  //当前文本占满一行
+                            for (text in currentLineText) {
+                                val currentString = text.toString()
+                                val currentStringStaticLayout = getStaticLayout(currentString, mContentPaint, width)
+                                val currentStringStaticLayoutWidth = currentStringStaticLayout.getLineWidth(0)
+                                if (currentWidth + currentStringStaticLayoutWidth > contentTextMaxWidth) {
+                                    //这个文字不能继续绘制了，开始绘制标签
+                                    //绘制后缀信息
+                                    mContentPaint.color = contentTextColor
+                                    canvas.drawText(contentSuffixText, currentWidth, getBaseLine(mContentPaint, tempHeight), mContentPaint)
+                                    currentWidth += contentSuffixStaticLayoutWidth
+                                    currentWidth += labelMarginLeft
+                                    //绘制展开/收起标签
+                                    canvas.drawText(labelExpandText, currentWidth, getBaseLine(mLabelPaint, height + expandStaticLayoutHeight), mLabelPaint)
+                                    //设置其响应的区域范围
+                                    mLabelRectF.set(currentWidth, height, currentWidth + expandStaticLayoutWidth, height + expandStaticLayoutHeight)
+                                    return
+                                } else {
+                                    //绘制主内容
+                                    drawNormalText(canvas, currentString, currentWidth, getBaseLine(mContentPaint, tempHeight), mContentPaint, true)
+                                    currentWidth += currentStringStaticLayoutWidth
+                                    mAlreadyDrawCount += currentString.length
+                                    if (openLog) {
+                                        LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                                    }
                                 }
                             }
+                        } else {
+                            //绘制主内容
+                            drawNormalText(canvas, currentLineText, currentWidth, getBaseLine(mContentPaint, tempHeight), mContentPaint, true)
+                            currentWidth += currentTextWidth
+                            mAlreadyDrawCount += currentLineText.length
+                            if (openLog) {
+                                LogUtil.i(TAG, "AlreadyDraw：$i $mAlreadyDrawCount $currentLineText")
+                            }
+                            //绘制后缀信息
+                            mContentPaint.color = contentTextColor
+                            canvas.drawText(contentSuffixText, currentWidth, getBaseLine(mContentPaint, tempHeight), mContentPaint)
+                            currentWidth += contentSuffixStaticLayoutWidth
+                            currentWidth += labelMarginLeft
+                            //绘制展开/收起标签
+                            canvas.drawText(labelExpandText, currentWidth, getBaseLine(mLabelPaint, height + expandStaticLayoutHeight), mLabelPaint)
+                            //设置其响应的区域范围
+                            mLabelRectF.set(currentWidth, height, currentWidth + expandStaticLayoutWidth, height + expandStaticLayoutHeight)
                         }
                     } else {  //普通行
                         height += currentLineStaticLayout.height
@@ -369,11 +363,8 @@ class ExpandTextView @JvmOverloads constructor(
                             drawAlignText(canvas, currentLineText, getBaseLine(mContentPaint, height), mContentPaint)
                         } else {
                             //绘制主内容
-                            if (hasIntersection(mAlreadyDrawCount, mAlreadyDrawCount + currentLineText.length - 1)) {  //需要加粗或变色则逐字绘制
-                                drawNormalText(canvas, currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
-                            } else {
-                                canvas.drawText(currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint)
-                            }
+                            val needDrawPerChar = hasIntersection(mAlreadyDrawCount, mAlreadyDrawCount + currentLineText.length - 1)  //需要加粗或变色则逐字绘制
+                            drawNormalText(canvas, currentLineText, 0f, getBaseLine(mContentPaint, height), mContentPaint, needDrawPerChar)
                         }
                         height += lineSpacing
                         mAlreadyDrawCount += currentLineText.length
@@ -420,32 +411,36 @@ class ExpandTextView @JvmOverloads constructor(
             val activeColor = getActiveColor(mAlreadyDrawCount + i)
             paint.color = if (activeColor != -1) activeColor else contentTextColor
             canvas.drawText(c, x, lineY, paint)
-            x += if (d < cw / 2f) cw + d else cw  //注意：如果间距超过字的一半，则不对齐
+            x += if (d < cw / 2.5f) cw + d else cw  //注意：如果间距超过字的一半，则不对齐
             i++
         }
     }
 
-    //逐字绘制文本
+    //绘制文本，无需两端对齐
     private fun drawNormalText(
         canvas: Canvas,
-        lindText: String,
+        lineText: String,
         startX: Float,
         lineY: Float,
-        paint: TextPaint
+        paint: TextPaint,
+        needDrawPerChar: Boolean  //是否逐字绘制
     ) {
-        var lineText = lindText
-        var x = startX
-        var i = 0
-        val d = 0  //字与字的间距
-        while (i < lineText.length) {
-            val c = lineText[i].toString()
-            val cw = StaticLayout.getDesiredWidth(c, paint)
-            paint.isFakeBoldText = isBoldActive(mAlreadyDrawCount + i)
-            val activeColor = getActiveColor(mAlreadyDrawCount + i)
-            paint.color = if (activeColor != -1) activeColor else contentTextColor
-            canvas.drawText(c, x, lineY, paint)
-            x += cw + d
-            i++
+        if (needDrawPerChar) {
+            var x = startX
+            var i = 0
+            val d = 0  //字与字的间距
+            while (i < lineText.length) {
+                val c = lineText[i].toString()
+                val cw = StaticLayout.getDesiredWidth(c, paint)
+                paint.isFakeBoldText = isBoldActive(mAlreadyDrawCount + i)
+                val activeColor = getActiveColor(mAlreadyDrawCount + i)
+                paint.color = if (activeColor != -1) activeColor else contentTextColor
+                canvas.drawText(c, x, lineY, paint)
+                x += cw + d
+                i++
+            }
+        } else {
+            canvas.drawText(lineText, startX, lineY, paint)
         }
     }
 
@@ -623,10 +618,11 @@ class ExpandTextView @JvmOverloads constructor(
     }
 
     private fun replaceBreakLine(text: String): String {
-        if (text.endsWith("\n")) {
-            return text.substring(0, text.length - 1) + " "
+        val newText = text.replace("\t", " ")
+        if (newText.endsWith("\n")) {
+            return newText.substring(0, newText.length - 1) + " "
         }
-        return text
+        return newText
     }
 
     private fun getStaticLayout(text: String, paint: TextPaint, width: Int): StaticLayout =
