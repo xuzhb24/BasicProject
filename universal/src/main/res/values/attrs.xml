@@ -438,6 +438,7 @@
         <attr name="selectedWidth" format="dimension" />
         <attr name="normalSize" format="dimension" />
         <attr name="itemMargin" format="dimension" />
+        <attr name="selectedDrawable" format="reference" />
         <attr name="selectedColor" format="color" />
         <attr name="normalColor" format="color" />
     </declare-styleable>

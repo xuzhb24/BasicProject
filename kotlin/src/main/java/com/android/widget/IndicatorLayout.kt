@@ -2,6 +2,7 @@ package com.android.widget
 
 import android.content.Context
 import android.graphics.Color
+import android.graphics.drawable.Drawable
 import android.util.AttributeSet
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -29,6 +30,7 @@ class IndicatorLayout @JvmOverloads constructor(
     var selectedWidth: Float = DEFAULT_SELECTED_WIDTH
     var normalSize: Float = DEFAULT_NORMAL_SIZE
     var itemMargin: Float = DEFAULT_ITEM_MARGIN
+    var selectedDrawable: Drawable? = null  //选中时背景，优先级高于selectedColor
     var selectedColor: Int = DEFAULT_SELECTED_COLOR
     var normalColor: Int = DEFAULT_NORMAL_COLOR
 
@@ -42,6 +44,7 @@ class IndicatorLayout @JvmOverloads constructor(
             selectedWidth = ta.getDimension(R.styleable.IndicatorLayout_selectedWidth, DEFAULT_SELECTED_WIDTH)
             normalSize = ta.getDimension(R.styleable.IndicatorLayout_normalSize, DEFAULT_NORMAL_SIZE)
             itemMargin = ta.getDimension(R.styleable.IndicatorLayout_itemMargin, DEFAULT_ITEM_MARGIN)
+            selectedDrawable = ta.getDrawable(R.styleable.IndicatorLayout_selectedDrawable)
             selectedColor = ta.getColor(R.styleable.IndicatorLayout_selectedColor, DEFAULT_SELECTED_COLOR)
             normalColor = ta.getColor(R.styleable.IndicatorLayout_normalColor, DEFAULT_NORMAL_COLOR)
             ta.recycle()
@@ -116,7 +119,7 @@ class IndicatorLayout @JvmOverloads constructor(
         }
     }
 
-    private fun createSelectedShape() = DrawableUtil.createSolidShape(normalSize / 2, selectedColor)
+    private fun createSelectedShape() = if (selectedDrawable != null) selectedDrawable else DrawableUtil.createSolidShape(normalSize / 2, selectedColor)
 
     private fun createNormalShape() = DrawableUtil.createOvalShape(normalColor, normalSize.toInt(), normalSize.toInt())
 
