@@ -460,4 +460,8 @@
         <attr name="width_height_ratio" format="float" />
     </declare-styleable>
 
+    <declare-styleable name="JustTextView">
+        <attr name="text_bold" format="boolean" />
+    </declare-styleable>
+
 </resources>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.android.widget.TitleBar
+        style="@style/TitleBarStyle"
+        app:titleText="两端对齐文本" />
+
+    <androidx.core.widget.NestedScrollView
+        style="@style/ScrollViewStyle"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="15dp">
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="120dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <View
+                        android:id="@+id/first_indent_view"
+                        android:layout_width="0dp"
+                        android:layout_height="10dp"
+                        android:background="#E63130" />
+
+                    <View
+                        android:id="@+id/last_indent_view"
+                        android:layout_width="0dp"
+                        android:layout_height="10dp"
+                        android:layout_gravity="bottom|end"
+                        android:background="#E63130" />
+
+                    <com.android.widget.justtext.JustTextView
+                        android:id="@+id/just_tv"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#33000000"
+                        android:includeFontPadding="false"
+                        android:lineSpacingExtra="3dp"
+                        android:textColor="@color/black"
+                        android:textSize="15sp" />
+
+                </FrameLayout>
+
+            </FrameLayout>
+
+            <View
+                style="@style/DividerLineStyle"
+                android:layout_marginTop="5dp" />
+
+            <EditText
+                android:id="@+id/input_content_et"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:background="@color/white"
+                android:ellipsize="end"
+                android:gravity="start|top"
+                android:hint="输入内容"
+                android:lineSpacingExtra="3dp"
+                android:minHeight="120dp"
+                android:textColor="@color/black"
+                android:textSize="15sp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/set_content_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="设置上面内容" />
+
+                <Button
+                    android:id="@+id/random_content_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="随机内容" />
+
+                <com.android.widget.InputLayout
+                    android:id="@+id/content_count_il"
+                    android:layout_width="80dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    app:inputTextHint="输入字数"
+                    app:inputTextType="number" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/max_lines_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="最大行数" />
+
+                <com.android.widget.InputLayout
+                    android:id="@+id/max_lines_il"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    app:inputTextType="number" />
+
+                <Button
+                    android:id="@+id/min_lines_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="最小行数" />
+
+                <com.android.widget.InputLayout
+                    android:id="@+id/min_lines_il"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    app:inputTextType="number" />
+
+            </LinearLayout>
+
+            <View style="@style/DividerLineStyle" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/first_indent_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="首行缩进" />
+
+                <com.android.widget.InputLayout
+                    android:id="@+id/first_indent_il"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    app:inputTextType="number" />
+
+                <Button
+                    android:id="@+id/last_indent_btn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="末行缩进" />
+
+                <com.android.widget.InputLayout
+                    android:id="@+id/last_indent_il"
+                    android:layout_width="60dp"
+                    android:layout_height="wrap_content"
+                    app:inputTextType="number" />
+
+            </LinearLayout>
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/config_rv"
+                style="@style/RecyclerViewStyle"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp" />
+
+            <View
+                style="@style/DividerLineStyle"
+                android:layout_marginTop="5dp" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

@@ -15,6 +15,7 @@ import com.android.widget.PopupWindow.AATest.TestPopupWindowActivity;
 import com.android.widget.ProgressBar.TestProgressBarActivity;
 import com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity;
 import com.android.widget.TestSingleWidgetActivity;
+import com.android.widget.justtext.AATest.TestJusttextActivity;
 
 /**
  * Created by xuzhb on 2019/10/19
@@ -44,6 +45,10 @@ public class WidgetFragment extends BaseFragment<FragmentWidgetBinding> {
         //通用PopupWindow
         binding.popupTv.setOnClickListener(v -> {
             startActivity(TestPopupWindowActivity.class);
+        });
+        //两端对齐文本
+        binding.justTv.setOnClickListener(v -> {
+            startActivity(TestJusttextActivity.class);
         });
         //饼状图
         binding.piechartTv.setOnClickListener(v -> {

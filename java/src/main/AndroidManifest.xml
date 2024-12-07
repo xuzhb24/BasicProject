@@ -98,6 +98,10 @@
         <activity android:name="com.android.widget.PopupWindow.AATest.TestPopupWindowActivity" />
         <activity android:name="com.android.widget.Dialog.TestDialogActivity" />
         <activity android:name="com.android.widget.ProgressBar.TestProgressBarActivity" />
+        <!--两端对齐文本-->
+        <activity
+            android:name="com.android.widget.justtext.AATest.TestJusttextActivity"
+            android:windowSoftInputMode="adjustPan" />
         <!--RecyclerView-->
         <activity android:name="com.android.widget.RecyclerView.AATest.TestRecyclerViewActivity" />
         <activity android:name="com.android.widget.RecyclerView.AATest.TestSingleAdapterActivity" />
