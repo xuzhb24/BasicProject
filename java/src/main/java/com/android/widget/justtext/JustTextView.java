@@ -61,6 +61,7 @@ public class JustTextView extends AppCompatTextView {
     private String mFirstIndentText;  //第一行最左边的缩进文本，不会绘制在开头，为什么第一行缩进要用文本，因为要参与整个字符串的换行和相关计算
     private float mLastIndentLength;  //最后一行最右边的缩进长度
     private final ArrayList<SpanConfig> mSpanConfigList = new ArrayList<>();  //配置的字体样式列表
+    private boolean showLastIndentWhenSetMaxLinesIfDrawAllText = false;  //设置maxLines后如果到最大行数就绘制完全部文本时是否依然显示末行缩进，默认不显示
 
     //设置文本，带首行缩进，如果不带首行缩进直接调用setText
     public void setTextWithFirstIndent(String text, float firstIndentLength) {
@@ -95,6 +96,11 @@ public class JustTextView extends AppCompatTextView {
     public void setSpanConfigList(@NonNull ArrayList<SpanConfig> configs) {
         this.mSpanConfigList.clear();
         this.mSpanConfigList.addAll(JustUtils.getActiveSpanConfigList(configs, isTextBold));
+        this.invalidate();
+    }
+
+    public void setShowLastIndentWhenSetMaxLinesIfDrawAllText(boolean showLastIndentWhenSetMaxLinesIfDrawAllText) {
+        this.showLastIndentWhenSetMaxLinesIfDrawAllText = showLastIndentWhenSetMaxLinesIfDrawAllText;
         this.invalidate();
     }
 
@@ -240,7 +246,11 @@ public class JustTextView extends AppCompatTextView {
             if (i == lastLine) {  //最后一行
                 int actualLastLine = lastLine;  //实际的最后一行，兼容设置了maxLines(默认Integer.MAX_VALUE)和minLines(默认0)的情况
                 if (getMaxLines() != Integer.MAX_VALUE) {
-                    actualLastLine = getMaxLines() - 1;
+                    if (showLastIndentWhenSetMaxLinesIfDrawAllText) {
+                        actualLastLine = getMaxLines() - 1;
+                    } else if (JustUtils.isDrawAllText(end, buf)) {
+                        actualLastLine = getMaxLines();
+                    }
                 } else if (getMinLines() > 0) {
                     actualLastLine = Math.max(lastLine, getMinLines() - 1);
                 }
