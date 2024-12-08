@@ -565,10 +565,7 @@ class TextLine {
     private void drawTextRun(Canvas c, TextPaint wp, int start, int end,
                              int contextStart, int contextEnd, boolean runIsRtl, float x, int y) {
 
-        if (DEBUG) {
-            Log.i("TextLine", "start:" + start + " end:" + end + " mStart:" + mStart);
-        }
-        Log("layout drawTextRun mCharsValid:" + mCharsValid);
+        Log("start:" + start + " end:" + end + " mStart:" + mStart + " layout drawTextRun mCharsValid:" + mCharsValid);
         if (mCharsValid) {
             int count = end - start;
             int contextCount = contextEnd - contextStart;
@@ -714,7 +711,7 @@ class TextLine {
 
     private void Log(String msg, boolean logSwitch) {
         if (logSwitch) {
-            Log.i("JustTextView", msg);
+            Log.i("JustTextView", msg);  //绘制长文本时打印会耗时，所以release版不要打开
         }
     }
 }

@@ -38,10 +38,6 @@ public class TestSingleWidgetActivity extends BaseActivity<ActivityTestSingleWid
             LoadingDialog dialog = new LoadingDialog(this);
             dialog.show(null, false);
         });
-        //两端对齐的TextView
-        binding.alignTv.setOnClickListener(v -> {
-            binding.alignTv.setText(createExpandText(200));
-        });
         //密码输入框
         binding.passwordEdittext.setOnTextChangeListener(text -> binding.petTv.setText(text));
         binding.passwordEdittext.setOnTextCompleteListener(this::showToast);

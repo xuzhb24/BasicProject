@@ -30,9 +30,7 @@ import java.util.Arrays;
 
 /**
  * Created by xuzhb on 2024/12/4
- * Desc:两端对齐文本
- * 1、因为是逐字绘制，不能用于绘制长文本（超过1000字）；
- * 2、不适用SpannableString。
+ * Desc:两端对齐文本，不适用SpannableString
  */
 public class JustTextView extends AppCompatTextView {
     private static final ParagraphStyle[] NO_PARA_SPANS = ArrayUtils.emptyArray(ParagraphStyle.class);
@@ -105,9 +103,7 @@ public class JustTextView extends AppCompatTextView {
         long drawStartTime = System.currentTimeMillis();
         Layout layout = getLayout();
         draw(canvas, layout);
-        if (BuildConfig.DEBUG) {
-            Log.i("JustTextView", "绘制耗时：" + (System.currentTimeMillis() - drawStartTime) + "ms");
-        }
+        Log("绘制耗时：" + (System.currentTimeMillis() - drawStartTime) + "ms");
     }
 
     public void draw(Canvas canvas, Layout layout) {
@@ -261,14 +257,14 @@ public class JustTextView extends AppCompatTextView {
                             "，末行缩进:" + mLastIndentLength + " " + lastIndentLength +
                             "，开始位置:" + start + "，结束位置:" + end
                             + "，总字数:" + buf.length() + "，" + buf;
-                    Log.i("JustTextView", msg);
+                    Log(msg);
                     StringBuilder spanSb = new StringBuilder();
-                    spanSb.append(" \n==================================================================================\n");
+                    spanSb.append(" 字体样式\n==================================================================================\n");
                     for (SpanConfig config : mSpanConfigList) {
                         spanSb.append(new Gson().toJson(config)).append("\n");
-                        spanSb.append("==================================================================================");
                     }
-                    Log.i("JustTextView 字体样式", spanSb.toString());
+                    spanSb.append("==================================================================================");
+                    Log(spanSb.toString());
                 }
             }
             tl.setLastIndentLength(lastIndentLength);  //设置末行缩进
@@ -351,6 +347,12 @@ public class JustTextView extends AppCompatTextView {
         float width = tl.metrics(null);
         TextLine.recycle(tl);
         return width;
+    }
+
+    private void Log(String msg) {
+        if (BuildConfig.DEBUG) {
+            Log.i("JustTextView", msg);
+        }
     }
 
     private static final int TAB_INCREMENT = 20;
