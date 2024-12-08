@@ -87,10 +87,6 @@ class TestSingleWidgetActivity : BaseActivity<ActivityTestSingleWidgetBinding>()
         binding.loadingBtn3.setOnClickListener {
             LoadingDialog(this).show("", false)
         }
-        //两端对齐的TextView
-        binding.alignTv.setOnClickListener {
-            binding.alignTv.text = createExpandText(200)
-        }
         //密码输入框
         with(binding.passwordEdittext) {
             setOnTextChangeListener {

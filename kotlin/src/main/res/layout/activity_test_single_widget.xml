@@ -76,21 +76,6 @@
 
             <View style="@style/SingleWidgetDividerLineStyle" />
 
-            <!--两端对齐的TextView-->
-            <com.android.widget.AlignTextView.AlignTextView
-                android:id="@+id/align_tv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:background="#33000000"
-                android:lineSpacingExtra="5dp"
-                android:text="这是两端对齐的TextView，点击我生成更多文字"
-                android:textColor="@color/black"
-                app:align="true" />
-
-            <View style="@style/SingleWidgetDividerLineStyle" />
-
             <com.android.widget.SuffixTextView
                 android:id="@+id/suffix_tv"
                 android:layout_width="match_parent"
