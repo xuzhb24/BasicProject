@@ -10,7 +10,6 @@ import com.android.frame.mvc.BaseActivity;
 import com.android.java.databinding.ActivityTestJusttextBinding;
 import com.android.util.JsonUtil;
 import com.android.util.LayoutParamsUtil;
-import com.android.util.LogUtil;
 import com.android.util.SizeUtil;
 import com.android.widget.InputLayout;
 import com.android.widget.justtext.JustUtils;
@@ -52,18 +51,10 @@ public class TestJusttextActivity extends BaseActivity<ActivityTestJusttextBindi
     @Override
     public void initListener() {
         binding.randomContentBtn.setOnClickListener(v -> {
-            new Thread(() -> {
-                int count = parseInt(binding.contentCountIl);
-                String content = createExpandText(count > 0 ? count : 100);
-                runOnUiThread(() -> {
-                    long startTime1 = System.currentTimeMillis();
-                    binding.inputContentEt.setText(content);
-                    LogUtil.i(TAG, "耗时：" + (System.currentTimeMillis() - startTime1));
-                    long startTime2 = System.currentTimeMillis();
-                    setContent();
-                    LogUtil.i(TAG, "耗时：" + (System.currentTimeMillis() - startTime2));
-                });
-            }).start();
+            int count = parseInt(binding.contentCountIl);
+            String content = createExpandText(count > 0 ? count : 100);
+            binding.inputContentEt.setText(content);
+            setContent();
         });
         binding.maxLinesBtn.setOnClickListener(v -> {
             int maxLines = parseInt(binding.maxLinesIl);

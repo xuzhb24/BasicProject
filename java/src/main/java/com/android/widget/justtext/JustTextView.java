@@ -56,6 +56,7 @@ public class JustTextView extends AppCompatTextView {
         if (isTextBold) {
             getPaint().setFakeBoldText(true);
         }
+        setEllipsize(null);
     }
 
     private String mFirstIndentText;  //第一行最左边的缩进文本，不会绘制在开头，为什么第一行缩进要用文本，因为要参与整个字符串的换行和相关计算
@@ -109,7 +110,9 @@ public class JustTextView extends AppCompatTextView {
         long drawStartTime = System.currentTimeMillis();
         Layout layout = getLayout();
         draw(canvas, layout);
-        Log("绘制耗时：" + (System.currentTimeMillis() - drawStartTime) + "ms");
+        if (BuildConfig.DEBUG) {
+            Log.i("绘制耗时", (System.currentTimeMillis() - drawStartTime) + "ms");
+        }
     }
 
     public void draw(Canvas canvas, Layout layout) {
@@ -261,7 +264,7 @@ public class JustTextView extends AppCompatTextView {
                         lastIndentLength = 0.1f;
                     }
                 }
-                if (BuildConfig.DEBUG) {
+                if (JustUtils.DEBUG) {
                     String msg = "当前行:" + i + "，首行:" + firstLine + "，末行:" + lastLine + "，实际末行:" + actualLastLine +
                             "，最小行数:" + getMinLines() + "，最大行数:" + getMaxLines() +
                             "，末行缩进:" + mLastIndentLength + " " + lastIndentLength +
@@ -360,8 +363,8 @@ public class JustTextView extends AppCompatTextView {
     }
 
     private void Log(String msg) {
-        if (BuildConfig.DEBUG) {
-            Log.i("JustTextView", msg);
+        if (JustUtils.DEBUG) {
+            Log.i("JustTextView", msg);  //绘制长文本时打印日志会耗时，所以非调试不要打开
         }
     }
 

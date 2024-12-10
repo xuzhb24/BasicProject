@@ -13,8 +13,6 @@ import android.util.Log;
 
 import androidx.annotation.NonNull;
 
-import com.android.universal.BuildConfig;
-
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +22,6 @@ import java.util.List;
  * Desc:
  */
 class TextLine {
-    private static final boolean DEBUG = false;
 
     private TextPaint mPaint;
     private CharSequence mText;
@@ -91,7 +88,7 @@ class TextLine {
             }
         }
         tl = new TextLine();
-        if (DEBUG) {
+        if (JustUtils.DEBUG) {
             Log.v("TLINE", "new: " + tl);
         }
         return tl;
@@ -586,7 +583,6 @@ class TextLine {
                 chars_ = chars_.replaceFirst(mFirstIndentText, "");  //去掉缩进文本
                 count = chars_.length();
             }
-            Log("layout drawTextRun mNeedJustify:" + chars_);
             float[] widths = new float[chars_.length()];
             for (int i = 0; i < chars_.length(); i++) {
                 String char_ = String.valueOf(chars_.charAt(i));
@@ -606,12 +602,10 @@ class TextLine {
                     useWidth = charTotalLen;
                 }
             }
-            Log("layout count:" + count + " mLen:" + mLen);
-            Log("layout useWidth:" + useWidth + " charTotalLen:" + charTotalLen);
             //需要两端对齐时每个字额外加的偏移，无需对齐时取0
             //useWidth < charTotalLen 出现的情况：设置一行文本中部分字体大小比原先的大
             float mAddedWidth = mNeedJustify || useWidth < charTotalLen ? (useWidth - charTotalLen) / count : 0;
-            Log("layout mAddedWidth:" + mAddedWidth);
+            Log("layout count:" + count + " mLen:" + mLen + " useWidth:" + useWidth + " charTotalLen:" + charTotalLen + " mAddedWidth:" + mAddedWidth + " " + chars_);
             if (start != 0) {
                 Log("layout drawTextRun start != mStart before:" + charLen);
                 charLen += mLastUseExtraWidth;
@@ -625,22 +619,22 @@ class TextLine {
                 String char_ = chars_.substring(j, j + 1);
                 float drawX = charLen + mAddedWidth * j;
                 int curPosition = delta + start + j;  //当前要绘制的文字位置
-                if (BuildConfig.DEBUG) {
+                if (JustUtils.DEBUG) {
                     String msg = "行字数:" + count + "，" + char_ + "[" + curPosition + "]" +
                             "，x:" + new DecimalFormat("#0.0").format(drawX) +
                             "，行宽:" + useWidth + "，字宽:" + charTotalLen +
                             "，偏移:" + new DecimalFormat("#0.0").format(mAddedWidth) +
                             "，首行:" + firstIndentLength + "，末行:" + mLastIndentLength +
                             "，后缀:" + lastSuffixWidth + "，可用:" + (useWidth - mLastIndentLength + firstIndentLength);
-                    Log(msg, true);
+                    Log(msg);
                 }
                 //设置末行缩进
                 if (JustUtils.isLastIndent(mLastIndentLength)) {
-                    if (BuildConfig.DEBUG) {
+                    if (JustUtils.DEBUG) {
                         String msg = "总字数:" + mText.length() + "，行字数:" + count + "，" + char_ + "[" + curPosition + "]" +
                                 "，x:" + (drawX + lastSuffixWidth) + "，可用宽度:" + (useWidth - mLastIndentLength + firstIndentLength) +
                                 "，开始位置:" + start + "，结束位置:" + end;
-                        Log(msg, true);
+                        Log(msg);
                     }
                     if (drawX + lastSuffixWidth > useWidth - mLastIndentLength + firstIndentLength) {   //一行不够绘制
                         //如果同时设置了首行和末行缩进且文本只有一行，则后面比较要加上firstIndentLength（首行缩进宽度），
@@ -706,14 +700,11 @@ class TextLine {
     }
 
     private void Log(String msg) {
-        Log(msg, DEBUG);
-    }
-
-    private void Log(String msg, boolean logSwitch) {
-        if (logSwitch) {
-            Log.i("JustTextView", msg);  //绘制长文本时打印会耗时，所以release版不要打开
+        if (JustUtils.DEBUG) {
+            Log.i("JustTextView", msg);  //绘制长文本时打印日志会耗时，所以非调试不要打开
         }
     }
+
 }
 
 

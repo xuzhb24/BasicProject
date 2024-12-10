@@ -12,6 +12,8 @@ import java.util.ArrayList;
  */
 public class JustUtils {
 
+    public static final boolean DEBUG = false;
+
     //首行是否缩进
     public static boolean isFirstIndent(String firstIndentText) {
         return !TextUtils.isEmpty(firstIndentText);
