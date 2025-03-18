@@ -605,6 +605,9 @@ class TextLine {
             //需要两端对齐时每个字额外加的偏移，无需对齐时取0
             //useWidth < charTotalLen 出现的情况：设置一行文本中部分字体大小比原先的大
             float mAddedWidth = mNeedJustify || useWidth < charTotalLen ? (useWidth - charTotalLen) / count : 0;
+            if (mAddedWidth > (float) charTotalLen / chars_.length() / 2.5f) {
+                mAddedWidth = 0;
+            }
             Log("layout count:" + count + " mLen:" + mLen + " useWidth:" + useWidth + " charTotalLen:" + charTotalLen + " mAddedWidth:" + mAddedWidth + " " + chars_);
             if (start != 0) {
                 Log("layout drawTextRun start != mStart before:" + charLen);
