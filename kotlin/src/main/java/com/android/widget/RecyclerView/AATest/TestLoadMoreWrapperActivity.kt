@@ -2,8 +2,8 @@ package com.android.widget.RecyclerView.AATest
 
 import android.os.Bundle
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestAdapterBinding
+import com.android.universal.R
+import com.android.kotlin.databinding.ActivityTestAdapterBinding
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant
 import com.android.frame.http.AATest.WangYiNewsWebviewActivity

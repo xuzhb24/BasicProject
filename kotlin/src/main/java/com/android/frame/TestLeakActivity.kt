@@ -2,7 +2,7 @@ package com.android.frame
 
 import android.content.Context
 import android.os.Bundle
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.initCommonLayout
 

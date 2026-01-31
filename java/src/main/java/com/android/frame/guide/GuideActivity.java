@@ -10,7 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.android.base.MainActivity;
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityGuideBinding;
 import com.android.util.SizeUtil;
 import com.android.util.StatusBar.StatusBarUtil;

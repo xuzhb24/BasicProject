@@ -4,7 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import androidx.annotation.AttrRes
 import androidx.recyclerview.widget.RecyclerView
-import com.android.basicproject.R
+import com.android.universal.R
 
 /**
  * Created by xuzhb on 2019/10/28

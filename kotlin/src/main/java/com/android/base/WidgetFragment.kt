@@ -1,7 +1,7 @@
 package com.android.base
 
 import android.os.Bundle
-import com.android.basicproject.databinding.FragmentWidgetBinding
+import com.android.kotlin.databinding.FragmentWidgetBinding
 import com.android.frame.mvc.AATest.TestWebviewActivity
 import com.android.frame.mvc.BaseFragment
 import com.android.universal.TestSystemWidgetActivity

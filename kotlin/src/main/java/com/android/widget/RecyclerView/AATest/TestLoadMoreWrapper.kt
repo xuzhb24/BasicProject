@@ -3,7 +3,7 @@ package com.android.widget.RecyclerView.AATest
 import android.content.Context
 import android.widget.ImageView
 import com.android.base.BaseApplication
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.widget.RecyclerView.BaseAdapter
 import com.android.widget.RecyclerView.ViewHolder

@@ -1,7 +1,7 @@
 package com.android.base
 
 import android.os.Bundle
-import com.android.basicproject.databinding.FragmentFrameBinding
+import com.android.kotlin.databinding.FragmentFrameBinding
 import com.android.frame.TestLeakActivity
 import com.android.frame.camera.zxing.AATest.TestZXingActivity
 import com.android.frame.guide.GuideActivity

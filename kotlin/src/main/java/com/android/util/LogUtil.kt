@@ -1,7 +1,7 @@
 package com.android.util
 
 import android.util.Log
-import com.android.basicproject.BuildConfig
+import com.android.kotlin.BuildConfig
 import java.io.*
 import java.text.SimpleDateFormat
 import java.util.*

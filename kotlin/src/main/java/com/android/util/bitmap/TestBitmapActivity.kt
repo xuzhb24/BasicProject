@@ -6,8 +6,8 @@ import android.os.Bundle
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestBitmapBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityTestBitmapBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.LayoutParamsUtil
 import com.android.util.SizeUtil
@@ -43,7 +43,7 @@ class TestBitmapActivity : BaseActivity<ActivityTestBitmapBinding>() {
         setImage(
             BitmapUtil.addImageWatermark(
                 getSrc(),
-                BitmapUtil.getBitmapFromResource(resources, R.mipmap.ic_logo),
+                BitmapUtil.getBitmapFromResource(resources, com.android.universal.R.mipmap.ic_logo),
                 10,
                 10,
                 150,
@@ -63,7 +63,7 @@ class TestBitmapActivity : BaseActivity<ActivityTestBitmapBinding>() {
         binding.rootLl.addView(iv)
     }
 
-    private fun getSrc() = BitmapUtil.getBitmapFromResource(resources, R.drawable.ic_bitmap)
+    private fun getSrc() = BitmapUtil.getBitmapFromResource(resources, com.android.universal.R.drawable.ic_bitmap)
 
     override fun initListener() {
     }

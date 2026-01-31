@@ -1,7 +1,7 @@
 package com.android.util.CapturePicture
 
 import android.os.Bundle
-import com.android.basicproject.databinding.ActivityTestCaptureWebviewBinding
+import com.android.kotlin.databinding.ActivityTestCaptureWebviewBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.bitmap.BitmapUtil
 

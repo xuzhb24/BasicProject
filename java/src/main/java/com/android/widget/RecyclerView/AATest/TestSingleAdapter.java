@@ -3,7 +3,7 @@ package com.android.widget.RecyclerView.AATest;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.TextUtils;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.widget.RecyclerView.BaseAdapter;
 import com.android.widget.RecyclerView.ViewHolder;
 

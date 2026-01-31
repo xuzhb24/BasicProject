@@ -13,7 +13,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
-import com.android.java.R;
+import com.android.universal.R;
 
 /**
  * Created by xuzhb on 2020/7/1

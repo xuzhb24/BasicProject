@@ -11,7 +11,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import com.android.basicproject.R
+import com.android.kotlin.R
 
 /**
  * Created by xuzhb on 2019/11/26
@@ -29,8 +29,8 @@ object NotificationUtil {
         context: Context,
         title: CharSequence,
         text: CharSequence,
-        smallIconId: Int = R.mipmap.ic_launcher,
-        largeIconBitmap: Bitmap = BitmapFactory.decodeResource(context.resources, R.mipmap.ic_logo),
+        smallIconId: Int = com.android.universal.R.mipmap.ic_launcher,
+        largeIconBitmap: Bitmap = BitmapFactory.decodeResource(context.resources, com.android.universal.R.mipmap.ic_logo),
         showBigText: Boolean = false,
         intent: Intent? = null
     ) {
@@ -118,19 +118,19 @@ object NotificationUtil {
             .setContentTitle(title)  //设置标题
             .setContentText(text)  //设置内容，长文本可能会显示不全
             .setWhen(System.currentTimeMillis())  //设置时间
-            .setSmallIcon(R.mipmap.ic_launcher)  //设置小图标
-            .setLargeIcon(BitmapFactory.decodeResource(context.resources, R.mipmap.ic_logo))  //设置大图标
+            .setSmallIcon(com.android.universal.R.mipmap.ic_launcher)  //设置小图标
+            .setLargeIcon(BitmapFactory.decodeResource(context.resources, com.android.universal.R.mipmap.ic_logo))  //设置大图标
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)  //设置通知重要程度
             .setStyle(NotificationCompat.BigTextStyle().bigText(text))  //显示长文本
             .setStyle(
                 NotificationCompat.BigPictureStyle().bigPicture(
                     BitmapFactory.decodeResource(
                         context.resources,
-                        R.mipmap.ic_launcher
+                        com.android.universal.R.mipmap.ic_launcher
                     )
                 )
             )  //设置带有图片消息
-            .setSound(Uri.parse("android.resource://" + context.getPackageName() + "/" + R.raw.notification))  //设置通知提示音
+            .setSound(Uri.parse("android.resource://" + context.getPackageName() + "/" + com.android.universal.R.raw.notification))  //设置通知提示音
             .setVibrate(longArrayOf(0, 1000, 1000, 1000))  //设置振动
 //            .setLights(Color.GREEN, 1000, 1000)  //设置前置LED灯进行闪烁，第一个为颜色值，第二个为亮的时长,第三个为暗的时长
 //            .setDefaults(NotificationCompat.DEFAULT_ALL)  //使用默认效果，会根据手机当前环境播放铃声，是否振动

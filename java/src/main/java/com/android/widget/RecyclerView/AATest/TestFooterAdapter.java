@@ -3,7 +3,7 @@ package com.android.widget.RecyclerView.AATest;
 import android.content.Context;
 import android.text.TextUtils;
 import android.widget.CheckBox;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.widget.RecyclerView.BaseAdapter;
 import com.android.widget.RecyclerView.MultiViewType;
 import com.android.widget.RecyclerView.ViewHolder;

@@ -6,7 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
-import com.android.java.R;
+import com.android.universal.R;
 
 /**
  * Created by xuzhb on 2020/7/17

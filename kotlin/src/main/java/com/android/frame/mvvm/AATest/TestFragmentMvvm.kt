@@ -1,8 +1,8 @@
 package com.android.frame.mvvm.AATest
 
 import android.os.Bundle
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestFragmentBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityTestFragmentBinding
 import com.android.frame.mvvm.AATest.listType.TestMvvmListFragment
 import com.android.frame.mvvm.AATest.notListType.TestMvvmFragment
 import com.android.frame.mvvm.CommonBaseActivity

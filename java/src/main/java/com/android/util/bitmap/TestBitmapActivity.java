@@ -8,7 +8,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityTestBitmapBinding;
 import com.android.util.LayoutParamsUtil;
 import com.android.util.SizeUtil;

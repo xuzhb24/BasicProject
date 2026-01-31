@@ -7,8 +7,8 @@ import android.widget.RadioButton
 import android.widget.RadioGroup
 import androidx.viewpager.widget.ViewPager
 import com.android.base.MainActivity
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityGuideBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityGuideBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil
 import com.android.util.StatusBar.StatusBarUtil
@@ -20,9 +20,9 @@ import com.android.util.StatusBar.StatusBarUtil
 class GuideActivity : BaseActivity<ActivityGuideBinding>() {
 
     private var mLayoutIds: IntArray = intArrayOf(
-        R.layout.layout_guide_one,
-        R.layout.layout_guide_two,
-        R.layout.layout_guide_three
+        com.android.universal.R.layout.layout_guide_one,
+        com.android.universal.R.layout.layout_guide_two,
+        com.android.universal.R.layout.layout_guide_three
     )
 
     override fun initBar() {
@@ -33,7 +33,7 @@ class GuideActivity : BaseActivity<ActivityGuideBinding>() {
         val viewList: MutableList<View> = mutableListOf()
         for (i in mLayoutIds.indices) {
             val radioButton = RadioButton(this)
-            radioButton.setButtonDrawable(R.drawable.selector_guide_indicator)
+            radioButton.setButtonDrawable(com.android.universal.R.drawable.selector_guide_indicator)
             val params = RadioGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             val margin = SizeUtil.dp2pxInt(6f)
             params.leftMargin = margin

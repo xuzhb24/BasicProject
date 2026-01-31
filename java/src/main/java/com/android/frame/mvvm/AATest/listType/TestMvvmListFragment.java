@@ -6,7 +6,7 @@ import com.android.frame.http.AATest.WangYiNewsWebviewActivity;
 import com.android.frame.mvc.AATest.adapter.NewsListAdapter;
 import com.android.frame.mvc.AATest.entity.NewsListBean;
 import com.android.frame.mvvm.BaseListFragment;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.FragmentTestMvcListBinding;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;

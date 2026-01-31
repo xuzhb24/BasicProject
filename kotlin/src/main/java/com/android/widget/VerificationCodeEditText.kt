@@ -9,7 +9,7 @@ import android.text.InputType
 import android.text.TextPaint
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.util.SizeUtil
 
 /**

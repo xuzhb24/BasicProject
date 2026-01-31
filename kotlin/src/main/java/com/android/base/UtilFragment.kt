@@ -1,10 +1,8 @@
 package com.android.base
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import com.android.basicproject.databinding.FragmentUtilBinding
 import com.android.frame.mvc.BaseFragment
+import com.android.kotlin.databinding.FragmentUtilBinding
 import com.android.util.TestUtilActivity
 import com.android.util.bitmap.TestBitmapActivity
 import com.android.util.code.TestCodeUtilActivity

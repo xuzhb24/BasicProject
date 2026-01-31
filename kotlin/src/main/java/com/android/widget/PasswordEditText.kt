@@ -8,7 +8,7 @@ import android.graphics.RectF
 import android.text.InputType
 import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatEditText
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.util.SizeUtil
 
 /**

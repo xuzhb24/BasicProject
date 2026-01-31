@@ -7,7 +7,7 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.AttrRes
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.util.DateUtil
 import com.android.util.SizeUtil
 

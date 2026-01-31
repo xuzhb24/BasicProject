@@ -2,7 +2,7 @@ package com.android.widget.LoadingLayout
 
 import android.os.Bundle
 import android.os.Handler
-import com.android.basicproject.databinding.ActivityTestLoadingLayoutBinding
+import com.android.kotlin.databinding.ActivityTestLoadingLayoutBinding
 import com.android.frame.mvc.BaseActivity
 
 /**

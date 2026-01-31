@@ -1,7 +1,7 @@
 package com.android.widget.PopupWindow.AATest;
 
 import android.content.Context;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.widget.RecyclerView.BaseAdapter;
 import com.android.widget.RecyclerView.ViewHolder;
 

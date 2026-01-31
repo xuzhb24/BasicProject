@@ -1,7 +1,7 @@
 package com.android.frame.http
 
 import com.android.base.BaseApplication
-import com.android.basicproject.BuildConfig
+import com.android.kotlin.BuildConfig
 import com.android.frame.http.interceptor.HttpCacheInterceptor
 import com.android.frame.http.interceptor.HttpLogInterceptor
 import com.android.util.FileUtil

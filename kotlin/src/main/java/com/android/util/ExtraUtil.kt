@@ -14,7 +14,7 @@ import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.appcompat.app.AppCompatActivity
-import com.android.basicproject.R
+import com.android.kotlin.R
 import com.android.util.uiparse.ParseUtil
 import com.android.widget.PopupWindow.CommonPopupWindow
 import com.google.gson.Gson
@@ -72,7 +72,7 @@ fun isEntity(text: String, obj: Any): Boolean {
 
 fun showImage(activity: Activity, bitmap: Bitmap) {
     CommonPopupWindow.Builder(activity)
-        .setContentView(R.layout.layout_image)
+        .setContentView(com.android.universal.R.layout.layout_image)
         .setViewParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         .setBackGroundAlpha(0.5f)
         .setOnViewListener { holder, popupWindow ->
@@ -85,7 +85,7 @@ fun showImage(activity: Activity, bitmap: Bitmap) {
 
 fun showImage(activity: Activity, drawable: Drawable) {
     CommonPopupWindow.Builder(activity)
-        .setContentView(R.layout.layout_image)
+        .setContentView(com.android.universal.R.layout.layout_image)
         .setViewParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
         .setBackGroundAlpha(0.5f)
         .setOnViewListener { holder, popupWindow ->

@@ -7,17 +7,17 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentPagerAdapter
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityMainBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityMainBinding
 import com.android.frame.mvc.BaseActivity
 import com.google.android.material.tabs.TabLayout
 
 class MainActivity : BaseActivity<ActivityMainBinding>(), DontSwipeBack {
 
     private val mImageButton = intArrayOf(
-        R.drawable.selector_bottom_frame,
-        R.drawable.selector_bottom_widget,
-        R.drawable.selector_bottom_util
+        com.android.universal.R.drawable.selector_bottom_frame,
+        com.android.universal.R.drawable.selector_bottom_widget,
+        com.android.universal.R.drawable.selector_bottom_util
     )
     private val mFragmentList: MutableList<Fragment> = mutableListOf(
         FrameFragment.newInstance(),
@@ -81,7 +81,7 @@ class MainActivity : BaseActivity<ActivityMainBinding>(), DontSwipeBack {
     }
 
     fun getTabView(position: Int): View {
-        val view = LayoutInflater.from(applicationContext).inflate(R.layout.layout_tab_content, null)
+        val view = LayoutInflater.from(applicationContext).inflate(com.android.universal.R.layout.layout_tab_content, null)
         val iv = view.findViewById(R.id.iv) as ImageView
         val tv = view.findViewById(R.id.tv) as TextView
         iv.setImageResource(mImageButton[position])

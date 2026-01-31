@@ -1,7 +1,7 @@
 package com.android.frame.mvp.AATest.notListType
 
 import android.os.Bundle
-import com.android.basicproject.databinding.FragmentTestMvcBinding
+import com.android.kotlin.databinding.FragmentTestMvcBinding
 import com.android.frame.mvc.AATest.entity.WeatherBean
 import com.android.frame.mvp.BaseFragment
 import com.android.util.JsonUtil

@@ -4,7 +4,7 @@ import android.Manifest
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.AlertDialogUtil
 import com.android.util.LogUtil

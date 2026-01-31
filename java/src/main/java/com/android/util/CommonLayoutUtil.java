@@ -127,7 +127,7 @@ public class CommonLayoutUtil {
         il.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.MarginLayoutParams.WRAP_CONTENT));
         il.setInputTextHint(hint);
         il.setDividerHeight(SizeUtil.dp2px(2));
-        il.setDividerColor(activity.getResources().getColor(R.color.colorPrimary));
+        il.setDividerColor(activity.getResources().getColor(com.android.universal.R.color.colorPrimary));
         LayoutParamsUtil.setMargin(il, (int) SizeUtil.dp2px(20), 0, (int) SizeUtil.dp2px(20), (int) SizeUtil.dp2px(8));
         return il;
     }

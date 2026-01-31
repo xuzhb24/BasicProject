@@ -7,7 +7,7 @@ import androidx.annotation.LayoutRes
 import androidx.annotation.StyleRes
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.widget.ViewHolder
 
 /**

@@ -5,7 +5,7 @@ import android.graphics.Color;
 import android.widget.ImageView;
 import com.android.base.BaseApplication;
 import com.android.frame.http.AATest.bean.NewsListBean;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.widget.RecyclerView.AATest.entity.DateBean;
 import com.android.widget.RecyclerView.LoadMoreAdapter;
 import com.android.widget.RecyclerView.MultiViewType;

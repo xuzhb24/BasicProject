@@ -1,14 +1,11 @@
 package com.android.frame.mvp.AATest.listType
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.ViewGroup
-import com.android.basicproject.R
-import com.android.basicproject.databinding.FragmentTestMvcListBinding
 import com.android.frame.http.AATest.WangYiNewsWebviewActivity
 import com.android.frame.mvc.AATest.adapter.NewsListAdapter
 import com.android.frame.mvc.AATest.entity.NewsListBean
 import com.android.frame.mvp.BaseListFragment
+import com.android.kotlin.databinding.FragmentTestMvcListBinding
 
 /**
  * Created by xuzhb on 2021/1/5
@@ -33,9 +30,9 @@ class TestMvpListFragment : BaseListFragment<NewsListBean, FragmentTestMvcListBi
             WangYiNewsWebviewActivity.start(mContext, "", bean.path)
         }
         //Item内子View的点击事件
-        mAdapter.addChildClickViewIds(R.id.image_iv)
+        mAdapter.addChildClickViewIds(com.android.universal.R.id.image_iv)
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
-            if (view.id == R.id.image_iv) {
+            if (view.id == com.android.universal.R.id.image_iv) {
                 showToast("点击了第${position}项的图片")
             }
         }

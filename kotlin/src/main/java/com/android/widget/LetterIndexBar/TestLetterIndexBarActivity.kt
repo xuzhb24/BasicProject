@@ -2,7 +2,7 @@ package com.android.widget.LetterIndexBar
 
 import android.os.Bundle
 import android.view.View
-import com.android.basicproject.databinding.ActivityTestLetterIndexBarBinding
+import com.android.kotlin.databinding.ActivityTestLetterIndexBarBinding
 import com.android.frame.mvc.BaseActivity
 
 /**

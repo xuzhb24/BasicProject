@@ -8,7 +8,7 @@ import android.view.LayoutInflater
 import android.widget.TextView
 import android.widget.Toast
 import com.android.base.BaseApplication
-import com.android.basicproject.R
+import com.android.kotlin.R
 
 /**
  * Created by xuzhb on 2019/9/26
@@ -24,8 +24,8 @@ object ToastUtil {
     ) {
         val duration = if (longToast) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
         val toast = Toast.makeText(context.applicationContext, text, duration)
-        val layout = LayoutInflater.from(context.applicationContext).inflate(R.layout.layout_toast, null)
-        val toastTv: TextView = layout.findViewById(R.id.toast_tv)
+        val layout = LayoutInflater.from(context.applicationContext).inflate(com.android.universal.R.layout.layout_toast, null)
+        val toastTv: TextView = layout.findViewById(com.android.universal.R.id.toast_tv)
         toastTv.setText(text)
         val toastShape = GradientDrawable()
         toastShape.setColor(Color.parseColor("#CC1F2735"))
@@ -48,8 +48,8 @@ object ToastUtil {
     ) {
         val duration = if (longToast) Toast.LENGTH_LONG else Toast.LENGTH_SHORT
         val toast = Toast.makeText(context.applicationContext, text, duration)
-        val layout = LayoutInflater.from(context.applicationContext).inflate(R.layout.layout_toast, null)
-        val toastTv: TextView = layout.findViewById(R.id.toast_tv)
+        val layout = LayoutInflater.from(context.applicationContext).inflate(com.android.universal.R.layout.layout_toast, null)
+        val toastTv: TextView = layout.findViewById(com.android.universal.R.id.toast_tv)
         toastTv.setText(text)
         val toastShape = GradientDrawable()
         toastShape.setColor(Color.parseColor("#CC1F2735"))

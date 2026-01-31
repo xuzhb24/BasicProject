@@ -3,7 +3,7 @@ package com.android.util.glide;
 import android.os.Bundle;
 
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityTestGlideBinding;
 import com.android.util.SizeUtil;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;

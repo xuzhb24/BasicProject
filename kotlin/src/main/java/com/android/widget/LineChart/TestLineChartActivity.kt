@@ -1,7 +1,7 @@
 package com.android.widget.LineChart
 
 import android.os.Bundle
-import com.android.basicproject.databinding.ActivityTestLineChartBinding
+import com.android.kotlin.databinding.ActivityTestLineChartBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.DateUtil
 import com.android.util.SizeUtil

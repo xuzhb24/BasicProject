@@ -24,7 +24,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import com.android.basicproject.R;
+import com.android.universal.R;
 import com.android.frame.camera.zxing.camera.CameraManager;
 import com.android.frame.camera.zxing.ui.CaptureActivity;
 import com.android.frame.camera.zxing.view.ViewfinderResultPointCallback;

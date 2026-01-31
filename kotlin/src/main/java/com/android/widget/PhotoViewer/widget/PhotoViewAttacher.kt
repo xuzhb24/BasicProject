@@ -523,6 +523,9 @@ class PhotoViewAttacher constructor(private val mImageView: ImageView) : View.On
                     ImageView.ScaleType.FIT_XY -> {
                         mBaseMatrix.setRectToRect(mTempSrc, mTempDst, Matrix.ScaleToFit.FILL)
                     }
+                    else -> {
+
+                    }
                 }
             }
         }

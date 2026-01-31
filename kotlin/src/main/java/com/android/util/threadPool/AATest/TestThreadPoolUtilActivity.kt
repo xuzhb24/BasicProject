@@ -3,8 +3,8 @@ package com.android.util.threadPool.AATest
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.DateUtil
 import com.android.util.LogUtil

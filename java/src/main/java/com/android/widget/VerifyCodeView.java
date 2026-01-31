@@ -6,7 +6,7 @@ import android.graphics.*;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.SizeUtil;
 
 import java.util.Random;

@@ -16,7 +16,7 @@ import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.widget.ViewHolder;
 
 import org.jetbrains.annotations.NotNull;

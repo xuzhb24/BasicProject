@@ -22,7 +22,7 @@ import android.graphics.*;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.View;
-import com.android.basicproject.R;
+import com.android.universal.R;
 import com.android.frame.camera.zxing.camera.CameraManager;
 import com.google.zxing.ResultPoint;
 

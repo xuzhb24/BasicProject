@@ -3,7 +3,7 @@ package com.android.widget.ProgressBar
 import android.graphics.Color
 import android.os.Bundle
 import android.view.animation.AccelerateDecelerateInterpolator
-import com.android.basicproject.databinding.ActivityTestProgressBarBinding
+import com.android.kotlin.databinding.ActivityTestProgressBarBinding
 import com.android.frame.mvc.BaseActivity
 
 class TestProgressBarActivity : BaseActivity<ActivityTestProgressBarBinding>() {

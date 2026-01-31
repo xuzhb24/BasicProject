@@ -5,7 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.widget.ViewHolder;
 
 /**

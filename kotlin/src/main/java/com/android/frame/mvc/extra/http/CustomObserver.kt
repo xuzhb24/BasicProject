@@ -37,7 +37,7 @@ abstract class CustomObserver<T>(
         }
     }
 
-    override fun onNext(t: T) {
+    override fun onNext(t: T & Any) {
         val view = mWeakReference.get()
         when (t) {
             is BaseResponse<*> -> {  //非列表类型数据

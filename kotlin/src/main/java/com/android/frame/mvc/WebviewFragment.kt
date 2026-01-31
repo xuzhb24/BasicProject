@@ -9,7 +9,7 @@ import android.text.TextUtils
 import android.view.ViewGroup
 import android.webkit.*
 import android.widget.LinearLayout
-import com.android.basicproject.databinding.FragmentWebviewBinding
+import com.android.kotlin.databinding.FragmentWebviewBinding
 import com.android.util.LogUtil
 import com.android.widget.PicGetterDialog.OnPicGetterListener
 import com.android.widget.PicGetterDialog.PicGetterDialog

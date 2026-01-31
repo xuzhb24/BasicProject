@@ -2,7 +2,7 @@ package com.android.frame.mvc.AATest.adapter;
 
 import com.android.frame.mvc.AATest.entity.NewsListBean;
 import com.android.frame.mvc.extra.RecyclerView.LoadMoreAdapter;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.SizeUtil;
 import com.android.util.glide.GlideUtil;
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners;

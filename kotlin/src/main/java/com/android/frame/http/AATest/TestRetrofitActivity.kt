@@ -1,7 +1,6 @@
 package com.android.frame.http.AATest
 
 import android.os.Bundle
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.frame.http.AATest.bean.WeatherBean
 import com.android.frame.http.ExceptionUtil
@@ -10,13 +9,13 @@ import com.android.frame.http.SchedulerUtil
 import com.android.frame.http.function.RetryWithDelay
 import com.android.frame.http.interceptor.MaxRetryInterceptor
 import com.android.frame.mvc.BaseActivity
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.util.JsonUtil
 import com.android.util.alert
 import com.android.util.initCommonLayout
 import com.google.gson.Gson
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_common_layout.*
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
@@ -38,45 +37,45 @@ class TestRetrofitActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             showInputLayout = true
         )
         val city = "北京"
-        il.inputText = city
-        il.getEditText().setSelection(city.length)  //将光标移至文字末尾
+        binding.il.inputText = city
+        binding.il.getEditText().setSelection(city.length)  //将光标移至文字末尾
     }
 
     override fun initListener() {
-        btn1.setOnClickListener {
-            getWeatherByQuery(il.inputText.trim())
+        binding.btn1.setOnClickListener {
+            getWeatherByQuery(binding.il.inputText.trim())
         }
-        btn2.setOnClickListener {
-            getWeatherByQueryMap(il.inputText.trim())
+        binding.btn2.setOnClickListener {
+            getWeatherByQueryMap(binding.il.inputText.trim())
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             getWangYiNewsByField("1", "1")
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             getWangYiNewsByFieldMap("1", "2")
         }
-        btn5.setOnClickListener {
+        binding.btn5.setOnClickListener {
             getWangYiNewsByBody("1", "3")
         }
-        btn6.setOnClickListener {
+        binding.btn6.setOnClickListener {
             //            accessUrl(UrlConstant.BAIDU_URL)
             accessUrlRxJava(UrlConstant.BAIDU_URL)
         }
-        btn7.setOnClickListener {
-            testCache(il.inputText.trim())
+        binding.btn7.setOnClickListener {
+            testCache(binding.il.inputText.trim())
         }
-        btn8.setOnClickListener {
+        binding.btn8.setOnClickListener {
             if (RetrofitFactory.instance.clearCache()) {
                 showToast("缓存已清除")
             } else {
                 showToast("缓存清除失败")
             }
         }
-        btn9.setOnClickListener {
-            testMaxRetry(il.inputText.trim())
+        binding.btn9.setOnClickListener {
+            testMaxRetry(binding.il.inputText.trim())
         }
-        btn10.setOnClickListener {
-            testRetryWithDelay(il.inputText.trim())
+        binding.btn10.setOnClickListener {
+            testRetryWithDelay(binding.il.inputText.trim())
         }
     }
 

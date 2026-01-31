@@ -27,7 +27,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.NonNull;
 
 import com.android.java.BuildConfig;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityWebviewBinding;
 import com.android.util.KeyboardUtil;
 import com.android.util.LogUtil;

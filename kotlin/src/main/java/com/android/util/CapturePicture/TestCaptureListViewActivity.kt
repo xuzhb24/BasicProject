@@ -6,8 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestCaptureListviewBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityTestCaptureListviewBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.bitmap.BitmapUtil
 
@@ -24,7 +24,7 @@ class TestCaptureListViewActivity : BaseActivity<ActivityTestCaptureListviewBind
         }
         binding.listView.adapter = object : BaseAdapter() {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                val view = LayoutInflater.from(applicationContext).inflate(R.layout.item_test_capture, null)
+                val view = LayoutInflater.from(applicationContext).inflate(com.android.universal.R.layout.item_test_capture, null)
                 view.findViewById<TextView>(R.id.tv).text = list[position]
                 return view
             }

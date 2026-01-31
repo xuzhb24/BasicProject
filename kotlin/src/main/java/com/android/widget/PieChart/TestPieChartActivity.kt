@@ -2,7 +2,7 @@ package com.android.widget.PieChart
 
 import android.graphics.Color
 import android.os.Bundle
-import com.android.basicproject.databinding.ActivityTestPieChartBinding
+import com.android.kotlin.databinding.ActivityTestPieChartBinding
 import com.android.frame.mvc.BaseActivity
 
 /**

@@ -2,7 +2,6 @@ package com.android.frame.camera.zxing.sound
 
 import android.content.Context
 import android.media.MediaPlayer
-import com.android.basicproject.R
 
 /**
  * Created by xuzhb on 2019/11/16
@@ -18,7 +17,7 @@ class BeepManager(private var mContext: Context) : MediaPlayer.OnCompletionListe
     private var isComplete: Boolean = false
 
     init {
-        mMediaPlayer = MediaPlayer.create(mContext.applicationContext, R.raw.beep)
+        mMediaPlayer = MediaPlayer.create(mContext.applicationContext, com.android.universal.R.raw.beep)
         with(mMediaPlayer!!) {
             isLooping = false  //是否循环播放
 //            setVolume(BEEP_VOLUME, BEEP_VOLUME)

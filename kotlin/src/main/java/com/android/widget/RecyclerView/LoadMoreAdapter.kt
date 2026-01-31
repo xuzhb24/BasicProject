@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import androidx.annotation.LayoutRes
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.android.basicproject.R
+import com.android.universal.R
 
 /**
  * Created by xuzhb on 2020/1/12

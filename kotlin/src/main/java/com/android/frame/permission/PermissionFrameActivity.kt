@@ -4,12 +4,11 @@ import android.Manifest
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import com.android.basicproject.R
+import android.view.View
+import com.android.kotlin.R
 import com.android.util.ToastUtil
 import com.android.util.initCommonLayout
 import com.android.util.jumpToAppSetting
-import kotlinx.android.synthetic.main.activity_common_layout.*
-import org.jetbrains.anko.toast
 import pub.devrel.easypermissions.AfterPermissionGranted
 import pub.devrel.easypermissions.AppSettingsDialog
 import pub.devrel.easypermissions.EasyPermissions
@@ -36,10 +35,10 @@ class PermissionFrameActivity : Activity(), EasyPermissions.PermissionCallbacks 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_layout)
         initCommonLayout(this, "动态权限申请", "申请权限", "应用设置")
-        btn1.setOnClickListener {
+        findViewById<View>(R.id.btn1).setOnClickListener {
             initPermission()
         }
-        btn2.setOnClickListener {
+        findViewById<View>(R.id.btn2).setOnClickListener {
             jumpToAppSetting(this)
         }
     }

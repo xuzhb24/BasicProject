@@ -11,8 +11,10 @@ import android.provider.MediaStore
 import android.text.TextUtils
 import android.view.SurfaceHolder
 import android.view.SurfaceView
+import android.view.View
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.viewbinding.ViewBinding
-import com.android.basicproject.databinding.ActivityCaptureBinding
 import com.android.frame.camera.zxing.camera.CameraManager
 import com.android.frame.camera.zxing.decode.CaptureActivityHandler
 import com.android.frame.camera.zxing.decode.InactivityTimer
@@ -21,11 +23,12 @@ import com.android.frame.camera.zxing.util.QRCodeUtil
 import com.android.frame.camera.zxing.util.QRConstant
 import com.android.frame.camera.zxing.view.ViewfinderView
 import com.android.frame.mvc.BaseActivity
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityCaptureBinding
 import com.android.util.LogUtil
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.Result
-import kotlinx.android.synthetic.main.activity_capture.*
-import java.util.*
+import java.util.Vector
 import kotlin.concurrent.thread
 
 /**
@@ -76,13 +79,13 @@ open class CaptureActivity<VB : ViewBinding> : BaseActivity<VB>(), SurfaceHolder
         //这里带"?"是因为继承CaptureActivity的Activity子类的布局不一定包含id为title_bar和light_ll的控件，
         //没有的话如果子类通过super.initListener()覆写时会因为找不到而报异常，所以这里加了一个判空；
         //如果子类的布局中包含id相同的控件，则不需要在子类中再重写相同的逻辑
-        title_bar?.setOnLeftIconClickListener {
+        mTitleBar?.setOnLeftIconClickListener {
             finish()
         }
-        title_bar?.setOnRightTextClickListener {
+        mTitleBar?.setOnRightTextClickListener {
             openAlbum()  //打开相册选取图片扫描
         }
-        light_ll?.setOnClickListener {
+        findViewById<View>(R.id.light_ll)?.setOnClickListener {
             switchLight()  //打开或关闭闪光灯
         }
     }
@@ -98,14 +101,14 @@ open class CaptureActivity<VB : ViewBinding> : BaseActivity<VB>(), SurfaceHolder
     private fun switchLight() {
         if (CameraManager.get() != null) {
             if (isLightOn) {
-                light_tv.text = "轻触点亮"
+                findViewById<TextView>(R.id.light_tv).text = "轻触点亮"
                 CameraManager.get().turnLightOffFlashLight()
             } else {
-                light_tv.text = "轻触关闭"
+                findViewById<TextView>(R.id.light_tv).text = "轻触关闭"
                 CameraManager.get().turnOnFlashLight()
             }
             isLightOn = !isLightOn
-            light_iv.isSelected = isLightOn
+            findViewById<ImageView>(R.id.light_iv).isSelected = isLightOn
         }
     }
 
@@ -162,11 +165,11 @@ open class CaptureActivity<VB : ViewBinding> : BaseActivity<VB>(), SurfaceHolder
 
     //继承CaptureActivity的Activity类，如果SurfaceView的id和CaptureActivity布局中SurfaceView的id不同
     //需要重写这个方法，返回自己布局中的SurfaceView
-    open fun getSurfaceView(): SurfaceView = surfaceView
+    open fun getSurfaceView(): SurfaceView = findViewById(R.id.surfaceView)
 
     //继承CaptureActivity的Activity类，如果ViewfinderView的id和CaptureActivity布局中ViewfinderView的id不同
     //需要重写这个方法，返回自己布局中的ViewfinderView
-    open fun getViewfinderView(): ViewfinderView = viewfinderView
+    open fun getViewfinderView(): ViewfinderView = findViewById(R.id.viewfinderView)
 
     fun getHandler(): Handler = mHandler as Handler
 

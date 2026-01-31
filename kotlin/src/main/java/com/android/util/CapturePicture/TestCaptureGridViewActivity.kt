@@ -1,17 +1,15 @@
 package com.android.util.CapturePicture
 
-import android.Manifest
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.BaseAdapter
 import android.widget.TextView
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestCaptureGridviewBinding
 import com.android.frame.mvc.BaseActivity
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityTestCaptureGridviewBinding
 import com.android.util.bitmap.BitmapUtil
-import com.android.util.permission.PermissionUtil
 
 /**
  * Created by xuzhb on 2021/5/13
@@ -26,7 +24,7 @@ class TestCaptureGridViewActivity : BaseActivity<ActivityTestCaptureGridviewBind
         }
         binding.gridView.adapter = object : BaseAdapter() {
             override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-                val view = LayoutInflater.from(applicationContext).inflate(R.layout.item_test_capture, null)
+                val view = LayoutInflater.from(applicationContext).inflate(com.android.universal.R.layout.item_test_capture, null)
                 view.findViewById<TextView>(R.id.tv).text = list[position]
                 return view
             }

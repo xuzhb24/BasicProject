@@ -12,7 +12,7 @@ import android.widget.ImageView;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.uiparse.ParseUtil;
 import com.android.widget.PopupWindow.CommonPopupWindow;
 

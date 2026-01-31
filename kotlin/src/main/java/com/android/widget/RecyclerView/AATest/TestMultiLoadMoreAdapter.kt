@@ -4,7 +4,7 @@ import android.content.Context
 import android.graphics.Color
 import android.widget.ImageView
 import com.android.base.BaseApplication
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.frame.http.AATest.bean.NewsListBean
 import com.android.widget.RecyclerView.AATest.entity.DateBean
 import com.android.widget.RecyclerView.LoadMoreAdapter

@@ -1,7 +1,7 @@
 package com.android.frame.mvvm.AATest
 
 import android.os.Bundle
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvvm.AATest.listType.TestMvvmListActivity
 import com.android.frame.mvvm.AATest.notListType.TestMvvmActivity
 import com.android.frame.mvvm.CommonBaseActivity

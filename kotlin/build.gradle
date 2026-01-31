@@ -2,9 +2,8 @@ apply plugin: 'com.android.application'
 
 apply plugin: 'kotlin-android'
 
-apply plugin: 'kotlin-android-extensions'
-
 android {
+    namespace 'com.android.kotlin'
     //配置自动签名
     signingConfigs {
         config {
@@ -93,8 +92,6 @@ dependencies {
     //leakcanary检测内存泄漏
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.4'
 
-    //Kotlin
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     //Anko库，包含下方四个部分
 //    implementation "org.jetbrains.anko:anko:$anko_version"  //待验证
 //    //Anko Commons

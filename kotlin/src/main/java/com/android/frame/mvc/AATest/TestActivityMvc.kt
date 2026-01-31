@@ -1,7 +1,7 @@
 package com.android.frame.mvc.AATest
 
 import android.os.Bundle
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.initCommonLayout
 

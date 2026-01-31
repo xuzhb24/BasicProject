@@ -9,7 +9,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.base.BaseApplication;
-import com.android.java.R;
+import com.android.universal.R;
 
 /**
  * Created by xuzhb on 2019/10/22

@@ -1,8 +1,8 @@
 package com.android.frame.mvvm.AATest.listType
 
 import android.os.Bundle
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestMvcListBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityTestMvcListBinding
 import com.android.frame.http.AATest.WangYiNewsWebviewActivity
 import com.android.frame.mvc.AATest.adapter.NewsListAdapter
 import com.android.frame.mvc.AATest.entity.NewsListBean
@@ -27,9 +27,9 @@ class TestMvvmListActivity : BaseListActivity<NewsListBean, ActivityTestMvcListB
             WangYiNewsWebviewActivity.start(this, "", bean.path)
         }
         //Item内子View的点击事件
-        mAdapter.addChildClickViewIds(R.id.image_iv)
+        mAdapter.addChildClickViewIds(com.android.universal.R.id.image_iv)
         mAdapter.setOnItemChildClickListener { adapter, view, position ->
-            if (view.id == R.id.image_iv) {
+            if (view.id == com.android.universal.R.id.image_iv) {
                 showToast("点击了第${position}项的图片")
             }
         }

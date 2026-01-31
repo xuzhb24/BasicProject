@@ -17,7 +17,7 @@ import android.view.animation.RotateAnimation;
 
 import androidx.annotation.Nullable;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.SizeUtil;
 
 /**

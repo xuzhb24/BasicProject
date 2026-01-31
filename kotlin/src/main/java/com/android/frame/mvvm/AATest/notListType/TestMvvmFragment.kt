@@ -2,7 +2,7 @@ package com.android.frame.mvvm.AATest.notListType
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.android.basicproject.databinding.FragmentTestMvcBinding
+import com.android.kotlin.databinding.FragmentTestMvcBinding
 import com.android.frame.mvvm.BaseFragment
 import com.android.util.JsonUtil
 import com.android.util.LogUtil

@@ -6,7 +6,7 @@ import android.widget.ImageView;
 
 import com.android.base.MainActivity;
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityCommonLayoutBinding;
 import com.android.util.CommonLayoutUtil;
 import com.android.util.LogUtil;

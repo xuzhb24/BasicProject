@@ -32,7 +32,7 @@ import androidx.core.content.FileProvider;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.bitmap.BitmapUtil;
 import com.android.widget.ViewHolder;
 import com.yalantis.ucrop.UCrop;

@@ -21,7 +21,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.AppCompatTextView;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.universal.BuildConfig;
 import com.google.gson.Gson;
 

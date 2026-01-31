@@ -4,11 +4,13 @@ import android.app.AlertDialog
 import android.graphics.Color
 import android.os.Bundle
 import android.view.View
+import android.widget.FrameLayout
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentStatePagerAdapter
-import kotlinx.android.synthetic.main.activity_test_system_widget.*
-import kotlinx.android.synthetic.main.layout_title_bar.*
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
 
 /**
  * Created by xuzhb on 2020/2/16
@@ -16,9 +18,24 @@ import kotlinx.android.synthetic.main.layout_title_bar.*
  */
 class TestSystemWidgetActivity : AppCompatActivity() {
 
+    private lateinit var title_fl: FrameLayout
+    private lateinit var left_fl: FrameLayout
+    private lateinit var title_tv: TextView
+    private lateinit var right_tv: TextView
+    private lateinit var divider_line: View
+    private lateinit var view_pager: ViewPager
+    private lateinit var tab_layout: TabLayout
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_test_system_widget)
+        title_fl = findViewById(R.id.title_fl)
+        left_fl = findViewById(R.id.left_fl)
+        title_tv = findViewById(R.id.title_tv)
+        right_tv = findViewById(R.id.right_tv)
+        divider_line = findViewById(R.id.divider_line)
+        view_pager = findViewById(R.id.view_pager)
+        tab_layout = findViewById(R.id.tab_layout)
         initTitleBar()
         initView()
         initListener()

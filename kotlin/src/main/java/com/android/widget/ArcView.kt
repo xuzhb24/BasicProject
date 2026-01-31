@@ -9,7 +9,7 @@ import android.view.animation.Interpolator
 import android.view.animation.LinearInterpolator
 import android.view.animation.RotateAnimation
 import androidx.annotation.AttrRes
-import com.android.basicproject.R
+import com.android.kotlin.R
 import com.android.util.SizeUtil
 
 /**
@@ -61,13 +61,13 @@ class ArcView @JvmOverloads constructor(
 
     //获取布局属性并设置属性默认值
     private fun parseAttribute(context: Context, attrs: AttributeSet) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.ArcView)
-        startAngle = ta.getFloat(R.styleable.ArcView_startAngle, DEFAULT_START_ANGLE)
-        sweepAngle = ta.getFloat(R.styleable.ArcView_sweepAngle, DEFAULT_SWEEP_ANGLE)
-        roundCap = ta.getBoolean(R.styleable.ArcView_roundCap, DEFAULT_ROUND_CAP)
-        ringWidth = ta.getDimension(R.styleable.ArcView_ringWidth, DEFAULT_RING_WIDTH)
-        ringColor = ta.getColor(R.styleable.ArcView_ringColor, DEFAULT_RING_COLOR)
-        ringBackgroungColor = ta.getColor(R.styleable.ArcView_ringBackgroungColor, DEFAULT_RING_BACKGROUND_COLOR)
+        val ta = context.obtainStyledAttributes(attrs, com.android.universal.R.styleable.ArcView)
+        startAngle = ta.getFloat(com.android.universal.R.styleable.ArcView_startAngle, DEFAULT_START_ANGLE)
+        sweepAngle = ta.getFloat(com.android.universal.R.styleable.ArcView_sweepAngle, DEFAULT_SWEEP_ANGLE)
+        roundCap = ta.getBoolean(com.android.universal.R.styleable.ArcView_roundCap, DEFAULT_ROUND_CAP)
+        ringWidth = ta.getDimension(com.android.universal.R.styleable.ArcView_ringWidth, DEFAULT_RING_WIDTH)
+        ringColor = ta.getColor(com.android.universal.R.styleable.ArcView_ringColor, DEFAULT_RING_COLOR)
+        ringBackgroungColor = ta.getColor(com.android.universal.R.styleable.ArcView_ringBackgroungColor, DEFAULT_RING_BACKGROUND_COLOR)
         ta.recycle()
     }
 

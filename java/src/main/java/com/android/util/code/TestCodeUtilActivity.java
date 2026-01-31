@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityTestCodeUtilBinding;
 import com.android.util.SizeUtil;
 import com.android.util.bitmap.BitmapUtil;

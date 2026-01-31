@@ -12,7 +12,7 @@ import android.view.animation.LinearInterpolator;
 
 import androidx.annotation.Nullable;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.SizeUtil;
 
 /**

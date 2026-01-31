@@ -13,7 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.viewpager.widget.PagerAdapter;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.widget.PhotoViewer.widget.PhotoView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;

@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityTestCaptureRecyclerviewBinding;
 import com.android.util.bitmap.BitmapUtil;
 import com.android.widget.RecyclerView.ViewHolder;

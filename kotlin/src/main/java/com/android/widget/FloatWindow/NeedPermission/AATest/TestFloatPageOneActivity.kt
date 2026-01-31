@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.animation.BounceInterpolator
 import android.widget.ImageView
 import com.android.base.MainActivity
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.LogUtil
 import com.android.util.SizeUtil
@@ -34,8 +34,8 @@ class TestFloatPageOneActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         binding.btn1.setOnClickListener {
             //这个悬浮窗的创建尽量放在Application的onCreate中，否则可能导致内存泄漏
             FloatWindow.with(applicationContext)
-                .setView(R.layout.layout_float)
-                .setContentViewId(R.id.content_iv)
+                .setView(com.android.universal.R.layout.layout_float)
+                .setContentViewId(com.android.universal.R.id.content_iv)
                 .setWidth(SizeUtil.dp2pxInt(100f))
                 .setHeight(SizeUtil.dp2pxInt(100f))
                 .setX(0)
@@ -54,9 +54,9 @@ class TestFloatPageOneActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                     }
                 })
                 .setOnViewListener { holder, view ->
-                    holder.setOnClickListener(R.id.clear_iv) {
+                    holder.setOnClickListener(com.android.universal.R.id.clear_iv) {
                         FloatWindow.destroy()
-                    }.setOnClickListener(R.id.content_iv) {
+                    }.setOnClickListener(com.android.universal.R.id.content_iv) {
                         showToast("点到我了")
                     }
                 }
@@ -95,7 +95,7 @@ class TestFloatPageOneActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         }
         binding.btn3.setOnClickListener {
             val imageView = ImageView(applicationContext)
-            imageView.setImageResource(R.drawable.ic_face1)
+            imageView.setImageResource(com.android.universal.R.drawable.ic_face1)
             FloatWindow.with(applicationContext)
                 .setView(imageView)
                 .setTag("FloatWindowB")

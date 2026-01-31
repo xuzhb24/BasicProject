@@ -6,7 +6,7 @@ import android.graphics.Color
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.viewpager.widget.ViewPager
-import com.android.basicproject.databinding.ActivityTestSingleWidgetBinding
+import com.android.kotlin.databinding.ActivityTestSingleWidgetBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil
 import com.android.widget.ExpandTextView.BoldInfo

@@ -5,8 +5,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
 import android.widget.FrameLayout
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil
 import com.android.util.initCommonLayout
@@ -47,14 +47,14 @@ class TestFloatPageActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             bottomMargin = SizeUtil.dp2pxInt(300f)
         }
         FloatWindow.get()
-            .setView(R.layout.layout_float)
-            .setContentViewId(R.id.content_iv)
+            .setView(com.android.universal.R.layout.layout_float)
+            .setContentViewId(com.android.universal.R.id.content_iv)
             .setLayoutParams(params)
             .setMoveType(MoveType.active, 100f, -100f)
             .setOnViewListener { holder, view ->
-                holder.setOnClickListener(R.id.content_iv) {
+                holder.setOnClickListener(com.android.universal.R.id.content_iv) {
                     showToast("点到我了")
-                }.setOnClickListener(R.id.clear_iv) {
+                }.setOnClickListener(com.android.universal.R.id.clear_iv) {
                     FloatWindow.get().hide()
                 }
             }.attach(this)

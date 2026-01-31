@@ -1,7 +1,7 @@
 package com.android.frame.mvc.AATest
 
 import android.os.Bundle
-import com.android.basicproject.databinding.FragmentTestMvcBinding
+import com.android.kotlin.databinding.FragmentTestMvcBinding
 import com.android.frame.http.model.BaseResponse
 import com.android.frame.mvc.AATest.entity.WeatherBean
 import com.android.frame.mvc.AATest.server.ApiHelper

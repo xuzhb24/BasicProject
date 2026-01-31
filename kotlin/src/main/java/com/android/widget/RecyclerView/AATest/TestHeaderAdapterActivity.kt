@@ -1,7 +1,7 @@
 package com.android.widget.RecyclerView.AATest
 
 import android.os.Bundle
-import com.android.basicproject.databinding.ActivityTestAdapterBinding
+import com.android.kotlin.databinding.ActivityTestAdapterBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.alert
 

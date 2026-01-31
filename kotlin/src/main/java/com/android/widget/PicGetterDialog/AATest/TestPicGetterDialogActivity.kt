@@ -5,8 +5,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestPicGetterDialogBinding
+import com.android.universal.R
+import com.android.kotlin.databinding.ActivityTestPicGetterDialogBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil
 import com.android.widget.PicGetterDialog.OnPicGetterListener

@@ -5,7 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityCommonLayoutBinding;
 import com.android.util.CommonLayoutUtil;
 

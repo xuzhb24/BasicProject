@@ -9,7 +9,7 @@ import com.android.frame.mvc.AATest.entity.NewsListBean;
 import com.android.frame.mvc.AATest.server.ApiHelper;
 import com.android.frame.mvc.BaseListFragment;
 import com.android.frame.mvc.extra.http.CustomObserver;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.FragmentTestMvcListBinding;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.chad.library.adapter.base.viewholder.BaseViewHolder;

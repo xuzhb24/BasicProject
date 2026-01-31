@@ -15,7 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityPhotoViewBinding;
 import com.android.util.StatusBar.StatusBarUtil;
 import com.android.util.ToastUtil;

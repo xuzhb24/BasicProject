@@ -17,9 +17,9 @@ import android.webkit.*
 import android.widget.FrameLayout
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
-import com.android.basicproject.BuildConfig
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityWebviewBinding
+import com.android.kotlin.BuildConfig
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityWebviewBinding
 import com.android.util.KeyboardUtil
 import com.android.util.LogUtil
 import com.android.util.StatusBar.StatusBarUtil
@@ -317,11 +317,11 @@ open class WebviewActivity : BaseActivity<ActivityWebviewBinding>() {
         val dialog = PicGetterDialog()
         val options = UCrop.Options().apply {
             setToolbarTitle("裁剪图片")
-            setToolbarColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
-            setStatusBarColor(ContextCompat.getColor(applicationContext, R.color.colorPrimary))
+            setToolbarColor(ContextCompat.getColor(applicationContext, com.android.universal.R.color.colorPrimary))
+            setStatusBarColor(ContextCompat.getColor(applicationContext, com.android.universal.R.color.colorPrimary))
             setToolbarWidgetColor(Color.WHITE)
         }
-        dialog.setAnimationStyle(R.style.AnimTranslateBottom)
+        dialog.setAnimationStyle(com.android.universal.R.style.AnimTranslateBottom)
             .setCropOptions(options)
             .setMaxCropSize(800, 2400)
             .setOnPicGetterListener(object : OnPicGetterListener {

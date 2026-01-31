@@ -11,12 +11,11 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.camera.zxing.ui.CaptureActivity
 import com.android.frame.camera.zxing.util.QRConstant
 import com.android.frame.mvc.BaseActivity
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.util.initCommonLayout
-import kotlinx.android.synthetic.main.activity_common_layout.*
 
 /**
  * Created by xuzhb on 2019/11/16
@@ -51,13 +50,13 @@ class TestZXingActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     }
 
     override fun initListener() {
-        btn1.setOnClickListener {
-            tv.text = ""
+        binding.btn1.setOnClickListener {
+            binding.tv.text = ""
             mCurrentPosition = 1
             initPermission()
         }
-        btn2.setOnClickListener {
-            tv.text = ""
+        binding.btn2.setOnClickListener {
+            binding.tv.text = ""
             mCurrentPosition = 2
             initPermission()
         }
@@ -78,7 +77,7 @@ class TestZXingActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         //扫码的结果
         if (requestCode == REQUEST_CODE && resultCode == Activity.RESULT_OK) {
             val result = data?.getStringExtra(QRConstant.SCAN_QRCODE_RESULT)
-            tv.text = result ?: "未能识别二维码"
+            binding.tv.text = result ?: "未能识别二维码"
         }
         //集成权限申请（原生实现）
         if (requestCode == DEFAULT_SETTINGS_REQ_CODE) {
@@ -132,6 +131,7 @@ class TestZXingActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             PERMISSION_GRANTED -> {  //全部权限申请成功
                 startScanCode()
             }
+
             PERMISSION_DENIED -> {  //权限申请被拒绝，但未选择不再提示
                 AlertDialog.Builder(this)
                     .setTitle("权限申请")
@@ -154,6 +154,7 @@ class TestZXingActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                     })
                     .show()
             }
+
             PERMISSION_DENIED_NOT_REQUEST_FOREVER -> {  //权限申请被拒绝，而且选择不再提示
                 AlertDialog.Builder(this)
                     .setTitle("权限申请")

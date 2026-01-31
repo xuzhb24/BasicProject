@@ -2,7 +2,7 @@ package com.android.frame.mvvm.AATest.notListType
 
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import com.android.basicproject.databinding.ActivityTestMvcBinding
+import com.android.kotlin.databinding.ActivityTestMvcBinding
 import com.android.frame.mvvm.BaseActivity
 import com.android.util.JsonUtil
 import com.google.gson.Gson

@@ -1,7 +1,7 @@
 package com.android.widget.FloatWindow.NeedPermission.AATest
 
 import android.os.Bundle
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.initCommonLayout
 import com.android.widget.FloatWindow.NeedPermission.FloatWindow

@@ -7,11 +7,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.LinearInterpolator
+import android.widget.Button
+import android.widget.ImageView
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import com.bumptech.glide.Glide
-import kotlinx.android.synthetic.main.fragment_test_system_widget3.*
-import kotlinx.android.synthetic.main.fragment_test_system_widget4.*
 
 /**
  * Created by xuzhb on 2020/3/1
@@ -30,6 +32,11 @@ class TestSystemWidgetFragment : Fragment() {
         }
     }
 
+    private lateinit var progress_btn: Button
+    private lateinit var progress_pb: ProgressBar
+    private lateinit var progress_tv: TextView
+    private lateinit var iv: ImageView
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         mLayoutId = arguments?.getInt(EXTRA_LAYOUT_ID) ?: -1
@@ -39,7 +46,16 @@ class TestSystemWidgetFragment : Fragment() {
     private var mLayoutId: Int = -1
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(mLayoutId, container, false)
+        val view = inflater.inflate(mLayoutId, container, false)
+        if (mLayoutId == R.layout.fragment_test_system_widget3) {
+            progress_btn = view.findViewById(R.id.progress_btn)
+            progress_pb = view.findViewById(R.id.progress_pb)
+            progress_tv = view.findViewById(R.id.progress_tv)
+        }
+        if (mLayoutId == R.layout.fragment_test_system_widget4) {
+            iv = view.findViewById(R.id.iv)
+        }
+        return view
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

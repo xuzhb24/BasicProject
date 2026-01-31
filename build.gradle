@@ -2,7 +2,7 @@
 
 buildscript {
     ext {
-        kotlin_version = '1.5.21'
+        kotlin_version = '1.7.10'
         anko_version = '0.10.8'
     }
     repositories {
@@ -18,9 +18,8 @@ buildscript {
         maven { url 'https://repo1.maven.org/maven2/' }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.1'
+        classpath "com.android.tools.build:gradle:8.0.0"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        classpath "org.jetbrains.kotlin:kotlin-android-extensions:$kotlin_version"
     }
 
 }

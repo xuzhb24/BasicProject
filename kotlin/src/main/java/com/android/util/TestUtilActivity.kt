@@ -28,8 +28,6 @@ import android.view.View
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.RequiresApi
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.http.AATest.ApiService
 import com.android.frame.http.AATest.UrlConstant
 import com.android.frame.http.AATest.WangYiNewsWebviewActivity
@@ -38,7 +36,12 @@ import com.android.frame.http.ExceptionUtil
 import com.android.frame.http.RetrofitFactory
 import com.android.frame.http.SchedulerUtil
 import com.android.frame.mvc.BaseActivity
-import com.android.util.CapturePicture.*
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
+import com.android.util.CapturePicture.CapturePictureUtil
+import com.android.util.CapturePicture.TestCaptureGridViewActivity
+import com.android.util.CapturePicture.TestCaptureListViewActivity
+import com.android.util.CapturePicture.TestCaptureRecyclerViewActivity
+import com.android.util.CapturePicture.TestCaptureWebViewActivity
 import com.android.util.StatusBar.TestStatusBarUtilActivity
 import com.android.util.activity.ActivityUtil
 import com.android.util.activity.TestJumpActivity
@@ -59,8 +62,7 @@ import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import io.reactivex.Observer
 import io.reactivex.disposables.Disposable
-import kotlinx.android.synthetic.main.activity_common_layout.*
-import java.util.*
+import java.util.Date
 import kotlin.concurrent.thread
 import kotlin.random.Random
 
@@ -133,6 +135,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                     testSdcard()
                 }
             }
+
             TEST_SCREEN -> testScreen()
             TEST_PHONE -> testPhone()
             TEST_ENCODE -> testEncode()
@@ -159,27 +162,27 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         val text6 = "导航栏和状态栏透明"
         val text7 = "透明度和十六进制对应表"
         initCommonLayout(this, "实现沉浸式状态栏", text1, text2, text3, text4, text5, text6, text7)
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             jumpToTestStatusBarActivity(1, text1)
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             jumpToTestStatusBarActivity(2, text2)
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             jumpToTestStatusBarActivity(3, text3)
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             jumpToTestStatusBarActivity(4, text4)
         }
-        btn5.setOnClickListener {
+        binding.btn5.setOnClickListener {
             jumpToTestStatusBarActivity(5, text5)
         }
-        btn6.setOnClickListener {
+        binding.btn6.setOnClickListener {
             jumpToTestStatusBarActivity(6, text6)
         }
-        btn7.setOnClickListener {
+        binding.btn7.setOnClickListener {
             val content =
-                IOUtil.readInputStreameToString(resources.openRawResource(R.raw.hex_alpha_table))
+                IOUtil.readInputStreameToString(resources.openRawResource(com.android.universal.R.raw.hex_alpha_table))
             alert(this, content ?: "")
         }
     }
@@ -383,61 +386,61 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         sb.append("\n\n判断周几\n").append(DateUtil.getCurrentDateTime()).append("：")
             .append(DateUtil.getCurrentDayOfWeekCH()).append("\n").append(weekTime).append("：")
             .append(DateUtil.getDayOfWeekCH(weekTime, DateUtil.Y_M_D))
-        tv.text = sb.toString()
+        binding.tv.text = sb.toString()
     }
 
     private fun testKeyBoardUtil() {
         initCommonLayout(this, "测试键盘工具", "弹出软键盘", "收起软键盘", "复制到剪切板")
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             KeyboardUtil.showSoftInput(this, it)
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             KeyboardUtil.hideSoftInput(this, it)
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             KeyboardUtil.copyToClipboard(this, "https://www.baidu.com")
         }
     }
 
     private fun testDrawableUtil() {
         initCommonLayout(this, "代码创建Drawable", "按钮", "solid", "stroke", "虚线stroke", "solid和stroke")
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             val drawable = DrawableUtil.createSolidShape(
                 SizeUtil.dp2px(10f),
-                resources.getColor(R.color.orange)
+                resources.getColor(com.android.universal.R.color.orange)
             )
-            btn1.setBackground(drawable)
-            btn1.setTextColor(resources.getColor(R.color.white))
+            binding.btn1.setBackground(drawable)
+            binding.btn1.setTextColor(resources.getColor(com.android.universal.R.color.white))
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             val drawable = DrawableUtil.createStrokeShape(
                 SizeUtil.dp2px(15f),
                 SizeUtil.dp2px(1f).toInt(),
-                resources.getColor(R.color.orange)
+                resources.getColor(com.android.universal.R.color.orange)
             )
-            btn1.setBackground(drawable)
-            btn1.setTextColor(resources.getColor(R.color.orange))
+            binding.btn1.setBackground(drawable)
+            binding.btn1.setTextColor(resources.getColor(com.android.universal.R.color.orange))
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             val drawable = DrawableUtil.createStrokeShape(
                 SizeUtil.dp2px(15f),
                 SizeUtil.dp2px(1f).toInt(),
-                resources.getColor(R.color.orange),
+                resources.getColor(com.android.universal.R.color.orange),
                 SizeUtil.dp2px(2f),
                 SizeUtil.dp2px(2f)
             )
-            btn1.setBackground(drawable)
-            btn1.setTextColor(resources.getColor(R.color.orange))
+            binding.btn1.setBackground(drawable)
+            binding.btn1.setTextColor(resources.getColor(com.android.universal.R.color.orange))
         }
-        btn5.setOnClickListener {
+        binding.btn5.setOnClickListener {
             val drawable = DrawableUtil.createSolidStrokeShape(
                 SizeUtil.dp2px(25f),
-                resources.getColor(R.color.white),
+                resources.getColor(com.android.universal.R.color.white),
                 SizeUtil.dp2px(5f).toInt(),
-                resources.getColor(R.color.orange)
+                resources.getColor(com.android.universal.R.color.orange)
             )
-            btn1.setBackground(drawable)
-            btn1.setTextColor(resources.getColor(R.color.orange))
+            binding.btn1.setBackground(drawable)
+            binding.btn1.setTextColor(resources.getColor(com.android.universal.R.color.orange))
         }
     }
 
@@ -450,45 +453,45 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             showInputLayout = true,
             showTextView = true
         )
-        il.inputTextHint = "请输入名字"
+        binding.il.inputTextHint = "请输入名字"
         var name by SPUtil(applicationContext, "default", "name", "")
-        btn1.setOnClickListener {
-            name = il.inputText.trim()
-            il.inputText = ""
+        binding.btn1.setOnClickListener {
+            name = binding.il.inputText.trim()
+            binding.il.inputText = ""
             KeyboardUtil.hideSoftInput(this, it)
         }
-        btn2.setOnClickListener {
-            tv.text = name
+        binding.btn2.setOnClickListener {
+            binding.tv.text = name
         }
     }
 
     private fun testStringUtil() {
         initCommonLayout(this, "字符串工具类", "显示不同颜色", "带下划线", "带点击事件", showTextView = true)
         val content = "欢迎拨打热线电话"
-        tv.setTextColor(Color.BLACK)
-        tv.setTextSize(15f)
-        btn1.setOnClickListener {
-            tv.text = StringUtil.createTextSpan(
+        binding.tv.setTextColor(Color.BLACK)
+        binding.tv.setTextSize(15f)
+        binding.btn1.setOnClickListener {
+            binding.tv.text = StringUtil.createTextSpan(
                 content, 4, 8,
-                resources.getColor(R.color.orange),
+                resources.getColor(com.android.universal.R.color.orange),
                 SizeUtil.sp2px(18f).toInt(),
                 Typeface.ITALIC
             )
         }
-        btn2.setOnClickListener {
-            tv.text = StringUtil.createTextSpan(
+        binding.btn2.setOnClickListener {
+            binding.tv.text = StringUtil.createTextSpan(
                 content, 4, 8,
-                resources.getColor(R.color.orange),
+                resources.getColor(com.android.universal.R.color.orange),
                 SizeUtil.sp2px(18f).toInt(),
                 Typeface.NORMAL,
                 true
             )
         }
-        btn3.setOnClickListener {
-            tv.movementMethod = LinkMovementMethod.getInstance()  //必须设置这个点击事件才能生效
-            tv.text = StringUtil.createTextSpan(
+        binding.btn3.setOnClickListener {
+            binding.tv.movementMethod = LinkMovementMethod.getInstance()  //必须设置这个点击事件才能生效
+            binding.tv.text = StringUtil.createTextSpan(
                 content, 4, 8,
-                resources.getColor(R.color.orange),
+                resources.getColor(com.android.universal.R.color.orange),
                 SizeUtil.sp2px(18f).toInt(),
                 Typeface.BOLD_ITALIC,
                 true
@@ -497,31 +500,31 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     }
 
     private fun testNotification() {
-        tv.text = intent.getStringExtra("content")
+        binding.tv.text = intent.getStringExtra("content")
         val titleIl = createInputLayout(this, "请输入标题")
-        ll.addView(titleIl, 0)
-        il.inputTextHint = "请输入内容"
+        binding.ll.addView(titleIl, 0)
+        binding.il.inputTextHint = "请输入内容"
         initCommonLayout(
             this, "通知管理", "自定义通知", "自定义通知(带跳转)", "自定义通知(最全使用示例)",
             "新闻通知", "通知是否打开", "跳转通知设置界面", showInputLayout = true, showTextView = true
         )
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             var title = titleIl.inputText.trim()
             if (TextUtils.isEmpty(title)) {
                 title = "这是标题"
             }
-            var content = il.inputText.trim()
+            var content = binding.il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 content = "这是内容"
             }
             NotificationUtil.showNotification(applicationContext, title, content)
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             var title = titleIl.inputText.trim()
             if (TextUtils.isEmpty(title)) {
                 title = "这是标题"
             }
-            var content = il.inputText.trim()
+            var content = binding.il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 content = "跳转到通知管理页面"
             }
@@ -537,25 +540,25 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             )
             finish()
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             var title = titleIl.inputText.trim()
             if (TextUtils.isEmpty(title)) {
                 title = "这是标题"
             }
-            var content = il.inputText.trim()
+            var content = binding.il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 content = "这是内容"
             }
             NotificationUtil.showNotificationFullUse(this, title, content)
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             requestNews()
         }
-        btn5.setOnClickListener {
-            tv.text =
+        binding.btn5.setOnClickListener {
+            binding.tv.text =
                 if (NotificationUtil.isNotificationEnabled(applicationContext)) "通知权限已打开" else "通知权限被关闭"
         }
-        btn6.setOnClickListener {
+        binding.btn6.setOnClickListener {
             NotificationUtil.gotoNotificationSetting(this)
         }
     }
@@ -627,26 +630,26 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     //连续点击事件监听
     private fun testContinuousClick() {
         initCommonLayout(this, "连续点击", "连续点击", "连续点击(点击最大时间间隔2秒)", showTextView = true)
-        tv.gravity = Gravity.CENTER
-        btn1.setOnClickListener(object : OnMultiClickListener() {
+        binding.tv.gravity = Gravity.CENTER
+        binding.btn1.setOnClickListener(object : OnMultiClickListener() {
             override fun onMultiClick(v: View?, clickCount: Int) {
                 val currentTime = System.currentTimeMillis()
                 val sb = StringBuilder()
                 sb.append("点击次数:").append(clickCount).append("\n距离上次点击的时间间隔:")
                     .append(currentTime - mLastTime).append("ms\n")
                     .append("当前默认最大时间间隔:").append(getClickInterval()).append("ms")
-                tv.text = sb.toString()
+                binding.tv.text = sb.toString()
                 mLastTime = currentTime
             }
         })
-        btn2.setOnClickListener(object : OnMultiClickListener() {
+        binding.btn2.setOnClickListener(object : OnMultiClickListener() {
             override fun onMultiClick(v: View?, clickCount: Int) {
                 val currentTime = System.currentTimeMillis()
                 val sb = StringBuilder()
                 sb.append("点击次数:").append(clickCount).append("\n距离上次点击的时间间隔:")
                     .append(currentTime - mLastTime).append("ms\n")
                     .append("当前默认最大时间间隔:").append(getClickInterval()).append("ms")
-                tv.text = sb.toString()
+                binding.tv.text = sb.toString()
                 mLastTime = currentTime
             }
 
@@ -660,27 +663,27 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             this, "拼音工具", "获取汉字拼音", "获取姓氏拼音",
             showInputLayout = true, showTextView = true
         )
-        il.inputText = "测试拼音工具"
-        val s = il.inputText.trim()
+        binding.il.inputText = "测试拼音工具"
+        val s = binding.il.inputText.trim()
         val text = "汉字拼音：${PinyinUtil.hanzi2Pinyin(s)}" +
                 "\n首字母拼音：${PinyinUtil.getFirstLetter(s)}"
-        il.getEditText().setSelection(s.length)
-        tv.text = text
-        btn1.setOnClickListener {
-            val content = il.inputText.trim()
+        binding.il.getEditText().setSelection(s.length)
+        binding.tv.text = text
+        binding.btn1.setOnClickListener {
+            val content = binding.il.inputText.trim()
             val split = " "
             val result = "汉字拼音：${PinyinUtil.hanzi2Pinyin(content, split)}" +
                     "\n首字母拼音：${PinyinUtil.getFirstLetter(content, split)}"
-            tv.text = result
+            binding.tv.text = result
         }
-        btn2.setOnClickListener {
-            val name = il.inputText.trim()
+        binding.btn2.setOnClickListener {
+            val name = binding.il.inputText.trim()
             val result = "姓氏的拼音：${PinyinUtil.getSurnamePinyin(name)}" +
                     "\n首字母拼音：${PinyinUtil.getSurnameFirstLetter(name)}"
-            tv.text = result
+            binding.tv.text = result
         }
-        il.setOnTextClearListener {
-            tv.text = ""
+        binding.il.setOnTextClearListener {
+            binding.tv.text = ""
         }
     }
 
@@ -691,7 +694,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             "增加上下左右Margin为5dp", "减少上下左右Margin为5dp",
             "增加上下左右Padding为5dp", "减少上下左右Padding为5dp", "还原"
         )
-        LayoutParamsUtil.setMarginTop(btn1, SizeUtil.dp2px(10f).toInt())
+        LayoutParamsUtil.setMarginTop(binding.btn1, SizeUtil.dp2px(10f).toInt())
         val rootLl = LinearLayout(this)
         val param1 =
             LinearLayout.LayoutParams(SizeUtil.dp2px(300f).toInt(), SizeUtil.dp2px(200f).toInt())
@@ -704,7 +707,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             LinearLayout.LayoutParams.MATCH_PARENT
         )
         targetLl.layoutParams = params2
-        targetLl.setBackgroundColor(resources.getColor(R.color.colorPrimary))
+        targetLl.setBackgroundColor(resources.getColor(com.android.universal.R.color.colorPrimary))
         val dp20 = SizeUtil.dp2px(20f).toInt()
         val dp40 = SizeUtil.dp2px(40f).toInt()
         LayoutParamsUtil.setMargin(targetLl, dp20, dp20, dp20, dp20)
@@ -716,50 +719,50 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         view.setBackgroundColor(Color.WHITE)
         targetLl.addView(view)
         rootLl.addView(targetLl)
-        ll.addView(rootLl, 0)
-        btn1.setOnClickListener {
+        binding.ll.addView(rootLl, 0)
+        binding.btn1.setOnClickListener {
             val margin = SizeUtil.dp2px(10f).toInt()
             LayoutParamsUtil.setMarginLeft(targetLl, margin)
             LayoutParamsUtil.setMarginRight(targetLl, margin)
             LayoutParamsUtil.setMarginTop(targetLl, margin)
             LayoutParamsUtil.setMarginBottom(targetLl, margin)
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             val padding = SizeUtil.dp2px(10f).toInt()
             LayoutParamsUtil.setPaddingLeft(targetLl, padding)
             LayoutParamsUtil.setPaddingRight(targetLl, padding)
             LayoutParamsUtil.setPaddingTop(targetLl, padding)
             LayoutParamsUtil.setPaddingBottom(targetLl, padding)
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             val margin = SizeUtil.dp2px(5f).toInt()
             LayoutParamsUtil.addMarginLeft(targetLl, margin)
             LayoutParamsUtil.addMarginRight(targetLl, margin)
             LayoutParamsUtil.addMarginTop(targetLl, margin)
             LayoutParamsUtil.addMarginBottom(targetLl, margin)
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             val margin = -SizeUtil.dp2px(5f).toInt()
             LayoutParamsUtil.addMarginLeft(targetLl, margin)
             LayoutParamsUtil.addMarginRight(targetLl, margin)
             LayoutParamsUtil.addMarginTop(targetLl, margin)
             LayoutParamsUtil.addMarginBottom(targetLl, margin)
         }
-        btn5.setOnClickListener {
+        binding.btn5.setOnClickListener {
             val padding = SizeUtil.dp2px(5f).toInt()
             LayoutParamsUtil.addPaddingLeft(targetLl, padding)
             LayoutParamsUtil.addPaddingRight(targetLl, padding)
             LayoutParamsUtil.addPaddingTop(targetLl, padding)
             LayoutParamsUtil.addPaddingBottom(targetLl, padding)
         }
-        btn6.setOnClickListener {
+        binding.btn6.setOnClickListener {
             val padding = -SizeUtil.dp2px(5f).toInt()
             LayoutParamsUtil.addPaddingLeft(targetLl, padding)
             LayoutParamsUtil.addPaddingRight(targetLl, padding)
             LayoutParamsUtil.addPaddingTop(targetLl, padding)
             LayoutParamsUtil.addPaddingBottom(targetLl, padding)
         }
-        btn7.setOnClickListener {
+        binding.btn7.setOnClickListener {
             val params = LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT
@@ -779,53 +782,53 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             "提取文本中数字", "根据给定的正则表达式提取内容"
         )
         val regexIl = createInputLayout(this, "请输入正则表达式")
-        ll.addView(regexIl, 1)
-        il.inputTextHint = "请输入要匹配的内容"
-        btn1.setOnClickListener {
-            setRegexResult(RegexUtil.isDigit(il.inputText))
+        binding.ll.addView(regexIl, 1)
+        binding.il.inputTextHint = "请输入要匹配的内容"
+        binding.btn1.setOnClickListener {
+            setRegexResult(RegexUtil.isDigit(binding.il.inputText))
         }
-        btn2.setOnClickListener {
-            setRegexResult(RegexUtil.isInteger(il.inputText))
+        binding.btn2.setOnClickListener {
+            setRegexResult(RegexUtil.isInteger(binding.il.inputText))
         }
-        btn3.setOnClickListener {
-            setRegexResult(RegexUtil.isFloat(il.inputText))
+        binding.btn3.setOnClickListener {
+            setRegexResult(RegexUtil.isFloat(binding.il.inputText))
         }
-        btn4.setOnClickListener {
-            setRegexResult(RegexUtil.isChinese(il.inputText))
+        binding.btn4.setOnClickListener {
+            setRegexResult(RegexUtil.isChinese(binding.il.inputText))
         }
-        btn5.setOnClickListener {
-            setRegexResult(RegexUtil.isLetterOrDigit(il.inputText))
+        binding.btn5.setOnClickListener {
+            setRegexResult(RegexUtil.isLetterOrDigit(binding.il.inputText))
         }
-        btn6.setOnClickListener {
-            setRegexResult(RegexUtil.isLetterAndDigit(il.inputText))
+        binding.btn6.setOnClickListener {
+            setRegexResult(RegexUtil.isLetterAndDigit(binding.il.inputText))
         }
-        btn7.setOnClickListener {
-            setRegexResult(RegexUtil.isMobile(il.inputText))
+        binding.btn7.setOnClickListener {
+            setRegexResult(RegexUtil.isMobile(binding.il.inputText))
         }
-        btn8.setOnClickListener {
-            setRegexResult(RegexUtil.isIdCard(il.inputText))
+        binding.btn8.setOnClickListener {
+            setRegexResult(RegexUtil.isIdCard(binding.il.inputText))
         }
-        btn9.setOnClickListener {
-            setRegexResult(RegexUtil.isyyyyMMdd(il.inputText))
+        binding.btn9.setOnClickListener {
+            setRegexResult(RegexUtil.isyyyyMMdd(binding.il.inputText))
         }
-        btn10.setOnClickListener {
+        binding.btn10.setOnClickListener {
             val regex = regexIl.inputText.trim()
             if (TextUtils.isEmpty(regex)) {
                 showToast("请先输入正则表达式")
                 return@setOnClickListener
             }
-            setRegexResult(RegexUtil.isMatch(regex, il.inputText))
+            setRegexResult(RegexUtil.isMatch(regex, binding.il.inputText))
         }
-        btn11.setOnClickListener {
-            val content = il.inputText.trim()
+        binding.btn11.setOnClickListener {
+            val content = binding.il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 showToast("请先输入要匹配的内容")
                 return@setOnClickListener
             }
-            tv.text = RegexUtil.extractDigit(content, "|")
+            binding.tv.text = RegexUtil.extractDigit(content, "|")
         }
-        btn12.setOnClickListener {
-            val content = il.inputText.trim()
+        binding.btn12.setOnClickListener {
+            val content = binding.il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 showToast("请先输入要匹配的内容")
                 return@setOnClickListener
@@ -835,13 +838,13 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 showToast("请先输入正则表达式")
                 return@setOnClickListener
             }
-            tv.text = RegexUtil.extract(regex, content, "|")
+            binding.tv.text = RegexUtil.extract(regex, content, "|")
         }
     }
 
     private fun setRegexResult(isCorrect: Boolean) {
-        val result = "\"${il.inputText}\"：$isCorrect"
-        tv.text = result
+        val result = "\"${binding.il.inputText}\"：$isCorrect"
+        binding.tv.text = result
     }
 
     //磁盘缓存工具
@@ -851,24 +854,24 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             "读取", "保存字符串", "保存Serializable数据", "保存Bitmap", "保存Drawable",
             "移除指定key", "清除所有缓存内容"
         )
-        il.inputTextHint = "请输入Key名"
+        binding.il.inputTextHint = "请输入Key名"
         val valueIl = createInputLayout(this, "请输入要保存的字符串")
         val durationIl = createInputLayout(this, "请输入保存的时长")
         durationIl.inputTextType = InputType.TYPE_CLASS_NUMBER
-        ll.addView(valueIl, 1)
-        ll.addView(durationIl, 2)
+        binding.ll.addView(valueIl, 1)
+        binding.ll.addView(durationIl, 2)
         val tip = "默认Key名：\n字符串：String\t\t\t\t\tSerializable：Serializable\nBitmap：Bitmap\t\t\tDrawable：Drawable\n"
-        tv.text = tip
+        binding.tv.text = tip
         val cacheUtil = CacheUtil(this)
 //        val cacheUtil = CacheUtil(this,"cacheUtils2")
-        btn1.setOnClickListener {
-            tv.text = tip
+        binding.btn1.setOnClickListener {
+            binding.tv.text = tip
             switchCacheState(!isSaveCache, valueIl, durationIl)
             isSaveCache = !isSaveCache
         }
-        btn2.setOnClickListener {
-            tv.text = tip
-            val key = getKey(il, "String")
+        binding.btn2.setOnClickListener {
+            binding.tv.text = tip
+            val key = getKey(binding.il, "String")
             if (isSaveCache) {
                 val value = valueIl.inputText.trim()
                 if (TextUtils.isEmpty(value)) {
@@ -882,6 +885,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                         cacheUtil.putString(key, value)
                         showToast("保存成功")
                     }
+
                     else -> {
                         cacheUtil.putString(key, value, saveTime)
                         showToast("保存成功，数据将缓存${saveTime}秒")
@@ -889,12 +893,12 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 }
             } else {
                 val result = cacheUtil.getString(key)
-                tv.text = if (TextUtils.isEmpty(result)) "数据为空" else result
+                binding.tv.text = if (TextUtils.isEmpty(result)) "数据为空" else result
             }
         }
-        btn3.setOnClickListener {
-            tv.text = tip
-            val key = getKey(il, "Serializable")
+        binding.btn3.setOnClickListener {
+            binding.tv.text = tip
+            val key = getKey(binding.il, "Serializable")
             val bean = MonthBean("2020-02", key)
             if (isSaveCache) {
                 val saveTime = getSaveTime(durationIl)
@@ -904,6 +908,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                         cacheUtil.putObject(key, bean)
                         showToast("保存成功")
                     }
+
                     else -> {
                         cacheUtil.putObject(key, bean, saveTime)
                         showToast("保存成功，数据将缓存${saveTime}秒")
@@ -911,13 +916,13 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 }
             } else {
                 val result = cacheUtil.getObject(key)
-                tv.text = if (result == null) "数据为空" else Gson().toJson(result)
+                binding.tv.text = if (result == null) "数据为空" else Gson().toJson(result)
             }
         }
-        btn4.setOnClickListener {
-            tv.text = tip
-            val key = getKey(il, "Bitmap")
-            val bitmap = BitmapFactory.decodeResource(resources, R.drawable.ic_coupon_header)
+        binding.btn4.setOnClickListener {
+            binding.tv.text = tip
+            val key = getKey(binding.il, "Bitmap")
+            val bitmap = BitmapFactory.decodeResource(resources, com.android.universal.R.drawable.ic_coupon_header)
             if (isSaveCache) {
                 val saveTime = getSaveTime(durationIl)
                 when (saveTime) {
@@ -926,6 +931,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                         cacheUtil.putBitmap(key, bitmap)
                         showToast("保存成功")
                     }
+
                     else -> {
                         cacheUtil.putBitmap(key, bitmap, saveTime)
                         showToast("保存成功，数据将缓存${saveTime}秒")
@@ -940,10 +946,10 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 }
             }
         }
-        btn5.setOnClickListener {
-            tv.text = tip
-            val key = getKey(il, "Drawable")
-            val drawable = resources.getDrawable(R.drawable.shape_oval_size_34_solid_db4b3c)
+        binding.btn5.setOnClickListener {
+            binding.tv.text = tip
+            val key = getKey(binding.il, "Drawable")
+            val drawable = resources.getDrawable(com.android.universal.R.drawable.shape_oval_size_34_solid_db4b3c)
             if (isSaveCache) {
                 val saveTime = getSaveTime(durationIl)
                 when (saveTime) {
@@ -952,6 +958,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                         cacheUtil.putDrawable(key, drawable)
                         showToast("保存成功")
                     }
+
                     else -> {
                         cacheUtil.putDrawable(key, drawable, saveTime)
                         showToast("保存成功，数据将缓存${saveTime}秒")
@@ -966,8 +973,8 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 }
             }
         }
-        btn6.setOnClickListener {
-            val key = il.inputText.trim()
+        binding.btn6.setOnClickListener {
+            val key = binding.il.inputText.trim()
             if (TextUtils.isEmpty(key)) {
                 showToast("请先输入要删除的Key名")
                 return@setOnClickListener
@@ -975,7 +982,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             cacheUtil.remove(key)
             showToast("已删除")
         }
-        btn7.setOnClickListener {
+        binding.btn7.setOnClickListener {
             cacheUtil.delete()
             showToast("已清除")
         }
@@ -988,12 +995,12 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             il.visibility = if (save) View.VISIBLE else View.GONE
             il.inputText = ""
         }
-        il.inputText = ""
-        btn1.text = if (save) "读取" else "保存"
-        btn2.text = if (save) "保存字符串" else "读取字符串"
-        btn3.text = if (save) "保存Serializable数据" else "读取Serializable数据"
-        btn4.text = if (save) "保存Bitmap" else "读取Bitmap"
-        btn5.text = if (save) "保存Drawable" else "读取Drawable"
+        binding.il.inputText = ""
+        binding.btn1.text = if (save) "读取" else "保存"
+        binding.btn2.text = if (save) "保存字符串" else "读取字符串"
+        binding.btn3.text = if (save) "保存Serializable数据" else "读取Serializable数据"
+        binding.btn4.text = if (save) "保存Bitmap" else "读取Bitmap"
+        binding.btn5.text = if (save) "保存Drawable" else "读取Drawable"
     }
 
     private fun getKey(il: InputLayout, defaultKey: String): String {
@@ -1021,8 +1028,8 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         sb.append("\n\n栈顶Activity信息：\n")
             .append(topActivity[0]).append("(包名)\n")
             .append(topActivity[1]).append("(类名)")
-        tv.text = sb.toString()
-        btn1.setOnClickListener {
+        binding.tv.text = sb.toString()
+        binding.btn1.setOnClickListener {
             /*
             * 哔哩哔哩：tv.danmaku.bili，tv.danmaku.bili.ui.splash.SplashActivity
             * 微博：com.sina.weibo，com.sina.weibo.SplashActivity
@@ -1058,15 +1065,15 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 showToast("不存在该应用")
             }
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             ActivityUtil.startActivity(
                 this, TestJumpActivity::class.java, null,
-                R.anim.slide_right_in, R.anim.slide_left_out
+                com.android.universal.R.anim.slide_right_in, com.android.universal.R.anim.slide_left_out
             )
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString(TestJumpActivity.EXTRA_DATA, btn3.text.toString())
+            bundle.putString(TestJumpActivity.EXTRA_DATA, binding.btn3.text.toString())
             ActivityUtil.startActivity(this, TestJumpActivity::class.java, bundle)
         }
     }
@@ -1079,22 +1086,22 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             this, "Shell工具", true, true,
             "运行命令", command1, command2
         )
-        il.inputTextHint = "请输入要执行的Shell命令，多条的话换行输入"
-        btn1.setOnClickListener {
-            val content = il.inputText.trim()
+        binding.il.inputTextHint = "请输入要执行的Shell命令，多条的话换行输入"
+        binding.btn1.setOnClickListener {
+            val content = binding.il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 showToast("请先输入命令")
             } else {
                 val commands = content.split("\n")
                 val result = ShellUtil.execCmd(commands, false).toString()
                 LogUtil.w("Shell", result)
-                tv.text = result
+                binding.tv.text = result
             }
         }
-        btn2.setOnClickListener {
-            tv.text = ShellUtil.execShellCmd(command1).toString()
+        binding.btn2.setOnClickListener {
+            binding.tv.text = ShellUtil.execShellCmd(command1).toString()
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             val testFilePath = Environment.getExternalStorageDirectory().toString() + "/AATest/test.txt"
             if (!PermissionUtil.requestPermissions(
                     this, 1,
@@ -1107,7 +1114,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             }
             val result = ShellUtil.execCmd(command2.split("\n".toRegex()), false).toString()
             LogUtil.w("Shell", result)
-            tv.text = result
+            binding.tv.text = result
         }
     }
 
@@ -1127,7 +1134,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .append("\n运营商名称：").append(DeviceUtil.getSimOperatorName(this))
             .append("\n系统语言：").append(DeviceUtil.getSystemLanguage())
             .append("\nIMEI：").append(DeviceUtil.getIMEI(this))
-        tv.text = sb.toString()
+        binding.tv.text = sb.toString()
     }
 
     //App工具
@@ -1138,18 +1145,18 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             "安装测试应用", "卸载测试应用", "打开测试应用", "跳转至拨号界面",
             "拨打电话", "发送短信"
         )
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             alert(this, getAppInfo())
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             startActivity(TestAppListActivity::class.java)
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             AppUtil.openLocalAppSettings(this)
         }
         val testApkPackageName = "com.android.testinstall"
         val testApkPath = Environment.getExternalStorageDirectory().toString() + "/AATest/test_install.apk"
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             if (!PermissionUtil.requestPermissions(
                     this, 1,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -1178,31 +1185,31 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 }
             }
         }
-        btn5.setOnClickListener {
+        binding.btn5.setOnClickListener {
             if (AppUtil.isAppInstall(this, testApkPackageName)) {
                 AppUtil.uninstallApp(this, testApkPackageName)
             } else {
                 showToast("应用未安装")
             }
         }
-        btn6.setOnClickListener {
+        binding.btn6.setOnClickListener {
             if (AppUtil.isAppInstall(this, testApkPackageName)) {
                 AppUtil.openApp(this, testApkPackageName)
             } else {
                 showToast("应用未安装")
             }
         }
-        btn7.setOnClickListener {
+        binding.btn7.setOnClickListener {
             startActivity(IntentUtil.getDialIntent("13302480305"))
         }
-        btn8.setOnClickListener {
+        binding.btn8.setOnClickListener {
             if (!PermissionUtil.requestPermissions(this, 1, Manifest.permission.CALL_PHONE)) {
                 showToast("请先允许权限")
                 return@setOnClickListener
             }
             startActivity(IntentUtil.getCallIntent("13302480305"))
         }
-        btn9.setOnClickListener {
+        binding.btn9.setOnClickListener {
             startActivity(IntentUtil.getSendSmsIntent("13302480305", "短信内容"))
         }
     }
@@ -1248,11 +1255,11 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         )
         val dirName = "$cacheDir/log"
         val fileName = "$dirName/crash.trace"
-        btn1.setOnClickListener {
-            findViewById<TextView>(R.id.toast_tv).text = ""  //空指针异常
+        binding.btn1.setOnClickListener {
+            findViewById<TextView>(com.android.universal.R.id.toast_tv).text = ""  //空指针异常
 //            throw RuntimeException("自定义异常")
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             if (FileUtil.isFileExists(fileName)) {
                 val content = IOUtil.readFileToString(fileName)
                 alert(this, content ?: "")
@@ -1260,14 +1267,14 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 showToast("crash文件不存在")
             }
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             if (FileUtil.isFileExists(fileName)) {
                 showToast(if (FileUtil.deleteDirectory(dirName)) "删除成功" else "删除失败")
             } else {
                 showToast("crash文件不存在")
             }
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             if (!PermissionUtil.requestPermissions(
                     this, 1,
                     Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -1292,21 +1299,21 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             this, "底部选择器工具", false, true,
             "选择年月日", "选择年月日时分秒"
         )
-        btn1.setOnClickListener {
-            val curentTime = DateUtil.convertOtherFormat(tv.text.toString(), DateUtil.Y_M_D_H_M_S, DateUtil.Y_M_D)
+        binding.btn1.setOnClickListener {
+            val curentTime = DateUtil.convertOtherFormat(binding.tv.text.toString(), DateUtil.Y_M_D_H_M_S, DateUtil.Y_M_D)
             PickerViewUtil.selectDate(this, OnTimeSelectListener { date, v ->
-                tv.text = DateUtil.date2String(date, DateUtil.Y_M_D)
+                binding.tv.text = DateUtil.date2String(date, DateUtil.Y_M_D)
             }, curentTime, formatStr = DateUtil.Y_M_D)
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             val startTime = "1990-01-01 00:00:00"
             val endTime = "2100-01-01 12:00:00"
             val formatStr = DateUtil.Y_M_D_H_M_S
             val type = booleanArrayOf(true, true, true, true, true, true)
-            val curentTime = DateUtil.convertOtherFormat(tv.text.toString(), DateUtil.Y_M_D, DateUtil.Y_M_D_H_M_S)
+            val curentTime = DateUtil.convertOtherFormat(binding.tv.text.toString(), DateUtil.Y_M_D, DateUtil.Y_M_D_H_M_S)
             PickerViewUtil.selectDateTime(
                 this, OnTimeSelectListener { date: Date?, v1: View? ->
-                    tv.text = DateUtil.date2String(date!!, formatStr)
+                    binding.tv.text = DateUtil.date2String(date!!, formatStr)
                 }, curentTime, startTime, endTime, formatStr,
                 "选择日期时间", "取消", "确定", type
             )
@@ -1320,8 +1327,8 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             "创建测试数据", "清除内部缓存(cache)", "清除内部数据库(databases)",
             "清除内部文件(files)", "清除内部SharePreference", "清除外部缓存(cache)"
         )
-        il.inputTextHint = "请输入要删除文件，如a.txt，不输入默认全部删除"
-        btn1.setOnClickListener {
+        binding.il.inputTextHint = "请输入要删除文件，如a.txt，不输入默认全部删除"
+        binding.btn1.setOnClickListener {
             showToast("正在创建")
             thread(start = true) {
                 FileUtil.createOrExistsFile("$cacheDir/cache1.txt")
@@ -1347,8 +1354,8 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 listFilesInDir()
             }
         }
-        btn2.setOnClickListener {
-            val name = il.inputText.trim()
+        binding.btn2.setOnClickListener {
+            val name = binding.il.inputText.trim()
             if (TextUtils.isEmpty(name)) { //删除全部文件
                 if (CleanUtil.cleanInternalCache(this)) {
                     showToast("删除成功")
@@ -1364,8 +1371,8 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             }
             listFilesInDir()
         }
-        btn3.setOnClickListener {
-            val name = il.inputText.trim()
+        binding.btn3.setOnClickListener {
+            val name = binding.il.inputText.trim()
             if (TextUtils.isEmpty(name)) { //删除全部文件
                 if (CleanUtil.cleanInternalDatabase(this)) {
                     showToast("删除成功")
@@ -1381,8 +1388,8 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             }
             listFilesInDir()
         }
-        btn4.setOnClickListener {
-            val name = il.inputText.trim()
+        binding.btn4.setOnClickListener {
+            val name = binding.il.inputText.trim()
             if (TextUtils.isEmpty(name)) { //删除全部文件
                 if (CleanUtil.cleanInternalFiles(this)) {
                     showToast("删除成功")
@@ -1398,8 +1405,8 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             }
             listFilesInDir()
         }
-        btn5.setOnClickListener {
-            val name = il.inputText.trim()
+        binding.btn5.setOnClickListener {
+            val name = binding.il.inputText.trim()
             if (TextUtils.isEmpty(name)) { //删除全部文件
                 if (CleanUtil.cleanInternalSharePreference(this)) {
                     showToast("删除成功")
@@ -1415,8 +1422,8 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             }
             listFilesInDir()
         }
-        btn6.setOnClickListener {
-            val name = il.inputText.trim()
+        binding.btn6.setOnClickListener {
+            val name = binding.il.inputText.trim()
             if (TextUtils.isEmpty(name)) { //删除全部文件
                 if (CleanUtil.cleanExternalCache(this)) {
                     showToast("删除成功")
@@ -1488,7 +1495,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .append(" GB")
             .append("\n已用空间：").append(ByteUnit.convertByteUnit(SDCardUtil.getUsedSize().toDouble(), ByteUnit.GB)).append(" GB")
             .append("\n\nSD卡信息：\n").append(JsonUtil.formatJson(Gson().toJson(SDCardUtil.getSDCardInfo())))
-        tv.text = sb.toString()
+        binding.tv.text = sb.toString()
     }
 
     //屏幕工具
@@ -1498,24 +1505,24 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             "截屏(包含状态栏)", "截屏(不包含状态栏)", "设置屏幕横屏", "设置屏幕竖屏",
             "设置屏幕跟随系统状态", "获取屏幕信息"
         )
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             val bitmap = ScreenUtil.captureWithStatusBar(this)
             saveBitmapToGallery(bitmap, "截屏带状态栏")
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             val bitmap = ScreenUtil.captureWithoutStatusBar(this)
             saveBitmapToGallery(bitmap, "截屏不带状态栏")
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             ScreenUtil.setLandscape(this)
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             ScreenUtil.setPortrait(this)
         }
-        btn5.setOnClickListener {
+        binding.btn5.setOnClickListener {
             ScreenUtil.setSensor(this)
         }
-        btn6.setOnClickListener {
+        binding.btn6.setOnClickListener {
             val sb = StringBuilder()
             val dm = ScreenUtil.getDisplayMetrics(this)
             sb.append("屏幕宽度：").append(ScreenUtil.getScreenWidth(this))
@@ -1539,7 +1546,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             "发送短信", "获取手机联系人信息", "获取手机短信内容"
         )
         val phoneNumber = "13302480305"
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             if (!PermissionUtil.requestPermissions(this, 1, Manifest.permission.READ_PHONE_STATE)) {
                 showToast("请先允许权限")
                 return@setOnClickListener
@@ -1555,23 +1562,23 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 .append("\n\n手机信息：\n").append(JsonUtil.formatJson(Gson().toJson(PhoneUtil.getPhoneInfo(this))))
             alert(this, sb.toString())
         }
-        btn2.setOnClickListener {
-            val phone = il.inputText.trim()
+        binding.btn2.setOnClickListener {
+            val phone = binding.il.inputText.trim()
             if (TextUtils.isEmpty(phone)) {
                 showToast("请先输入手机号")
                 return@setOnClickListener
             }
             showToast(if (PhoneUtil.isPhoneNumberValid(phone)) "手机号合法" else "非手机号")
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             PhoneUtil.dial(this, phoneNumber)
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             if (!PermissionUtil.requestPermissions(this, 1, Manifest.permission.CALL_PHONE)) {
                 showToast("请先允许权限")
                 return@setOnClickListener
             }
-            val phone = il.inputText.trim()
+            val phone = binding.il.inputText.trim()
             if (TextUtils.isEmpty(phone)) {
                 showToast("请先输入手机号")
                 return@setOnClickListener
@@ -1582,27 +1589,27 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 showToast("非手机号")
             }
         }
-        btn5.setOnClickListener {
-            val content = il.inputText.trim()
+        binding.btn5.setOnClickListener {
+            val content = binding.il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 showToast("请先输入要发送的短信内容")
                 return@setOnClickListener
             }
             PhoneUtil.sendSms(this, phoneNumber, content)
         }
-        btn6.setOnClickListener {
+        binding.btn6.setOnClickListener {
             if (!PermissionUtil.requestPermissions(this, 1, Manifest.permission.SEND_SMS)) {
                 showToast("请先允许权限")
                 return@setOnClickListener
             }
-            val content = il.inputText.trim()
+            val content = binding.il.inputText.trim()
             if (TextUtils.isEmpty(content)) {
                 showToast("请先输入要发送的短信内容")
                 return@setOnClickListener
             }
             PhoneUtil.sendSmsSilent(this, phoneNumber, content)
         }
-        btn7.setOnClickListener {
+        binding.btn7.setOnClickListener {
             if (!PermissionUtil.requestPermissions(
                     this, 1,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -1624,7 +1631,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 )
             })
         }
-        btn8.setOnClickListener {
+        binding.btn8.setOnClickListener {
             if (!PermissionUtil.requestPermissions(
                     this, 1,
                     Manifest.permission.READ_EXTERNAL_STORAGE,
@@ -1677,7 +1684,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         LogUtil.w(TAG, "Html解码：\n$htmlDecode")
         sb.append("\n\n").append(htmlContent).append("\nHtml编码：\n").append(htmlEncode)
             .append("\nHtml解码：\n").append(htmlDecode)
-        tv.text = sb.toString()
+        binding.tv.text = sb.toString()
     }
 
     //Service工具
@@ -1686,7 +1693,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             this, "Service工具", false, true,
             "获取所有运行的服务", "服务是否在运行", "开启服务", "停止服务", "绑定服务", "解绑服务"
         )
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             val list = ServiceUtil.getAllRunningServiceInfo(this)
             val sb = StringBuilder()
             if (!list.isNullOrEmpty()) {
@@ -1695,24 +1702,24 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 }
             }
             if (TextUtils.isEmpty(sb.toString())) {
-                tv.text = "目前没有正在运行的服务"
+                binding.tv.text = "目前没有正在运行的服务"
             } else {
-                tv.text = sb.toString()
+                binding.tv.text = sb.toString()
             }
         }
-        btn2.setOnClickListener {
-            tv.text = if (ServiceUtil.isServiceRunning(this, TestService::class.java)) "TestService正在运行" else "TestService未运行"
+        binding.btn2.setOnClickListener {
+            binding.tv.text = if (ServiceUtil.isServiceRunning(this, TestService::class.java)) "TestService正在运行" else "TestService未运行"
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             ServiceUtil.startService(this, TestService::class.java)
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             ServiceUtil.stopService(this, TestService::class.java)
         }
-        btn5.setOnClickListener {
+        binding.btn5.setOnClickListener {
             ServiceUtil.bindService(this, TestService::class.java, mConn)
         }
-        btn6.setOnClickListener {
+        binding.btn6.setOnClickListener {
             if (ServiceUtil.isServiceRunning(this, TestService::class.java)) {
                 ServiceUtil.unbindService(this, mConn)
             } else {
@@ -1740,17 +1747,17 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             "开启位置监听服务", "打开设置界面", "申请位置权限"
         )
         bindService(Intent(this, LocationService::class.java), mLocationConn, Context.BIND_AUTO_CREATE)
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             if (ServiceUtil.isServiceRunning(this, LocationService::class.java)) {
                 showToast("服务正在运行")
             } else {
                 bindService(Intent(this, LocationService::class.java), mLocationConn, Context.BIND_AUTO_CREATE)
             }
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             LocationUtil.openGPSSettings(this)
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             if (PermissionUtil.requestPermissions(
                     this, 1,
                     Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -1799,7 +1806,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                             .append("\nlatitude：").append(latitude).append("\nlongitude：").append(longitude)
                             .append("\ncountryName：").append(country).append("\nlocality：").append(locality)
                             .append("\nstreet：").append(street)
-                        tv.text = sb.toString()
+                        binding.tv.text = sb.toString()
                     }
                 }
             })
@@ -1818,7 +1825,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             this, "网络工具", false, false,
             "获取网络信息", "打开网络设置页面", "打开WiFi", "关闭WiFi"
         )
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             val sb = StringBuilder()
             sb.append("网络是否连接：").append(NetworkUtil.isConnected(this))
                 .append("\n网络是否可用：").append(NetworkUtil.isAvailable())
@@ -1832,13 +1839,13 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 .append("\nbaidu.com对应的IP地址：").append(NetworkUtil.getDomainAddress("baidu.com"))
             alert(this, sb.toString())
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             NetworkUtil.openWirelessSettings(this)
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             NetworkUtil.setWifiEnabled(this, true)
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             NetworkUtil.setWifiEnabled(this, false)
         }
     }
@@ -1847,10 +1854,10 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     private fun testApkDownload() {
         initCommonLayout(this, "应用下载", "下载QQ邮箱", "版本更新")
         val apkDownloadUtil = ApkDownloadUtil(this)
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             apkDownloadUtil.downLoadApk("http://app.mail.qq.com/cgi-bin/mailapp?latest=y&from=2")
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             apkDownloadUtil.downLoadApk("https://ugc-download-2.imfir.cn/92d9763a68537b42d156507779b3a63635cf3909.apk?auth_key=1594538420-0-0-abce665cfe38f8e444a000dd9411587c")
         }
     }
@@ -1867,20 +1874,20 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             .append("\nCPU最小频率：").append(CPUUtil.getMinCpuFrequency(this))
             .append("\nCPU当前频率：").append(CPUUtil.getCurCpuFrequency(this))
             .append("\nCPU核心数：").append(CPUUtil.getCoreNumbers())
-        tv.text = sb.toString()
+        binding.tv.text = sb.toString()
     }
 
     //震动工具
     private fun testVibration() {
         initCommonLayout(this, "震动工具", "震动5秒", "pattern模式震动", "取消震动")
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             VibrationUtil.vibrate(this, 5000)
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             val pattern: LongArray = longArrayOf(100L, 500L, 1000L, 2000L, 1000L, 5000L)
             VibrationUtil.vibrate(this, pattern, -1)
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             VibrationUtil.cancel(this)
         }
     }
@@ -1893,35 +1900,35 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             "设置铃声静音模式", "设置铃声正常模式"
         )
         showAudioInfo()
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             AudioUtil.setStreamMuteByMusic(true)
             showAudioInfo()
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             AudioUtil.adjustVolumeLower()
             showAudioInfo()
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             AudioUtil.adjustVolumeRaise()
             showAudioInfo()
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             AudioUtil.setStreamVolume(AudioManager.STREAM_ALARM, 5)
             showAudioInfo()
         }
-        btn5.setOnClickListener {
+        binding.btn5.setOnClickListener {
             AudioUtil.adjustStreamVolumeLower(AudioManager.STREAM_ALARM)
             showAudioInfo()
         }
-        btn6.setOnClickListener {
+        binding.btn6.setOnClickListener {
             AudioUtil.adjustStreamVolumeRaise(AudioManager.STREAM_ALARM)
             showAudioInfo()
         }
-        btn7.setOnClickListener {
+        binding.btn7.setOnClickListener {
             AudioUtil.ringerSilent()
             showAudioInfo()
         }
-        btn8.setOnClickListener {
+        binding.btn8.setOnClickListener {
             AudioUtil.ringerNormal()
             showAudioInfo()
         }
@@ -1934,7 +1941,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
                 "当前音频模式：${AudioUtil.getMode()}\t\t当前铃声模式：${AudioUtil.getRingerMode()}" +
                 "\n是否打开扬声器：${AudioUtil.isSpeakerphoneOn()}\t\t麦克风是否静音：${AudioUtil.isMicrophoneMute()}" +
                 "\n是否有音乐活跃：${AudioUtil.isMusicActive()}\t\t是否插入了耳机：${AudioUtil.isWiredHeadsetOn()}"
-        tv.text = sb
+        binding.tv.text = sb
     }
 
     private fun getStreamVolume(streamType: Int): String {
@@ -1963,40 +1970,40 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             this, "亮度工具", true, true,
             "开启自动调节亮度", "设置屏幕亮度", "设置窗口亮度"
         )
-        il.inputTextHint = "请输入设置的亮度值，如50（范围0-255）"
-        il.inputTextType = InputType.TYPE_CLASS_NUMBER
+        binding.il.inputTextHint = "请输入设置的亮度值，如50（范围0-255）"
+        binding.il.inputTextType = InputType.TYPE_CLASS_NUMBER
         showBrightness()
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             if (BrightnessUtil.setAutoBrightnessEnabled(this, true)) {
                 showToast("已开启")
             }
         }
-        btn2.setOnClickListener {
-            if (TextUtils.isEmpty(il.inputText)) {
+        binding.btn2.setOnClickListener {
+            if (TextUtils.isEmpty(binding.il.inputText)) {
                 showToast("请先输入要设置的亮度值")
                 return@setOnClickListener
             }
-            val value = il.inputText.toInt()
+            val value = binding.il.inputText.toInt()
             if (value in 0..255) {
                 BrightnessUtil.setBrightness(this, value)
                 showBrightness()
             } else {
                 showToast("输入有误！")
-                il.inputText = ""
+                binding.il.inputText = ""
             }
         }
-        btn3.setOnClickListener {
-            if (TextUtils.isEmpty(il.inputText)) {
+        binding.btn3.setOnClickListener {
+            if (TextUtils.isEmpty(binding.il.inputText)) {
                 showToast("请先输入要设置的亮度值")
                 return@setOnClickListener
             }
-            val value = il.inputText.toInt()
+            val value = binding.il.inputText.toInt()
             if (value in 0..255) {
                 BrightnessUtil.setWindowBrightness(window, value)
                 showBrightness()
             } else {
                 showToast("输入有误！")
-                il.inputText = ""
+                binding.il.inputText = ""
             }
         }
     }
@@ -2005,7 +2012,7 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
         val sb = "是否开启自动调节亮度：${BrightnessUtil.isAutoBrightnessEnabled()}" +
                 "\n屏幕亮度：${BrightnessUtil.getBrightness()}" +
                 "\n窗口亮度：${BrightnessUtil.getWindowBrightness(window)}"
-        tv.text = sb
+        binding.tv.text = sb
     }
 
     private fun testCapture() {
@@ -2013,36 +2020,36 @@ class TestUtilActivity : BaseActivity<ActivityCommonLayoutBinding>() {
             this, "截图工具", "截屏（带状态栏）", "截屏（不带状态栏）",
             "WebView截图", "View截图", "ViewCache截图", "ScrollView截图", "ListView截图", "GridView截图", "RecyclerView截图"
         )
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             val bitmap = CapturePictureUtil.captureWithStatusBar(this)
             saveBitmapToGallery(bitmap, "截屏带状态栏")
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             val bitmap = CapturePictureUtil.captureWithoutStatusBar(this)
             saveBitmapToGallery(bitmap, "截屏不带状态栏")
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             startActivity(TestCaptureWebViewActivity::class.java)
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             val bitmap = CapturePictureUtil.captureByView(it)
             saveBitmapToGallery(bitmap, "View截图")
         }
-        btn5.setOnClickListener {
+        binding.btn5.setOnClickListener {
             val bitmap = CapturePictureUtil.captureByViewCache(it)
             saveBitmapToGallery(bitmap, "ViewCache截图")
         }
-        btn6.setOnClickListener {
+        binding.btn6.setOnClickListener {
             val bitmap = CapturePictureUtil.captureByScrollView(binding.sv)
             saveBitmapToGallery(bitmap, "ScrollView截图")
         }
-        btn7.setOnClickListener {
+        binding.btn7.setOnClickListener {
             startActivity(TestCaptureListViewActivity::class.java)
         }
-        btn8.setOnClickListener {
+        binding.btn8.setOnClickListener {
             startActivity(TestCaptureGridViewActivity::class.java)
         }
-        btn9.setOnClickListener {
+        binding.btn9.setOnClickListener {
             startActivity(TestCaptureRecyclerViewActivity::class.java)
         }
     }

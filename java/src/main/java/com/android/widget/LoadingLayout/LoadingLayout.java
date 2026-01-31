@@ -18,7 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 
-import com.android.java.R;
+import com.android.universal.R;
 
 /**
  * Created by xuzhb on 2020/7/18

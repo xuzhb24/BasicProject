@@ -2,6 +2,7 @@
 apply plugin: 'com.android.application'  //Module独立运行
 
 android {
+    namespace 'com.android.java'
     //配置自动签名
     signingConfigs {
         config {

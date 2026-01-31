@@ -5,10 +5,9 @@ import android.os.Bundle
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.TranslateAnimation
-import com.android.basicproject.databinding.ActivityScanBinding
+import com.android.kotlin.databinding.ActivityScanBinding
 import com.android.frame.camera.zxing.ui.CaptureActivity
 import com.android.util.StatusBar.StatusBarUtil
-import kotlinx.android.synthetic.main.activity_scan.*
 
 /**
  * Created by xuzhb on 2019/11/16
@@ -25,8 +24,8 @@ class ScanActivity : CaptureActivity<ActivityScanBinding>() {
     }
 
     override fun handleView(savedInstanceState: Bundle?) {
-        back_Iv.setOnClickListener { finish() }
-        album_tv.setOnClickListener { openAlbum() }
+        binding.backIv.setOnClickListener { finish() }
+        binding.albumTv.setOnClickListener { openAlbum() }
         startScanAnim()
     }
 
@@ -41,7 +40,7 @@ class ScanActivity : CaptureActivity<ActivityScanBinding>() {
             repeatMode = Animation.RESTART
             interpolator = DecelerateInterpolator()
         }
-        grid_iv.setAnimation(animation)
+        binding.gridIv.setAnimation(animation)
     }
 
 }

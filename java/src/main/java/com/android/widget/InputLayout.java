@@ -15,7 +15,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.LayoutParamsUtil;
 import com.android.util.SizeUtil;
 

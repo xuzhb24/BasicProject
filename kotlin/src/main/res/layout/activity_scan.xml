@@ -46,7 +46,7 @@
         android:layout_marginTop="38dp">
 
         <ImageView
-            android:id="@+id/back_Iv"
+            android:id="@+id/back_iv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/default_margin"

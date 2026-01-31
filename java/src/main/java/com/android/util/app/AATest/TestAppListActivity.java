@@ -8,7 +8,7 @@ import android.text.style.ImageSpan;
 import android.view.ViewGroup;
 
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityTestAdapterBinding;
 import com.android.util.ExtraUtil;
 import com.android.util.IntentUtil;

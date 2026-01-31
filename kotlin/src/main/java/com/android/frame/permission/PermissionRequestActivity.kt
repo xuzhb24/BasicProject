@@ -11,13 +11,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.provider.Settings
+import android.view.View
 import androidx.core.app.ActivityCompat
-import com.android.basicproject.R
+import com.android.kotlin.R
 import com.android.util.ToastUtil
 import com.android.util.bitmap.BitmapUtil
 import com.android.util.initCommonLayout
 import com.android.util.jumpToAppSetting
-import kotlinx.android.synthetic.main.activity_common_layout.*
 
 /**
  * Created by xuzhb on 2019/9/3
@@ -55,10 +55,10 @@ class PermissionRequestActivity : Activity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_common_layout)
         initCommonLayout(this, "动态权限申请", "申请权限", "应用设置")
-        btn1.setOnClickListener {
+        findViewById<View>(R.id.btn1).setOnClickListener {
             initPermission()
         }
-        btn2.setOnClickListener {
+        findViewById<View>(R.id.btn2).setOnClickListener {
             jumpToAppSetting(this)
         }
     }
@@ -112,6 +112,7 @@ class PermissionRequestActivity : Activity() {
             PERMISSION_GRANTED -> {  //权限申请成功
                 executeNextLogic()
             }
+
             PERMISSION_DENIED -> {  //权限申请被拒绝，但未选择不再提示
                 AlertDialog.Builder(this)
                     .setTitle("权限申请")
@@ -134,6 +135,7 @@ class PermissionRequestActivity : Activity() {
                     })
                     .show()
             }
+
             PERMISSION_DENIED_NOT_REQUEST_FOREVER -> {  //权限申请被拒绝，而且选择不再提示
                 AlertDialog.Builder(this)
                     .setTitle("权限申请")
@@ -233,7 +235,7 @@ class PermissionRequestActivity : Activity() {
 
     //测试方法：保存图片到系统相册，需要写入SD卡的权限，否则无法保存成功
     private fun testSaveToFile() {
-        BitmapUtil.saveBitmapToGallery(this, BitmapFactory.decodeResource(resources, R.mipmap.ic_logo))
+        BitmapUtil.saveBitmapToGallery(this, BitmapFactory.decodeResource(resources, com.android.universal.R.mipmap.ic_logo))
     }
 
 }

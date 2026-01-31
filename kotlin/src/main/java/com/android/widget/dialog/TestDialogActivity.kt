@@ -5,14 +5,13 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowManager
 import android.widget.EditText
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
+import com.android.universal.R
 import com.android.util.DrawableUtil
 import com.android.util.KeyboardUtil
 import com.android.util.SizeUtil
 import com.android.util.initCommonLayout
-import kotlinx.android.synthetic.main.activity_common_layout.*
 
 /**
  * Created by xuzhb on 2019/10/22
@@ -25,19 +24,19 @@ class TestDialogActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     }
 
     override fun initListener() {
-        btn1.setOnClickListener {
+        binding.btn1.setOnClickListener {
             showSingleDialog()
         }
-        btn2.setOnClickListener {
+        binding.btn2.setOnClickListener {
             showMultiDialog()
         }
-        btn3.setOnClickListener {
+        binding.btn3.setOnClickListener {
             showShareDialog()
         }
-        btn4.setOnClickListener {
+        binding.btn4.setOnClickListener {
             showCommentDialog()
         }
-        btn5.setOnClickListener {
+        binding.btn5.setOnClickListener {
             showCouponDialog()
         }
     }

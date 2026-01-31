@@ -8,7 +8,7 @@ import android.view.MotionEvent
 import android.view.View
 import android.view.animation.LinearInterpolator
 import androidx.annotation.AttrRes
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.util.SizeUtil
 
 /**

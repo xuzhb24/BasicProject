@@ -8,7 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ProgressBar
 import androidx.viewpager.widget.PagerAdapter
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.widget.PhotoViewer.widget.PhotoView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget

@@ -1,8 +1,8 @@
 package com.android.util.glide
 
 import android.os.Bundle
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestGlideBinding
+import com.android.universal.R
+import com.android.kotlin.databinding.ActivityTestGlideBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.SizeUtil
 import com.bumptech.glide.load.resource.bitmap.CircleCrop

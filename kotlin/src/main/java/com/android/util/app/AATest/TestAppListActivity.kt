@@ -5,9 +5,8 @@ import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.ImageSpan
 import android.view.ViewGroup
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestAdapterBinding
 import com.android.frame.mvc.BaseActivity
+import com.android.kotlin.databinding.ActivityTestAdapterBinding
 import com.android.util.IntentUtil
 import com.android.util.LogUtil
 import com.android.util.SizeUtil
@@ -43,25 +42,25 @@ class TestAppListActivity : BaseActivity<ActivityTestAdapterBinding>() {
         mAdapter.setOnItemClickListener { obj, position ->
             val appInfo = obj as AppInfo
             CommonDialog.newInstance()
-                .setLayoutId(R.layout.dialog_app_detail)
+                .setLayoutId(com.android.universal.R.layout.dialog_app_detail)
                 .setOnViewListener { holder, dialog ->
                     //应用详情
-                    holder.setOnClickListener(R.id.detail_btn) {
+                    holder.setOnClickListener(com.android.universal.R.id.detail_btn) {
                         dialog?.dismiss()
                         alert(this, getAppInfo(appInfo.packageName!!))
                     }
                     //打开应用
                     if (IntentUtil.getLaunchAppIntent(this, appInfo.packageName!!) != null) {
-                        holder.setViewVisible(R.id.open_btn)
+                        holder.setViewVisible(com.android.universal.R.id.open_btn)
                     } else {
-                        holder.setViewGone(R.id.open_btn)
+                        holder.setViewGone(com.android.universal.R.id.open_btn)
                     }
-                    holder.setOnClickListener(R.id.open_btn) {
+                    holder.setOnClickListener(com.android.universal.R.id.open_btn) {
                         dialog?.dismiss()
                         AppUtil.openApp(this, appInfo.packageName)
                     }
                     //打开应用设置页面
-                    holder.setOnClickListener(R.id.settings_btn) {
+                    holder.setOnClickListener(com.android.universal.R.id.settings_btn) {
                         dialog?.dismiss()
                         AppUtil.openAppSettings(this, appInfo.packageName)
                     }

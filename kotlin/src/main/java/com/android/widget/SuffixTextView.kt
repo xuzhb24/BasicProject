@@ -13,7 +13,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.AttrRes
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.util.SizeUtil
 import java.util.regex.Pattern
 import kotlin.math.max

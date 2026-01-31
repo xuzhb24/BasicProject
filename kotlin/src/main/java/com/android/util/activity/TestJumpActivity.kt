@@ -1,8 +1,8 @@
 package com.android.util.activity
 
 import android.os.Bundle
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityCommonLayoutBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityCommonLayoutBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.initCommonLayout
 
@@ -29,7 +29,7 @@ class TestJumpActivity : BaseActivity<ActivityCommonLayoutBinding>() {
     override fun initListener() {
         binding.btn1.setOnClickListener {
             finish()
-            overridePendingTransition(R.anim.slide_left_in, R.anim.slide_right_out)
+            overridePendingTransition(com.android.universal.R.anim.slide_left_in, com.android.universal.R.anim.slide_right_out)
         }
     }
 

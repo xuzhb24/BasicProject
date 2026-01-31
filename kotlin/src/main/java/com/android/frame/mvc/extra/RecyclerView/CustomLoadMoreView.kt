@@ -3,7 +3,7 @@ package com.android.frame.mvc.extra.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.android.basicproject.R
+import com.android.kotlin.R
 import com.chad.library.adapter.base.loadmore.BaseLoadMoreView
 import com.chad.library.adapter.base.viewholder.BaseViewHolder
 

@@ -9,7 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.android.java.R;
+import com.android.universal.R;
 
 /**
  * Created by xuzhb on 2020/7/11

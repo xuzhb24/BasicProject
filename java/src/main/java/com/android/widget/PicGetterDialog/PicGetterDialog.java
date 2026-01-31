@@ -1,7 +1,7 @@
 package com.android.widget.PicGetterDialog;
 
 import android.app.Dialog;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.widget.ViewHolder;
 
 /**

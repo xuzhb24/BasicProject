@@ -3,7 +3,7 @@ package com.android.widget.dialog
 import android.os.Bundle
 import android.text.TextUtils
 import androidx.fragment.app.DialogFragment
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.widget.ViewHolder
 
 /**

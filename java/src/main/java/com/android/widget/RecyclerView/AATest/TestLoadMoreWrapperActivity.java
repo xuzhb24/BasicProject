@@ -12,7 +12,7 @@ import com.android.frame.http.ExceptionUtil;
 import com.android.frame.http.RetrofitFactory;
 import com.android.frame.http.SchedulerUtil;
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityTestAdapterBinding;
 import com.android.widget.RecyclerView.LoadMoreWrapper;
 

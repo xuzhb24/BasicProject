@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.LinearLayout
 import android.widget.TextView
-import com.android.basicproject.R
+import com.android.kotlin.R
 import com.android.widget.InputLayout
 import com.android.widget.TitleBar
 
@@ -166,7 +166,7 @@ fun createInputLayout(activity: Activity, hint: String): InputLayout {
         )
         inputTextHint = hint
         dividerHeight = SizeUtil.dp2px(2f)
-        dividerColor = activity.resources.getColor(R.color.colorPrimary)
+        dividerColor = activity.resources.getColor(com.android.universal.R.color.colorPrimary)
         LayoutParamsUtil.setMargin(
             il,
             SizeUtil.dp2px(20f).toInt(),

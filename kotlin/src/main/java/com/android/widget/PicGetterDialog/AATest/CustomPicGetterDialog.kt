@@ -1,7 +1,7 @@
 package com.android.widget.PicGetterDialog.AATest
 
 import android.app.Dialog
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.widget.PicGetterDialog.BasePicGetterDialog
 import com.android.widget.ViewHolder
 

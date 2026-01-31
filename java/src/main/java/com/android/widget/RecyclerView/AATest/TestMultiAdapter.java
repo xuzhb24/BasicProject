@@ -1,7 +1,7 @@
 package com.android.widget.RecyclerView.AATest;
 
 import android.content.Context;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.ToastUtil;
 import com.android.widget.RecyclerView.AATest.entity.DetailBean;
 import com.android.widget.RecyclerView.AATest.entity.MonthBean;

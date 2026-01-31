@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewbinding.ViewBinding
 import com.android.base.BaseApplication
-import com.android.basicproject.R
+import com.android.kotlin.R
 import com.android.util.*
 import com.android.widget.LoadingDialog.LoadingDialog
 import com.android.widget.LoadingLayout.LoadingLayout
@@ -97,14 +97,14 @@ abstract class BaseFragment<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
     //初始化一些通用控件，如加载框、SmartRefreshLayout、网络错误提示布局
     protected open fun initBaseView() {
         mTitleBar = binding.root.findViewById(R.id.title_bar)
-        mLoadingDialog = LoadingDialog(mContext, R.style.LoadingDialogStyle)
+        mLoadingDialog = LoadingDialog(mContext, com.android.universal.R.style.LoadingDialogStyle)
         //获取布局中的加载状态布局
         mLoadingLayout = binding.root.findViewById(R.id.loading_layout)
         mLoadingLayout?.setOnFailListener { mPresenter?.refreshData() }
         //获取布局中的SmartRefreshLayout组件，重用BaseActivity的下拉刷新逻辑
         //注意布局中SmartRefreshLayout的id命名为smart_refresh_layout，否则mSmartRefreshLayout为null
         //如果SmartRefreshLayout里面只包含RecyclerView，可引用<include layout="@layout/layout_list" />
-        mSmartRefreshLayout = binding.root.findViewById(R.id.smart_refresh_layout)
+        mSmartRefreshLayout = binding.root.findViewById(com.android.universal.R.id.smart_refresh_layout)
         //如果当前布局文件不包含id为smart_refresh_layout的组件则不执行下面的逻辑
         mSmartRefreshLayout?.let {
             it.setRefreshHeader(ClassicsHeader(mContext))
@@ -114,7 +114,7 @@ abstract class BaseFragment<VB : ViewBinding, V : IBaseView, P : BasePresenter<V
         //获取布局中的RecyclerView组件，注意布局中RecyclerView的id命名为recycler_view，否则mRecyclerView为null
         mRecyclerView = binding.root.findViewById(R.id.recycler_view)
         //在当前布局的合适位置引用<include layout="@layout/layout_net_error" />，则当网络出现错误时会进行相应的提示
-        mNetErrorFl = binding.root.findViewById(R.id.net_error_fl)
+        mNetErrorFl = binding.root.findViewById(com.android.universal.R.id.net_error_fl)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

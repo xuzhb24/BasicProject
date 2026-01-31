@@ -1,7 +1,7 @@
 package com.android.util.app.AATest;
 
 import android.content.Context;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.app.AppInfo;
 import com.android.widget.RecyclerView.BaseAdapter;
 import com.android.widget.RecyclerView.ViewHolder;

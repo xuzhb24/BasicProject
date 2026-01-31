@@ -6,8 +6,8 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestCaptureRecyclerviewBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityTestCaptureRecyclerviewBinding
 import com.android.frame.mvc.BaseActivity
 import com.android.util.bitmap.BitmapUtil
 import com.android.util.permission.PermissionUtil
@@ -37,7 +37,7 @@ class TestCaptureRecyclerViewActivity : BaseActivity<ActivityTestCaptureRecycler
         }
         binding.recyclerView.adapter = object : RecyclerView.Adapter<ViewHolder>() {
             override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-                val view = LayoutInflater.from(parent.context).inflate(R.layout.item_test_capture, null)
+                val view = LayoutInflater.from(parent.context).inflate(com.android.universal.R.layout.item_test_capture, null)
                 return ViewHolder(view)
             }
 

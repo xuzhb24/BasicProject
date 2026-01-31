@@ -5,7 +5,7 @@ import android.content.Context
 import android.text.TextUtils
 import android.view.View
 import android.widget.TextView
-import com.android.basicproject.R
+import com.android.universal.R
 
 /**
  * Created by xuzhb on 2020/7/17

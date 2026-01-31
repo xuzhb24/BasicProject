@@ -10,8 +10,8 @@ import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.viewpager.widget.ViewPager
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityPhotoViewBinding
+import com.android.kotlin.R
+import com.android.kotlin.databinding.ActivityPhotoViewBinding
 import com.android.util.StatusBar.StatusBarUtil
 import com.android.util.ToastUtil
 import com.android.util.bitmap.BitmapUtil
@@ -47,7 +47,7 @@ class PhotoViewActivity : AppCompatActivity() {
             }
             intent.putExtras(bundle)
             activity.startActivity(intent)
-            activity.overridePendingTransition(R.anim.scale_center_in, R.anim.alpha_out_300)  //放大进入Activity
+            activity.overridePendingTransition(com.android.universal.R.anim.scale_center_in, com.android.universal.R.anim.alpha_out_300)  //放大进入Activity
         }
     }
 
@@ -129,7 +129,7 @@ class PhotoViewActivity : AppCompatActivity() {
 
     override fun finish() {
         super.finish()
-        overridePendingTransition(R.anim.alpha_in_300, R.anim.scale_center_out) //缩小退出Activity
+        overridePendingTransition(com.android.universal.R.anim.alpha_in_300, com.android.universal.R.anim.scale_center_out) //缩小退出Activity
     }
 
 }

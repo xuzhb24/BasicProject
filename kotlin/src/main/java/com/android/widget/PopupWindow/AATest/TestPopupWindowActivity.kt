@@ -5,9 +5,9 @@ import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import com.android.basicproject.R
-import com.android.basicproject.databinding.ActivityTestPopupWindowBinding
 import com.android.frame.mvc.BaseActivity
+import com.android.kotlin.databinding.ActivityTestPopupWindowBinding
+import com.android.universal.R
 import com.android.util.SizeUtil
 import com.android.widget.PopupWindow.CommonPopupWindow
 

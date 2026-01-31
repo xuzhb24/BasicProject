@@ -1,7 +1,7 @@
 package com.android.widget.RecyclerView.AATest
 
 import android.content.Context
-import com.android.basicproject.R
+import com.android.universal.R
 import com.android.util.ToastUtil
 import com.android.util.isEntity
 import com.android.widget.RecyclerView.AATest.entity.DetailBean

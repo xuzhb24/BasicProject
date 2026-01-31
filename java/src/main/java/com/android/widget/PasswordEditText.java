@@ -11,7 +11,7 @@ import android.util.AttributeSet;
 
 import androidx.appcompat.widget.AppCompatEditText;
 
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.SizeUtil;
 
 import java.util.ArrayList;

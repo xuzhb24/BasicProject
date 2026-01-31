@@ -15,7 +15,7 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.annotation.AttrRes
-import com.android.basicproject.R
+import com.android.universal.R
 
 /**
  * Created by xuzhb on 2020/7/18

@@ -18,7 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewbinding.ViewBinding;
 
 import com.android.base.BaseApplication;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.util.CheckFastClickUtil;
 import com.android.util.LogUtil;
 import com.android.util.NetReceiver;

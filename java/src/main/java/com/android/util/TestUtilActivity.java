@@ -44,7 +44,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.RequiresApi;
 
 import com.android.frame.mvc.BaseActivity;
-import com.android.java.R;
+import com.android.universal.R;
 import com.android.java.databinding.ActivityCommonLayoutBinding;
 import com.android.util.CapturePicture.CapturePictureUtil;
 import com.android.util.CapturePicture.TestCaptureGridViewActivity;

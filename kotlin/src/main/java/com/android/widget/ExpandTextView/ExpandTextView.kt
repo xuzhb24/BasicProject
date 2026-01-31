@@ -13,7 +13,7 @@ import android.util.AttributeSet
 import android.view.MotionEvent
 import android.view.View
 import androidx.annotation.AttrRes
-import com.android.basicproject.R
+import com.android.kotlin.R
 import com.android.util.JsonUtil
 import com.android.util.LogUtil
 import com.android.util.SizeUtil
@@ -151,20 +151,20 @@ class ExpandTextView @JvmOverloads constructor(
 
     //获取布局属性并设置属性默认值
     private fun parseAttribute(context: Context, attrs: AttributeSet) {
-        val ta = context.obtainStyledAttributes(attrs, R.styleable.ExpandTextView)
-        maxShowLines = ta.getInteger(R.styleable.ExpandTextView_maxShowLines, DEFAULT_MAX_SHOW_LINES)
-        lineSpacing = ta.getDimension(R.styleable.ExpandTextView_lineSpacing, DEFAULT_LINE_SPACING)
-        contentText = ta.getString(R.styleable.ExpandTextView_contentText) ?: ""
-        contentSuffixText = ta.getString(R.styleable.ExpandTextView_contentSuffixText) ?: DEFAULT_CONTENT_SUFFIX_TEXT
-        contentTextSize = ta.getDimension(R.styleable.ExpandTextView_contentTextSize, DEFAULT_CONTENT_TEXT_SIZE)
-        contentTextColor = ta.getColor(R.styleable.ExpandTextView_contentTextColor, DEFAULT_CONTENT_TEXT_COLOR)
-        labelExpandText = ta.getString(R.styleable.ExpandTextView_labelExpandText) ?: DEFAULT_LABEL_EXPAND_TEXT
-        labelShrinkText = ta.getString(R.styleable.ExpandTextView_labelShrinkText) ?: DEFAULT_LABEL_SHRINK_TEXT
-        labelTextSize = ta.getDimension(R.styleable.ExpandTextView_labelTextSize, DEFAULT_LABEL_TEXT_SIZE)
-        labelTextColor = ta.getColor(R.styleable.ExpandTextView_labelTextColor, DEFAULT_LABEL_TEXT_COLOR)
-        labelMarginLeft = ta.getDimension(R.styleable.ExpandTextView_labelMarginLeft, DEFAULT_LABEL_MARGIN_LEFT)
-        labelMarginRight = ta.getDimension(R.styleable.ExpandTextView_labelMarginRight, DEFAULT_LABEL_MARGIN_RIGHT)
-        boundsAlign = ta.getBoolean(R.styleable.ExpandTextView_boundsAlign, DEFAULT_BOUNDS_ALIGN)
+        val ta = context.obtainStyledAttributes(attrs, com.android.universal.R.styleable.ExpandTextView)
+        maxShowLines = ta.getInteger(com.android.universal.R.styleable.ExpandTextView_maxShowLines, DEFAULT_MAX_SHOW_LINES)
+        lineSpacing = ta.getDimension(com.android.universal.R.styleable.ExpandTextView_lineSpacing, DEFAULT_LINE_SPACING)
+        contentText = ta.getString(com.android.universal.R.styleable.ExpandTextView_contentText) ?: ""
+        contentSuffixText = ta.getString(com.android.universal.R.styleable.ExpandTextView_contentSuffixText) ?: DEFAULT_CONTENT_SUFFIX_TEXT
+        contentTextSize = ta.getDimension(com.android.universal.R.styleable.ExpandTextView_contentTextSize, DEFAULT_CONTENT_TEXT_SIZE)
+        contentTextColor = ta.getColor(com.android.universal.R.styleable.ExpandTextView_contentTextColor, DEFAULT_CONTENT_TEXT_COLOR)
+        labelExpandText = ta.getString(com.android.universal.R.styleable.ExpandTextView_labelExpandText) ?: DEFAULT_LABEL_EXPAND_TEXT
+        labelShrinkText = ta.getString(com.android.universal.R.styleable.ExpandTextView_labelShrinkText) ?: DEFAULT_LABEL_SHRINK_TEXT
+        labelTextSize = ta.getDimension(com.android.universal.R.styleable.ExpandTextView_labelTextSize, DEFAULT_LABEL_TEXT_SIZE)
+        labelTextColor = ta.getColor(com.android.universal.R.styleable.ExpandTextView_labelTextColor, DEFAULT_LABEL_TEXT_COLOR)
+        labelMarginLeft = ta.getDimension(com.android.universal.R.styleable.ExpandTextView_labelMarginLeft, DEFAULT_LABEL_MARGIN_LEFT)
+        labelMarginRight = ta.getDimension(com.android.universal.R.styleable.ExpandTextView_labelMarginRight, DEFAULT_LABEL_MARGIN_RIGHT)
+        boundsAlign = ta.getBoolean(com.android.universal.R.styleable.ExpandTextView_boundsAlign, DEFAULT_BOUNDS_ALIGN)
         ta.recycle()
     }
 
