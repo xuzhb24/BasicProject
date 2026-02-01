@@ -203,6 +203,11 @@
                 style="@style/ItemSingleTextStyle"
                 android:text="截图工具" />
 
+            <TextView
+                android:id="@+id/indicator_tv"
+                style="@style/ItemSingleTextStyle"
+                android:text="MagicIndicator工具" />
+
         </LinearLayout>
     </ScrollView>
 

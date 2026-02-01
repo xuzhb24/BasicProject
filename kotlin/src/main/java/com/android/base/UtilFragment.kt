@@ -8,6 +8,7 @@ import com.android.util.bitmap.TestBitmapActivity
 import com.android.util.code.TestCodeUtilActivity
 import com.android.util.glide.TestGlideActivity
 import com.android.util.jumpToTestUtilActivity
+import com.android.util.magicIndicator.test.TestMagicIndicatorActivity
 import com.android.util.permission.TestPermissionActivity
 import com.android.util.threadPool.AATest.TestThreadPoolUtilActivity
 
@@ -173,6 +174,10 @@ class UtilFragment : BaseFragment<FragmentUtilBinding>() {
         //截图工具
         binding.captureTv.setOnClickListener {
             jumpToTestUtilActivity(activity!!, TestUtilActivity.TEST_CAPTURE)
+        }
+        //MagicIndicator工具封装
+        binding.indicatorTv.setOnClickListener {
+            startActivity(TestMagicIndicatorActivity::class.java)
         }
     }
 

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <com.android.widget.TitleBar
+        style="@style/TitleBarStyle"
+        app:titleText="指示器" />
+
+    <androidx.core.widget.NestedScrollView
+        style="@style/ScrollViewStyle"
+        android:fillViewport="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_indicator1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <TextView
+                android:id="@+id/tv1"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:gravity="center" />
+
+            <View style="@style/DividerLineStyle" />
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_indicator2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <View style="@style/DividerLineStyle" />
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_indicator3"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <com.android.widget.CustomViewPager
+                android:id="@+id/view_pager3"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <View style="@style/DividerLineStyle" />
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_indicator4"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <com.android.widget.CustomViewPager
+                android:id="@+id/view_pager4"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <View style="@style/DividerLineStyle" />
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_indicator5"
+                android:layout_width="match_parent"
+                android:layout_height="36dp" />
+
+            <View style="@style/DividerLineStyle" />
+
+            <com.android.widget.CustomViewPager
+                android:id="@+id/view_pager6"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_indicator6"
+                android:layout_width="match_parent"
+                android:layout_height="50dp" />
+
+            <View style="@style/DividerLineStyle" />
+
+            <net.lucode.hackware.magicindicator.MagicIndicator
+                android:id="@+id/magic_indicator7"
+                android:layout_width="match_parent"
+                android:layout_height="36dp" />
+
+            <com.android.widget.CustomViewPager
+                android:id="@+id/view_pager7"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+
+            <Button
+                android:id="@+id/btn7"
+                style="@style/ButtonStyle"
+                android:layout_marginStart="80dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginEnd="80dp"
+                android:layout_marginBottom="10dp"
+                android:text="修改列表" />
+
+            <View style="@style/DividerLineStyle" />
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</LinearLayout>

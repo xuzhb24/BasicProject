@@ -13,12 +13,14 @@ import android.view.Gravity
 import android.view.MotionEvent
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
+import com.android.base.BaseApplication
 import com.android.kotlin.R
 import com.android.util.uiparse.ParseUtil
 import com.android.widget.PopupWindow.CommonPopupWindow
 import com.google.gson.Gson
-import java.util.*
+import java.util.Random
 
 /**
  * Created by xuzhb on 2019/9/22
@@ -98,3 +100,29 @@ fun showImage(activity: Activity, drawable: Drawable) {
 fun parseActivity(activity: AppCompatActivity, ev: MotionEvent?) {
     ParseUtil.showTopActivityInfo(activity, ev)
 }
+
+//设置字体加粗
+fun TextView?.setStyleBold() {
+    this?.paint?.let {
+//        it.style = Paint.Style.FILL_AND_STROKE
+//        it.strokeWidth = 1f
+        it.isFakeBoldText = true
+    }
+}
+
+//设置字体正常
+fun TextView?.setStyleNormal() {
+    this?.paint?.let {
+//        it.style = Paint.Style.FILL
+//        it.strokeWidth = 1f
+        it.isFakeBoldText = false
+    }
+}
+
+fun Float.px2dp() = this / BaseApplication.instance.resources.displayMetrics.density + 0.5f
+
+fun Float.dp2px() = this * BaseApplication.instance.resources.displayMetrics.density + 0.5f
+
+fun Float.px2sp() = this / BaseApplication.instance.resources.displayMetrics.scaledDensity + 0.5f
+
+fun Float.sp2px() = this * BaseApplication.instance.resources.displayMetrics.scaledDensity + 0.5f
